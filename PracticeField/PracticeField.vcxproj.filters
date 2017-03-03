@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Controller">
+      <UniqueIdentifier>{765dbed0-d4b3-4bf5-be3e-dbc8e2a68c2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameComponent">
+      <UniqueIdentifier>{1ea4045f-ec11-42d6-9796-145a27929e20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controller">
+      <UniqueIdentifier>{312e67ed-acbd-4a6b-9c71-d8faa17fd697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameComponent">
+      <UniqueIdentifier>{1f0de6fe-a5ae-437f-b78b-70bdf7b52100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameComponent\BaseComponent">
+      <UniqueIdentifier>{6c5b739b-86a9-4fb3-82da-84d8898e85c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameComponent\ModifiedComponent">
+      <UniqueIdentifier>{ecc5f9e8-d69a-46aa-a21a-7a449ffbe2a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameComponent\BaseComponents">
+      <UniqueIdentifier>{f6068769-f2c4-4287-8a60-a5e25d1b1b4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameComponent\ModifiedCompents">
+      <UniqueIdentifier>{5c6a03f5-24ea-42e8-a263-ccba8657f3fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Material">
+      <UniqueIdentifier>{9c2a80fe-4e96-40fa-8d15-cdfbfaf205ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Material">
+      <UniqueIdentifier>{7513f38b-5f0d-482b-8542-77576f27473c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Material\FileParser">
+      <UniqueIdentifier>{b81a639b-ac91-4626-b6b3-4abf18cc7730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Material\FileParser">
+      <UniqueIdentifier>{80e49901-5bb9-40d2-b9c2-6ad38e516c26}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameWindow.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="InputModule.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="MonkeyHead.cpp">
+      <Filter>Source Files\GameComponent\ModifiedComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshMaterial.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureMaterial.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureLoader.cpp">
+      <Filter>Source Files\Material\FileParser</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>Source Files\Material\FileParser</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjLoader.cpp">
+      <Filter>Source Files\Material\FileParser</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderMaterial.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWindow.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="InputModule.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="MonkeyHead.h">
+      <Filter>Header Files\GameComponent\ModifiedCompents</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshMaterial.h">
+      <Filter>Header Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureMaterial.h">
+      <Filter>Header Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>Header Files\Material\FileParser</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureLoader.h">
+      <Filter>Header Files\Material\FileParser</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjLoader.h">
+      <Filter>Header Files\Material\FileParser</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderMaterial.h">
+      <Filter>Header Files\Material</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TextureFragmentShader.fragmentshader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="TransformVertexShader.vertexshader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="SimpleShader.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
