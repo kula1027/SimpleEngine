@@ -105,10 +105,10 @@
     <ClCompile Include="ObjLoader.cpp">
       <Filter>Source Files\Material\FileParser</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderMaterial.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialLoader.cpp">
       <Filter>Source Files\Material</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,10 +164,10 @@
     <ClInclude Include="ObjLoader.h">
       <Filter>Header Files\Material\FileParser</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderMaterial.h">
+      <Filter>Header Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialLoader.h">
       <Filter>Header Files\Material</Filter>
     </ClInclude>
   </ItemGroup>

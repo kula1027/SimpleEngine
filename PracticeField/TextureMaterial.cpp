@@ -11,8 +11,6 @@ TextureMaterial::~TextureMaterial()
 {
 }
 
-void TextureMaterial::LoadTextures(){
-}
-
-void TextureMaterial::GetTexture(const char * textureName){
+char * TextureMaterial::GetFilePath(){
+	return filePath;
 }

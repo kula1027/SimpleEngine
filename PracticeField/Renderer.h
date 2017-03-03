@@ -4,21 +4,20 @@
 #include <glm\glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "ShaderMaterial.h"
-#include "TextureLoader.h"
-#include "ObjLoader.h"
+#include "MaterialLoader.h"
 #include "Camera.h"
 
 class Renderer
 {
 private:
-	GLuint shaderID;
 	GLuint texture;
 	GLuint textureID;
 	GLuint mvpMatrixID;
 	GLuint viewMatrixID;
 	GLuint modelMatrixID;
 	GLuint lightID;
+
+	ShaderMaterial* shaderMaterial;
 
 	glm::mat4 modelMatrix;
 
@@ -40,6 +39,6 @@ public:
 	~Renderer();
 
 	void Render(Camera* cam);
-	void SetObj();
+	//void SetObj();
 };
 

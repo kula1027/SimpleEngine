@@ -7,18 +7,15 @@ Renderer::Renderer(Transform* transform_){
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
-	shaderID =
-		LoadShaders(
-			"Material/SimpleShader.shader"
-			);
+	shaderMaterial = MaterialLoader::LoadShader("SimpleShader.shader");
 
-	mvpMatrixID = glGetUniformLocation(shaderID, "MVP");
-	viewMatrixID = glGetUniformLocation(shaderID, "V");
-	modelMatrixID = glGetUniformLocation(shaderID, "M");
-	lightID = glGetUniformLocation(shaderID, "LightPosition_worldspace");
+	mvpMatrixID = glGetUniformLocation(shaderMaterial->GetID(), "MVP");
+	viewMatrixID = glGetUniformLocation(shaderMaterial->GetID(), "V");
+	modelMatrixID = glGetUniformLocation(shaderMaterial->GetID(), "M");
+	lightID = glGetUniformLocation(shaderMaterial->GetID(), "LightPosition_worldspace");
 
 	texture = loadDDS("Materials/uvmap.DDS");
-	textureID = glGetUniformLocation(shaderID, "myTextureSampler");
+	textureID = glGetUniformLocation(shaderMaterial->GetID(), "myTextureSampler");
 
 	loadOBJ("Materials/suzanne.obj", vertexData, uvData, normalData);
 
@@ -43,7 +40,7 @@ Renderer::Renderer(Transform* transform_){
 void Renderer::Render(Camera* cam){
 	ComputeModelMatrix();
 
-	glUseProgram(shaderID);		
+	glUseProgram(shaderMaterial->GetID());
 
 	mvpMatrix = cam->VPmatrix() * modelMatrix;
 	glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &modelMatrix[0][0]);

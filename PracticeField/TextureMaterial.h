@@ -3,11 +3,13 @@
 
 class TextureMaterial
 {
+private:
+	char* filePath;
+
 public:
 	TextureMaterial();
 	~TextureMaterial();
-
-	void LoadTextures();
-	void GetTexture(const char* textureName);
+	
+	char* GetFilePath();
 };
 
