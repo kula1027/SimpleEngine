@@ -16,10 +16,10 @@ Camera::Camera(){
 	verticalAngle = 0;
 	horizontalAngle = 3.14f;
 
-	moveSpeed = 3.0f;
+	moveSpeed = 10.0f;
 	sensitivity = 0.001f;
 
-	projectionMatrix = glm::perspective(fov, 16.0f / 9.0f, near, far);
+	projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
 
 }
 
@@ -58,11 +58,12 @@ glm::mat4 Camera::Vmatrix() {
 	return viewMatrix;
 }
 
-void Camera::Update(GameWindow* gWindow){
+void Camera::Update(){
 	glClearColor(0.2f, 0.2f, 0.2f, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	horizontalAngle += sensitivity * float(gWindow->GetWidth() / 2 - InputModule::GetMousePos()[0]);
-	verticalAngle += sensitivity * float(gWindow->GetHeight() / 2 - InputModule::GetMousePos()[1]);
+	horizontalAngle += sensitivity * float(GameWindow::GetWidth() / 2 - InputModule::GetMousePos()[0]);
+	verticalAngle += sensitivity * float(GameWindow::GetHeight() / 2 - InputModule::GetMousePos()[1]);
 
 	if (InputModule::IsPressed(GLFW_KEY_W)) {
 		transform.position += dirForward * Time::deltaTime * moveSpeed;

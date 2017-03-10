@@ -1,44 +1,20 @@
 #include "MaterialLoader.h"
 
-std::vector<ShaderMaterial*> MaterialLoader::shaders;
-std::vector<TextureMaterial*> MaterialLoader::textures;
-std::vector<MeshMaterial*> MaterialLoader::meshes;
+std::vector<Shader*> MaterialLoader::shaders;
+std::vector<MeshModel*> MaterialLoader::meshModels;
 
 
-ShaderMaterial* MaterialLoader::LoadShader(const char* filePath){
-	int vectorCount = shaders.size();
-	for (int loop = 0; loop < vectorCount; loop++) {
-		if (strcmp(filePath, shaders.at(loop)->GetFilePath())) {
-			return shaders.at(loop);
-		}
-	}
+Shader* MaterialLoader::LoadShader(string filePathVertex, string filePathFragment){
+	string pathVertex = dirPathMaterial + filePathVertex;
+	string pathFragment = dirPathMaterial + filePathFragment;
 
-/*	int strLength = strlen(dirPathMaterial) + strlen(filePath) + 1;
-	char* path = new char[strLength];
-	strcpy_s(path, strLength, dirPathMaterial);
-	strcat_s(path, strLength, filePath);*/
-
-	ShaderMaterial* shaderMaterial = new ShaderMaterial(LoadShaders("Materials/SimpleShader.shader"), filePath);
-	shaders.push_back(shaderMaterial);
+	Shader* shader = new Shader((GLchar*)pathVertex.c_str(), (GLchar*)pathFragment.c_str());
+	shaders.push_back(shader);
 	
-	return shaderMaterial;
+	return shader;
 }
 
-TextureMaterial* MaterialLoader::LoadTexture(const char* filePath){
-	/*int vectorCount = textures.size();
-	for (int loop = 0; loop < vectorCount; loop++) {
-		if (strcmp(filePath, textures.at(loop)->GetFilePath())) {
-			return textures.at(loop);
-		}
-	}
-
-	ShaderMaterial* shaderMaterial = new ShaderMaterial(LoadShaders("Materials/SimpleShader.shader"), filePath);
-	shaders.push_back(shaderMaterial);
-	loadDDS(filePath);*/
-	return NULL;
-}
-
-MeshMaterial* MaterialLoader::LoadMesh(const char* filePath){
-	//loadOBJ(filePath);
-	return NULL;
+MeshModel* MaterialLoader::LoadMeshModel(string filePath){
+	string path = dirPathMaterial + filePath;
+	return new MeshModel((GLchar*)path.c_str());
 }

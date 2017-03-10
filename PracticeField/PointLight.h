@@ -1,11 +1,10 @@
 #pragma once
 
 #include <iostream>
-#include <glm\glm.hpp>
-#include <gl\glew.h>
 
+#include "Light.h"
 
-class PointLight
+class PointLight : public Light
 {
 private:		
 
@@ -14,7 +13,8 @@ public:
 	~PointLight();
 
 	GLfloat range;
-	glm::vec3 color;
-	glm::vec3 position;
+
+	void Update();
+	void Use(Shader* shader);
 };
 

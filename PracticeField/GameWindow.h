@@ -5,16 +5,15 @@
 class GameWindow
 {
 private:
-	GLFWwindow* window;
-	int width;
-	int height;
+	static GLFWwindow* window;
+	static int width;
+	static int height;
 
 public:
-	GameWindow(int w_, int h_, const char* name_);
-	int GetWidth();
-	int GetHeight();
-	GLFWwindow* GetWindow();
-	bool ShouldClose();
-	~GameWindow();
+	static void Init(int w_, int h_, const char* name_);
+	static int GetWidth();
+	static int GetHeight();
+	static GLFWwindow* GetWindow();
+	static bool ShouldClose();
 };
 

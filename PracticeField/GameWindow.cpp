@@ -1,8 +1,10 @@
 #include "GameWindow.h"
 
+GLFWwindow* GameWindow::window;
+int GameWindow::width;
+int GameWindow::height;
 
-
-GameWindow::GameWindow(int w_, int h_, const char* name_){
+void GameWindow::Init(int w_, int h_, const char* name_){
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -32,5 +34,3 @@ bool GameWindow::ShouldClose(){
 	return !glfwWindowShouldClose(window);
 }
 
-GameWindow::~GameWindow(){
-}

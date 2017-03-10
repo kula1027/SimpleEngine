@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "ObjectPool.h"
 #include "GameWindow.h"
 #include "Scene.h"
@@ -7,8 +8,6 @@
 class SimpleEngine
 {
 private:
-	GameWindow* gWindow;	
-
 	Scene* currentScene;
 
 	void UpdateObjects();

@@ -5,23 +5,35 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "MaterialLoader.h"
-#include "TextureLoader.h"
-#include "ObjLoader.h"
-#include "Renderer.h"
+#include "IUpdatable.h"
+#include "Light.h"
 #include "Transform.h"
 #include "Camera.h"
 
-class GameObject
-{
+class GameObject : public IUpdatable{
 private:
+	GLuint mvpMatrixID;
+	GLuint viewMatrixID;
+	GLuint modelMatrixID;
+	GLuint lightPosID;
+	GLuint lightColorID;
+	GLuint lightPowerID;
+
+	Shader* shader;
+	MeshModel* meshModel;
+
+	glm::mat4 modelMatrix;
+	glm::mat4 mvpMatrix;
+	void ComputeModelMatrix(Camera* cam);
 
 public:
 	GameObject();
-	void Render(Camera* cam);
+	void Render(Camera* cam, std::vector<Light*> lights_);
 	Transform transform;
-	Renderer* renderer;
+
+	void SetModel(MeshModel* meshModel_);
+	void SetShader(Shader* shader_);
 
 	void Update();
 	~GameObject();
 };
-

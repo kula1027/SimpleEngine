@@ -43,11 +43,11 @@
     <Filter Include="Header Files\Material">
       <UniqueIdentifier>{7513f38b-5f0d-482b-8542-77576f27473c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Material\FileParser">
-      <UniqueIdentifier>{b81a639b-ac91-4626-b6b3-4abf18cc7730}</UniqueIdentifier>
+    <Filter Include="Header Files\GameComponent\BaseComponents\Light">
+      <UniqueIdentifier>{b08bb1bd-20a0-4bb1-9e12-cf4c955558c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Material\FileParser">
-      <UniqueIdentifier>{80e49901-5bb9-40d2-b9c2-6ad38e516c26}</UniqueIdentifier>
+    <Filter Include="Source Files\GameComponent\BaseComponent\Light">
+      <UniqueIdentifier>{b32437e6-6dae-4f1a-82a1-4bcf4c02508e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,13 +72,7 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\GameComponent\BaseComponent</Filter>
     </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files\GameComponent\BaseComponent</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectPool.cpp">
-      <Filter>Source Files\GameComponent\BaseComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
       <Filter>Source Files\GameComponent\BaseComponent</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -90,26 +84,23 @@
     <ClCompile Include="MonkeyHead.cpp">
       <Filter>Source Files\GameComponent\ModifiedComponent</Filter>
     </ClCompile>
-    <ClCompile Include="MeshMaterial.cpp">
-      <Filter>Source Files\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureMaterial.cpp">
-      <Filter>Source Files\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureLoader.cpp">
-      <Filter>Source Files\Material\FileParser</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderLoader.cpp">
-      <Filter>Source Files\Material\FileParser</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjLoader.cpp">
-      <Filter>Source Files\Material\FileParser</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderMaterial.cpp">
-      <Filter>Source Files\Material</Filter>
-    </ClCompile>
     <ClCompile Include="MaterialLoader.cpp">
       <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshModel.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,12 +125,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\GameComponent\BaseComponents</Filter>
     </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Header Files\GameComponent\BaseComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files\GameComponent\BaseComponents</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files\GameComponent\BaseComponents</Filter>
     </ClInclude>
@@ -149,36 +134,36 @@
     <ClInclude Include="MonkeyHead.h">
       <Filter>Header Files\GameComponent\ModifiedCompents</Filter>
     </ClInclude>
-    <ClInclude Include="MeshMaterial.h">
-      <Filter>Header Files\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureMaterial.h">
-      <Filter>Header Files\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderLoader.h">
-      <Filter>Header Files\Material\FileParser</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureLoader.h">
-      <Filter>Header Files\Material\FileParser</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjLoader.h">
-      <Filter>Header Files\Material\FileParser</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderMaterial.h">
-      <Filter>Header Files\Material</Filter>
-    </ClInclude>
     <ClInclude Include="MaterialLoader.h">
       <Filter>Header Files\Material</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshModel.h">
+      <Filter>Header Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Files\GameComponent\BaseComponents\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\GameComponent\BaseComponents\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="IUpdatable.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TextureFragmentShader.fragmentshader">
+    <None Include="Materials\SimpleShader.shader">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="TransformVertexShader.vertexshader">
+    <None Include="Materials\shaderFragment.fragment">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="SimpleShader.shader">
+    <None Include="Materials\shaderVertex.shader">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

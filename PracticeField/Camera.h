@@ -37,12 +37,13 @@ private:
 	float moveSpeed;
 	float sensitivity;
 
+	void ComputeMatrix();
+
 public:
 	Camera();
 	~Camera();
-	void ComputeMatrix();	
 	glm::mat4 VPmatrix();
 	glm::mat4 Vmatrix();
-	void Update(GameWindow* gWindow);
+	void Update();
 };
 

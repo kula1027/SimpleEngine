@@ -1,5 +1,8 @@
 #include "SimpleEngine.h"
 
+#include <assimp\postprocess.h>
+#include <assimp\cimport.h>
+#include <assimp\scene.h>
 
 void SimpleEngine::Initialize(int width, int height, const char* name){
 	if (!glfwInit()){
@@ -9,7 +12,7 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 		return;
 	}
 
-	gWindow = new GameWindow(width, height, "Practice Field");
+	GameWindow::Init(width, height, "Practice Field");
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
@@ -19,26 +22,26 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 		return;
 	}
 
-	InputModule::Intiate(gWindow);		
+	InputModule::Init();		
 }
 
 void SimpleEngine::Begin() {
-	currentScene = new Scene(gWindow);
+	currentScene = new Scene();
 	currentScene->Load();
-	
+
 	do {
 		Time::Tick();
 
-		InputModule::CheckInput();
-
+		InputModule::CheckInput();		
+		
 		currentScene->UpdateObjects();
 		
 		currentScene->RenderObjects();
 		
-		glfwSwapBuffers(gWindow->GetWindow());
+		glfwSwapBuffers(GameWindow::GetWindow());
 
 		glfwPollEvents();		
-	} while (gWindow->ShouldClose());
+	} while (GameWindow::ShouldClose());
 }
 
 void SimpleEngine::UpdateObjects(){	

@@ -68,7 +68,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)\includes;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\libraries;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -85,6 +88,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>TT.lib;SOIL.lib;assimp.lib;glew32.lib;opengl32.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -116,21 +122,18 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="InputModule.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="MaterialLoader.cpp" />
-    <ClCompile Include="MeshMaterial.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshModel.cpp" />
     <ClCompile Include="MonkeyHead.cpp" />
     <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ObjectPool.cpp" />
-    <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="ShaderMaterial.cpp" />
-    <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleEngine.cpp" />
-    <ClCompile Include="TextureLoader.cpp" />
-    <ClCompile Include="TextureMaterial.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
@@ -138,27 +141,25 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="InputModule.h" />
+    <ClInclude Include="IUpdatable.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="MaterialLoader.h" />
-    <ClInclude Include="MeshMaterial.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshModel.h" />
     <ClInclude Include="MonkeyHead.h" />
     <ClInclude Include="PointLight.h" />
-    <ClInclude Include="Renderer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ObjectPool.h" />
-    <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="ShaderMaterial.h" />
-    <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleEngine.h" />
-    <ClInclude Include="TextureLoader.h" />
-    <ClInclude Include="TextureMaterial.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SimpleShader.shader" />
-    <None Include="TextureFragmentShader.fragmentshader" />
-    <None Include="TransformVertexShader.vertexshader" />
+    <None Include="Materials\shaderFragment.fragment" />
+    <None Include="Materials\shaderVertex.shader" />
+    <None Include="Materials\SimpleShader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

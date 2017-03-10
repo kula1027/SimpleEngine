@@ -2,17 +2,17 @@
 #include "ObjectPool.h"
 #include "Camera.h"
 
+#include "PointLight.h"
+
 class Scene
 {
 private:
-	GameWindow* currentWindow;
-
-	ObjectPool* objectPool;
-	Camera* camera;
+	ObjectPool objectPool;
+	Camera camera;
 
 
 public:
-	Scene(GameWindow* gWindow_);
+	Scene();
 	~Scene();
 
 	void Load();
