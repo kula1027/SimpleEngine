@@ -1,0 +1,25 @@
+# Blender MTL File: 'Water_Tank_BI.blend'
+# Material Count: 2
+
+newmtl Material.001
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.107824 0.107824 0.107824
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures\water_tank_AO_GOUND.png
+
+newmtl water_tank
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd textures\water_tank_col.png
+map_Bump textures\\water_tank_nor.png
+map_Ks textures\\water_tank_col.png
+refl textures\\Reflexion.jpg

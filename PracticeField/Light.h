@@ -5,6 +5,7 @@
 
 #include "IUpdatable.h"
 #include "Shader.h"
+#include "Time.h"
 
 class Light: public IUpdatable {
 public:

@@ -26,6 +26,9 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 }
 
 void SimpleEngine::Begin() {
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_ALWAYS);
+
 	currentScene = new Scene();
 	currentScene->Load();
 

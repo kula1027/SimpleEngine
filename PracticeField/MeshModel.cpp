@@ -99,7 +99,7 @@ Mesh MeshModel::processMesh(aiMesh * mesh, const aiScene * scene){
 		// Same applies to other texture as the following list summarizes:
 		// Diffuse: texture_diffuseN
 		// Specular: texture_specularN
-		// Normal: texture_normalN
+		// Normal: texture_normalN		
 
 		// 1. Diffuse maps
 		vector<Texture> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
@@ -137,8 +137,7 @@ vector<Texture> MeshModel::loadMaterialTextures(aiMaterial * mat, aiTextureType 
 			Texture texture;
 			texture.id = TextureFromFile(str.C_Str(), this->directory);
 			texture.type = typeName;
-			texture.path = str.C_Str();
-			cout << "Load Texture... " + texture.path << endl;
+			texture.path = str.C_Str();			
 			textures.push_back(texture);
 			this->textures_loaded.push_back(texture);  // Store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
 		}
@@ -149,6 +148,7 @@ vector<Texture> MeshModel::loadMaterialTextures(aiMaterial * mat, aiTextureType 
 
 GLint MeshModel::TextureFromFile(const char* path, string directory)
 {
+	cout << "Load Texture... " + string(path) << endl;
 	//Generate texture ID and load texture data 
 	string filename = string(path);
 	filename = directory + '/' + filename;

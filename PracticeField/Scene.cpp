@@ -11,10 +11,8 @@ Scene::~Scene(){
 
 void Scene::Load() {
 	GameObject* go = new GameObject();
-	go->SetModel(MaterialLoader::LoadMeshModel("Nanosuit/nanosuit.obj"));
+	go->SetModel(MaterialLoader::LoadMeshModel("Metal_Water_Tank/Water_Tank_BI.obj"));
 	go->SetShader(MaterialLoader::LoadShader("shaderVertex.shader", "shaderFragment.fragment"));
-	go->transform.position.y -= 8;
-	go->transform.position.z -= 6;
 	objectPool.AddGameObject(go);
 
 	Light* pointLight = new PointLight();
