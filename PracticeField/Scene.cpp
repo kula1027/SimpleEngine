@@ -11,7 +11,7 @@ Scene::~Scene(){
 
 void Scene::Load() {
 	GameObject* go = new GameObject();
-	go->SetModel(MaterialLoader::LoadMeshModel("Metal_Water_Tank/Water_Tank_BI.obj"));
+	go->SetModel(MaterialLoader::LoadMeshModel("nanosuit/nanosuit.blend"));
 	go->SetShader(MaterialLoader::LoadShader("shaderVertex.shader", "shaderFragment.fragment"));
 	objectPool.AddGameObject(go);
 
