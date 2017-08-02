@@ -8,16 +8,20 @@ MeshModel::MeshModel(GLchar * path){
 MeshModel::~MeshModel(){
 }
 
-void MeshModel::Draw(Shader* shader){
-	for (GLuint i = 0; i < this->meshes.size(); i++)
-		this->meshes[i].Draw(shader);
+vector<Mesh> MeshModel::GetMeshes(){
+	return meshes;
+}
+
+string MeshModel::GetDirectory(){
+	return directory;
 }
 
 void MeshModel::loadModel(string path){
-	std::cout << "Load Model... " + path << std::endl;
 	// Read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
+	std::cout << "Load Model... " + path + " Mesh Count: " << scene->mNumMaterials << std::endl;
+
 	// Check for errors
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
@@ -48,7 +52,8 @@ void MeshModel::processNode(aiNode * node, const aiScene * scene){
 Mesh MeshModel::processMesh(aiMesh * mesh, const aiScene * scene){
 	// Data to fill
 	vector<Vertex> vertices;
-	vector<GLuint> indices;
+	//vector<GLuint> indices;
+	vector<Triangle> triangles;
 	vector<Texture> textures;
 
 	// Walk through each of the mesh's vertices
@@ -85,10 +90,17 @@ Mesh MeshModel::processMesh(aiMesh * mesh, const aiScene * scene){
 	{
 		aiFace face = mesh->mFaces[i];
 		// Retrieve all indices of the face and store them in the indices vector
-		for (GLuint j = 0; j < face.mNumIndices; j++)
-			indices.push_back(face.mIndices[j]);
+		for (GLuint j = 0; j < face.mNumIndices; j++){
+			//indices.push_back(face.mIndices[j]);			
+		}
+		for (GLuint j = 0; j < face.mNumIndices / 3; j++) {
+			Triangle tri;
+			tri.idx0 = face.mIndices[j * 3];
+			tri.idx1 = face.mIndices[j * 3 + 1];
+			tri.idx2 = face.mIndices[j * 3 + 2];
+			triangles.push_back(tri);
+		}
 	}	
-	
 	
 	// Process materials
 	if (mesh->mMaterialIndex >= 0)
@@ -110,7 +122,7 @@ Mesh MeshModel::processMesh(aiMesh * mesh, const aiScene * scene){
 	}
 
 	// Return a mesh object created from the extracted mesh data
-	return Mesh(vertices, indices, textures);
+	return Mesh(vertices, triangles, textures);
 }
 
 vector<Texture> MeshModel::loadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName){
@@ -154,6 +166,7 @@ GLint MeshModel::TextureFromFile(const char* path, string directory)
 	filename = directory + '/' + filename;
 	GLuint textureID;
 	glGenTextures(1, &textureID);
+
 	int width, height;
 	
 	unsigned char* image = SOIL_load_image(filename.c_str(), &width, &height, 0, SOIL_LOAD_RGB);	

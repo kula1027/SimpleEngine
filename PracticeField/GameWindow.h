@@ -14,6 +14,7 @@ public:
 	static int GetWidth();
 	static int GetHeight();
 	static GLFWwindow* GetWindow();
+	static bool IsFocused();
 	static bool ShouldClose();
 };
 

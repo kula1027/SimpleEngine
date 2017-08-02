@@ -6,7 +6,7 @@ Camera::Camera(){
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
 
-	transform.position = glm::vec3(0, 0, 10);
+	transform.position = glm::vec3(0, 0, 40);
 	projMode = PROJECTION_PERSPECTIVE;
 	fov = 45.0f;
 

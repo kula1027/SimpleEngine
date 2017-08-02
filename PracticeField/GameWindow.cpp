@@ -30,6 +30,10 @@ GLFWwindow * GameWindow::GetWindow(){
 	return window;
 }
 
+bool GameWindow::IsFocused() {
+	return true;
+}
+
 bool GameWindow::ShouldClose(){
 	return !glfwWindowShouldClose(window);
 }

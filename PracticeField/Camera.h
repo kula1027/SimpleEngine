@@ -19,8 +19,6 @@ private:
 	float near;
 	float far;
 
-	Transform transform;
-
 	float verticalAngle;
 	float horizontalAngle;
 	glm::vec3 dirForward;
@@ -45,5 +43,8 @@ public:
 	glm::mat4 VPmatrix();
 	glm::mat4 Vmatrix();
 	void Update();
+
+	Transform transform;
+
 };
 

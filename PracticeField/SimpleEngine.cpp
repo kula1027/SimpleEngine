@@ -28,12 +28,15 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 void SimpleEngine::Begin() {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_ALWAYS);
+	
+	SetVsyncMode(false);
 
 	currentScene = new Scene();
 	currentScene->Load();
 
 	do {
 		Time::Tick();
+		Time::PrintRenderTime(3);
 
 		InputModule::CheckInput();		
 		
@@ -44,7 +47,17 @@ void SimpleEngine::Begin() {
 		glfwSwapBuffers(GameWindow::GetWindow());
 
 		glfwPollEvents();		
-	} while (GameWindow::ShouldClose());
+	} while (GameWindow::ShouldClose() && !InputModule::IsPressed(GLFW_KEY_ESCAPE));
+}
+
+void SimpleEngine::SetVsyncMode(bool isOn){
+	if (isOn) {
+		cout << "Vsync On" << endl;
+		glfwSwapInterval(1);
+	}else{
+		cout << "Vsync Off" << endl;
+		glfwSwapInterval(0);
+	}
 }
 
 void SimpleEngine::UpdateObjects(){	

@@ -40,10 +40,14 @@ public:
 	/*  Functions   */
 	MeshModel(GLchar* path);
 	~MeshModel();
-	void Draw(Shader* shader);
+	vector<Mesh> GetMeshes();
+	vector<Mesh> meshes;
+
+	string GetDirectory();
+
 private:
 	/*  Model Data  */
-	vector<Mesh> meshes;
+	
 	string directory;
 	vector<Texture> textures_loaded;	
 	// Stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.

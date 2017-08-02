@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include "Light.h"
 
 class PointLight : public Light

@@ -17,6 +17,6 @@ public:
 	~SimpleEngine();
 	void Initialize(int width, int height, const char* name);
 	void Begin();	
-	
+	void SetVsyncMode(bool flag);
 };
 

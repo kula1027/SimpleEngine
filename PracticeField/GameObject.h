@@ -1,35 +1,28 @@
 #pragma once
 
-#include <vector>
-#include <glm\glm.hpp>
+#define strNoname "noname"
+
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "MaterialLoader.h"
+#include "FileLoader.h"
 #include "IUpdatable.h"
 #include "Light.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "Renderer.h"
+//Scene.h include하면 에러남, 저급한 C++...
 
 class GameObject : public IUpdatable{
 private:
-	GLuint mvpMatrixID;
-	GLuint viewMatrixID;
-	GLuint modelMatrixID;
-	GLuint lightPosID;
-	GLuint lightColorID;
-	GLuint lightPowerID;
-
-	Shader* shader;
 	MeshModel* meshModel;
-
-	glm::mat4 modelMatrix;
-	glm::mat4 mvpMatrix;
-	void ComputeModelMatrix(Camera* cam);
+	Renderer* renderer;
 
 public:
-	GameObject();
-	void Render(Camera* cam, std::vector<Light*> lights_);
+	string* name;
 	Transform transform;
+
+	GameObject();
+	void Render(Camera* cam, std::vector<Light*> lights_);	
 
 	void SetModel(MeshModel* meshModel_);
 	void SetShader(Shader* shader_);

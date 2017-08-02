@@ -20,6 +20,14 @@ struct Vertex {
 	glm::vec3 Normal;
 	// TexCoords
 	glm::vec2 TexCoords;
+
+	float dotValue;
+};
+
+struct Triangle {
+	GLuint idx0;
+	GLuint idx1;
+	GLuint idx2;
 };
 
 struct Texture {
@@ -32,16 +40,18 @@ class Mesh {
 public:
 	/*  Mesh Data  */
 	vector<Vertex> vertices;
-	vector<GLuint> indices;
+	vector<Triangle> triangles;
 	vector<Texture> textures;
 	/*  Functions  */
-	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures);
-	void Draw(Shader* shader);
+	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture> textures);
+	GLuint VAO;
+
 private:
 	/*  Render data  */
-	GLuint VAO, VBO, EBO;
+	GLuint VBO, EBO;
 	/*  Functions    */
-	void setupMesh();
+	void RearrangeFace();
+	void SetupMesh();
 };
 
 

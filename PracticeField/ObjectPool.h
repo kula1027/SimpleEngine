@@ -1,6 +1,5 @@
 #pragma once
 
-#include "IUpdatable.h"
 #include "GameObject.h"
 #include "Light.h"
 

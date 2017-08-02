@@ -81,12 +81,6 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\GameComponent\BaseComponent</Filter>
     </ClCompile>
-    <ClCompile Include="MonkeyHead.cpp">
-      <Filter>Source Files\GameComponent\ModifiedComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="MaterialLoader.cpp">
-      <Filter>Source Files\Material</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Material</Filter>
     </ClCompile>
@@ -101,6 +95,12 @@
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Source Files\GameComponent\BaseComponent\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="FileLoader.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,12 +131,6 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files\GameComponent\BaseComponents</Filter>
     </ClInclude>
-    <ClInclude Include="MonkeyHead.h">
-      <Filter>Header Files\GameComponent\ModifiedCompents</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialLoader.h">
-      <Filter>Header Files\Material</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Header Files\Material</Filter>
     </ClInclude>
@@ -154,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="IUpdatable.h">
       <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="FileLoader.h">
+      <Filter>Header Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

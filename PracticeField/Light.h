@@ -3,6 +3,8 @@
 #include <glm\glm.hpp>
 #include <gl\glew.h>
 
+#include <iostream>
+
 #include "IUpdatable.h"
 #include "Shader.h"
 #include "Time.h"
