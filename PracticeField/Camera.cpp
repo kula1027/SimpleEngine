@@ -6,7 +6,7 @@ Camera::Camera(){
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
 
-	transform.position = glm::vec3(0, 0, 40);
+	transform.position = glm::vec3(0, 50, 40);
 	projMode = PROJECTION_PERSPECTIVE;
 	fov = 45.0f;
 
@@ -16,7 +16,7 @@ Camera::Camera(){
 	verticalAngle = 0;
 	horizontalAngle = 3.14f;
 
-	moveSpeed = 10.0f;
+	moveSpeed = 20.0f;
 	sensitivity = 0.001f;
 
 	projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
@@ -62,20 +62,24 @@ void Camera::Update(){
 	glClearColor(0.2f, 0.2f, 0.2f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	horizontalAngle += sensitivity * float(GameWindow::GetWidth() / 2 - InputModule::GetMousePos()[0]);
-	verticalAngle += sensitivity * float(GameWindow::GetHeight() / 2 - InputModule::GetMousePos()[1]);
+	if (GameWindow::IsFocused()) {
+		horizontalAngle += sensitivity * float(GameWindow::GetWidth() / 2 - InputModule::GetMousePos()[0]);
+		verticalAngle += sensitivity * float(GameWindow::GetHeight() / 2 - InputModule::GetMousePos()[1]);
 
-	if (InputModule::IsPressed(GLFW_KEY_W)) {
-		transform.position += dirForward * Time::deltaTime * moveSpeed;
+		if (InputModule::IsPressed(GLFW_KEY_W)) {
+			transform.position += dirForward * Time::deltaTime * moveSpeed;
+		}
+		if (InputModule::IsPressed(GLFW_KEY_S)) {
+			transform.position -= dirForward * Time::deltaTime * moveSpeed;
+		}
+		if (InputModule::IsPressed(GLFW_KEY_D)) {
+			transform.position += right * Time::deltaTime * moveSpeed;
+		}
+		if (InputModule::IsPressed(GLFW_KEY_A)) {
+			transform.position -= right * Time::deltaTime * moveSpeed;
+		}
 	}
-	if (InputModule::IsPressed(GLFW_KEY_S)) {
-		transform.position -= dirForward * Time::deltaTime * moveSpeed;
-	}
-	if (InputModule::IsPressed(GLFW_KEY_D)) {
-		transform.position += right * Time::deltaTime * moveSpeed;
-	}
-	if (InputModule::IsPressed(GLFW_KEY_A)) {
-		transform.position -= right * Time::deltaTime * moveSpeed;
+	else {
 	}
 
 	ComputeMatrix();

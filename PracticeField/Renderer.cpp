@@ -16,9 +16,10 @@ void Renderer::SetShader(Shader* shader_){
 	mvpMatrixID = glGetUniformLocation(shader->GetID(), "MVP");
 	viewMatrixID = glGetUniformLocation(shader->GetID(), "V");
 	modelMatrixID = glGetUniformLocation(shader->GetID(), "M");
-	lightPosID = glGetUniformLocation(shader->GetID(), "LightPosition_worldspace");
-	lightColorID = glGetUniformLocation(shader->GetID(), "LightColor");
-	lightPowerID = glGetUniformLocation(shader->GetID(), "LightPower");
+	lightPosID = glGetUniformLocation(shader->GetID(), "pointLight0.position_worldspace");
+	lightColorID = glGetUniformLocation(shader->GetID(), "pointLight0.color");
+	lightPowerID = glGetUniformLocation(shader->GetID(), "pointLight0.power");
+	difTexCountID = glGetUniformLocation(shader->GetID(), "difTexCount");
 }
 
 void Renderer::Render(Camera * cam, std::vector<Light*> lights_, MeshModel* meshModel){
@@ -38,46 +39,59 @@ void Renderer::Render(Camera * cam, std::vector<Light*> lights_, MeshModel* mesh
 	for (GLuint loop = 0; loop < meshModel->meshes.size(); loop++) {
 		Mesh* processingMesh = &meshModel->meshes[loop];
 
-		GLuint diffuseNr = 1;
-		GLuint specularNr = 1;
-		for (GLuint i = 0; i < processingMesh->textures.size(); i++)
-		{
-			glActiveTexture(GL_TEXTURE0 + i); // Activate proper texture unit before binding
-											  // Retrieve texture number (the N in diffuse_textureN)
-			stringstream ss;
-			string number;
-			string name = processingMesh->textures[i].type;
-			if (name == "texture_diffuse")
-				ss << diffuseNr++; // Transfer GLuint to stream
-			else if (name == "texture_specular")
-				ss << specularNr++; // Transfer GLuint to stream		
+		GLuint diffuseNr = 0;
+		GLuint specularNr = 0;
 
-									//cout << name << endl;
-
-			number = ss.str();
-
-			glBindTexture(GL_TEXTURE_2D, processingMesh->textures[i].id);
-			glUniform1f(glGetUniformLocation(shader->GetID(), (name + number).c_str()), i);
+		if (processingMesh->textures.size() <= 0) {
+			glUniform1i(difTexCountID, 0);
 		}
-		glActiveTexture(GL_TEXTURE0);
+		else {
+			glUniform1i(difTexCountID, 1);
+
+			for (GLuint i = 0; i < processingMesh->textures.size(); i++)
+			{
+				glActiveTexture(GL_TEXTURE0 + i); // Activate proper texture unit before binding
+												  // Retrieve texture number (the N in diffuse_textureN)
+				stringstream ss;
+				string number;
+				string name = processingMesh->textures[i].type;
+				if (name == "texture_diffuse")
+					ss << diffuseNr++; // Transfer GLuint to stream
+				else if (name == "texture_specular")
+					ss << specularNr++; // Transfer GLuint to stream		
+
+										//cout << name << endl;
+
+				number = ss.str();
+
+				glBindTexture(GL_TEXTURE_2D, processingMesh->textures[i].id);
+				glUniform1i(glGetUniformLocation(shader->GetID(), (name + number).c_str()), i);
+
+				//std::cout << (name + number).c_str() << " / " << glGetUniformLocation(shader->GetID(), (name + number).c_str()) << endl;
+			}
+		}
+		glActiveTexture(GL_TEXTURE0);		
 
 		// Draw mesh
 		glBindVertexArray(processingMesh->VAO);
 		int s = processingMesh->triangles.size() * 3;
 
-		//glm::dot(glm::vec3(1, 2, 3), glm::vec3(1, 2, 3));
+		/*glm::dot(glm::vec3(1, 2, 3), glm::vec3(1, 2, 3));
 		glm::vec3 dirCam = glm::normalize(cam->transform.position - transform->position);
 		
 		float dot = glm::dot(dirCam, glm::vec3(0, 0, -1));
 		
-		//glDrawElements(GL_TRIANGLES, s / 2, GL_UNSIGNED_INT, (GLvoid*)(s / 2 * sizeof(GLuint)));
+		glDrawElements(GL_TRIANGLES, s / 2, GL_UNSIGNED_INT, (GLvoid*)(s / 2 * sizeof(GLuint)));*/
 		glDrawElements(GL_TRIANGLES, s, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Renderer::ComputeModelMatrix(Camera * cam){
+void Renderer::ComputeModelMatrix(Camera * cam){	
 	modelMatrix = glm::translate(glm::mat4(1.0), transform->position);
+	modelMatrix = glm::scale(modelMatrix, transform->scale);
 	mvpMatrix = cam->VPmatrix() * modelMatrix;
 }
 

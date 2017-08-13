@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "GameObject.h"
 #include "PointLight.h"
+#include "DirectionalLight.h"
 
 class Scene
 {

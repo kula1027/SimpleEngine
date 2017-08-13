@@ -3,6 +3,7 @@
 GLFWwindow* GameWindow::window;
 int GameWindow::width;
 int GameWindow::height;
+bool GameWindow::isFocused;
 
 void GameWindow::Init(int w_, int h_, const char* name_){
 	glfwWindowHint(GLFW_SAMPLES, 4);
@@ -16,6 +17,19 @@ void GameWindow::Init(int w_, int h_, const char* name_){
 	window = glfwCreateWindow(width, height, name_, NULL, NULL);
 
 	glfwMakeContextCurrent(window);
+
+	glfwSetWindowFocusCallback(window, GameWindow::FocusCallBack);
+	glfwFocusWindow(window);
+	isFocused = true;
+}
+
+void GameWindow::FocusCallBack(GLFWwindow* window_, int focused) {
+	if (focused) {		
+		isFocused = true;
+	}
+	else {
+		isFocused = false;
+	}
 }
 
 int GameWindow::GetWidth(){
@@ -31,7 +45,7 @@ GLFWwindow * GameWindow::GetWindow(){
 }
 
 bool GameWindow::IsFocused() {
-	return true;
+	return isFocused;
 }
 
 bool GameWindow::ShouldClose(){

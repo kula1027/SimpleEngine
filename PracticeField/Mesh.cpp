@@ -5,7 +5,7 @@ Mesh::Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture> 
 	this->triangles = triangles;
 	this->textures = textures;
 
-	RearrangeFace();
+	//RearrangeFace();
 	this->SetupMesh();
 }
 

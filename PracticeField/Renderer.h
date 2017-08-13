@@ -18,6 +18,7 @@ private:
 	GLuint lightPosID;
 	GLuint lightColorID;
 	GLuint lightPowerID;
+	GLuint difTexCountID;
 
 	glm::mat4 modelMatrix;
 	glm::mat4 mvpMatrix;

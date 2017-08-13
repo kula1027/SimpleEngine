@@ -1,35 +1,42 @@
 #version 330 core
 
-// Interpolated values from the vertex shaders
 in vec2 UV;
 in vec3 Position_worldspace;
 in vec3 Normal_cameraspace;
 in vec3 EyeDirection_cameraspace;
 in vec3 LightDirection_cameraspace;
 
-// Ouput data
 out vec3 color;
 
-// Values that stay constant for the whole mesh.
+struct LightSource{
+	vec3 position_worldspace;//direction if directional light
+	vec3 color;
+	float power;
+};
+struct MaterialColor{
+	vec3 diffuseColor;
+	vec3 ambientColor;
+	vec3 specularColor;
+};
+
+
+uniform int difTexCount;
+uniform sampler2D texture_diffuse0;
 uniform sampler2D texture_diffuse1;
+uniform sampler2D texture_specular0;
 uniform sampler2D texture_specular1;
 uniform mat4 MV;
 
-uniform vec3 LightPosition_worldspace;
-uniform vec3 LightColor;
-uniform float LightPower;
+uniform LightSource pointLight0;
 
 void main(){
-	// Light emission properties
-	// You probably want to put them as uniforms
-
-	// Material properties
-	vec3 MaterialDiffuseColor = texture( texture_diffuse1, UV ).rgb;
-	vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
-	vec3 MaterialSpecularColor = texture( texture_specular1, UV ).rgb;
-
+	MaterialColor matColor;
+	matColor.diffuseColor = texture( texture_diffuse0, UV ).rgb;
+	matColor.ambientColor = vec3(0.1,0.1,0.1) * matColor.diffuseColor;
+	matColor.specularColor = texture( texture_specular0, UV ).rgb;
+	
 	// Distance to the light
-	float distance = length( LightPosition_worldspace - Position_worldspace );
+	float distance = length( pointLight0.position_worldspace - Position_worldspace );
 
 	// Normal of the computed fragment, in camera space
 	vec3 n = normalize( Normal_cameraspace );
@@ -50,20 +57,23 @@ void main(){
 	// clamped to 0
 	//  - Looking into the reflection -> 1
 	//  - Looking elsewhere -> < 1
-	float cosAlpha = clamp( dot( E,R ), 0,1 );
+	float cosAlpha = clamp(dot( E,R ), 0, 1);
 	
-	color =
-		// Diffuse : "color" of the object
-		LightColor * LightPower * cosTheta / (distance) +
-		// Specular : reflective highlight, like a mirror
-		LightColor * LightPower * pow(cosAlpha,5) / (distance);
-/*
-	color =
-		// Ambient : simulates indirect lighting
-		MaterialAmbientColor +
-		// Diffuse : "color" of the object
-		MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) +
-		// Specular : reflective highlight, like a mirror
-		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
-	*/	
+
+	if(difTexCount == 0){
+		color = 
+			vec3(0.1,0.1,0.1) + 
+			// Diffuse : "color" of the object
+			pointLight0.color * pointLight0.power * cosTheta / (distance*distance) +
+			// Specular : reflective highlight, like a mirror
+			pointLight0.color * pointLight0.power * pow(cosAlpha,5) / (distance*distance);
+	}else{
+		color =
+			// Ambient : simulates indirect lighting
+			matColor.ambientColor +
+			// Diffuse : "color" of the object
+			matColor.diffuseColor * pointLight0.color * pointLight0.power * cosTheta / (distance*distance) +
+			// Specular : reflective highlight, like a mirror
+			matColor.specularColor * pointLight0.color * pointLight0.power * pow(cosAlpha,5) / (distance*distance);
+	}
 }

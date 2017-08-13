@@ -16,7 +16,13 @@ out vec3 LightDirection_cameraspace;
 uniform mat4 MVP;
 uniform mat4 V;
 uniform mat4 M;
-uniform vec3 LightPosition_worldspace;
+
+struct LightSource {
+	vec3 position_worldspace;//direction if directional light
+	vec3 color;
+	float power;
+};
+uniform LightSource pointLight0;
 
 void main() {
 
@@ -32,7 +38,7 @@ void main() {
 	EyeDirection_cameraspace = vec3(0, 0, 0) - vertexPosition_cameraspace;
 
 	// Vector that goes from the vertex to the light, in camera space. M is ommited because it's identity.
-	vec3 LightPosition_cameraspace = (V * vec4(LightPosition_worldspace, 1)).xyz;
+	vec3 LightPosition_cameraspace = (V * vec4(pointLight0.position_worldspace, 1)).xyz;
 	LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspace;
 
 	// Normal of the the vertex, in camera space

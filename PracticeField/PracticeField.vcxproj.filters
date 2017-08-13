@@ -102,6 +102,9 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectPool.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Header Files\GameComponent\BaseComponents\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

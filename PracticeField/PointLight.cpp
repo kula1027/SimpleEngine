@@ -3,10 +3,10 @@
 
 
 PointLight::PointLight(){
-	intensity = 150.0f;
-	color = glm::vec3(1, 1, 1);
-	range = 30;
-	position = glm::vec3(10, 10, 10);
+	intensity = 600.0f;
+	color = glm::vec3(0.1f, 1, 1);
+	range = 350;
+	position = glm::vec3(0, 50, 0);
 }
 
 
