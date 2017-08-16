@@ -10,6 +10,10 @@ Shader* FileLoader::LoadShader(string filePathVertex, string filePathFragment){
 	return shader;
 }
 
+Shader * FileLoader::LoadShader(){
+	return LoadShader("defaultVertex.vsh", "defaultFragment.fsh");
+}
+
 MeshModel* FileLoader::LoadMeshModel(string filePath){
 	string path = dirPathMaterial + filePath;
 	return new MeshModel((GLchar*)path.c_str());

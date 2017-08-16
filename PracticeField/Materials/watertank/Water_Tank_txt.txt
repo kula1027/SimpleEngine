@@ -1,0 +1,11 @@
+Title: Water Tank
+
+Text:
+Here is a water tank which can be placed on the roof of an building Textures 2048 x 2048
+
+Textures
+Materials
+UVW mapping
+
+Polygons: 12352
+Vertices: 24704

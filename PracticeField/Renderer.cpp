@@ -39,8 +39,8 @@ void Renderer::Render(Camera * cam, std::vector<Light*> lights_, MeshModel* mesh
 	for (GLuint loop = 0; loop < meshModel->meshes.size(); loop++) {
 		Mesh* processingMesh = &meshModel->meshes[loop];
 
-		GLuint diffuseNr = 0;
-		GLuint specularNr = 0;
+		GLuint diffuseNr = 1;
+		GLuint specularNr = 1;
 
 		if (processingMesh->textures.size() <= 0) {
 			glUniform1i(difTexCountID, 0);

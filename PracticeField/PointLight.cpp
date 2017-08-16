@@ -4,7 +4,7 @@
 
 PointLight::PointLight(){
 	intensity = 600.0f;
-	color = glm::vec3(0.1f, 1, 1);
+	color = glm::vec3(1, 1, 1);
 	range = 350;
 	position = glm::vec3(0, 50, 0);
 }

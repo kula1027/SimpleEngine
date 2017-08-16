@@ -103,7 +103,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DirectionalLight.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GameComponent\BaseComponent\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

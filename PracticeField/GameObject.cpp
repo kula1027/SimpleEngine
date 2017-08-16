@@ -9,7 +9,7 @@ void GameObject::Render(Camera* cam, std::vector<Light*> lights_){
 	renderer->Render(cam, lights_, meshModel);
 }
 
-void GameObject::Update(){			
+void GameObject::Update(){
 	//transform.position.x += Time::deltaTime;
 }
 

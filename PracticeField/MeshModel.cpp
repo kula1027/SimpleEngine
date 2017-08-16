@@ -2,7 +2,7 @@
 
 
 MeshModel::MeshModel(GLchar * path){
-	this->loadModel(path);
+	this->LoadModel(path);
 }
 
 MeshModel::~MeshModel(){
@@ -16,12 +16,11 @@ string MeshModel::GetDirectory(){
 	return directory;
 }
 
-void MeshModel::loadModel(string path){
+void MeshModel::LoadModel(string path){
 	// Read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
-	std::cout << "Load Model... " + path + " Mesh Count: " << scene->mNumMaterials << std::endl;
-
+	
 	// Check for errors
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
@@ -32,24 +31,29 @@ void MeshModel::loadModel(string path){
 	this->directory = path.substr(0, path.find_last_of('/'));
 
 	// Process ASSIMP's root node recursively
-	this->processNode(scene->mRootNode, scene);
+	this->ProcessNode(scene->mRootNode, scene);
+
+	std::cout << "Load Model... " + path << std::endl 
+			  << "Mesh Count: " << scene->mNumMeshes  << std::endl
+			  << "Material Count: " << scene->mNumMaterials << std::endl;
+
 
 	cout << endl;
 }
 
-void MeshModel::processNode(aiNode * node, const aiScene * scene){
+void MeshModel::ProcessNode(aiNode * node, const aiScene * scene){
 	// Process all the node's meshes (if any)
 	for (GLuint i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		this->meshes.push_back(this->processMesh(mesh, scene));
+		this->meshes.push_back(this->ProcessMesh(mesh, scene));
 	}
 	// Then do the same for each of its children
 	for (GLuint i = 0; i < node->mNumChildren; i++){
-		this->processNode(node->mChildren[i], scene);
+		this->ProcessNode(node->mChildren[i], scene);
 	}
 }
 
-Mesh MeshModel::processMesh(aiMesh * mesh, const aiScene * scene){
+Mesh MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 	// Data to fill
 	vector<Vertex> vertices;
 	//vector<GLuint> indices;
@@ -90,9 +94,6 @@ Mesh MeshModel::processMesh(aiMesh * mesh, const aiScene * scene){
 	{
 		aiFace face = mesh->mFaces[i];
 		// Retrieve all indices of the face and store them in the indices vector
-		for (GLuint j = 0; j < face.mNumIndices; j++){
-			//indices.push_back(face.mIndices[j]);			
-		}
 		for (GLuint j = 0; j < face.mNumIndices / 3; j++) {
 			Triangle tri;
 			tri.idx0 = face.mIndices[j * 3];
@@ -114,18 +115,21 @@ Mesh MeshModel::processMesh(aiMesh * mesh, const aiScene * scene){
 		// Normal: texture_normalN		
 
 		// 1. Diffuse maps
-		vector<Texture> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		vector<Texture> diffuseMaps = this->LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 		// 2. Specular maps
-		vector<Texture> specularMaps = this->loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		vector<Texture> specularMaps = this->LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+		// 3. Normal maps
+		vector<Texture> normalMaps = this->LoadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
+		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 	}
 
 	// Return a mesh object created from the extracted mesh data
 	return Mesh(vertices, triangles, textures);
 }
 
-vector<Texture> MeshModel::loadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName){
+vector<Texture> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName){
 	vector<Texture> textures;
 	
 	for (GLuint i = 0; i < mat->GetTextureCount(type); i++)
