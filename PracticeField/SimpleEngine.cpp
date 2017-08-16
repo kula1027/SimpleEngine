@@ -1,5 +1,12 @@
 #include "SimpleEngine.h"
 
+#include <gl\glew.h>
+#include "ObjectPool.h"
+#include "GameWindow.h"
+#include "Scene.h"
+#include "InputModule.h"
+#include "Time.h"
+
 #include <assimp\postprocess.h>
 #include <assimp\cimport.h>
 #include <assimp\scene.h>
@@ -29,14 +36,14 @@ void SimpleEngine::Begin() {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_ALWAYS);
 	
-	SetVsyncMode(false);
+	//SetVsyncMode(false);
 
 	currentScene = new Scene();
 	currentScene->Load();
 
 	do {
 		Time::Tick();
-		Time::PrintRenderTime(3);
+		//Time::PrintRenderTime(3);
 
 		InputModule::CheckInput();		
 		
@@ -52,10 +59,10 @@ void SimpleEngine::Begin() {
 
 void SimpleEngine::SetVsyncMode(bool isOn){
 	if (isOn) {
-		cout << "Vsync On" << endl;
+		std::cout << "Vsync On" << std::endl;
 		glfwSwapInterval(1);
 	}else{
-		cout << "Vsync Off" << endl;
+		std::cout << "Vsync Off" << std::endl;
 		glfwSwapInterval(0);
 	}
 }

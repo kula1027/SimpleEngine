@@ -1,5 +1,8 @@
 #include "Time.h"
 
+#include <GLFW\glfw3.h>
+#include <iostream>
+
 
 double Time::prevTime = 0;
 float Time::deltaTime = 0;

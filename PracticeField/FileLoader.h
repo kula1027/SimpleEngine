@@ -2,16 +2,18 @@
 
 #define dirPathMaterial "Materials/"
 
-#include "Shader.h"
-#include "MeshModel.h"
+#include <string>
+
+class Shader;
+class MeshModel;
 
 static class FileLoader
 {
 private :
 		
 public:
-	static Shader* LoadShader(string filePathVertex, string filePathFragment);
+	static Shader* LoadShader(std::string filePathVertex, std::string filePathFragment);
 	static Shader* LoadShader();
-	static MeshModel* LoadMeshModel(string filePath);
+	static MeshModel* LoadMeshModel(std::string filePath);
 };
 

@@ -2,9 +2,12 @@
 
 #include "ObjectPool.h"
 #include "Camera.h"
-#include "GameObject.h"
-#include "PointLight.h"
-#include "DirectionalLight.h"
+
+#include <string>
+#include <vector>
+
+class MeshModel;
+class Shader;
 
 class Scene
 {
@@ -12,10 +15,10 @@ private:
 	ObjectPool objectPool;
 	Camera camera;
 
-	vector<MeshModel*> meshModelPool;
-	vector<Shader*> shaderPool;
+	std::vector<MeshModel*> meshModelPool;
+	std::vector<Shader*> shaderPool;
 
-	MeshModel* LoadMesh(string path);
+	MeshModel* LoadMesh(std::string path);
 	Shader* LoadShader();
 
 public:

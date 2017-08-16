@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include "Shader.h"
+
 Mesh::Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture> textures){
 	this->vertices = vertices;
 	this->triangles = triangles;

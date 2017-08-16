@@ -1,5 +1,7 @@
 #include "FileLoader.h"
 
+#include "Shader.h"
+#include "MeshModel.h"
 
 Shader* FileLoader::LoadShader(string filePathVertex, string filePathFragment){
 	string pathVertex = dirPathMaterial + filePathVertex;

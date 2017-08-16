@@ -1,8 +1,9 @@
 #include "InputModule.h"
 
+#include "GameWindow.h"
+#include <iostream>
 
 double InputModule::mousePos[] = { 0, 0 };
-
 
 void InputModule::Init() {
 	glfwSetInputMode(GameWindow::GetWindow(), GLFW_STICKY_KEYS, GL_TRUE);	

@@ -1,12 +1,18 @@
 #include "Camera.h"
 
+#include <gl\glew.h>
+#include "Transform.h"
+#include "InputModule.h"
+#include "GameWindow.h"
+#include "Time.h"
 
 Camera::Camera(){
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
 
-	transform.position = glm::vec3(0, 10, 50);
+	transform = new Transform();
+	transform->position = glm::vec3(0, 10, 50);
 	projMode = PROJECTION_PERSPECTIVE;
 	fov = 45.0f;
 
@@ -16,7 +22,7 @@ Camera::Camera(){
 	verticalAngle = 0;
 	horizontalAngle = 3.14f;
 
-	moveSpeed = 20.0f;
+	moveSpeed = 30.0f;
 	sensitivity = 0.001f;
 
 	projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
@@ -42,8 +48,8 @@ void Camera::ComputeMatrix(){
 	upVector = glm::cross(right, dirForward);
 
 	viewMatrix = glm::lookAt(
-		transform.position,           // Camera is here
-		transform.position + dirForward, // and looks here : at the same position, plus "direction"
+		transform->position,           // Camera is here
+		transform->position + dirForward, // and looks here : at the same position, plus "direction"
 		upVector                  // Head is up (set to 0,-1,0 to look upside-down)
 		);
 
@@ -67,16 +73,16 @@ void Camera::Update(){
 		verticalAngle += sensitivity * float(GameWindow::GetHeight() / 2 - InputModule::GetMousePos()[1]);
 
 		if (InputModule::IsPressed(GLFW_KEY_W)) {
-			transform.position += dirForward * Time::deltaTime * moveSpeed;
+			transform->position += dirForward * Time::deltaTime * moveSpeed;
 		}
 		if (InputModule::IsPressed(GLFW_KEY_S)) {
-			transform.position -= dirForward * Time::deltaTime * moveSpeed;
+			transform->position -= dirForward * Time::deltaTime * moveSpeed;
 		}
 		if (InputModule::IsPressed(GLFW_KEY_D)) {
-			transform.position += right * Time::deltaTime * moveSpeed;
+			transform->position += right * Time::deltaTime * moveSpeed;
 		}
 		if (InputModule::IsPressed(GLFW_KEY_A)) {
-			transform.position -= right * Time::deltaTime * moveSpeed;
+			transform->position -= right * Time::deltaTime * moveSpeed;
 		}
 	}
 	else {

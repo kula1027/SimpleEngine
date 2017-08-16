@@ -1,13 +1,8 @@
 #pragma once
-
-#include <GLFW\glfw3.h>
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 
-#include "Time.h"
-#include "InputModule.h"
-#include "GameWindow.h"
-#include "Transform.h"
+class Transform;
 
 #define PROJECTION_ORTHO 0;
 #define PROJECTION_PERSPECTIVE 1;
@@ -44,7 +39,7 @@ public:
 	glm::mat4 Vmatrix();
 	void Update();
 
-	Transform transform;
+	Transform* transform;
 
 };
 

@@ -123,7 +123,7 @@
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="InputModule.cpp" />
-    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="BaseLight.cpp" />
     <ClCompile Include="FileLoader.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshModel.cpp" />
@@ -144,8 +144,9 @@
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="InputModule.h" />
     <ClInclude Include="IUpdatable.h" />
-    <ClInclude Include="Light.h" />
+    <ClInclude Include="BaseLight.h" />
     <ClInclude Include="FileLoader.h" />
+    <ClInclude Include="Lights.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshModel.h" />
     <ClInclude Include="PointLight.h" />
@@ -159,9 +160,8 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Materials\shaderFragment.fragment" />
-    <None Include="Materials\shaderVertex.shader" />
-    <None Include="Materials\SimpleShader.shader" />
+    <None Include="Materials\defaultFragment.fragment" />
+    <None Include="Materials\defaultVertex.vertex" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

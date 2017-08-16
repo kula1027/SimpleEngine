@@ -1,9 +1,6 @@
 #pragma once
 
-
-#include "ObjectPool.h"
-#include "GameWindow.h"
-#include "Scene.h"
+class Scene;
 
 class SimpleEngine
 {

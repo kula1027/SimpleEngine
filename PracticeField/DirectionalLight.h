@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Light.h"
+#include "BaseLight.h"
 
-class DirectionalLight : public Light
+class DirectionalLight : public BaseLight
 {
 public:
 	DirectionalLight();
 	~DirectionalLight();
 };
-

@@ -7,7 +7,6 @@
 
 #include <gl\glew.h>
 
-
 class Shader
 {
 private:
@@ -17,6 +16,8 @@ public:
 	Shader(GLchar* vertexPath, GLchar* fragmentPath);
 	~Shader();
 	char* GetFilePath();
-	int GetID();
+	
+	void Use();
+	GLuint GetUniformLocation(GLchar* var_name);
 };
 

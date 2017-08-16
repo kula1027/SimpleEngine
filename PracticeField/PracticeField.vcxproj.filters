@@ -57,9 +57,6 @@
     <ClCompile Include="SimpleEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameWindow.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
@@ -70,12 +67,6 @@
       <Filter>Source Files\GameComponent\BaseComponent</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\GameComponent\BaseComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectPool.cpp">
-      <Filter>Source Files\GameComponent\BaseComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
       <Filter>Source Files\GameComponent\BaseComponent</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
@@ -93,26 +84,29 @@
     <ClCompile Include="PointLight.cpp">
       <Filter>Source Files\GameComponent\BaseComponent\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Source Files\GameComponent\BaseComponent\Light</Filter>
-    </ClCompile>
     <ClCompile Include="FileLoader.cpp">
       <Filter>Source Files\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DirectionalLight.cpp">
       <Filter>Source Files\GameComponent\BaseComponent\Light</Filter>
     </ClCompile>
+    <ClCompile Include="BaseLight.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ObjectPool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Time.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameWindow.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
@@ -126,9 +120,6 @@
       <Filter>Header Files\GameComponent\BaseComponents</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files\GameComponent\BaseComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
       <Filter>Header Files\GameComponent\BaseComponents</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
@@ -146,30 +137,39 @@
     <ClInclude Include="PointLight.h">
       <Filter>Header Files\GameComponent\BaseComponents\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Header Files\GameComponent\BaseComponents\Light</Filter>
-    </ClInclude>
     <ClInclude Include="IUpdatable.h">
       <Filter>Header Files\GameComponent\BaseComponents</Filter>
     </ClInclude>
     <ClInclude Include="FileLoader.h">
       <Filter>Header Files\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DirectionalLight.h">
       <Filter>Header Files\GameComponent\BaseComponents\Light</Filter>
     </ClInclude>
+    <ClInclude Include="BaseLight.h">
+      <Filter>Header Files\GameComponent\BaseComponents\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Lights.h">
+      <Filter>Header Files\GameComponent\BaseComponents\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Materials\SimpleShader.shader">
+    <None Include="Materials\defaultVertex.vertex">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Materials\shaderFragment.fragment">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\shaderVertex.shader">
+    <None Include="Materials\defaultFragment.fragment">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

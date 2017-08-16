@@ -1,21 +1,25 @@
 #pragma once
 
-#include "GameObject.h"
-#include "Light.h"
+#include <vector>
+
+class IUpdatable;
+class GameObject;
+class BaseLight;
+class Camera;
 
 class ObjectPool
 {
 private:
 	std::vector<IUpdatable*> updatables;
 	std::vector<GameObject*> gameObjects;
-	std::vector<Light*> lights;
+	std::vector<BaseLight*> lights;
 
 public:
 	ObjectPool();	
 
 	void AddGameObject(GameObject* obj);
 	void AddUpdatable(IUpdatable* obj);
-	void AddLight(Light* objLight);
+	void AddLight(BaseLight* objLight);
 
 	void UpdateObjects();
 	void RenderObjects(Camera* cam);

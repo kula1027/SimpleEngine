@@ -1,10 +1,16 @@
 #include "Scene.h"
 
+#include "GameObject.h"
+#include "Lights.h"
+#include "FileLoader.h"
+#include "Scene.h"
+#include "MeshModel.h"
+
+#include <string>
 
 Scene::Scene(){
 
 }
-
 
 Scene::~Scene(){
 	
@@ -16,33 +22,33 @@ void Scene::Load() {
 	
 	MeshModel* meshModel = LoadMesh("Rock/Rock.obj");
 	go->SetModel(meshModel);
-	go->SetShader(FileLoader::LoadShader("defaultVertex.vsh", "defaultFragment.fsh"));
-	go->transform.position = glm::vec3(0 * 4, 0 * 4, 0);
-	go->transform.scale = glm::vec3(0.1f, 0.1f, 0.1f);
+	go->SetShader(FileLoader::LoadShader("defaultVertex.vertex", "defaultFragment.fragment"));
+	go->transform.position = glm::vec3(0, 1, 0);
+	go->transform.scale = glm::vec3(1,1, 1);
 	objectPool.AddGameObject(go);
-	/*
+
 	go = new GameObject();
 	meshModel = LoadMesh("sphere.obj");
 	go->SetModel(meshModel);
-	go->SetShader(FileLoader::LoadShader("shaderVertex.shader", "shaderFragment.fragment"));
-	go->transform.position = glm::vec3(20, 10, 0);	
+	go->SetShader(FileLoader::LoadShader("defaultVertex.vertex", "defaultFragment.fragment"));
+	go->transform.position = glm::vec3(20, 10, 0);
 	objectPool.AddGameObject(go);
-
+	
 	go = new GameObject();
 	meshModel = LoadMesh("untitled.obj");
 	go->SetModel(meshModel);
-	go->SetShader(FileLoader::LoadShader("shaderVertex.shader", "shaderFragment.fragment"));
+	go->SetShader(FileLoader::LoadShader("defaultVertex.vertex", "defaultFragment.fragment"));
 	go->transform.position = glm::vec3(0, 0, 0);
-	go->transform.scale = glm::vec3(100, 1, 100);
+	go->transform.scale = glm::vec3(1, 1, 1);
 	objectPool.AddGameObject(go);
-*/
-	Light* pointLight = new PointLight();
 
-	//objectPool.AddLight(directionalLight);
+	BaseLight* pointLight = new PointLight();
+	BaseLight* directionalLight = new DirectionalLight();
+	objectPool.AddLight(directionalLight);
 	objectPool.AddLight(pointLight);
 }
 
-MeshModel * Scene::LoadMesh(string path){	
+MeshModel * Scene::LoadMesh(std::string path){	
 	MeshModel* foundMesh = NULL;
 
 	for (int loop = 0; loop < meshModelPool.size(); loop++) {

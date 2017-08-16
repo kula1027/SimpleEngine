@@ -2,27 +2,29 @@
 
 #define strNoname "noname"
 
+#include "Transform.h"
+
+#include <vector>
+#include <string>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "FileLoader.h"
-#include "IUpdatable.h"
-#include "Light.h"
-#include "Transform.h"
-#include "Camera.h"
-#include "Renderer.h"
-//Scene.h include하면 에러남, 저급한 C++...
+class MeshModel;
+class Renderer;
+class BaseLight;
+class Shader;
+class Camera;
 
-class GameObject : public IUpdatable{
+class GameObject {
 private:
 	MeshModel* meshModel;
 	Renderer* renderer;
 
 public:
-	string* name;
+	std::string name;
 	Transform transform;
 
 	GameObject();
-	void Render(Camera* cam, std::vector<Light*> lights_);	
+	void Render(Camera* cam, std::vector<BaseLight*> lights_);
 
 	void SetModel(MeshModel* meshModel_);
 	void SetShader(Shader* shader_);

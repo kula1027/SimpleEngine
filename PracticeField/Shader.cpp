@@ -82,6 +82,10 @@ char* Shader::GetFilePath(){
 	return "";
 }
 
-int Shader::GetID(){
-	return shaderID;
+void Shader::Use(){
+	glUseProgram(shaderID);
+}
+
+GLuint Shader::GetUniformLocation(GLchar* var_name){
+	return glGetUniformLocation(shaderID, var_name);
 }
