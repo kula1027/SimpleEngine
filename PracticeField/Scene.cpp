@@ -24,13 +24,13 @@ void Scene::Load() {
 	go->SetModel(meshModel);
 	go->SetShader(FileLoader::LoadShader("defaultVertex.vertex", "defaultFragment.fragment"));
 	go->transform.position = glm::vec3(0, 1, 0);
-	go->transform.scale = glm::vec3(1,1, 1);
+	go->transform.scale = glm::vec3(0.1f, 0.1f, 0.1f);
 	objectPool.AddGameObject(go);
 
 	go = new GameObject();
 	meshModel = LoadMesh("sphere.obj");
 	go->SetModel(meshModel);
-	go->SetShader(FileLoader::LoadShader("defaultVertex.vertex", "defaultFragment.fragment"));
+	go->SetShader(FileLoader::LoadShader("defaultVertex.vertex", "defaultFragment.fragment"));	
 	go->transform.position = glm::vec3(20, 10, 0);
 	objectPool.AddGameObject(go);
 	
@@ -39,7 +39,7 @@ void Scene::Load() {
 	go->SetModel(meshModel);
 	go->SetShader(FileLoader::LoadShader("defaultVertex.vertex", "defaultFragment.fragment"));
 	go->transform.position = glm::vec3(0, 0, 0);
-	go->transform.scale = glm::vec3(1, 1, 1);
+	go->transform.scale = glm::vec3(100, 1, 100);
 	objectPool.AddGameObject(go);
 
 	BaseLight* pointLight = new PointLight();
