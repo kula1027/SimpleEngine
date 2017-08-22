@@ -3,6 +3,9 @@
 #include "Shader.h"
 #include "MeshModel.h"
 
+std::vector<MeshModel*> FileLoader::loadedMeshModels;
+std::vector<Shader*> FileLoader::loadedShaders;
+
 Shader* FileLoader::LoadShader(string filePathVertex, string filePathFragment){
 	string pathVertex = dirPathMaterial + filePathVertex;
 	string pathFragment = dirPathMaterial + filePathFragment;
@@ -16,7 +19,25 @@ Shader * FileLoader::LoadShader(){
 	return LoadShader("defaultVertex.vsh", "defaultFragment.fsh");
 }
 
-MeshModel* FileLoader::LoadMeshModel(string filePath){
+MeshModel* FileLoader::LoadMeshModel(string filePath) {
 	string path = dirPathMaterial + filePath;
-	return new MeshModel((GLchar*)path.c_str());
+
+	MeshModel* foundMesh = NULL;
+
+	for (int loop = 0; loop < loadedMeshModels.size(); loop++) {
+		if (loadedMeshModels[loop]->GetDirectory().compare(path.c_str()) == 0) {
+			foundMesh = loadedMeshModels[loop];
+			break;
+		}
+	}
+
+	if (foundMesh != NULL) {
+		return foundMesh;
+	}
+	else {
+		MeshModel* meshModel = new MeshModel((GLchar*)path.c_str());
+		loadedMeshModels.push_back(meshModel);
+
+		return meshModel;
+	}
 }

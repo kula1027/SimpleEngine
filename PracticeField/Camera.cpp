@@ -12,7 +12,7 @@ Camera::Camera(){
 	glEnable(GL_CULL_FACE);
 
 	transform = new Transform();
-	transform->position = glm::vec3(0, 10, 50);
+	transform->position = glm::vec3(0, 0, 10);
 	projMode = PROJECTION_PERSPECTIVE;
 	fov = 45.0f;
 
@@ -22,7 +22,7 @@ Camera::Camera(){
 	verticalAngle = 0;
 	horizontalAngle = 3.14f;
 
-	moveSpeed = 30.0f;
+	moveSpeed = 10.0f;
 	sensitivity = 0.001f;
 
 	projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);

@@ -92,15 +92,17 @@ void Renderer::Render(Camera * cam, std::vector<BaseLight*> lights_, MeshModel* 
 
 		// Draw mesh
 		glBindVertexArray(processingMesh->VAO);
-		int s = processingMesh->triangles.size() * 3;
+		int s = processingMesh->triangles.size();
+		
+		glm::vec3 dirCam = glm::normalize(cam->transform->position - transform->position);
+		dirCam.y = 0;
+		
+		float dot = glm::dot(dirCam, glm::vec3(0, 0, 1));
+		cout << dot << endl;
 
-		/*glm::dot(glm::vec3(1, 2, 3), glm::vec3(1, 2, 3));
-		glm::vec3 dirCam = glm::normalize(cam->transform.position - transform->position);
-		
-		float dot = glm::dot(dirCam, glm::vec3(0, 0, -1));
-		
-		glDrawElements(GL_TRIANGLES, s / 2, GL_UNSIGNED_INT, (GLvoid*)(s / 2 * sizeof(GLuint)));*/
 		glDrawElements(GL_TRIANGLES, s, GL_UNSIGNED_INT, 0);
+		// (GLvoid*)(s / 2 * sizeof(GLuint))
+	//	glDrawElements(GL_TRIANGLES, s, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 

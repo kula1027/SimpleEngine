@@ -7,7 +7,7 @@ Mesh::Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture> 
 	this->triangles = triangles;
 	this->textures = textures;
 
-	//RearrangeFace();
+	this->RearrangeFace();
 	this->SetupMesh();
 }
 
@@ -52,16 +52,49 @@ void SortTriangles(vector<Vertex>* vertices_, vector<Triangle>* triangles_, vect
 
 
 void Mesh::RearrangeFace(){
-	//get angle between vector (0, 0, -1)
-	glm::vec3 refVec = glm::vec3(0, 0, -1);
+	//get angle between refVec and
+	glm::vec3 refVec = glm::vec3(0, 0, 1);
 	
-	vector<float> dotValueTri;
+	vector<Triangle> tri0;// x < 0
+	vector<Triangle> tri1;// x >= 0
+
 	for (int loop = 0; loop < triangles.size(); loop++) {
 		GLuint vi = triangles[loop].idx0;
-		dotValueTri.push_back(glm::dot(vertices[vi].Position, refVec));
+		if (vertices[vi].Position.x < 0) {
+			tri0.push_back(triangles[loop]);
+		}else {
+			tri1.push_back(triangles[loop]);
+		}
 	}
 
-	SortTriangles(&vertices, &triangles, &dotValueTri, 0, triangles.size() - 1);
+	vector<float> dotValueTri0;
+	for (int loop = 0; loop < tri0.size(); loop++) {
+		GLuint vi = tri0[loop].idx0;
+		dotValueTri0.push_back(glm::dot(vertices[vi].Position, refVec));
+	}
+	SortTriangles(&vertices, &tri0, &dotValueTri0, 0, tri0.size() - 1);
+
+	vector<float> dotValueTri1;
+	for (int loop = 0; loop < tri1.size(); loop++) {
+		GLuint vi = tri1[loop].idx0;
+		dotValueTri1.push_back(glm::dot(vertices[vi].Position, refVec));
+	}
+	SortTriangles(&vertices, &tri1, &dotValueTri1, 0, tri1.size() - 1);
+
+	vector<Triangle> rearrangedTriangles;
+	for (int loop = tri0.size() - 1; loop >= 0 ; loop--) {
+		rearrangedTriangles.push_back(tri0[loop]);
+	}
+	for (int loop = 0; loop < tri1.size(); loop++) {
+		rearrangedTriangles.push_back(tri1[loop]);
+	}
+
+	int sizeT = rearrangedTriangles.size();
+	for (int loop = 0; loop < sizeT / 2; loop++) {
+		rearrangedTriangles.push_back(rearrangedTriangles[loop]);
+	}
+
+	triangles = rearrangedTriangles;
 }
 
 

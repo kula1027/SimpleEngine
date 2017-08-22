@@ -98,9 +98,9 @@ void main(){
 
 	vec3 resultColor = vec3(0.0);
 
-	//resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir);
+	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir);
 
-	resultColor += CalcPointLight(pointLight0, matColor, normal, viewDir);	;
+	//resultColor += CalcPointLight(pointLight0, matColor, normal, viewDir);	;
 
 	color = resultColor;
 }

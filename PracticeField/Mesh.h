@@ -36,19 +36,15 @@ struct Texture {
 
 class Mesh {
 public:
-	/*  Mesh Data  */
 	vector<Vertex> vertices;
 	vector<Triangle> triangles;
 	vector<Texture> textures;
-	/*  Functions  */
+	void RearrangeFace();
 	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture> textures);
 	GLuint VAO;
 
 private:
-	/*  Render data  */
 	GLuint VBO, EBO;
-	/*  Functions    */
-	void RearrangeFace();
 	void SetupMesh();
 };
 

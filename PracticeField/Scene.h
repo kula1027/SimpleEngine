@@ -15,12 +15,6 @@ private:
 	ObjectPool objectPool;
 	Camera camera;
 
-	std::vector<MeshModel*> meshModelPool;
-	std::vector<Shader*> shaderPool;
-
-	MeshModel* LoadMesh(std::string path);
-	Shader* LoadShader();
-
 public:
 	Scene();
 	~Scene();
