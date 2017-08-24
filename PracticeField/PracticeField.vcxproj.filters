@@ -105,6 +105,9 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="PartRenderer.cpp">
+      <Filter>Source Files\GameComponent\ModifiedComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h">
@@ -163,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="Time.h">
       <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="PartRenderer.h">
+      <Filter>Header Files\GameComponent\ModifiedCompents</Filter>
+    </ClInclude>
+    <ClInclude Include="IComponent.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

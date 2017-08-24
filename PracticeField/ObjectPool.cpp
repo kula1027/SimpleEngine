@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "GameObject.h"
 #include "IUpdatable.h"
+#include "Renderer.h"
 #include "Lights.h"
 
 
@@ -13,8 +14,12 @@ void ObjectPool::AddGameObject(GameObject * obj){
 	gameObjects.push_back(obj);
 }
 
-void ObjectPool::AddUpdatable(IUpdatable * obj){
-	updatables.push_back(obj);
+void ObjectPool::AddUpdatable(IUpdatable * upd){
+	updatables.push_back(upd);
+}
+
+void ObjectPool::AddRenderer(Renderer * rdr){
+	renderers.push_back(rdr);
 }
 
 void ObjectPool::AddLight(BaseLight * objLight){
@@ -23,13 +28,14 @@ void ObjectPool::AddLight(BaseLight * objLight){
 
 void ObjectPool::UpdateObjects(){
 	for (int loop = 0; loop < updatables.size(); loop++) {
-		updatables.at(loop)->Update();
+		updatables[loop]->Update();
 	}
 }
 
 void ObjectPool::RenderObjects(Camera* cam){
-	for (int loop = 0; loop < gameObjects.size(); loop++) {
-		gameObjects.at(loop)->Render(cam, lights);
+	int rSize = renderers.size();
+	for (int loop = 0; loop < rSize; loop++) {
+		renderers[loop]->Render(cam, lights);
 	}
 }
 

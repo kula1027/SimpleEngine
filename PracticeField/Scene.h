@@ -12,12 +12,16 @@ class Shader;
 class Scene
 {
 private:
-	ObjectPool objectPool;
+	static Scene* current;
+	
 	Camera camera;
-
+	
 public:
 	Scene();
 	~Scene();
+
+	static Scene* GetCurrent();	
+	ObjectPool objectPool;//TODO: to pointer var
 
 	void Load();
 		

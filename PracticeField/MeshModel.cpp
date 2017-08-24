@@ -28,7 +28,7 @@ void MeshModel::LoadModel(string path){
 		return;
 	}
 	// Retrieve the directory path of the filepath
-	this->directory = path.substr(0, path.find_last_of('/'));
+	this->directory = path;// .substr(0, path.find_last_of('/'));
 
 	// Process ASSIMP's root node recursively
 	this->ProcessNode(scene->mRootNode, scene);

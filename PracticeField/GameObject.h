@@ -13,22 +13,24 @@ class Renderer;
 class BaseLight;
 class Shader;
 class Camera;
+class IComponent;
 
 class GameObject {
-private:
+private:	
 	MeshModel* meshModel;
 	Renderer* renderer;
+	std::vector<IComponent*> components;
 
 public:
 	std::string name;
-	Transform transform;
+	Transform transform;//TODO: 포인터형으로 바꿔야할듯
 
 	GameObject();
-	void Render(Camera* cam, std::vector<BaseLight*> lights_);
+
+	void SetRenderer(Renderer* renderer_);
 
 	void SetModel(MeshModel* meshModel_);
-	void SetShader(Shader* shader_);
+	void SetShader(Shader* shader_);	
 
-	void Update();
 	~GameObject();
 };

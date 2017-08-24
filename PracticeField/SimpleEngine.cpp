@@ -36,14 +36,14 @@ void SimpleEngine::Begin() {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_ALWAYS);
 	
-	//SetVsyncMode(false);
+	SetVsyncMode(false);
 
 	currentScene = new Scene();
 	currentScene->Load();
 
 	do {
 		Time::Tick();
-		//Time::PrintRenderTime(3);
+		Time::PrintRenderTime(3);
 
 		InputModule::CheckInput();		
 		

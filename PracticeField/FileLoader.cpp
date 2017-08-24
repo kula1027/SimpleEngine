@@ -16,14 +16,16 @@ Shader* FileLoader::LoadShader(string filePathVertex, string filePathFragment){
 }
 
 Shader * FileLoader::LoadShader(){
-	return LoadShader("defaultVertex.vsh", "defaultFragment.fsh");
+	return LoadShader(
+		"defaultVertex.vertex", 
+		"defaultFragment.fragment"
+	);
 }
 
 MeshModel* FileLoader::LoadMeshModel(string filePath) {
 	string path = dirPathMaterial + filePath;
 
 	MeshModel* foundMesh = NULL;
-
 	for (int loop = 0; loop < loadedMeshModels.size(); loop++) {
 		if (loadedMeshModels[loop]->GetDirectory().compare(path.c_str()) == 0) {
 			foundMesh = loadedMeshModels[loop];

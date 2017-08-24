@@ -1,6 +1,9 @@
 #pragma once
-class IUpdatable{
+
+#include "IComponent.h"
+
+class IUpdatable : IComponent{
 public:
-	inline virtual void Update() {}
+	virtual void Update() = 0;
 };
 

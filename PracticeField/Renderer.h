@@ -23,7 +23,7 @@ class MeshModel;
 class BaseLight;
 
 class Renderer{
-private:
+protected:
 	Shader* shader;
 	GLuint mvpMatrixID;
 	GLuint viewMatrixID;
@@ -38,13 +38,16 @@ private:
 	glm::mat4 mvpMatrix;
 
 	Transform* transform;//ref to gameObject transform
+	MeshModel* meshModel;//ref to gameObject meshModel
 
-public:
+public:	
+	Renderer();
 	Renderer(Transform* transform_);
 	~Renderer();
 
+	void SetReferences(Transform* transform_, MeshModel* meshModel_);
 	void SetShader(Shader* shader_);
-	void Render(Camera* cam, std::vector<BaseLight*> lights, MeshModel* meshModel);
+	virtual void Render(Camera* cam, std::vector<BaseLight*> lights);
 	void ComputeModelMatrix(Camera* cam);
 };
 

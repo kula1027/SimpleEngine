@@ -8,6 +8,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
+Renderer::Renderer()
+{
+}
 
 Renderer::Renderer(Transform* transform_){
 	transform = transform_;
@@ -16,6 +19,13 @@ Renderer::Renderer(Transform* transform_){
 Renderer::~Renderer(){
 	free(shader);
 }
+
+
+void Renderer::SetReferences(Transform* transform_, MeshModel* meshModel_){
+	meshModel = meshModel_;
+	transform = transform_;
+}
+
 
 void Renderer::SetShader(Shader* shader_){
 	shader = shader_;
@@ -35,16 +45,16 @@ void Renderer::SetShader(Shader* shader_){
 	id_pLight.power = shader->GetUniformLocation("pointLight0.power");
 }
 
-void Renderer::Render(Camera * cam, std::vector<BaseLight*> lights_, MeshModel* meshModel){
-	ComputeModelMatrix(cam);
+void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
+	ComputeModelMatrix(cam_);
 
 	shader->Use();
 
 	glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-	glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, glm::value_ptr(cam->Vmatrix()));
+	glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, glm::value_ptr(cam_->Vmatrix()));
 	glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
-	glm::vec4 CameraSpace_dLightPos = cam->Vmatrix() * glm::vec4(lights_[0]->position, 0);
+	glm::vec4 CameraSpace_dLightPos = cam_->Vmatrix() * glm::vec4(lights_[0]->position, 0);
 	glUniform3f(id_dLight.direction, CameraSpace_dLightPos.x, CameraSpace_dLightPos.y, CameraSpace_dLightPos.z);
 	glUniform3f(id_dLight.color, lights_[0]->color.x, lights_[0]->color.y, lights_[0]->color.z);
 	glUniform1f(id_dLight.power, lights_[0]->intensity);
@@ -52,7 +62,6 @@ void Renderer::Render(Camera * cam, std::vector<BaseLight*> lights_, MeshModel* 
 	glUniform3f(id_pLight.position, lights_[1]->position.x, lights_[1]->position.y, lights_[1]->position.z);
 	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
 	glUniform1f(id_pLight.power, lights_[1]->intensity);
-
 
 	for (GLuint loop = 0; loop < meshModel->meshes.size(); loop++) {
 		Mesh* processingMesh = &meshModel->meshes[loop];
@@ -92,22 +101,35 @@ void Renderer::Render(Camera * cam, std::vector<BaseLight*> lights_, MeshModel* 
 
 		// Draw mesh
 		glBindVertexArray(processingMesh->VAO);
-		int s = processingMesh->triangles.size();
+
+		int drawingIdxCount = processingMesh->triangles.size() / 2;
+		/*
+		int totalIdxCount = processingMesh->triangles.size() * 3;
 		
-		glm::vec3 dirCam = glm::normalize(cam->transform->position - transform->position);
+		glm::vec3 dirCam = glm::normalize(cam_->transform->position - transform->position);
 		dirCam.y = 0;
 		
-		float dot = glm::dot(dirCam, glm::vec3(0, 0, 1));
-		cout << dot << endl;
+		float val = glm::dot(dirCam, glm::vec3(0, 0, 1));
+		if (dirCam.x <= 0) {
+			val = -val + 1;
+		}else {
+			val += 3;
+		}		//0 ~ 4로 전체 표현
 
-		glDrawElements(GL_TRIANGLES, s, GL_UNSIGNED_INT, 0);
-		// (GLvoid*)(s / 2 * sizeof(GLuint))
-	//	glDrawElements(GL_TRIANGLES, s, GL_UNSIGNED_INT, 0);
+		if (val < 1)val += 4;
+		int t = totalIdxCount * val / 6;
+		int mulOf3 = (t - drawingIdxCount);
+		mulOf3 += 3 - (mulOf3 % 3);
+
+		glDrawElements(GL_TRIANGLES, drawingIdxCount * 2, GL_UNSIGNED_INT, (GLvoid*)(mulOf3 * sizeof(GLuint)));	
+	*/	
+		glDrawElements(GL_TRIANGLES, drawingIdxCount * 4, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+
 
 void Renderer::ComputeModelMatrix(Camera * cam){	
 	modelMatrix = glm::translate(glm::mat4(1.0), transform->position);

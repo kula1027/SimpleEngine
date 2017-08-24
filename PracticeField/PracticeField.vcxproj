@@ -127,6 +127,7 @@
     <ClCompile Include="FileLoader.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshModel.cpp" />
+    <ClCompile Include="PartRenderer.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="IComponent.h" />
     <ClInclude Include="InputModule.h" />
     <ClInclude Include="IUpdatable.h" />
     <ClInclude Include="BaseLight.h" />
@@ -149,6 +151,7 @@
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshModel.h" />
+    <ClInclude Include="PartRenderer.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ObjectPool.h" />

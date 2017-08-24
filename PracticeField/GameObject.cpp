@@ -2,19 +2,18 @@
 
 #include "Renderer.h"
 #include "FileLoader.h"
-
+#include "Scene.h"
 
 GameObject::GameObject(){
-	name = strNoname;
-	renderer = new Renderer(&transform);
+	name = strNoname;	
+	Scene::GetCurrent()->objectPool.AddGameObject(this);
 }
 
-void GameObject::Render(Camera* cam, std::vector<BaseLight*> lights_){
-	renderer->Render(cam, lights_, meshModel);
-}
+void GameObject::SetRenderer(Renderer * renderer_){
+	renderer_->SetReferences(&transform, meshModel);
 
-void GameObject::Update(){
-	//transform.position.x += Time::deltaTime;
+	Scene::GetCurrent()->objectPool.AddRenderer(renderer_);
+	renderer = renderer_;
 }
 
 void GameObject::SetModel(MeshModel * meshModel_) {
@@ -24,7 +23,6 @@ void GameObject::SetModel(MeshModel * meshModel_) {
 void GameObject::SetShader(Shader * shader_) {
 	renderer->SetShader(shader_);
 }
-
 
 GameObject::~GameObject(){	
 	free(meshModel);
