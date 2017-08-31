@@ -7,7 +7,6 @@ Mesh::Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture> 
 	this->triangles = triangles;
 	this->textures = textures;
 
-	this->RearrangeFace();
 	this->SetupMesh();
 }
 
@@ -95,6 +94,8 @@ void Mesh::RearrangeFace(){
 	}
 
 	triangles = rearrangedTriangles;
+
+	this->SetupMesh();
 }
 
 

@@ -2,14 +2,12 @@
 
 
 MeshModel::MeshModel(GLchar * path){
+	this->meshes = new vector<Mesh>();
 	this->LoadModel(path);
 }
 
 MeshModel::~MeshModel(){
-}
-
-vector<Mesh> MeshModel::GetMeshes(){
-	return meshes;
+	delete(this->meshes);
 }
 
 string MeshModel::GetDirectory(){
@@ -37,7 +35,6 @@ void MeshModel::LoadModel(string path){
 			  << "Mesh Count: " << scene->mNumMeshes  << std::endl
 			  << "Material Count: " << scene->mNumMaterials << std::endl;
 
-
 	cout << endl;
 }
 
@@ -45,7 +42,7 @@ void MeshModel::ProcessNode(aiNode * node, const aiScene * scene){
 	// Process all the node's meshes (if any)
 	for (GLuint i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		this->meshes.push_back(this->ProcessMesh(mesh, scene));
+		this->meshes->push_back(this->ProcessMesh(mesh, scene));
 	}
 	// Then do the same for each of its children
 	for (GLuint i = 0; i < node->mNumChildren; i++){

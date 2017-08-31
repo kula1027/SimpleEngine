@@ -1,6 +1,7 @@
 #pragma once
 
 #define dirPathMaterial "Materials/"
+#define dirPathShader "Shaders/"
 
 #include <string>
 #include <vector>

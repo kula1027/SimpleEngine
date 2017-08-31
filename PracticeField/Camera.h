@@ -1,15 +1,27 @@
 #pragma once
+#include <gl\glew.h>
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 
 class Transform;
+class Shader;
 
 #define PROJECTION_ORTHO 0;
 #define PROJECTION_PERSPECTIVE 1;
 
+struct OffScreenData {
+	Shader* screenShader;
+	unsigned int texColorBuffer;
+	unsigned int frameBuffer;
+	unsigned int quadVAO, quadVBO;
+	unsigned int rbo;
+};
+
 class Camera
 {
 private:
+	static float quadVertices[];
+	
 	float fov;
 	float near;
 	float far;
@@ -27,9 +39,12 @@ private:
 
 	int projMode;
 
+	OffScreenData offScreenData;
+
 	float moveSpeed;
 	float sensitivity;
 
+	void InitOffScreenDraw();
 	void ComputeMatrix();
 
 public:
@@ -38,6 +53,8 @@ public:
 	glm::mat4 VPmatrix();
 	glm::mat4 Vmatrix();
 	void Update();
+	void EnableOffSreenDraw();
+	void PostDraw();
 
 	Transform* transform;
 

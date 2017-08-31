@@ -136,6 +136,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleEngine.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
@@ -159,12 +160,18 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleEngine.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Materials\defaultFragment.fragment" />
-    <None Include="Materials\defaultVertex.vertex" />
+    <None Include="Materials\Shaders\blur.frag" />
+    <None Include="Materials\Shaders\defaultFragment.frag" />
+    <None Include="Materials\Shaders\defaultScreen.frag" />
+    <None Include="Materials\Shaders\defaultScreen.vert" />
+    <None Include="Materials\Shaders\defaultVertex.vert" />
+    <None Include="Materials\Shaders\depthFragment.frag" />
+    <None Include="Materials\Shaders\depthVertex.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

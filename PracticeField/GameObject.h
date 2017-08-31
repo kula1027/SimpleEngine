@@ -30,6 +30,7 @@ public:
 	void SetRenderer(Renderer* renderer_);
 
 	void SetModel(MeshModel* meshModel_);
+	MeshModel* GetModel();
 	void SetShader(Shader* shader_);	
 
 	~GameObject();

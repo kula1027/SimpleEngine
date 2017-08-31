@@ -7,8 +7,8 @@ std::vector<MeshModel*> FileLoader::loadedMeshModels;
 std::vector<Shader*> FileLoader::loadedShaders;
 
 Shader* FileLoader::LoadShader(string filePathVertex, string filePathFragment){
-	string pathVertex = dirPathMaterial + filePathVertex;
-	string pathFragment = dirPathMaterial + filePathFragment;
+	string pathVertex = (string)dirPathMaterial + (string)dirPathShader + filePathVertex;
+	string pathFragment = (string)dirPathMaterial + (string)dirPathShader + filePathFragment;
 
 	Shader* shader = new Shader((GLchar*)pathVertex.c_str(), (GLchar*)pathFragment.c_str());
 	
@@ -17,8 +17,8 @@ Shader* FileLoader::LoadShader(string filePathVertex, string filePathFragment){
 
 Shader * FileLoader::LoadShader(){
 	return LoadShader(
-		"defaultVertex.vertex", 
-		"defaultFragment.fragment"
+		"defaultVertex.vert", 
+		"defaultFragment.frag"
 	);
 }
 

@@ -26,5 +26,6 @@ public:
 	void Load();
 		
 	void UpdateObjects();
-	void RenderObjects();	
+	void RenderObjectsSinglePass();	
+	void RenderObjects();
 };

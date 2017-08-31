@@ -63,8 +63,8 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
 	glUniform1f(id_pLight.power, lights_[1]->intensity);
 
-	for (GLuint loop = 0; loop < meshModel->meshes.size(); loop++) {
-		Mesh* processingMesh = &meshModel->meshes[loop];
+	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
+		Mesh* processingMesh = &meshModel->meshes->at(loop);
 
 		GLuint diffuseNr = 1;
 		GLuint specularNr = 1;
@@ -93,8 +93,6 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 
 				glBindTexture(GL_TEXTURE_2D, processingMesh->textures[i].id);
 				glUniform1i(shader->GetUniformLocation((GLchar*)(name + number).c_str()), i);
-
-				//std::cout << (name + number).c_str() << " / " << shader->GetUniformLocation(shader->GetID(), (name + number).c_str()) << endl;
 			}
 		}
 		glActiveTexture(GL_TEXTURE0);		
@@ -102,28 +100,8 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		// Draw mesh
 		glBindVertexArray(processingMesh->VAO);
 
-		int drawingIdxCount = processingMesh->triangles.size() / 2;
-		/*
-		int totalIdxCount = processingMesh->triangles.size() * 3;
-		
-		glm::vec3 dirCam = glm::normalize(cam_->transform->position - transform->position);
-		dirCam.y = 0;
-		
-		float val = glm::dot(dirCam, glm::vec3(0, 0, 1));
-		if (dirCam.x <= 0) {
-			val = -val + 1;
-		}else {
-			val += 3;
-		}		//0 ~ 4로 전체 표현
-
-		if (val < 1)val += 4;
-		int t = totalIdxCount * val / 6;
-		int mulOf3 = (t - drawingIdxCount);
-		mulOf3 += 3 - (mulOf3 % 3);
-
-		glDrawElements(GL_TRIANGLES, drawingIdxCount * 2, GL_UNSIGNED_INT, (GLvoid*)(mulOf3 * sizeof(GLuint)));	
-	*/	
-		glDrawElements(GL_TRIANGLES, drawingIdxCount * 4, GL_UNSIGNED_INT, 0);
+		int drawingIdxCount = processingMesh->triangles.size();
+		glDrawElements(GL_TRIANGLES, drawingIdxCount * 2, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 

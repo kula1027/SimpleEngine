@@ -39,12 +39,12 @@ public:
 	vector<Vertex> vertices;
 	vector<Triangle> triangles;
 	vector<Texture> textures;
-	void RearrangeFace();
 	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture> textures);
 	GLuint VAO;
+	void RearrangeFace();
 
 private:
-	GLuint VBO, EBO;
+	GLuint VBO, EBO;	
 	void SetupMesh();
 };
 

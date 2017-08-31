@@ -36,8 +36,7 @@ public:
 	/*  Functions   */
 	MeshModel(GLchar* path);
 	~MeshModel();
-	vector<Mesh> GetMeshes();
-	vector<Mesh> meshes;
+	vector<Mesh>* meshes;
 
 	string GetDirectory();
 

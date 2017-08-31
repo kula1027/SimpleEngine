@@ -25,8 +25,8 @@ void PartRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
 	glUniform1f(id_pLight.power, lights_[1]->intensity);
 
-	for (GLuint loop = 0; loop < meshModel->meshes.size(); loop++) {
-		Mesh* processingMesh = &meshModel->meshes[loop];
+	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
+		Mesh* processingMesh = &meshModel->meshes->at(loop);
 
 		GLuint diffuseNr = 1;
 		GLuint specularNr = 1;

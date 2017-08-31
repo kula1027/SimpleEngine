@@ -20,6 +20,10 @@ void GameObject::SetModel(MeshModel * meshModel_) {
 	meshModel = meshModel_;	
 }
 
+MeshModel * GameObject::GetModel(){
+	return meshModel;
+}
+
 void GameObject::SetShader(Shader * shader_) {
 	renderer->SetShader(shader_);
 }
