@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "MeshModel.h"
 #include "Lights.h"
+#include "ArrangedMesh.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -26,7 +27,9 @@ void PartRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 	glUniform1f(id_pLight.power, lights_[1]->intensity);
 
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
-		Mesh* processingMesh = &meshModel->meshes->at(loop);
+		//ArrangedMesh* a = new Mesh();		
+		ArrangedMesh* processingMesh = (ArrangedMesh*)meshModel->meshes->at(loop);
+		
 
 		GLuint diffuseNr = 1;
 		GLuint specularNr = 1;
@@ -64,29 +67,27 @@ void PartRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		// Draw mesh
 		glBindVertexArray(processingMesh->VAO);
 
-		int drawingIdxCount = processingMesh->triangles.size() / 2;
-
-		int totalIdxCount = processingMesh->triangles.size() * 3;
-
-		glm::vec3 dirCam = glm::normalize(cam_->transform->position - transform->position);
+		glm::vec3 dirCam = cam_->transform->position - transform->position;
 		dirCam.y = 0;
+		dirCam = glm::normalize(dirCam);
 
-		float val = glm::dot(dirCam, glm::vec3(0, 0, 1));
+		float angleXZ = glm::dot(dirCam, glm::vec3(0, 0, 1));
 		if (dirCam.x <= 0) {
-			val = -val + 1;
+			angleXZ = -angleXZ + 1;
 		}
 		else {
-			val += 3;
+			angleXZ += 3;
 		}		//0 ~ 4로 전체 표현
+		if (angleXZ < 1)angleXZ += 4;//val -> 0 ~ 5
 
-		if (val < 1)val += 4;
-		int t = totalIdxCount * val / 6;
-		int mulOf3 = (t - drawingIdxCount);
-		mulOf3 += 3 - (mulOf3 % 3);
+		int mapperIdx = (arMapSize * angleXZ / 6.0f);//중간 기준
+		int startTriIdx = processingMesh->arMap[mapperIdx - arMapSize/6].idx; //시작
+		int tCount = processingMesh->arMap[mapperIdx + arMapSize/6].idx - startTriIdx;
 
-		glDrawElements(GL_TRIANGLES, drawingIdxCount * 2, GL_UNSIGNED_INT, (GLvoid*)(mulOf3 * sizeof(GLuint)));
+		glDrawElements(GL_TRIANGLES, tCount * 3, GL_UNSIGNED_INT, (GLvoid*)(startTriIdx * sizeof(Triangle)));
 		glBindVertexArray(0);
 	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+

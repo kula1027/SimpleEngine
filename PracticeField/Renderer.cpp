@@ -64,7 +64,7 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 	glUniform1f(id_pLight.power, lights_[1]->intensity);
 
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
-		Mesh* processingMesh = &meshModel->meshes->at(loop);
+		Mesh* processingMesh = meshModel->meshes->at(loop);
 
 		GLuint diffuseNr = 1;
 		GLuint specularNr = 1;
@@ -101,7 +101,7 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		glBindVertexArray(processingMesh->VAO);
 
 		int drawingIdxCount = processingMesh->triangles.size();
-		glDrawElements(GL_TRIANGLES, drawingIdxCount * 2, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, drawingIdxCount * 3, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 

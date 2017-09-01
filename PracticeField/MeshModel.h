@@ -34,11 +34,15 @@ class MeshModel
 {
 public:
 	/*  Functions   */
+	MeshModel();
 	MeshModel(GLchar* path);
 	~MeshModel();
-	vector<Mesh>* meshes;
+	vector<Mesh*>* meshes;
 
 	string GetDirectory();
+
+protected:
+	
 
 private:
 	/*  Model Data  */
@@ -47,9 +51,10 @@ private:
 	vector<Texture> textures_loaded;	
 	// Stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	/*  Functions   */
-	void LoadModel(string path);
+	
 	void ProcessNode(aiNode* node, const aiScene* scene);
-	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+	Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
+	void LoadModel(string path);
 	vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
 
 	GLint TextureFromFile(const char* path, string directory);

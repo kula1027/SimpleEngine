@@ -1,8 +1,9 @@
 #include "MeshModel.h"
 
+MeshModel::MeshModel(){}
 
 MeshModel::MeshModel(GLchar * path){
-	this->meshes = new vector<Mesh>();
+	this->meshes = new vector<Mesh*>();
 	this->LoadModel(path);
 }
 
@@ -50,7 +51,7 @@ void MeshModel::ProcessNode(aiNode * node, const aiScene * scene){
 	}
 }
 
-Mesh MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
+Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 	// Data to fill
 	vector<Vertex> vertices;
 	//vector<GLuint> indices;
@@ -123,7 +124,7 @@ Mesh MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 	}
 
 	// Return a mesh object created from the extracted mesh data
-	return Mesh(vertices, triangles, textures);
+	return new Mesh(vertices, triangles, textures);
 }
 
 vector<Texture> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName){

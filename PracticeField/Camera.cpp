@@ -39,7 +39,7 @@ Camera::Camera(){
 	verticalAngle = 0;
 	horizontalAngle = 3.14f;
 
-	moveSpeed = 10.0f;
+	moveSpeed = 5.0f;
 	sensitivity = 0.001f;
 
 	projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);

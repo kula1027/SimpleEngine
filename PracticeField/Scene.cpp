@@ -4,6 +4,7 @@
 #include "Lights.h"
 #include "FileLoader.h"
 #include "Scene.h"
+#include "ArrangedMesh.h"
 #include "MeshModel.h"
 #include "Renderer.h"
 #include "PartRenderer.h"
@@ -30,19 +31,34 @@ unsigned int depthMap;
 void Scene::Load() {	
 	current = this;
 
-	int objCount = 4;
+	int objCount = 5;
 
 	MeshModel* mSph = FileLoader::LoadMeshModel("sphere.obj");
 	for (int i = 0; i < mSph->meshes->size(); i++) {
-		mSph->meshes->at(i).RearrangeFace();
+		mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
 	}
-
 	for (int loop = 0; loop < objCount; loop++) {
 		for (int loop2 = 0; loop2 < objCount; loop2++) {
 			for (int loop3 = 0; loop3 < objCount; loop3++) {
 				GameObject* go = new GameObject();
 				go->SetModel(mSph);
 				go->SetRenderer(new PartRenderer());
+				go->SetShader(FileLoader::LoadShader());				
+				go->transform.position = glm::vec3(
+					(loop - (float)objCount / 2) * 5 + 2,
+					(loop2) * 5 + 5,
+					(-loop3) * 5
+				);
+			}
+		}
+	}
+	/*
+	for (int loop = 0; loop < objCount; loop++) {
+		for (int loop2 = 0; loop2 < objCount; loop2++) {
+			for (int loop3 = 0; loop3 < objCount; loop3++) {
+				GameObject* go = new GameObject();
+				go->SetModel(FileLoader::LoadMeshModel("sphere.obj"));
+				go->SetRenderer(new Renderer());
 				go->SetShader(FileLoader::LoadShader());
 				go->transform.position = glm::vec3(
 					(loop - objCount / 2) * 5 + 2,
@@ -51,13 +67,13 @@ void Scene::Load() {
 				);
 			}
 		}
-	}
-
-	GameObject* go = new GameObject();
+	}*/
+	GameObject* go;
+	go = new GameObject();
 	go->SetModel(FileLoader::LoadMeshModel("plane.obj"));
 	go->SetRenderer(new Renderer());
 	go->SetShader(FileLoader::LoadShader());
-	go->transform.scale = glm::vec3(10, 1, 10);
+	go->transform.scale = glm::vec3(20, 1, 20);
 
 	BaseLight* pointLight = new PointLight();
 	BaseLight* directionalLight = new DirectionalLight();
@@ -80,7 +96,7 @@ void Scene::RenderObjectsSinglePass(){
 	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	ConfigureShaderAndMatrices();
+//	ConfigureShaderAndMatrices();
 	//RenderScene();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	
