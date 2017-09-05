@@ -68,22 +68,45 @@ void PartRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		glBindVertexArray(processingMesh->VAO);
 
 		glm::vec3 dirCam = cam_->transform->position - transform->position;
-		dirCam.y = 0;
-		dirCam = glm::normalize(dirCam);
+		glm::vec3 dirCamYZ = glm::normalize(glm::vec3(0, dirCam.y, dirCam.z));
 
-		float angleXZ = glm::dot(dirCam, glm::vec3(0, 0, 1));
+		unsigned int eboIdx;
+
+		dirCam = glm::normalize(dirCam);
+		float angleVert = glm::dot(dirCam, glm::vec3(0, 1, 0));
+		angleVert *= samplingDirCount;
+		eboIdx = abs(angleVert) + 0.5f;
+		cout << eboIdx << endl;
+		double angle = 3.141592f / samplingDirCount * eboIdx;//TODO
+		glm::vec3 planeNormal = glm::vec3(0, sin(angle), cos(angle));
+		/*if (eboIdx == 0) {
+			planeNormal = glm::vec3(0, 0, 1);
+		}
+		if (eboIdx == 1) {
+			planeNormal = glm::vec3(0, 1, 0);
+		}
+		if (eboIdx == 2) {
+			planeNormal = glm::vec3(0, 0.86625f, 0.5f);
+		}*/
+
+		float angleHori = glm::dot(dirCam, planeNormal);
+		
 		if (dirCam.x <= 0) {
-			angleXZ = -angleXZ + 1;
+			angleHori = -angleHori + 1;
 		}
 		else {
-			angleXZ += 3;
+			angleHori += 3;
 		}		//0 ~ 4로 전체 표현
-		if (angleXZ < 1)angleXZ += 4;//val -> 0 ~ 5
+		if (angleHori < 1)angleHori += 4;//val -> 0 ~ 5
 
-		int mapperIdx = (arMapSize * angleXZ / 6.0f);//중간 기준
-		int startTriIdx = processingMesh->arMap[mapperIdx - arMapSize/6].idx; //시작
-		int tCount = processingMesh->arMap[mapperIdx + arMapSize/6].idx - startTriIdx;
+		int mapperIdx = (arMapSize * angleHori / 6.0f) + 0.5f;//중간 기준
+		int t = arMapSize / 6 + 0.5f;
+		int startTriIdx = processingMesh->arMap[mapperIdx - t].idx; //시작
+		if (mapperIdx + t >= 360)t--;
+		int tCount = processingMesh->arMap[mapperIdx + t].idx - startTriIdx;
+		
 
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, processingMesh->EBOs[eboIdx]);
 		glDrawElements(GL_TRIANGLES, tCount * 3, GL_UNSIGNED_INT, (GLvoid*)(startTriIdx * sizeof(Triangle)));
 		glBindVertexArray(0);
 	}

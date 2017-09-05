@@ -31,6 +31,8 @@ unsigned int depthMap;
 void Scene::Load() {	
 	current = this;
 
+	GameObject* go;
+
 	int objCount = 5;
 
 	MeshModel* mSph = FileLoader::LoadMeshModel("sphere.obj");
@@ -52,6 +54,7 @@ void Scene::Load() {
 			}
 		}
 	}
+
 	/*
 	for (int loop = 0; loop < objCount; loop++) {
 		for (int loop2 = 0; loop2 < objCount; loop2++) {
@@ -68,7 +71,30 @@ void Scene::Load() {
 			}
 		}
 	}*/
-	GameObject* go;
+	
+	
+
+	/*mSph = FileLoader::LoadMeshModel("cube.obj");
+	for (int i = 0; i < mSph->meshes->size(); i++) {
+		mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
+	}
+	go = new GameObject();
+	go->SetModel(mSph);
+	go->SetRenderer(new PartRenderer());
+	go->SetShader(FileLoader::LoadShader());
+	go->transform.position = glm::vec3(0, 8, 0);*/
+
+	/*mSph = FileLoader::LoadMeshModel("venusm.obj");
+	for (int i = 0; i < mSph->meshes->size(); i++) {
+		mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
+	}
+	go = new GameObject();
+	go->SetModel(mSph);
+	go->SetRenderer(new PartRenderer());
+	go->SetShader(FileLoader::LoadShader());
+	go->transform.scale = glm::vec3(0.005f, 0.005f, 0.005f);
+	go->transform.position = glm::vec3(-20, 8, 0);*/
+	
 	go = new GameObject();
 	go->SetModel(FileLoader::LoadMeshModel("plane.obj"));
 	go->SetRenderer(new Renderer());

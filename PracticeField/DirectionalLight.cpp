@@ -5,7 +5,7 @@
 DirectionalLight::DirectionalLight(){
 	intensity = 0.8f;
 	color = glm::vec3(1, 1, 1);
-	position = glm::vec3(0, -1, -1);
+	position = glm::vec3(0, -1, -0.5);
 
 	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, shadowData.nearPlane, shadowData.farPlane);
 	glm::mat4 lightView = glm::lookAt(

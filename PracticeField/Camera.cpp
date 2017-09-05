@@ -136,6 +136,12 @@ void Camera::Update(){
 		if (InputModule::IsPressed(GLFW_KEY_A)) {
 			transform->position -= right * Time::deltaTime * moveSpeed;
 		}
+		if (InputModule::IsPressed(GLFW_KEY_Q)) {
+			transform->position += Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
+		}
+		if (InputModule::IsPressed(GLFW_KEY_E)) {
+			transform->position -= Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
+		}
 	}
 	else {
 	}

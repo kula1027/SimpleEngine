@@ -38,9 +38,9 @@ void SimpleEngine::Begin() {
 	currentScene = new Scene();
 	currentScene->Load();
 
-	do {
+	do { 
 		Time::Tick();
-		Time::PrintRenderTime(3);
+		//Time::PrintRenderTime(3);
 
 		InputModule::CheckInput();		
 		
