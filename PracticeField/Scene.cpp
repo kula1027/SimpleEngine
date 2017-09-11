@@ -32,13 +32,14 @@ void Scene::Load() {
 	current = this;
 
 	GameObject* go;
-
-	int objCount = 5;
+	int objCount = 8;
+	
 
 	MeshModel* mSph = FileLoader::LoadMeshModel("sphere.obj");
 	for (int i = 0; i < mSph->meshes->size(); i++) {
 		mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
 	}
+
 	for (int loop = 0; loop < objCount; loop++) {
 		for (int loop2 = 0; loop2 < objCount; loop2++) {
 			for (int loop3 = 0; loop3 < objCount; loop3++) {

@@ -13,22 +13,25 @@ ArrangedMesh::ArrangedMesh(Mesh mesh_){
 
 	EBOs = new unsigned int[samplingDirCount];
 	arrangedTriangles = new vector<Triangle>[samplingDirCount];
+	sampleData = new SampleData[samplingDirCount];
 	double angle = 0;
 	for (int loop = 0; loop < samplingDirCount; loop++) {
 		cout << "Sampling Dir... " << loop << endl;
 		angle = 3.141592f / samplingDirCount * loop;
-		this->RearrangeFace(glm::vec3(0, sin(angle), cos(angle)), loop);
-		
+		sampleData[loop].refVec = glm::vec3(0, sin(angle), cos(angle));
+		angle += 3.141592f / 2.0f;
+		sampleData[loop].planeNormal = glm::vec3(0, sin(angle), cos(angle));
+		this->RearrangeFace(loop);
 	}
 
 	this->SetupMesh();
 }
 
-
 ArrangedMesh::~ArrangedMesh(){
 	delete(arMap);
 	delete(EBOs);
 	delete(arrangedTriangles);
+	delete(sampleData);
 }
 
 void ArrangedMesh::SortTriangles(vector<Triangle>* triangles_, vector<float>* dotValues, int lo, int hi) {
@@ -58,12 +61,10 @@ void ArrangedMesh::SortTriangles(vector<Triangle>* triangles_, vector<float>* do
 }
 
 
-void ArrangedMesh::RearrangeFace(glm::vec3 refVec_, int idx_) {
+void ArrangedMesh::RearrangeFace(int idx_) {
 	//get angle between refVec and
-	glm::vec3 refVec = refVec_;
-
-	double angle = 3.141592f / samplingDirCount * idx_ + 3.141592f / 180.0f * 90.0f;//TODO
-	glm::vec3 planeNormal = glm::vec3(0, sin(angle), cos(angle));
+	glm::vec3 refVec = sampleData[idx_].refVec;
+	glm::vec3 planeNormal = sampleData[idx_].planeNormal;	
 
 	vector<Triangle> tri0;// x < 0
 	vector<glm::vec3> tri0_normal;// x < 0
@@ -109,35 +110,43 @@ void ArrangedMesh::RearrangeFace(glm::vec3 refVec_, int idx_) {
 	SortTriangles(&tri1, &dotValueTri1, 0, tri1.size() - 1);
 
 	//Set arMap
-	arMap = new ArrangeMapper[arMapSize];
-	for (int loop = 0; loop < arMapSize; loop++) {
-		arMap[loop].angle = (6 * loop) / (float)arMapSize;
+	arMap = new ArrangeMapper[arMapSize + 1];
+	for (int loop = 0; loop < arMapSize + 1; loop++) {
+		arMap[loop].angle = (6 * loop) / (float)arMapSize;		
 	}
 	
 	int arIdx = 0;
 	int sizeValTri0 = dotValueTri0.size();
 	int sizeValTri1 = dotValueTri1.size();
 		
-	for (int loop = 0; loop < sizeValTri0; loop++) {
-		float val = dotValueTri0[loop] + 1; // 0 ~ 2
-		if (val > arMap[arIdx].angle) {
-			arMap[arIdx].idx = loop;			
+	float val;
+	for (int loop = sizeValTri0 - 1; loop >= 0; loop--) {
+		val = -dotValueTri0[loop] + 1; // 0 ~ 2
+		if (val >= arMap[arIdx].angle) {
+			arMap[arIdx].idx = (sizeValTri0 - 1) - loop;
+			//cout << val << " / " << arIdx << " / " << arMap[arIdx].idx << endl;
 			arIdx++;
 		}
 	}
+
 	for (int loop = 0; loop < sizeValTri1; loop++) {
-		float val = dotValueTri1[loop] + 3; // 2 ~ 4
-		if (val > arMap[arIdx].angle) {
+		val = dotValueTri1[loop] + 3; // 2 ~ 4
+		if (val >= arMap[arIdx].angle) {
 			arMap[arIdx].idx = loop + sizeValTri0;
+			//cout << val << " ./ " << arIdx << " / " << arMap[arIdx].idx << endl;
 			arIdx++;
 		}
 	}
-	for (int loop = 0; loop < sizeValTri0; loop++) {//추가하는 중복 face의 수를 최소화 하는 refVec을 찾으면 더 효율적
-		float val = dotValueTri0[loop] + 5; // 4 ~ 6
-		if (val > arMap[arIdx].angle) {
-			arMap[arIdx].idx = loop + sizeValTri0 + sizeValTri1;
+	for (int loop = sizeValTri0 - 1; loop >= 0; loop--) {//추가하는 중복 face의 수를 최소화 하는 refVec을 찾으면 더 효율적
+		val = -dotValueTri0[loop] + 5; // 4 ~ 6
+		if (val >= arMap[arIdx].angle) {
+			arMap[arIdx].idx = (sizeValTri0 + sizeValTri1) + (sizeValTri0 - 1) - loop;
+			//cout << val << " / " << arIdx << " / " << arMap[arIdx].idx << endl;
 			arIdx++;			
-			if (arIdx >= arMapSize)break;
+			if (arIdx >= arMapSize) {
+				arMap[arMapSize].idx = (sizeValTri0 + sizeValTri1) + (sizeValTri0 - 1);
+				break;
+			}
 		}
 	}
 
@@ -159,7 +168,7 @@ void ArrangedMesh::RearrangeFace(glm::vec3 refVec_, int idx_) {
 void ArrangedMesh::SetupMesh(){
 	glBindVertexArray(this->VAO);
 
-	glGenBuffers(samplingDirCount, EBOs);
+	glGenBuffers(samplingDirCount, EBOs); 
 	for (int loop = 0; loop < samplingDirCount; loop++) {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOs[loop]);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->arrangedTriangles[loop].size() * sizeof(Triangle),

@@ -67,29 +67,22 @@ void PartRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		// Draw mesh
 		glBindVertexArray(processingMesh->VAO);
 
-		glm::vec3 dirCam = cam_->transform->position - transform->position;
-		glm::vec3 dirCamYZ = glm::normalize(glm::vec3(0, dirCam.y, dirCam.z));
+		glm::vec3 dirCam = glm::normalize(cam_->transform->position - transform->position);
 
 		unsigned int eboIdx;
-
-		dirCam = glm::normalize(dirCam);
-		float angleVert = glm::dot(dirCam, glm::vec3(0, 1, 0));
-		angleVert *= samplingDirCount;
-		eboIdx = abs(angleVert) + 0.5f;
-		cout << eboIdx << endl;
-		double angle = 3.141592f / samplingDirCount * eboIdx;//TODO
-		glm::vec3 planeNormal = glm::vec3(0, sin(angle), cos(angle));
-		/*if (eboIdx == 0) {
-			planeNormal = glm::vec3(0, 0, 1);
-		}
-		if (eboIdx == 1) {
-			planeNormal = glm::vec3(0, 1, 0);
-		}
-		if (eboIdx == 2) {
-			planeNormal = glm::vec3(0, 0.86625f, 0.5f);
-		}*/
-
-		float angleHori = glm::dot(dirCam, planeNormal);
+		
+		glm::vec3 dirCamYZ = glm::normalize(glm::vec3(0, dirCam.y, dirCam.z));
+		float angleVert = glm::dot(dirCamYZ, glm::vec3(0, 0, 1));
+		if (dirCamYZ.y < 0)angleVert = -angleVert;
+		angleVert = (-angleVert + 1) / 2 * samplingDirCount;//0 ~ sampleDirCount
+		eboIdx = angleVert + 0.5f;
+		eboIdx %= samplingDirCount;
+		//eboIdx = 1;
+		
+		glm::vec3 planeNormal = processingMesh->sampleData[eboIdx].planeNormal;
+		glm::vec3 dirCamOnPlane = dirCam - glm::dot(dirCam, planeNormal) * planeNormal;
+		dirCamOnPlane = glm::normalize(dirCamOnPlane);
+		float angleHori = glm::dot(dirCamOnPlane, processingMesh->sampleData[eboIdx].refVec);
 		
 		if (dirCam.x <= 0) {
 			angleHori = -angleHori + 1;
@@ -97,14 +90,24 @@ void PartRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		else {
 			angleHori += 3;
 		}		//0 ~ 4로 전체 표현
-		if (angleHori < 1)angleHori += 4;//val -> 0 ~ 5
+		if (angleHori < 1)angleHori += 4;//val -> 1 ~ 5
 
 		int mapperIdx = (arMapSize * angleHori / 6.0f) + 0.5f;//중간 기준
-		int t = arMapSize / 6 + 0.5f;
+		int t = arMapSize / 6 + 0.5f + 6;
+		if (mapperIdx - t < 0) {
+			mapperIdx = t;
+		}
 		int startTriIdx = processingMesh->arMap[mapperIdx - t].idx; //시작
-		if (mapperIdx + t >= 360)t--;
-		int tCount = processingMesh->arMap[mapperIdx + t].idx - startTriIdx;
 		
+		if (mapperIdx + t > arMapSize) {
+			mapperIdx = arMapSize - t;
+		}
+		int tCount = processingMesh->arMap[mapperIdx + t].idx - startTriIdx;
+		/*cout << "angleH: " << angleHori << " / "
+			<< "mapperIddx: " << mapperIdx << " / "
+			<< "from: " << startTriIdx << " / "
+			<< "count: " << tCount 
+			<< endl;*/
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, processingMesh->EBOs[eboIdx]);
 		glDrawElements(GL_TRIANGLES, tCount * 3, GL_UNSIGNED_INT, (GLvoid*)(startTriIdx * sizeof(Triangle)));

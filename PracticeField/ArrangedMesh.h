@@ -7,14 +7,19 @@ struct ArrangeMapper {
 	GLuint idx;
 };
 
-const unsigned int arMapSize = 360;
-const unsigned int samplingDirCount = 2;
+struct SampleData {
+	glm::vec3 refVec;
+	glm::vec3 planeNormal;
+};
+
+const unsigned int arMapSize = 270;//¹è¿­ °¹¼ö´Â arMapSize + 1
+const unsigned int samplingDirCount = 12;
 
 class ArrangedMesh : public Mesh
 {
 private:
 	void SortTriangles(vector<Triangle>* triangles_, vector<float>* dotValues, int lo, int hi);
-	void RearrangeFace(glm::vec3 refVec_, int idx_);
+	void RearrangeFace(int idx_);
 
 	
 	vector<Triangle>* arrangedTriangles;
@@ -28,5 +33,6 @@ public:
 
 	unsigned int* EBOs;
 	ArrangeMapper* arMap;
+	SampleData* sampleData;
 };
 

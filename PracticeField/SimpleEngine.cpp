@@ -33,14 +33,14 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 }
 
 void SimpleEngine::Begin() {
-	SetVsyncMode(true);
+	SetVsyncMode(false);
 
 	currentScene = new Scene();
 	currentScene->Load();
 
 	do { 
 		Time::Tick();
-		//Time::PrintRenderTime(3);
+		Time::PrintRenderTime(3);
 
 		InputModule::CheckInput();		
 		
