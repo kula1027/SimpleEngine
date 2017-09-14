@@ -2,6 +2,7 @@
 
 #include "ObjectPool.h"
 #include "Camera.h"
+#include "Skybox.h"
 
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@ class Scene
 {
 private:
 	static Scene* current;
-	
+	Skybox skybox;
 	Camera camera;
 	
 public:
@@ -28,4 +29,7 @@ public:
 	void UpdateObjects();
 	void RenderObjectsSinglePass();	
 	void RenderObjects();
+
+	void WonderfulWorld();
+	void NotWonderfulWorld();
 };

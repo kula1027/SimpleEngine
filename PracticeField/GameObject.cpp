@@ -1,16 +1,17 @@
 #include "GameObject.h"
 
 #include "Renderer.h"
-#include "FileLoader.h"
+#include "FileManager.h"
 #include "Scene.h"
 
 GameObject::GameObject(){
 	name = strNoname;	
+	transform = new Transform();
 	Scene::GetCurrent()->objectPool.AddGameObject(this);
 }
 
 void GameObject::SetRenderer(Renderer * renderer_){
-	renderer_->SetReferences(&transform, meshModel);
+	renderer_->SetReferences(transform, meshModel);
 
 	Scene::GetCurrent()->objectPool.AddRenderer(renderer_);
 	renderer = renderer_;
@@ -31,4 +32,7 @@ void GameObject::SetShader(Shader * shader_) {
 GameObject::~GameObject(){	
 	free(meshModel);
 	free(renderer);
+	for (int loop = 0; loop < components.size(); loop++) {
+		free(components[loop]);
+	}
 }

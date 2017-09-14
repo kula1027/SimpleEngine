@@ -12,8 +12,8 @@ struct SampleData {
 	glm::vec3 planeNormal;
 };
 
-const unsigned int arMapSize = 270;//¹è¿­ °¹¼ö´Â arMapSize + 1
-const unsigned int samplingDirCount = 12;
+const unsigned int arMapSize = 120;//¹è¿­ °¹¼ö´Â arMapSize + 1
+const unsigned int samplingDirCount = 6;
 
 class ArrangedMesh : public Mesh
 {

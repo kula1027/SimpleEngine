@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include "Lights.h"
-#include "FileLoader.h"
+#include "FileManager.h"
 #include "Scene.h"
 #include "ArrangedMesh.h"
 #include "MeshModel.h"
@@ -32,62 +32,70 @@ void Scene::Load() {
 	current = this;
 
 	GameObject* go;
-	int objCount = 8;
 	
-
-	MeshModel* mSph = FileLoader::LoadMeshModel("sphere.obj");
-	for (int i = 0; i < mSph->meshes->size(); i++) {
-		mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
-	}
-
-	for (int loop = 0; loop < objCount; loop++) {
-		for (int loop2 = 0; loop2 < objCount; loop2++) {
-			for (int loop3 = 0; loop3 < objCount; loop3++) {
-				GameObject* go = new GameObject();
-				go->SetModel(mSph);
-				go->SetRenderer(new PartRenderer());
-				go->SetShader(FileLoader::LoadShader());				
-				go->transform.position = glm::vec3(
-					(loop - (float)objCount / 2) * 5 + 2,
-					(loop2) * 5 + 5,
-					(-loop3) * 5
-				);
-			}
-		}
-	}
-
-	/*
-	for (int loop = 0; loop < objCount; loop++) {
-		for (int loop2 = 0; loop2 < objCount; loop2++) {
-			for (int loop3 = 0; loop3 < objCount; loop3++) {
-				GameObject* go = new GameObject();
-				go->SetModel(FileLoader::LoadMeshModel("sphere.obj"));
-				go->SetRenderer(new Renderer());
-				go->SetShader(FileLoader::LoadShader());
-				go->transform.position = glm::vec3(
-					(loop - objCount / 2) * 5 + 2,
-					(loop2) * 5 + 5,
-					(-loop3) * 5
-				);
-			}
-		}
-	}*/
+	//NotWonderfulWorld();
+	WonderfulWorld();
 	
-	
+	BaseLight* pointLight = new PointLight();
+	BaseLight* directionalLight = new DirectionalLight();
+	objectPool.AddLight(directionalLight);
+	objectPool.AddLight(pointLight);	
+}
 
-	/*mSph = FileLoader::LoadMeshModel("cube.obj");
-	for (int i = 0; i < mSph->meshes->size(); i++) {
-		mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
+
+void Scene::WonderfulWorld() {
+	GameObject* go;
+
+	Texture* t = FileManager::LoadTexture("burnt_sand_brown.png", TextureType_Diffuse);
+	MeshModel* mPlane = FileManager::LoadMeshModel("plane.obj");
+	mPlane->meshes->at(0)->textures.push_back(t);
+	Mesh* thatMesh = mPlane->meshes->at(0);
+	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
+		thatMesh->vertices[loop].TexCoords = glm::vec2(thatMesh->vertices[loop].Position.x * 10, thatMesh->vertices[loop].Position.z * 10);
 	}
+	thatMesh->ResetupMesh();
+
 	go = new GameObject();
+	go->SetModel(mPlane);
+	go->SetRenderer(new Renderer());
+	go->SetShader(FileManager::LoadShader());
+	go->transform->scale = glm::vec3(500, 1, 500);
+
+	go = new GameObject();
+	go->SetModel(FileManager::LoadMeshModel("nanosuit/nanosuit.obj"));
+	go->SetRenderer(new Renderer());
+	go->SetShader(FileManager::LoadShader());
+}
+
+
+void Scene::NotWonderfulWorld() {
+	int objCount = 0;
+	GameObject* go;
+
+	/*MeshModel* mSph = FileLoader::LoadMeshModel("sphere.obj");
+	for (int i = 0; i < mSph->meshes->size(); i++) {
+	mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
+	}
+
+	for (int loop = 0; loop < objCount; loop++) {
+	for (int loop2 = 0; loop2 < objCount; loop2++) {
+	for (int loop3 = 0; loop3 < objCount; loop3++) {
+	GameObject* go = new GameObject();
 	go->SetModel(mSph);
 	go->SetRenderer(new PartRenderer());
 	go->SetShader(FileLoader::LoadShader());
-	go->transform.position = glm::vec3(0, 8, 0);*/
+	go->transform->position = glm::vec3(
+	(loop - (float)objCount / 2) * 5 + 2,
+	(loop2) * 5 + 5,
+	(-loop3) * 5
+	);
+	}
+	}
+	}*/
 
 	/*mSph = FileLoader::LoadMeshModel("venusm.obj");
 	for (int i = 0; i < mSph->meshes->size(); i++) {
-		mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
+	mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
 	}
 	go = new GameObject();
 	go->SetModel(mSph);
@@ -95,22 +103,24 @@ void Scene::Load() {
 	go->SetShader(FileLoader::LoadShader());
 	go->transform.scale = glm::vec3(0.005f, 0.005f, 0.005f);
 	go->transform.position = glm::vec3(-20, 8, 0);*/
-	
-	go = new GameObject();
-	go->SetModel(FileLoader::LoadMeshModel("plane.obj"));
-	go->SetRenderer(new Renderer());
-	go->SetShader(FileLoader::LoadShader());
-	go->transform.scale = glm::vec3(20, 1, 20);
 
-	BaseLight* pointLight = new PointLight();
-	BaseLight* directionalLight = new DirectionalLight();
-	objectPool.AddLight(directionalLight);
-	objectPool.AddLight(pointLight);
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	for (int loop = 0; loop < objCount; loop++) {
+		for (int loop2 = 0; loop2 < objCount; loop2++) {
+			for (int loop3 = 0; loop3 < objCount; loop3++) {
+				GameObject* go = new GameObject();
+				go->SetModel(FileManager::LoadMeshModel("sphere.obj"));
+				go->SetRenderer(new Renderer());
+				go->SetShader(FileManager::LoadShader());
+				go->transform->position = glm::vec3(
+					(loop - objCount / 2) * 5 + 2,
+					(loop2) * 5 + 5,
+					(-loop3) * 5
+				);
+			}
+		}
+	}
 }
-
 
 void Scene::UpdateObjects(){
 	camera.Update();
@@ -135,8 +145,12 @@ void Scene::RenderObjectsSinglePass(){
 void Scene::RenderObjects(){
 	camera.EnableOffSreenDraw();
 	
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	skybox.Render(&camera);
 	objectPool.RenderObjects(&camera);
+	
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	camera.PostDraw();
 }
 

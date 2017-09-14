@@ -125,7 +125,7 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="InputModule.cpp" />
     <ClCompile Include="BaseLight.cpp" />
-    <ClCompile Include="FileLoader.cpp" />
+    <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshModel.cpp" />
     <ClCompile Include="PartRenderer.cpp" />
@@ -138,6 +138,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleEngine.cpp" />
     <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
@@ -150,7 +151,7 @@
     <ClInclude Include="InputModule.h" />
     <ClInclude Include="IUpdatable.h" />
     <ClInclude Include="BaseLight.h" />
-    <ClInclude Include="FileLoader.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshModel.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleEngine.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>

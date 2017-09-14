@@ -101,6 +101,5 @@ void main(){
 	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir);
 
 	//resultColor += CalcPointLight(pointLight0, matColor, normal, viewDir);	;
-
 	color = resultColor;
 }

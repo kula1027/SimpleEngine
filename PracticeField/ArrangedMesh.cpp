@@ -71,6 +71,8 @@ void ArrangedMesh::RearrangeFace(int idx_) {
 	vector<Triangle> tri1;// x >= 0
 	vector<glm::vec3> tri1_normal;// x >= 0
 
+
+
 	for (int loop = 0; loop < triangles.size(); loop++) {
 		GLuint vi0 = triangles[loop].idx0;
 		GLuint vi1 = triangles[loop].idx1;

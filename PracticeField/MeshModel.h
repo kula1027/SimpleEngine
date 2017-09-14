@@ -2,12 +2,9 @@
 
 // Std. Includes
 #include <string>
-#include <fstream>
-#include <sstream>
 #include <iostream>
 #include <map>
 #include <vector>
-using namespace std;
 
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
@@ -24,11 +21,12 @@ using namespace std;
 #include <assimp\Importer.hpp>
 #include <assimp\scene.h>
 
-#include <SOIL\SOIL.h>
 #include "Mesh.h"
 
 
 using namespace std;
+
+class Texture;
 
 class MeshModel
 {
@@ -37,26 +35,20 @@ public:
 	MeshModel();
 	MeshModel(GLchar* path);
 	~MeshModel();
-	vector<Mesh*>* meshes;
+	vector<Mesh*>* meshes;	
 
 	string GetDirectory();
 
 protected:
-	
 
 private:
 	/*  Model Data  */
-	
-	string directory;
-	vector<Texture> textures_loaded;	
-	// Stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-	/*  Functions   */
-	
+	string directory;	
+	string fileName;
+
 	void ProcessNode(aiNode* node, const aiScene* scene);
 	Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
 	void LoadModel(string path);
-	vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
-
-	GLint TextureFromFile(const char* path, string directory);
+	vector<Texture*> LoadMaterialTextures(aiMaterial* mat, aiTextureType type);
 };
 

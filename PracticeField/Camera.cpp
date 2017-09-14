@@ -6,7 +6,7 @@
 #include "GameWindow.h"
 #include "Time.h"
 #include "Shader.h"
-#include "FileLoader.h"
+#include "FileManager.h"
 
 
 
@@ -34,12 +34,12 @@ Camera::Camera(){
 	fov = 0.8f;
 
 	near = 0.1f;
-	far = 1000.0f;
+	far = 10000.0f;
 
 	verticalAngle = 0;
 	horizontalAngle = 3.14f;
 
-	moveSpeed = 5.0f;
+	moveSpeed = 20.0f;
 	sensitivity = 0.001f;
 
 	projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
@@ -51,7 +51,7 @@ Camera::~Camera(){
 }
 
 void Camera::InitOffScreenDraw(){
-	offScreenData.screenShader = FileLoader::LoadShader("defaultScreen.vert", "defaultScreen.frag");
+	offScreenData.screenShader = FileManager::LoadShader("defaultScreen.vert", "defaultScreen.frag");
 	offScreenData.screenShader->Use();
 	glUniform1i(offScreenData.screenShader->GetUniformLocation("screenTexture"), 0);
 
@@ -117,6 +117,10 @@ glm::mat4 Camera::VPmatrix() {
 
 glm::mat4 Camera::Vmatrix() {
 	return viewMatrix;
+}
+
+glm::mat4 Camera::Pmatrix() {
+	return projectionMatrix;
 }
 
 void Camera::Update(){

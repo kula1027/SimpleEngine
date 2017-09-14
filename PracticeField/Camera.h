@@ -52,6 +52,7 @@ public:
 	~Camera();
 	glm::mat4 VPmatrix();
 	glm::mat4 Vmatrix();
+	glm::mat4 Pmatrix();
 	void Update();
 	void EnableOffSreenDraw();
 	void PostDraw();

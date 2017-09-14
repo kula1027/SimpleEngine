@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "MeshModel.h"
+#include "Texture.h"
 #include "Lights.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -66,36 +67,7 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 
-		GLuint diffuseNr = 1;
-		GLuint specularNr = 1;
-
-		if (processingMesh->textures.size() <= 0) {
-			glUniform1i(difTexCountID, 0);
-		}
-		else {
-			glUniform1i(difTexCountID, 1);
-
-			for (GLuint i = 0; i < processingMesh->textures.size(); i++)
-			{
-				glActiveTexture(GL_TEXTURE0 + i); // Activate proper texture unit before binding
-												  // Retrieve texture number (the N in diffuse_textureN)
-				stringstream ss;
-				string number;
-				string name = processingMesh->textures[i].type;
-				if (name == "texture_diffuse")
-					ss << diffuseNr++; // Transfer GLuint to stream
-				else if (name == "texture_specular")
-					ss << specularNr++; // Transfer GLuint to stream		
-
-										//cout << name << endl;
-
-				number = ss.str();
-
-				glBindTexture(GL_TEXTURE_2D, processingMesh->textures[i].id);
-				glUniform1i(shader->GetUniformLocation((GLchar*)(name + number).c_str()), i);
-			}
-		}
-		glActiveTexture(GL_TEXTURE0);		
+		ApplyTexture(processingMesh);
 
 		// Draw mesh
 		glBindVertexArray(processingMesh->VAO);
@@ -115,3 +87,35 @@ void Renderer::ComputeModelMatrix(Camera * cam){
 	mvpMatrix = cam->VPmatrix() * modelMatrix;
 }
 
+void Renderer::ApplyTexture(Mesh* processingMesh_){
+	if (processingMesh_->textures.size() <= 0) {
+		glUniform1i(difTexCountID, 0);
+	}
+	else {
+		GLuint diffuseNr = 0;
+		GLuint specularNr = 0;
+
+		glUniform1i(difTexCountID, 1);
+
+		for (GLuint i = 0; i < processingMesh_->textures.size(); i++)
+		{
+			glActiveTexture(GL_TEXTURE0 + i); // Activate proper texture unit before binding
+											  // Retrieve texture number (the N in diffuse_textureN)
+			stringstream ss;
+			string number;
+			string name = processingMesh_->textures[i]->typeName;
+			if (name == "texture_diffuse")
+				ss << diffuseNr++; // Transfer GLuint to stream
+			else if (name == "texture_specular")
+				ss << specularNr++; // Transfer GLuint to stream		
+
+									//cout << name << endl;
+
+			number = ss.str();
+
+			glBindTexture(GL_TEXTURE_2D, processingMesh_->textures[i]->id);
+			glUniform1i(shader->GetUniformLocation((GLchar*)(name + number).c_str()), i);
+		}
+	}
+	glActiveTexture(GL_TEXTURE0);
+}

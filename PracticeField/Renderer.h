@@ -21,6 +21,7 @@ class Transform;
 class Camera;
 class MeshModel;
 class BaseLight;
+class Mesh;
 
 class Renderer{
 protected:
@@ -30,6 +31,7 @@ protected:
 	GLuint modelMatrixID;
 
 	GLuint difTexCountID;
+	GLuint specTexCountID;
 
 	ID_dLight id_dLight;
 	ID_pLight id_pLight;
@@ -39,6 +41,8 @@ protected:
 
 	Transform* transform;//ref to gameObject transform
 	MeshModel* meshModel;//ref to gameObject meshModel
+
+	void ApplyTexture(Mesh* processingMesh_);
 
 public:	
 	Renderer();

@@ -23,7 +23,7 @@ private:
 
 public:
 	std::string name;
-	Transform transform;//TODO: 포인터형으로 바꿔야할듯
+	Transform* transform;//TODO: 포인터형으로 바꿔야할듯
 
 	GameObject();
 

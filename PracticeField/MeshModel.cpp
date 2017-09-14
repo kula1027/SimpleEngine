@@ -1,5 +1,11 @@
 #include "MeshModel.h"
 
+#include <fstream>
+#include <sstream>
+
+#include "Texture.h"
+#include "FileManager.h"
+
 MeshModel::MeshModel(){}
 
 MeshModel::MeshModel(GLchar * path){
@@ -8,11 +14,14 @@ MeshModel::MeshModel(GLchar * path){
 }
 
 MeshModel::~MeshModel(){
+	for (int loop = 0; loop < meshes->size(); loop++) {
+		delete(meshes->at(loop));
+	}
 	delete(this->meshes);
 }
 
 string MeshModel::GetDirectory(){
-	return directory;
+	return directory + fileName;
 }
 
 void MeshModel::LoadModel(string path){
@@ -27,7 +36,8 @@ void MeshModel::LoadModel(string path){
 		return;
 	}
 	// Retrieve the directory path of the filepath
-	this->directory = path;// .substr(0, path.find_last_of('/'));
+	this->directory = path.substr(0, path.find_last_of('/') + 1);
+	this->fileName = path.substr(path.find_last_of('/') + 1, path.size());
 
 	// Process ASSIMP's root node recursively
 	this->ProcessNode(scene->mRootNode, scene);
@@ -56,7 +66,7 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 	vector<Vertex> vertices;
 	//vector<GLuint> indices;
 	vector<Triangle> triangles;
-	vector<Texture> textures;
+	vector<Texture*> textures;
 
 	// Walk through each of the mesh's vertices
 	for (GLuint i = 0; i < mesh->mNumVertices; i++)
@@ -111,15 +121,16 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 		// Diffuse: texture_diffuseN
 		// Specular: texture_specularN
 		// Normal: texture_normalN		
+		
 
 		// 1. Diffuse maps
-		vector<Texture> diffuseMaps = this->LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		vector<Texture*> diffuseMaps = this->LoadMaterialTextures(material, aiTextureType_DIFFUSE);
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 		// 2. Specular maps
-		vector<Texture> specularMaps = this->LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		vector<Texture*> specularMaps = this->LoadMaterialTextures(material, aiTextureType_SPECULAR);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		// 3. Normal maps
-		vector<Texture> normalMaps = this->LoadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
+		vector<Texture*> normalMaps = this->LoadMaterialTextures(material, aiTextureType_NORMALS);
 		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 	}
 
@@ -127,62 +138,38 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 	return new Mesh(vertices, triangles, textures);
 }
 
-vector<Texture> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName){
-	vector<Texture> textures;
-	
+vector<Texture*> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType type) {
+	vector<Texture*> textures;
+
 	for (GLuint i = 0; i < mat->GetTextureCount(type); i++)
-	{
+	{	
+		TextureType tType;
+		switch (type) {
+		case aiTextureType_DIFFUSE:
+			tType = TextureType_Diffuse;
+			break;
+		case aiTextureType_SPECULAR:
+			tType = TextureType_Specular;
+			break;
+		case aiTextureType_NORMALS:
+			tType = TextureType_Normals;
+			break;
+
+		default:
+			tType = TextureType_Diffuse;
+			break;
+		}
+
 		aiString str;
 		mat->GetTexture(type, i, &str);
-		// Check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-		GLboolean skip = false;		
 		
-		for (GLuint j = 0; j < textures_loaded.size(); j++)
-		{
-			if (std::strcmp(textures_loaded[j].path.c_str(), str.C_Str()) == 0)
-			{
-				textures.push_back(textures_loaded[j]);
-				skip = true; // A texture with the same filepath has already been loaded, continue to next one. (optimization)
-				break;
-			}
-		}
-		if (!skip)
-		{   // If texture hasn't been loaded already, load it
-			Texture texture;
-			texture.id = TextureFromFile(str.C_Str(), this->directory);
-			texture.type = typeName;
-			texture.path = str.C_Str();			
-			textures.push_back(texture);
-			this->textures_loaded.push_back(texture);  // Store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
-		}
+		string filePath = string(str.C_Str());
+		
+		filePath = directory.substr(directory.find_first_of('/') + 1, directory.size()) + filePath;
+
+		Texture* texture = FileManager::LoadTexture(filePath, tType);
+		textures.push_back(texture);
 	}
 
 	return textures;
-}
-
-GLint MeshModel::TextureFromFile(const char* path, string directory)
-{
-	cout << "Load Texture... " + string(path) << endl;
-	//Generate texture ID and load texture data 
-	string filename = string(path);
-	filename = directory + '/' + filename;
-	GLuint textureID;
-	glGenTextures(1, &textureID);
-
-	int width, height;
-	
-	unsigned char* image = SOIL_load_image(filename.c_str(), &width, &height, 0, SOIL_LOAD_RGB);	
-	// Assign texture to ID
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	SOIL_free_image_data(image);
-	return textureID;
 }

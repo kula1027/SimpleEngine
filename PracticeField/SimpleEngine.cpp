@@ -33,20 +33,19 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 }
 
 void SimpleEngine::Begin() {
-	SetVsyncMode(false);
+	SetVsyncMode(true);
 
 	currentScene = new Scene();
 	currentScene->Load();
 
 	do { 
 		Time::Tick();
-		Time::PrintRenderTime(3);
+		//Time::PrintRenderTime(3);
 
 		InputModule::CheckInput();		
 		
 		currentScene->UpdateObjects();
-		
-	//	currentScene->RenderObjects();
+			
 		currentScene->RenderObjects();
 		
 		glfwSwapBuffers(GameWindow::GetWindow());
