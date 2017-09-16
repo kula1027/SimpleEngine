@@ -54,7 +54,7 @@ public:
 	glm::mat4 Vmatrix();
 	glm::mat4 Pmatrix();
 	void Update();
-	void EnableOffSreenDraw();
+	void EnableOffSreenBuffer();
 	void PostDraw();
 
 	Transform* transform;

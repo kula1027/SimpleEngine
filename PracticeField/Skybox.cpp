@@ -75,7 +75,7 @@ void Skybox::InitShader(){
 
 
 void Skybox::Render(Camera* cam_){
-	glDepthMask(GL_FALSE);
+	glDepthFunc(GL_LEQUAL);
 
 	skyboxShader->Use();
 	glm::mat4 viewMat = glm::mat4(glm::mat3(cam_->Vmatrix()));//remove translation, remain rotation
@@ -88,6 +88,6 @@ void Skybox::Render(Camera* cam_){
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapId);
 	glDrawArrays(GL_TRIANGLES, 0, 36);//18(vts per face) * 6(directions) / 3(vts per triangle) -> 36(triangles)
 
-	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LESS);
 }
 

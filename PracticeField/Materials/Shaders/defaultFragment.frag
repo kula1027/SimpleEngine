@@ -1,19 +1,22 @@
 #version 330 core
 
+out vec3 color;
+
 in vec2 UV;
 in vec3 Position_worldspace;
 in vec3 Normal_cameraspace;
 in vec3 ViewDirection_cameraspace;
 in vec3 LightDirection_cameraspace;
-
-out vec3 color;
+in vec4 FragPosLightSpace;
 
 uniform mat4 MV;
 
-struct DirectionalLight{
+struct DirectionalLight{	
 	vec3 direction;
 	vec3 color;
-	float power;
+	float power;	
+	sampler2D shadowMap;
+	mat4 lightSpaceMatrix;
 };
 
 struct PointLight{
@@ -23,7 +26,7 @@ struct PointLight{
 };
 
 struct MaterialColor{
-	vec3 diffuseColor;
+	vec3 diffuseColor; 
 	vec3 ambientColor;
 	vec3 specularColor;
 };
@@ -43,7 +46,7 @@ uniform PointLight pointLight0;
 uniform int lightCountDirectional;
 uniform DirectionalLight directionalLight0;
 
-vec3 CalcDirLight(DirectionalLight light_, MaterialColor matColor_, vec3 normal_, vec3 viewDir_){
+vec3 CalcDirLight(DirectionalLight light_, MaterialColor matColor_, vec3 normal_, vec3 viewDir_, float shadow_){
 	vec3 lightDir = normalize(-directionalLight0.direction);
 
 	float diff = max( dot( normal_,lightDir ), 0);
@@ -54,7 +57,8 @@ vec3 CalcDirLight(DirectionalLight light_, MaterialColor matColor_, vec3 normal_
 	vec3 diffuse = directionalLight0.color * directionalLight0.power * diff * matColor_.diffuseColor;
 	vec3 specular = vec3(0.3) * directionalLight0.color  * spec;	
 
-	return (ambient + diffuse + specular);	
+	
+	return (ambient + (1 - shadow_) * (diffuse + specular));
 }
 
 vec3 CalcPointLight(PointLight light_, MaterialColor matColor_, vec3 normal_, vec3 viewDir_){
@@ -75,10 +79,23 @@ vec3 CalcPointLight(PointLight light_, MaterialColor matColor_, vec3 normal_, ve
 	diffuse *= attenuation;
 	specular *= attenuation;
 
-	return (ambient + diffuse + specular);
+	return (ambient + diffuse + specular);	
 }
 
+float CalcShadow(vec4 fragPosLightSpace_){
+	// perform perspective divide
+    vec3 projCoords = fragPosLightSpace_.xyz / fragPosLightSpace_.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(directionalLight0.shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
 
+    return shadow;
+}
 
 void main(){
 	MaterialColor matColor;
@@ -98,8 +115,13 @@ void main(){
 
 	vec3 resultColor = vec3(0.0);
 
-	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir);
+	float shadow = CalcShadow(FragPosLightSpace);
 
-	//resultColor += CalcPointLight(pointLight0, matColor, normal, viewDir);	;
+	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir, shadow);
+	//resultColor += CalcPointLight(pointLight0, matColor, normal, viewDir);
+	
+	
 	color = resultColor;
+	
+	//color = vec3( texture(directionalLight0.shadowMap, UV ).r);
 }

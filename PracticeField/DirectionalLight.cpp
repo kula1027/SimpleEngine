@@ -1,5 +1,9 @@
 #include "DirectionalLight.h"
+#include <gl\glew.h>
 #include <glm\gtc\matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include "FileManager.h"
+#include "Shader.h"
 
 
 DirectionalLight::DirectionalLight(){
@@ -7,15 +11,57 @@ DirectionalLight::DirectionalLight(){
 	color = glm::vec3(1, 1, 1);
 	position = glm::vec3(0, -1, -0.5);
 
-	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, shadowData.nearPlane, shadowData.farPlane);
+	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 100.0f);
 	glm::mat4 lightView = glm::lookAt(
-		glm::vec3(-2.0f, 100.0f, -1.0f),
+		position,
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+	InitShadowMap();
 }
 
 
 DirectionalLight::~DirectionalLight(){
 
+}
+
+void DirectionalLight::InitShadowMap(){
+	glGenTextures(1, &shadowData.depthMapTextureId);
+	glGenFramebuffers(1, &shadowData.depthMapFBO);
+
+	glBindTexture(GL_TEXTURE_2D, shadowData.depthMapTextureId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		shadowData.resWidth, shadowData.resHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, shadowData.depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowData.depthMapTextureId, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	shadowMapShader = FileManager::LoadShader("shadowMap.vert", "shadowMap.frag");
+	lightSpaceMatrixId = shadowMapShader->GetUniformLocation("lightSpaceMatrix");
+	modelMatrixId = shadowMapShader->GetUniformLocation("modelMatrix");
+}
+
+void DirectionalLight::EnableShadowMapBuffer(){
+	lightProjection = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, near_plane, far_plane);
+
+	lightView = glm::lookAt(glm::vec3(-2.0f, 15.0f, -5.0f),
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f));
+
+	shadowMapShader->Use();
+	lightSpaceMatrix = lightProjection * lightView;
+	glUniformMatrix4fv(lightSpaceMatrixId, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+	glViewport(0, 0, shadowData.resWidth, shadowData.resHeight);
+	glBindFramebuffer(GL_FRAMEBUFFER, shadowData.depthMapFBO);
+	glClear(GL_DEPTH_BUFFER_BIT);		
 }

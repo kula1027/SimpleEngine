@@ -6,11 +6,11 @@
 class Shader;
 
 struct ShadowData {
-	unsigned int resWidth = 1024;
-	unsigned int resHeight = 1024;
+	unsigned int resWidth = 2048;
+	unsigned int resHeight = 2048;
 
-	float nearPlane = 0.1f;
-	float farPlane = 100.0f;
+	unsigned int depthMapTextureId;
+	unsigned int depthMapFBO;
 };
 
 class BaseLight {
@@ -26,6 +26,14 @@ public:
 
 	ShadowData shadowData;
 
+	unsigned int modelMatrixId;
+	glm::mat4 lightSpaceMatrix;
+
 	virtual inline void Use(Shader* shader) {}
+	virtual inline void InitShadowMap() {}
+	virtual inline void EnableShadowMapBuffer() {}
+
+protected:
+	
 };
 

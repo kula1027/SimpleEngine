@@ -6,8 +6,8 @@ out vec3 TexCoords;
 uniform mat4 P;
 uniform mat4 V;
 
-void main()
-{
+void main(){
     TexCoords = pos;
-    gl_Position = P * V * vec4(pos, 1.0);
+    vec4 pos_cameraSpace = P * V * vec4(pos, 1.0);
+	gl_Position = pos_cameraSpace.xyww;
 }  

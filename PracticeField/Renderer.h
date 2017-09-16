@@ -8,6 +8,8 @@ struct ID_dLight {
 	GLuint direction;
 	GLuint color;
 	GLuint power;
+	GLuint lightSpaceMatrix;
+	GLuint shadowMap;
 };
 
 struct ID_pLight {
@@ -52,6 +54,7 @@ public:
 	void SetReferences(Transform* transform_, MeshModel* meshModel_);
 	void SetShader(Shader* shader_);
 	virtual void Render(Camera* cam, std::vector<BaseLight*> lights);
+	void RenderShadowMap(BaseLight* light_);
 	void ComputeModelMatrix(Camera* cam);
 };
 

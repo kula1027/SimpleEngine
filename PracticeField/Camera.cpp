@@ -153,7 +153,10 @@ void Camera::Update(){
 	ComputeMatrix();
 }
 
-void Camera::EnableOffSreenDraw(){
+void Camera::EnableOffSreenBuffer(){
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glViewport(0, 0, GameWindow::GetWidth(), GameWindow::GetHeight());
 	glBindFramebuffer(GL_FRAMEBUFFER, offScreenData.frameBuffer);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -161,6 +164,8 @@ void Camera::EnableOffSreenDraw(){
 }
 
 void Camera::PostDraw(){
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDisable(GL_DEPTH_TEST);
 	glClearColor(0, 1.0f, 1.0f, 1.0f);

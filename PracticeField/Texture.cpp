@@ -3,7 +3,7 @@
 
 
 Texture::Texture(){
-	glGenTextures(1, &id);
+	glGenTextures(1, &textureId);
 
 }
 
@@ -22,11 +22,11 @@ Texture::Texture(string path_, TextureType type_) {
 	}
 	path = path_;
 
-	glGenTextures(1, &id);
+	glGenTextures(1, &textureId);
 
 	imageData = SOIL_load_image(path_.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
 
-	glBindTexture(GL_TEXTURE_2D, id);
+	glBindTexture(GL_TEXTURE_2D, textureId);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -45,7 +45,7 @@ Texture::~Texture()
 }
 
 void Texture::SetParams(GLenum paramName_, GLuint param_){
-	glBindTexture(GL_TEXTURE_2D, id);
+	glBindTexture(GL_TEXTURE_2D, textureId);
 	glTexParameteri(GL_TEXTURE_2D, paramName_, param_);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }

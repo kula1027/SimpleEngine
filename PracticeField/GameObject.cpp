@@ -7,13 +7,13 @@
 GameObject::GameObject(){
 	name = strNoname;	
 	transform = new Transform();
-	Scene::GetCurrent()->objectPool.AddGameObject(this);
+	Scene::GetCurrent()->AddGameObject(this);
 }
 
 void GameObject::SetRenderer(Renderer * renderer_){
 	renderer_->SetReferences(transform, meshModel);
 
-	Scene::GetCurrent()->objectPool.AddRenderer(renderer_);
+	Scene::GetCurrent()->AddRenderer(renderer_);
 	renderer = renderer_;
 }
 

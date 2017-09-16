@@ -24,7 +24,7 @@ private:
 	unsigned char* imageData;
 
 public:
-	GLuint id;
+	GLuint textureId;
 	string typeName;
 
 	Texture();

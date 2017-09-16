@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ObjectPool.h"
 #include "Camera.h"
 #include "Skybox.h"
 
@@ -9,6 +8,12 @@
 
 class MeshModel;
 class Shader;
+class IUpdatable;
+class GameObject;
+class BaseLight;
+class Renderer;
+
+using namespace std;
 
 class Scene
 {
@@ -17,14 +22,23 @@ private:
 	Skybox skybox;
 	Camera camera;
 	
+	vector<IUpdatable*> updatables;
+	vector<GameObject*> gameObjects;
+	vector<Renderer*> renderers;
+	vector<BaseLight*> lights;
+
 public:
 	Scene();
 	~Scene();
 
 	static Scene* GetCurrent();	
-	ObjectPool objectPool;//TODO: to pointer var
 
 	void Load();
+
+	void AddGameObject(GameObject* obj);
+	void AddUpdatable(IUpdatable* upd);
+	void AddRenderer(Renderer* rdr);
+	void AddLight(BaseLight* objLight);
 		
 	void UpdateObjects();
 	void RenderObjectsSinglePass();	

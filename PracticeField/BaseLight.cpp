@@ -1,7 +1,5 @@
 #include "BaseLight.h"
 
-
-
 BaseLight::BaseLight(){
 }
 

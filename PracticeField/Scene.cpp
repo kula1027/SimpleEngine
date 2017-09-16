@@ -8,6 +8,7 @@
 #include "MeshModel.h"
 #include "Renderer.h"
 #include "PartRenderer.h"
+#include "IUpdatable.h"
 
 #include <string>
 
@@ -25,9 +26,6 @@ Scene* Scene::GetCurrent(){
 	return current;
 }
 
-const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-unsigned int depthMapFBO;
-unsigned int depthMap;
 void Scene::Load() {	
 	current = this;
 
@@ -38,8 +36,24 @@ void Scene::Load() {
 	
 	BaseLight* pointLight = new PointLight();
 	BaseLight* directionalLight = new DirectionalLight();
-	objectPool.AddLight(directionalLight);
-	objectPool.AddLight(pointLight);	
+	AddLight(directionalLight);
+	AddLight(pointLight);	
+}
+
+void Scene::AddGameObject(GameObject * obj){
+	gameObjects.push_back(obj);
+}
+
+void Scene::AddUpdatable(IUpdatable * upd){
+	updatables.push_back(upd);
+}
+
+void Scene::AddRenderer(Renderer * rdr){
+	renderers.push_back(rdr);
+}
+
+void Scene::AddLight(BaseLight * objLight){
+	lights.push_back(objLight);
 }
 
 
@@ -51,7 +65,7 @@ void Scene::WonderfulWorld() {
 	mPlane->meshes->at(0)->textures.push_back(t);
 	Mesh* thatMesh = mPlane->meshes->at(0);
 	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
-		thatMesh->vertices[loop].TexCoords = glm::vec2(thatMesh->vertices[loop].Position.x * 10, thatMesh->vertices[loop].Position.z * 10);
+		thatMesh->vertices[loop].TexCoords = glm::vec2(thatMesh->vertices[loop].Position.x, thatMesh->vertices[loop].Position.z);
 	}
 	thatMesh->ResetupMesh();
 
@@ -59,7 +73,7 @@ void Scene::WonderfulWorld() {
 	go->SetModel(mPlane);
 	go->SetRenderer(new Renderer());
 	go->SetShader(FileManager::LoadShader());
-	go->transform->scale = glm::vec3(500, 1, 500);
+	go->transform->scale = glm::vec3(1, 1, 1);
 
 	go = new GameObject();
 	go->SetModel(FileManager::LoadMeshModel("nanosuit/nanosuit.obj"));
@@ -125,35 +139,38 @@ void Scene::NotWonderfulWorld() {
 void Scene::UpdateObjects(){
 	camera.Update();
 
-	objectPool.UpdateObjects();
+	for (int loop = 0; loop < updatables.size(); loop++) {
+		updatables[loop]->Update();
+	}
 }
 
 
 void Scene::RenderObjectsSinglePass(){
-	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
-//	ConfigureShaderAndMatrices();
-	//RenderScene();
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	
 	glClearColor(0.2f, 0.2f, 0.2f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	objectPool.RenderObjects(&camera);
+	int rSize = renderers.size();
+	for (int loop = 0; loop < rSize; loop++) {
+		renderers[loop]->Render(&camera, lights);
+	}
 }
 
 void Scene::RenderObjects(){
-	camera.EnableOffSreenDraw();
-	
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	int lightCount = lights.size();
+	int rdrCount = renderers.size();
+
+	glEnable(GL_DEPTH_TEST);
+	for (int loop = 0; loop < lightCount; loop++) {		
+		lights[loop]->EnableShadowMapBuffer();		
+		for (int loop2 = 0; loop2 < rdrCount; loop2++) {
+			renderers[loop2]->RenderShadowMap(lights[loop]);
+		}
+	}
+
+	camera.EnableOffSreenBuffer();
+	for (int loop = 0; loop < rdrCount; loop++) {
+		renderers[loop]->Render(&camera, lights);
+	}
 	skybox.Render(&camera);
-	objectPool.RenderObjects(&camera);
-	
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	camera.PostDraw();
-}
-
-void ConfigureShaderAndMatrices() {
-	
 }
