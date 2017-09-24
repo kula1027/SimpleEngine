@@ -28,10 +28,9 @@ public:
 
 	unsigned int modelMatrixId;
 	glm::mat4 lightSpaceMatrix;
-
-	virtual inline void Use(Shader* shader) {}
-	virtual inline void InitShadowMap() {}
-	virtual inline void EnableShadowMapBuffer() {}
+	
+	virtual void InitShadowMap() = 0;
+	virtual void EnableShadowMapBuffer() = 0;
 
 protected:
 	

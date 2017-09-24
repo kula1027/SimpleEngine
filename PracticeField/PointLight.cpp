@@ -17,6 +17,3 @@ void PointLight::Update(){
 	//position.x += Time::deltaTime;
 }
 
-void PointLight::Use(Shader * shader){
-
-}

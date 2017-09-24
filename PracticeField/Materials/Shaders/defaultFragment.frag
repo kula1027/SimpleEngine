@@ -1,6 +1,6 @@
 #version 330 core
 
-out vec3 color;
+out vec4 color;
 
 in vec2 UV;
 in vec3 Position_worldspace;
@@ -32,12 +32,10 @@ struct MaterialColor{
 };
 
 uniform int texCountDiff;
-uniform sampler2D texture_diffuse0;
-uniform sampler2D texture_diffuse1;
+uniform sampler2D texture_diffuse;
 
 uniform int texCountSpec;
-uniform sampler2D texture_specular0;
-uniform sampler2D texture_specular1;
+uniform sampler2D texture_specular;
 
 #define NUM_POINTLIGHT 4
 uniform int lightCountPoint;
@@ -57,8 +55,7 @@ vec3 CalcDirLight(DirectionalLight light_, MaterialColor matColor_, vec3 normal_
 	vec3 diffuse = directionalLight0.color * directionalLight0.power * diff * matColor_.diffuseColor;
 	vec3 specular = vec3(0.3) * directionalLight0.color  * spec;	
 
-	
-	return (ambient + (1 - shadow_) * (diffuse + specular));
+	return (ambient + shadow_ * (diffuse + specular));
 }
 
 vec3 CalcPointLight(PointLight light_, MaterialColor matColor_, vec3 normal_, vec3 viewDir_){
@@ -87,12 +84,14 @@ float CalcShadow(vec4 fragPosLightSpace_){
     vec3 projCoords = fragPosLightSpace_.xyz / fragPosLightSpace_.w;
     // transform to [0,1] range
     projCoords = projCoords * 0.5 + 0.5;
-    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+	if(projCoords.z > 1.0) return 1;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)	
     float closestDepth = texture(directionalLight0.shadowMap, projCoords.xy).r; 
+
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
     // check whether current frag pos is in shadow
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    float shadow = currentDepth - 0.001 > closestDepth ? 0.0 : 1.0;
 
     return shadow;
 }
@@ -105,9 +104,9 @@ void main(){
 		matColor.ambientColor = vec3(0.1);
 		matColor.specularColor = vec3(1.0);
 	}else{
-		matColor.diffuseColor = texture( texture_diffuse0, UV ).rgb;
+		matColor.diffuseColor = texture( texture_diffuse, UV ).rgb;
 		matColor.ambientColor = vec3(0.1,0.1,0.1) * matColor.diffuseColor;
-		matColor.specularColor = texture( texture_specular0, UV ).rgb;
+		matColor.specularColor = texture( texture_specular, UV ).rgb;		
 	}
 
 	vec3 viewDir = normalize(ViewDirection_cameraspace);
@@ -121,7 +120,6 @@ void main(){
 	//resultColor += CalcPointLight(pointLight0, matColor, normal, viewDir);
 	
 	
-	color = resultColor;
-	
+	color = vec4(resultColor, 1);
 	//color = vec3( texture(directionalLight0.shadowMap, UV ).r);
 }

@@ -24,10 +24,6 @@ float Camera::quadVertices[] = { // vertex attributes for a quad that fills the 
 Camera::Camera(){
 	std::cout << "Initialize Camera..." << std::endl;
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-	glEnable(GL_CULL_FACE);
-
 	transform = new Transform();
 	transform->position = glm::vec3(0, 10, 20);
 	projMode = PROJECTION_PERSPECTIVE;
@@ -158,16 +154,19 @@ void Camera::EnableOffSreenBuffer(){
 
 	glViewport(0, 0, GameWindow::GetWidth(), GameWindow::GetHeight());
 	glBindFramebuffer(GL_FRAMEBUFFER, offScreenData.frameBuffer);
-	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
+	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 void Camera::PostDraw(){
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT, GL_FILL);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
 	glClearColor(0, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -175,4 +174,7 @@ void Camera::PostDraw(){
 	glBindVertexArray(offScreenData.quadVAO);
 	glBindTexture(GL_TEXTURE_2D, offScreenData.texColorBuffer);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
 }

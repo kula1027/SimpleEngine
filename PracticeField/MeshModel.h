@@ -35,7 +35,8 @@ public:
 	MeshModel();
 	MeshModel(GLchar* path);
 	~MeshModel();
-	vector<Mesh*>* meshes;	
+	MeshModel* CopyMesh();
+	vector<Mesh*>* meshes;
 
 	string GetDirectory();
 

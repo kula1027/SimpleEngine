@@ -66,3 +66,10 @@ MeshModel* FileManager::LoadMeshModel(string filePath) {
 		return meshModel;
 	}
 }
+
+MeshModel * FileManager::LoadMeshModelNoPool(std::string filePath){
+	string path = dirPathMaterial + filePath;
+	MeshModel* meshModel = new MeshModel((GLchar*)path.c_str());
+
+	return meshModel;
+}

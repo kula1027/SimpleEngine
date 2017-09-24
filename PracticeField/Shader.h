@@ -7,6 +7,8 @@
 
 #include <gl\glew.h>
 
+#define TEXTURE_IDX_SHADOWMAP 10
+
 class Shader
 {
 private:

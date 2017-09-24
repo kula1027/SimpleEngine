@@ -90,4 +90,3 @@ void Skybox::Render(Camera* cam_){
 
 	glDepthFunc(GL_LESS);
 }
-

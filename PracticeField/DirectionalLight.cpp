@@ -9,7 +9,7 @@
 DirectionalLight::DirectionalLight(){
 	intensity = 0.8f;
 	color = glm::vec3(1, 1, 1);
-	position = glm::vec3(0, -1, -0.5);
+	position = glm::vec3(-10, -10, -10);
 
 	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 100.0f);
 	glm::mat4 lightView = glm::lookAt(
@@ -35,8 +35,10 @@ void DirectionalLight::InitShadowMap(){
 		shadowData.resWidth, shadowData.resHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);	
+	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 //	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowData.depthMapFBO);
@@ -51,9 +53,9 @@ void DirectionalLight::InitShadowMap(){
 }
 
 void DirectionalLight::EnableShadowMapBuffer(){
-	lightProjection = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, near_plane, far_plane);
+	lightProjection = glm::ortho(-30.0f, 30.0f, -30.0f, 30.0f, near_plane, far_plane);
 
-	lightView = glm::lookAt(glm::vec3(-2.0f, 15.0f, -5.0f),
+	lightView = glm::lookAt(-position,
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -63,5 +65,6 @@ void DirectionalLight::EnableShadowMapBuffer(){
 
 	glViewport(0, 0, shadowData.resWidth, shadowData.resHeight);
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowData.depthMapFBO);
+	
 	glClear(GL_DEPTH_BUFFER_BIT);		
 }

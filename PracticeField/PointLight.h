@@ -13,6 +13,5 @@ public:
 	float range;
 
 	void Update();
-	void Use(Shader* shader);
 };
 

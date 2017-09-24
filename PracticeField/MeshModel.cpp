@@ -20,6 +20,10 @@ MeshModel::~MeshModel(){
 	delete(this->meshes);
 }
 
+MeshModel * MeshModel::CopyMesh(){
+	return new MeshModel((GLchar*)(directory + fileName).c_str());
+}
+
 string MeshModel::GetDirectory(){
 	return directory + fileName;
 }
@@ -28,7 +32,9 @@ void MeshModel::LoadModel(string path){
 	// Read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
-	
+	std::cout << "Load Model... " + path << std::endl
+		<< "Mesh Count: " << scene->mNumMeshes << std::endl;
+
 	// Check for errors
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
@@ -42,9 +48,7 @@ void MeshModel::LoadModel(string path){
 	// Process ASSIMP's root node recursively
 	this->ProcessNode(scene->mRootNode, scene);
 
-	std::cout << "Load Model... " + path << std::endl 
-			  << "Mesh Count: " << scene->mNumMeshes  << std::endl
-			  << "Material Count: " << scene->mNumMaterials << std::endl;
+	
 
 	cout << endl;
 }
@@ -130,7 +134,7 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 		vector<Texture*> specularMaps = this->LoadMaterialTextures(material, aiTextureType_SPECULAR);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		// 3. Normal maps
-		vector<Texture*> normalMaps = this->LoadMaterialTextures(material, aiTextureType_NORMALS);
+		vector<Texture*> normalMaps = this->LoadMaterialTextures(material, aiTextureType_NORMALS);		
 		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 	}
 
@@ -140,7 +144,7 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 
 vector<Texture*> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType type) {
 	vector<Texture*> textures;
-
+	
 	for (GLuint i = 0; i < mat->GetTextureCount(type); i++)
 	{	
 		TextureType tType;
@@ -164,7 +168,8 @@ vector<Texture*> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType
 		mat->GetTexture(type, i, &str);
 		
 		string filePath = string(str.C_Str());
-		
+		std::cout << filePath << std::endl;
+
 		filePath = directory.substr(directory.find_first_of('/') + 1, directory.size()) + filePath;
 
 		Texture* texture = FileManager::LoadTexture(filePath, tType);

@@ -7,6 +7,7 @@ using namespace std;
 
 typedef enum TextureType {
 	TextureType_Diffuse,
+	TextureType_DiffuseTransparent,
 	TextureType_Specular,
 	TextureType_Normals
 };
@@ -17,7 +18,7 @@ private:
 	string path;
 
 	int width, height;
-	TextureType type;
+	
 
 	int refCount;
 
@@ -26,6 +27,7 @@ private:
 public:
 	GLuint textureId;
 	string typeName;
+	TextureType type;
 
 	Texture();
 	Texture(string path_, TextureType type_);

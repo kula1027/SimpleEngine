@@ -11,18 +11,14 @@ GameObject::GameObject(){
 }
 
 void GameObject::SetRenderer(Renderer * renderer_){
-	renderer_->SetReferences(transform, meshModel);
+	renderer_->SetTransform(transform);
 
 	Scene::GetCurrent()->AddRenderer(renderer_);
 	renderer = renderer_;
 }
 
-void GameObject::SetModel(MeshModel * meshModel_) {
-	meshModel = meshModel_;	
-}
-
-MeshModel * GameObject::GetModel(){
-	return meshModel;
+Renderer * GameObject::GetRenderer(){
+	return renderer;
 }
 
 void GameObject::SetShader(Shader * shader_) {
@@ -30,8 +26,8 @@ void GameObject::SetShader(Shader * shader_) {
 }
 
 GameObject::~GameObject(){	
-	free(meshModel);
 	free(renderer);
+	free(transform);
 	for (int loop = 0; loop < components.size(); loop++) {
 		free(components[loop]);
 	}

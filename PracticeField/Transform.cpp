@@ -12,5 +12,4 @@ Transform::Transform()
 
 Transform::~Transform()
 {
-	printf("?? %f", position.x);
 }

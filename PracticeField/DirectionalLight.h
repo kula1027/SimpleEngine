@@ -19,7 +19,7 @@ public:
 
 	void EnableShadowMapBuffer();
 
-	float near_plane = 1.0f, far_plane = 1000.0f;
+	float near_plane = 1.0f, far_plane = 100.0f;
 
 	
 };
