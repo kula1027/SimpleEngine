@@ -76,7 +76,6 @@ public:
 	void SetMeshModel(MeshModel* meshModel_);
 	virtual void Render(Camera* cam, std::vector<BaseLight*> lights);
 	void RenderShadowMap(BaseLight* light_);
-	void RenderScaledUp();
 	void ComputeModelMatrix(Camera* cam);
 
 	Outline outline;

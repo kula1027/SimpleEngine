@@ -18,8 +18,8 @@ Shader* FileManager::LoadShader(string filePathVertex, string filePathFragment){
 
 Shader * FileManager::LoadShader(){
 	return LoadShader(
-		"defaultVertex.vert", 
-		"defaultFragment.frag"
+		"default.vert", 
+		"default.frag"
 	);
 }
 

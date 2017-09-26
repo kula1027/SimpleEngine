@@ -59,8 +59,13 @@ void Renderer::SetShader(Shader* shader_){
 	glUniform1i(id_diffuse.id, 0);
 	glUniform1i(id_specular.id, 1);
 	
+	//Outline
 	outline.id_color = outlineShader->GetUniformLocation("outlineColor");
 	outline.id_thickness = outlineShader->GetUniformLocation("thickness");
+
+	outlineShader->Use();
+	glUniform1f(outline.id_thickness, outline.thickness);
+	glUniform3f(outline.id_color, outline.color.x, outline.color.y, outline.color.z);
 }
 
 void Renderer::SetMeshModel(MeshModel * meshModel_){
@@ -123,8 +128,6 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		outlineShader->Use();
 		
 		glUniformMatrix4fv(outlineShader->GetUniformLocation("MVP"), 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-		glUniform1f(outline.id_thickness, outline.thickness);
-		glUniform3f(outline.id_color, outline.color.x, outline.color.y, outline.color.z);
 
 		for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 			Mesh* processingMesh = meshModel->meshes->at(loop);
@@ -160,10 +163,6 @@ void Renderer::RenderShadowMap(BaseLight* light_){
 
 		glBindVertexArray(0);
 	}
-}
-
-void Renderer::RenderScaledUp() {
-	
 }
 
 void Renderer::ComputeModelMatrix(Camera * cam){	

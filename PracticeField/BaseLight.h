@@ -28,6 +28,8 @@ public:
 
 	unsigned int modelMatrixId;
 	glm::mat4 lightSpaceMatrix;
+
+	bool isShadowCaster;
 	
 	virtual void InitShadowMap() = 0;
 	virtual void EnableShadowMapBuffer() = 0;

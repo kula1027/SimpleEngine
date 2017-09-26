@@ -123,6 +123,9 @@
     <ClCompile Include="FileManager.cpp">
       <Filter>Source Files\Material</Filter>
     </ClCompile>
+    <ClCompile Include="InstancedRenderer.cpp">
+      <Filter>Source Files\GameComponent\BaseComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h">
@@ -197,15 +200,12 @@
     <ClInclude Include="FileManager.h">
       <Filter>Header Files\Material</Filter>
     </ClInclude>
+    <ClInclude Include="InstancedRenderer.h">
+      <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Materials\Shaders\defaultVertex.vert">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Materials\Shaders\depthFragment.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\defaultFragment.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Materials\Shaders\defaultScreen.frag">
@@ -227,6 +227,18 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Materials\Shaders\outline.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Materials\Shaders\default.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Materials\Shaders\default.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Materials\Shaders\transparent.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Materials\Shaders\transparent.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
