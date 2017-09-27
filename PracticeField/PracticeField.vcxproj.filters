@@ -126,6 +126,9 @@
     <ClCompile Include="InstancedRenderer.cpp">
       <Filter>Source Files\GameComponent\BaseComponent</Filter>
     </ClCompile>
+    <ClCompile Include="EngineResource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="InstancedRenderer.h">
       <Filter>Header Files\GameComponent\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineResource.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

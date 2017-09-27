@@ -35,10 +35,11 @@ public:
 	MeshModel();
 	MeshModel(GLchar* path);
 	~MeshModel();
-	MeshModel* CopyMesh();
 	vector<Mesh*>* meshes;
 
 	string GetDirectory();
+
+	bool isSetup;
 
 protected:
 

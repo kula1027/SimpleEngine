@@ -8,6 +8,7 @@
 #include "MeshModel.h"
 #include "Renderer.h"
 #include "PartRenderer.h"
+#include "InstancedRenderer.h"
 #include "IUpdatable.h"
 
 #include <string>
@@ -82,12 +83,11 @@ void Scene::WonderfulWorld() {
 				thatMesh->vertices[loop].Position.z
 			);
 	}
-	thatMesh->ResetupMesh();	
 	go = new GameObject();
 	go->SetRenderer(new Renderer());	
 	go->GetRenderer()->SetMeshModel(mPlane);
-	go->SetShader(FileManager::LoadShader());
-	go->transform->scale = glm::vec3(20, 1, 20);
+	go->GetRenderer()->SetDefaultShader();	
+	go->transform->scale = glm::vec3(5, 1, 5);
 
 	//Grass
 	Texture* tGrass = FileManager::LoadTexture("grass.png", TextureType_DiffuseTransparent);
@@ -101,13 +101,13 @@ void Scene::WonderfulWorld() {
 				(thatMesh->vertices[loop].Position.z + 1) / 2
 			);
 	}
-	thatMesh->ResetupMesh();
+
 	go = new GameObject();
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->castShadow = false;
 	go->GetRenderer()->cullingEnabled = false;
 	go->GetRenderer()->SetMeshModel(mQuad);
-	go->SetShader(FileManager::LoadShader("transparent.vert", "transparent.frag"));
+	go->GetRenderer()->SetShader(FileManager::LoadShader("transparent.vert", "transparent.frag"));	
 	go->transform->rotation = glm::vec3(90, 0, 0);
 	go->transform->position = glm::vec3(-8, 2, 0);
 	go->transform->scale = glm::vec3(2, 1, 2);
@@ -116,14 +116,14 @@ void Scene::WonderfulWorld() {
 	go = new GameObject();
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
-	go->SetShader(FileManager::LoadShader());
+	go->GetRenderer()->SetDefaultShader();
 	go->transform->position = glm::vec3(10, 5, 2);
 
 	//venus
 	go = new GameObject();
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
-	go->SetShader(FileManager::LoadShader());
+	go->GetRenderer()->SetDefaultShader();
 	go->GetRenderer()->outline.draw = true;	
 	go->transform->position = glm::vec3(10, 0, -7);
 
@@ -131,7 +131,21 @@ void Scene::WonderfulWorld() {
 	go = new GameObject();
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("nanosuit/nanosuit.obj"));
-	go->SetShader(FileManager::LoadShader());
+	go->GetRenderer()->SetDefaultShader();
+
+	//Instanced Objects
+	InstancedRenderer* istRdr = new InstancedRenderer();
+	istRdr->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+	istRdr->SetDefaultShader();
+
+	go = new GameObject();
+	go->SetRenderer(istRdr);
+
+	for (int loop = 0; loop < 10; loop++) {
+		go = new GameObject();
+		go->transform->position = glm::vec3(0, loop * 5, 0);
+		istRdr->AddObject(go);
+	}
 
 	//window
 	Texture* tWindow = FileManager::LoadTexture("window.png", TextureType_DiffuseTransparent);
@@ -145,73 +159,21 @@ void Scene::WonderfulWorld() {
 				(thatMesh->vertices[loop].Position.z + 1) / 2
 			);
 	}
-	thatMesh->ResetupMesh();
+
 	go = new GameObject();
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->castShadow = false;
 	go->GetRenderer()->cullingEnabled = false;
 	go->GetRenderer()->SetMeshModel(mQuad2);
-	go->SetShader(FileManager::LoadShader("transparent.vert", "transparent.frag"));
+	go->GetRenderer()->SetShader(FileManager::LoadShader("transparent.vert", "transparent.frag"));
 	go->transform->rotation = glm::vec3(90, 0, 0);
 	go->transform->position = glm::vec3(10, 10, 0);
 	go->transform->scale = glm::vec3(2, 1, 2);
-
-
 }
 
 
 void Scene::NotWonderfulWorld() {
-	int objCount = 0;
-	GameObject* go;
 
-	/*MeshModel* mSph = FileLoader::LoadMeshModel("sphere.obj");
-	for (int i = 0; i < mSph->meshes->size(); i++) {
-	mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
-	}
-
-	for (int loop = 0; loop < objCount; loop++) {
-	for (int loop2 = 0; loop2 < objCount; loop2++) {
-	for (int loop3 = 0; loop3 < objCount; loop3++) {
-	GameObject* go = new GameObject();
-	go->SetModel(mSph);
-	go->SetRenderer(new PartRenderer());
-	go->SetShader(FileLoader::LoadShader());
-	go->transform->position = glm::vec3(
-	(loop - (float)objCount / 2) * 5 + 2,
-	(loop2) * 5 + 5,
-	(-loop3) * 5
-	);
-	}
-	}
-	}*/
-
-	/*mSph = FileLoader::LoadMeshModel("venusm.obj");
-	for (int i = 0; i < mSph->meshes->size(); i++) {
-	mSph->meshes->at(i) = new ArrangedMesh(*mSph->meshes->at(i));
-	}
-	go = new GameObject();
-	go->SetModel(mSph);
-	go->SetRenderer(new PartRenderer());
-	go->SetShader(FileLoader::LoadShader());
-	go->transform.scale = glm::vec3(0.005f, 0.005f, 0.005f);
-	go->transform.position = glm::vec3(-20, 8, 0);*/
-
-
-	for (int loop = 0; loop < objCount; loop++) {
-		for (int loop2 = 0; loop2 < objCount; loop2++) {
-			for (int loop3 = 0; loop3 < objCount; loop3++) {
-				GameObject* go = new GameObject();
-				go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
-				go->SetRenderer(new Renderer());
-				go->SetShader(FileManager::LoadShader());
-				go->transform->position = glm::vec3(
-					(loop - objCount / 2) * 5 + 2,
-					(loop2) * 5 + 5,
-					(-loop3) * 5
-				);
-			}
-		}
-	}
 }
 
 void Scene::UpdateObjects(){
@@ -236,14 +198,12 @@ void Scene::RenderObjects(){
 	int lightCount = lights.size();
 	int rdrCount = renderers.size();
 	
-	//glCullFace(GL_FRONT);
 	for (int loop = 0; loop < lightCount; loop++) {		
 		lights[loop]->EnableShadowMapBuffer();		
 		for (int loop2 = 0; loop2 < rdrCount; loop2++) {
 			renderers[loop2]->RenderShadowMap(lights[loop]);
 		}
 	}
-	//glCullFace(GL_BACK);
 
 	camera.EnableOffSreenBuffer();	
 	for (int loop = 0; loop < rdrCount; loop++) {

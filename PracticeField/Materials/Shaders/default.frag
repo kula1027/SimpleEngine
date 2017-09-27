@@ -123,5 +123,4 @@ void main(){
 	
 	
 	out_color = vec4(resultColor, 1);
-	//color = vec3( texture(directionalLight0.shadowMap, uv ).r);
 }

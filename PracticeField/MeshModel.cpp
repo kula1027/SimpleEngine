@@ -20,13 +20,10 @@ MeshModel::~MeshModel(){
 	delete(this->meshes);
 }
 
-MeshModel * MeshModel::CopyMesh(){
-	return new MeshModel((GLchar*)(directory + fileName).c_str());
-}
-
 string MeshModel::GetDirectory(){
 	return directory + fileName;
 }
+
 
 void MeshModel::LoadModel(string path){
 	// Read file via ASSIMP

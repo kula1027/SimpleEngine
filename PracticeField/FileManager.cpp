@@ -16,12 +16,6 @@ Shader* FileManager::LoadShader(string filePathVertex, string filePathFragment){
 	return shader;
 }
 
-Shader * FileManager::LoadShader(){
-	return LoadShader(
-		"default.vert", 
-		"default.frag"
-	);
-}
 
 Texture * FileManager::LoadTexture(std::string filePath, TextureType type_){
 	string path = dirPathMaterial + filePath;

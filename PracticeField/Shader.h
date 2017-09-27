@@ -1,15 +1,14 @@
 #pragma once
 
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
+
 
 #include <gl\glew.h>
 
+#include "EngineResource.h"
+
 #define TEXTURE_IDX_SHADOWMAP 10
 
-class Shader
+class Shader : EngineResource
 {
 private:
 	GLuint shaderID;
@@ -21,5 +20,7 @@ public:
 	
 	void Use();
 	GLuint GetUniformLocation(GLchar* var_name);
+
+	virtual void OnEndUse();
 };
 

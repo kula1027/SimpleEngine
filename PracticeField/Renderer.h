@@ -4,6 +4,22 @@
 #include <glm\glm.hpp>
 #include <vector>
 
+#define DefualtVS "default.vert"
+#define DefaultFS "default.frag"
+#define DefaultVS_Outline "outline.vert"
+#define DefaultFS_Outline "outline.frag"
+
+#define AttrLoc_Position 0
+#define AttrLoc_Normal 1
+#define AttrLoc_TexCoord 2
+#define AttrLoc_IstMatrix 3
+
+struct ID_matrice {
+	GLuint mvp = -1;
+	GLuint view = -1;
+	GLuint model = -1;
+};
+
 struct ID_dLight {
 	GLuint direction;
 	GLuint color;
@@ -47,12 +63,10 @@ class MeshModel;
 
 class Renderer{
 protected:
-	Shader* shader;
-	Shader* outlineShader;
-	GLuint mvpMatrixID;
-	GLuint viewMatrixID;
-	GLuint modelMatrixID;
-
+	Shader* shader = NULL;
+	Shader* outlineShader = NULL;
+	
+	ID_matrice id_matrice;
 	ID_dLight id_dLight;
 	ID_pLight id_pLight;
 	ID_diffuseTexture id_diffuse;
@@ -61,10 +75,14 @@ protected:
 	glm::mat4 modelMatrix;
 	glm::mat4 mvpMatrix;
 
-	Transform* transform;//ref to gameObject transform
-	MeshModel* meshModel;
+	Transform* transform = NULL;//ref to gameObject transform
+	MeshModel* meshModel = NULL;
 
 	void ApplyTexture(Mesh* processingMesh_);
+
+	bool isStatic;
+
+	glm::mat4 ComputeModelMatrix(Transform* transform_);
 
 public:	
 	Renderer();
@@ -73,10 +91,11 @@ public:
 
 	void SetTransform(Transform* transform_);
 	void SetShader(Shader* shader_);
-	void SetMeshModel(MeshModel* meshModel_);
-	virtual void Render(Camera* cam, std::vector<BaseLight*> lights);
 	void RenderShadowMap(BaseLight* light_);
-	void ComputeModelMatrix(Camera* cam);
+
+	virtual void SetDefaultShader();
+	virtual void Render(Camera* cam, std::vector<BaseLight*> lights);
+	virtual void SetMeshModel(MeshModel* meshModel_);
 
 	Outline outline;
 	bool castShadow;

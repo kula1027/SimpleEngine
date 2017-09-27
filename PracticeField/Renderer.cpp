@@ -10,20 +10,21 @@
 
 
 Renderer::Renderer(){
-	outlineShader = FileManager::LoadShader("outline.vert", "outline.frag");	
 	castShadow = true;
 	cullingEnabled = true;
+	isStatic = true;
 }
 
 Renderer::Renderer(Transform* transform_){
 	transform = transform_;
-	outlineShader = FileManager::LoadShader("outline.vert", "outline.frag");
 	castShadow = true;
 	cullingEnabled = true;
+	isStatic = true;
 }
 
 Renderer::~Renderer(){
 	free(shader);
+	free(outlineShader);
 }
 
 
@@ -35,9 +36,9 @@ void Renderer::SetTransform(Transform* transform_){
 void Renderer::SetShader(Shader* shader_){
 	shader = shader_;
 
-	mvpMatrixID = shader->GetUniformLocation("MVP");
-	viewMatrixID = shader->GetUniformLocation("V");
-	modelMatrixID = shader->GetUniformLocation("M");
+	id_matrice.mvp = shader->GetUniformLocation("MVP");
+	id_matrice.view = shader->GetUniformLocation("V");
+	id_matrice.model = shader->GetUniformLocation("M");
 	
 	id_diffuse.count = shader->GetUniformLocation("texCountDiff");
 	id_diffuse.id = shader->GetUniformLocation("texture_diffuse");
@@ -60,16 +61,100 @@ void Renderer::SetShader(Shader* shader_){
 	glUniform1i(id_specular.id, 1);
 	
 	//Outline
+	outlineShader = FileManager::LoadShader(DefaultVS_Outline, DefaultFS_Outline);
+
+	outlineShader->Use();
 	outline.id_color = outlineShader->GetUniformLocation("outlineColor");
 	outline.id_thickness = outlineShader->GetUniformLocation("thickness");
 
+	glUniform1f(outline.id_thickness, outline.thickness);
+	glUniform3f(outline.id_color, outline.color.x, outline.color.y, outline.color.z);
+}
+
+void Renderer::SetDefaultShader(){
+	shader = FileManager::LoadShader(DefualtVS, DefaultFS);
+
+	id_matrice.mvp = shader->GetUniformLocation("MVP");
+	id_matrice.view = shader->GetUniformLocation("V");
+	id_matrice.model = shader->GetUniformLocation("M");
+
+	id_diffuse.count = shader->GetUniformLocation("texCountDiff");
+	id_diffuse.id = shader->GetUniformLocation("texture_diffuse");
+	id_specular.count = shader->GetUniformLocation("texCountSpec");
+	id_specular.id = shader->GetUniformLocation("texture_specular");
+
+	id_dLight.direction = shader->GetUniformLocation("directionalLight0.direction");
+	id_dLight.color = shader->GetUniformLocation("directionalLight0.color");
+	id_dLight.power = shader->GetUniformLocation("directionalLight0.power");
+	id_dLight.lightSpaceMatrix = shader->GetUniformLocation("directionalLight0.lightSpaceMatrix");
+	id_dLight.shadowMap = shader->GetUniformLocation("directionalLight0.shadowMap");
+
+	id_pLight.position = shader->GetUniformLocation("pointLight0.position_worldspace");
+	id_pLight.color = shader->GetUniformLocation("pointLight0.color");
+	id_pLight.power = shader->GetUniformLocation("pointLight0.power");
+
+	shader->Use();
+	glUniform1i(id_dLight.shadowMap, TEXTURE_IDX_SHADOWMAP);
+	glUniform1i(id_diffuse.id, 0);
+	glUniform1i(id_specular.id, 1);
+
+	//Outline
+	outlineShader = FileManager::LoadShader(DefaultVS_Outline, DefaultFS_Outline);
+
 	outlineShader->Use();
+	outline.id_color = outlineShader->GetUniformLocation("outlineColor");
+	outline.id_thickness = outlineShader->GetUniformLocation("thickness");
+
 	glUniform1f(outline.id_thickness, outline.thickness);
 	glUniform3f(outline.id_color, outline.color.x, outline.color.y, outline.color.z);
 }
 
 void Renderer::SetMeshModel(MeshModel * meshModel_){
 	meshModel = meshModel_;
+
+	if (meshModel->isSetup == false) {
+		int meshCount = meshModel->meshes->size();
+		for (int loop = 0; loop < meshCount; loop++) {
+			Mesh* currentMesh = meshModel->meshes->at(loop);
+
+			glGenVertexArrays(1, &currentMesh->VAO);
+			glBindVertexArray(currentMesh->VAO);
+
+			glGenBuffers(1, &currentMesh->VBO);
+			glBindBuffer(GL_ARRAY_BUFFER, currentMesh->VBO);
+			if (isStatic) {
+				glBufferData(GL_ARRAY_BUFFER, currentMesh->vertices.size() * sizeof(Vertex), &currentMesh->vertices[0], GL_STATIC_DRAW);
+			}
+			else {
+				glBufferData(GL_ARRAY_BUFFER, currentMesh->vertices.size() * sizeof(Vertex), &currentMesh->vertices[0], GL_DYNAMIC_DRAW);
+			}
+
+			// Vertex Positions
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
+			// Vertex Normals
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
+			// Vertex Texture Coords
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
+
+			glGenBuffers(1, &currentMesh->EBO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentMesh->EBO);
+			if (isStatic) {
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, currentMesh->triangles.size() * sizeof(Triangle),
+					&currentMesh->triangles[0], GL_STATIC_DRAW);
+			}
+			else {
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, currentMesh->triangles.size() * sizeof(Triangle),
+					&currentMesh->triangles[0], GL_DYNAMIC_DRAW);
+			}
+
+			glBindVertexArray(0);
+		}
+
+		meshModel->isSetup = true;
+	}
 }
 
 void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
@@ -79,13 +164,14 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		glDisable(GL_CULL_FACE);
 	}
 
-	ComputeModelMatrix(cam_);
+	modelMatrix = ComputeModelMatrix(this->transform);
+	mvpMatrix = cam_->VPmatrix() * modelMatrix;
 
 	shader->Use();
-
-	glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-	glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, glm::value_ptr(cam_->Vmatrix()));
-	glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	
+	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(cam_->Vmatrix()));
+	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
 	glm::vec4 CameraSpace_dLightPos = cam_->Vmatrix() * glm::vec4(lights_[0]->position, 0);
 	glUniform3f(id_dLight.direction, CameraSpace_dLightPos.x, CameraSpace_dLightPos.y, CameraSpace_dLightPos.z);
@@ -145,11 +231,7 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 
 void Renderer::RenderShadowMap(BaseLight* light_){	
 	if (castShadow) {
-		modelMatrix = glm::translate(glm::mat4(1.0), transform->position);
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(transform->rotation.x), glm::vec3(1, 0, 0));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(transform->rotation.y), glm::vec3(0, 1, 0));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(transform->rotation.z), glm::vec3(0, 0, 1));
-		modelMatrix = glm::scale(modelMatrix, transform->scale);
+		modelMatrix = ComputeModelMatrix(this->transform);
 
 		glUniformMatrix4fv(light_->modelMatrixId, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
@@ -165,13 +247,15 @@ void Renderer::RenderShadowMap(BaseLight* light_){
 	}
 }
 
-void Renderer::ComputeModelMatrix(Camera * cam){	
-	modelMatrix = glm::translate(glm::mat4(1.0), transform->position);
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(transform->rotation.x), glm::vec3(1, 0, 0));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(transform->rotation.y), glm::vec3(0, 1, 0));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(transform->rotation.z), glm::vec3(0, 0, 1));
-	modelMatrix = glm::scale(modelMatrix, transform->scale);
-	mvpMatrix = cam->VPmatrix() * modelMatrix;
+glm::mat4 Renderer::ComputeModelMatrix(Transform* transform_){
+	glm::mat4 mMat = glm::mat4(1.0);
+	mMat = glm::translate(mMat, transform_->position);
+	mMat = glm::rotate(mMat, glm::radians(transform_->rotation.x), glm::vec3(1, 0, 0));
+	mMat = glm::rotate(mMat, glm::radians(transform_->rotation.y), glm::vec3(0, 1, 0));
+	mMat = glm::rotate(mMat, glm::radians(transform_->rotation.z), glm::vec3(0, 0, 1));
+	mMat = glm::scale(mMat, transform_->scale);
+	
+	return mMat;
 }
 
 void Renderer::ApplyTexture(Mesh* processingMesh_){

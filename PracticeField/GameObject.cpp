@@ -10,6 +10,12 @@ GameObject::GameObject(){
 	Scene::GetCurrent()->AddGameObject(this);
 }
 
+GameObject::GameObject(std::string name_){
+	name = name_;
+	transform = new Transform();
+	Scene::GetCurrent()->AddGameObject(this);
+}
+
 void GameObject::SetRenderer(Renderer * renderer_){
 	renderer_->SetTransform(transform);
 
@@ -19,10 +25,6 @@ void GameObject::SetRenderer(Renderer * renderer_){
 
 Renderer * GameObject::GetRenderer(){
 	return renderer;
-}
-
-void GameObject::SetShader(Shader * shader_) {
-	renderer->SetShader(shader_);
 }
 
 GameObject::~GameObject(){	

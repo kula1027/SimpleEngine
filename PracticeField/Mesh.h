@@ -34,14 +34,10 @@ public:
 	vector<Triangle> triangles;
 	vector<Texture*> textures;
 	GLuint VAO, VBO, EBO;
+	GLuint instanceVBO;
 
 	Mesh();
 	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture*> textures);
-
-	void ResetupMesh();
-
-protected:
-	void SetupMesh();
 };
 
 

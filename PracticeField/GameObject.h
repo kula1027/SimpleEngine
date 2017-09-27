@@ -24,10 +24,10 @@ public:
 	Transform* transform;
 
 	GameObject();
+	GameObject(std::string name_);
 
 	void SetRenderer(Renderer* renderer_);
 	Renderer* GetRenderer();
-	void SetShader(Shader* shader_);	
 
 	~GameObject();
 };

@@ -1,5 +1,10 @@
 #include "Shader.h"
 
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 Shader::Shader(GLchar* vertexPath, GLchar* fragmentPath){
 	// 1. Retrieve the vertex/fragment source code from filePath
 	std::string vertexCode;
@@ -75,7 +80,7 @@ Shader::Shader(GLchar* vertexPath, GLchar* fragmentPath){
 }
 
 Shader::~Shader(){
-	
+	glDeleteProgram(this->shaderID);
 }
 
 char* Shader::GetFilePath(){
@@ -88,4 +93,7 @@ void Shader::Use(){
 
 GLuint Shader::GetUniformLocation(GLchar* var_name){
 	return glGetUniformLocation(shaderID, var_name);
+}
+
+void Shader::OnEndUse(){
 }
