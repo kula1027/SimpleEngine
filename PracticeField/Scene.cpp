@@ -18,7 +18,7 @@ Scene* Scene::current;
 Scene::Scene(){
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	glEnable(GL_STENCIL_TEST);
+	//glEnable(GL_STENCIL_TEST);
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
@@ -87,7 +87,7 @@ void Scene::WonderfulWorld() {
 	go->SetRenderer(new Renderer());	
 	go->GetRenderer()->SetMeshModel(mPlane);
 	go->GetRenderer()->SetDefaultShader();	
-	go->transform->scale = glm::vec3(5, 1, 5);
+	go->transform->scale = glm::vec3(10, 1, 10);
 
 	//Grass
 	Texture* tGrass = FileManager::LoadTexture("grass.png", TextureType_DiffuseTransparent);
@@ -112,7 +112,7 @@ void Scene::WonderfulWorld() {
 	go->transform->position = glm::vec3(-8, 2, 0);
 	go->transform->scale = glm::vec3(2, 1, 2);
 
-	//sphere
+	//sphere	
 	go = new GameObject();
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
@@ -138,14 +138,17 @@ void Scene::WonderfulWorld() {
 	istRdr->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
 	istRdr->SetDefaultShader();
 
-	go = new GameObject();
-	go->SetRenderer(istRdr);
+	GameObject* istParent = new GameObject();
+	istParent->SetRenderer(istRdr);
 
-	for (int loop = 0; loop < 10; loop++) {
-		go = new GameObject();
-		go->transform->position = glm::vec3(0, loop * 5, 0);
-		istRdr->AddObject(go);
+	for (int loop = 0; loop < 5; loop++) {
+		for (int loop2 = 0; loop2 < 5; loop2++) {
+			go = new GameObject();
+			go->transform->SetParent(istParent->transform);
+			go->transform->position = glm::vec3(-loop2 * 2 - 12, loop * 2 + 1, -10);
+		}
 	}
+	istRdr->InitInstanced();
 
 	//window
 	Texture* tWindow = FileManager::LoadTexture("window.png", TextureType_DiffuseTransparent);

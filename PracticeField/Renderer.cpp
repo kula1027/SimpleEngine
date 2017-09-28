@@ -122,6 +122,7 @@ void Renderer::SetMeshModel(MeshModel * meshModel_){
 
 			glGenBuffers(1, &currentMesh->VBO);
 			glBindBuffer(GL_ARRAY_BUFFER, currentMesh->VBO);
+			
 			if (isStatic) {
 				glBufferData(GL_ARRAY_BUFFER, currentMesh->vertices.size() * sizeof(Vertex), &currentMesh->vertices[0], GL_STATIC_DRAW);
 			}
@@ -130,13 +131,13 @@ void Renderer::SetMeshModel(MeshModel * meshModel_){
 			}
 
 			// Vertex Positions
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
+			glEnableVertexAttribArray(AttrLoc_Position);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);//현재 bind된 buffer의 내용을 기술된 attribute대로 vao에 박아넣음
 			// Vertex Normals
-			glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(AttrLoc_Normal);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
 			// Vertex Texture Coords
-			glEnableVertexAttribArray(2);
+			glEnableVertexAttribArray(AttrLoc_TexCoord);
 			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
 
 			glGenBuffers(1, &currentMesh->EBO);
@@ -188,12 +189,9 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 	glUniform1f(id_pLight.power, lights_[1]->intensity);*/	
 
 	if (outline.draw) {
+		glEnable(GL_STENCIL_TEST);
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);//stencil 버퍼에 항상 1로 업데이트
 		glStencilMask(0xFF);//and mask
-	}
-	else {
-		glClear(GL_STENCIL_BUFFER_BIT);
-		glStencilMask(0x00);
 	}
 
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
@@ -209,7 +207,6 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 	if (outline.draw) {
 		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);//stencil buffer값이 1과 다르면 그린다(pass).
 		glStencilMask(0x00);//stencil buffer에 쓰지는 않는다.
-	//	glDisable(GL_DEPTH_TEST);
 
 		outlineShader->Use();
 		
@@ -221,12 +218,13 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 
 			glDrawElements(GL_TRIANGLES, processingMesh->triangles.size() * 3, GL_UNSIGNED_INT, 0);
 		}	
+
+		glDisable(GL_STENCIL_TEST);
 	}
 
 	glStencilMask(0xFF);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
-
 }
 
 void Renderer::RenderShadowMap(BaseLight* light_){	

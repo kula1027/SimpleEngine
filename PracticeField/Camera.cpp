@@ -104,11 +104,11 @@ void Camera::ComputeMatrix(){
 		upVector                  // Head is up (set to 0,-1,0 to look upside-down)
 		);
 
-	mvpMatrix = projectionMatrix * viewMatrix * glm::mat4(1.0);	
+	vpMatrix = projectionMatrix * viewMatrix * glm::mat4(1.0);	
 }
 
 glm::mat4 Camera::VPmatrix() {
-	return mvpMatrix;
+	return vpMatrix;
 }
 
 glm::mat4 Camera::Vmatrix() {
@@ -156,7 +156,7 @@ void Camera::EnableOffSreenBuffer(){
 	glBindFramebuffer(GL_FRAMEBUFFER, offScreenData.frameBuffer);
 	
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_STENCIL_TEST);
+	glDisable(GL_STENCIL_TEST);
 	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
@@ -166,7 +166,6 @@ void Camera::PostDraw(){
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_STENCIL_TEST);
 	glClearColor(0, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -174,7 +173,4 @@ void Camera::PostDraw(){
 	glBindVertexArray(offScreenData.quadVAO);
 	glBindTexture(GL_TEXTURE_2D, offScreenData.texColorBuffer);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_STENCIL_TEST);
 }

@@ -11,20 +11,20 @@ class GameObject;
 class InstancedRenderer : public Renderer
 {
 private:
-	std::vector<Transform*> attachedTransforms;
-	glm::mat4* matriceModel;
+	glm::mat4* matriceModel;	
 
-	void InitInstanced(Mesh* currentMesh_);
+	glm::mat4 vpMatrix;
+
+	int childTransformCount = 0;
 
 public:
 	InstancedRenderer();
 	~InstancedRenderer();
 
-	void AddObject(GameObject* go_);
-	void AddTransform(Transform* tr_);
-
 	virtual void SetDefaultShader();
-	virtual void Render(Camera* cam, std::vector<BaseLight*> lights);
+	virtual void Render(Camera* cam_, std::vector<BaseLight*> lights_);
 	virtual void SetMeshModel(MeshModel* meshModel_);
+
+	void InitInstanced();
 };
 

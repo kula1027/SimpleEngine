@@ -10,6 +10,11 @@ Transform::Transform()
 }
 
 
+void Transform::SetParent(Transform * parent_){
+	parent = parent_;
+	parent_->children.push_back(this);
+}
+
 Transform::~Transform()
 {
 }

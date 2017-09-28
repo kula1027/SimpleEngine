@@ -35,7 +35,7 @@ private:
 
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
-	glm::mat4 mvpMatrix;
+	glm::mat4 vpMatrix;
 
 	int projMode;
 

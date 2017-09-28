@@ -12,12 +12,16 @@
 #define AttrLoc_Position 0
 #define AttrLoc_Normal 1
 #define AttrLoc_TexCoord 2
-#define AttrLoc_IstMatrix 3
+#define AttrLoc_IstMatrix0 3
+#define AttrLoc_IstMatrix1 4
+#define AttrLoc_IstMatrix2 5
+#define AttrLoc_IstMatrix3 6
 
 struct ID_matrice {
 	GLuint mvp = -1;
 	GLuint view = -1;
 	GLuint model = -1;
+	GLuint vp = -1;
 };
 
 struct ID_dLight {

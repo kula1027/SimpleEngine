@@ -179,6 +179,7 @@
     <None Include="Materials\Shaders\defaultScreen.frag" />
     <None Include="Materials\Shaders\defaultScreen.vert" />
     <None Include="Materials\Shaders\depthFragment.frag" />
+    <None Include="Materials\Shaders\instanced.vert" />
     <None Include="Materials\Shaders\outline.frag" />
     <None Include="Materials\Shaders\outline.vert" />
     <None Include="Materials\Shaders\shadowMap.frag" />

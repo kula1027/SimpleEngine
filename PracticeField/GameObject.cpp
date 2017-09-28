@@ -5,7 +5,6 @@
 #include "Scene.h"
 
 GameObject::GameObject(){
-	name = strNoname;	
 	transform = new Transform();
 	Scene::GetCurrent()->AddGameObject(this);
 }
@@ -13,6 +12,7 @@ GameObject::GameObject(){
 GameObject::GameObject(std::string name_){
 	name = name_;
 	transform = new Transform();
+	transform->gameObject = this;
 	Scene::GetCurrent()->AddGameObject(this);
 }
 

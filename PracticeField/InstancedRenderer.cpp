@@ -4,10 +4,11 @@
 #include "FileManager.h"
 #include "MeshModel.h"
 
+#include "Camera.h"
+#include "Lights.h"
 
-
-InstancedRenderer::InstancedRenderer()
-{
+InstancedRenderer::InstancedRenderer(){
+	castShadow = false;
 }
 
 
@@ -15,18 +16,11 @@ InstancedRenderer::~InstancedRenderer()
 {
 }
 
-void InstancedRenderer::AddObject(GameObject* go_){
-	attachedTransforms.push_back(go_->transform);
-}
-
-void InstancedRenderer::AddTransform(Transform * tr_){
-	attachedTransforms.push_back(tr_);
-}
 
 void InstancedRenderer::SetDefaultShader(){
 	shader = FileManager::LoadShader(DefaultVS_Ist, DefaultFS);
 
-	id_matrice.mvp = shader->GetUniformLocation("MVP");
+	id_matrice.vp = shader->GetUniformLocation("VP");
 	id_matrice.view = shader->GetUniformLocation("V");
 
 	id_diffuse.count = shader->GetUniformLocation("texCountDiff");
@@ -50,10 +44,47 @@ void InstancedRenderer::SetDefaultShader(){
 	glUniform1i(id_specular.id, 1);
 }
 
-void InstancedRenderer::Render(Camera * cam, std::vector<BaseLight*> lights){
-	//glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[WVP_MAT_VB]);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(Matrix4f) * NumInstances, WVPMats, GL_DYNAMIC_DRAW);
+void InstancedRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
+	if (cullingEnabled) {
+		glEnable(GL_CULL_FACE);
+	}
+	else {
+		glDisable(GL_CULL_FACE);
+	}	
 
+	shader->Use();
+
+	glUniformMatrix4fv(id_matrice.vp, 1, GL_FALSE, glm::value_ptr(cam_->VPmatrix()));
+	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(cam_->Vmatrix()));	
+
+	glm::vec4 CameraSpace_dLightPos = cam_->Vmatrix() * glm::vec4(lights_[0]->position, 0);
+	glUniform3f(id_dLight.direction, CameraSpace_dLightPos.x, CameraSpace_dLightPos.y, CameraSpace_dLightPos.z);
+	glUniform3f(id_dLight.color, lights_[0]->color.x, lights_[0]->color.y, lights_[0]->color.z);
+	glUniform1f(id_dLight.power, lights_[0]->intensity);
+	glUniform1f(id_dLight.shadowMap, lights_[0]->shadowData.depthMapTextureId);
+	glUniformMatrix4fv(id_dLight.lightSpaceMatrix, 1, GL_FALSE, glm::value_ptr(lights_[0]->lightSpaceMatrix));
+
+	glActiveTexture(GL_TEXTURE0 + TEXTURE_IDX_SHADOWMAP);
+	glBindTexture(GL_TEXTURE_2D, lights_[0]->shadowData.depthMapTextureId);
+
+	/*glUniform3f(id_pLight.position, lights_[1]->position.x, lights_[1]->position.y, lights_[1]->position.z);
+	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
+	glUniform1f(id_pLight.power, lights_[1]->intensity);*/
+
+	//glClear(GL_STENCIL_BUFFER_BIT);
+
+	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
+		Mesh* processingMesh = meshModel->meshes->at(loop);
+
+		ApplyTexture(processingMesh);
+
+		glBindVertexArray(processingMesh->VAO);
+
+		glDrawElementsInstanced(GL_TRIANGLES, processingMesh->triangles.size() * 3, GL_UNSIGNED_INT, 0, childTransformCount);
+	}
+
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void InstancedRenderer::SetMeshModel(MeshModel * meshModel_){
@@ -85,8 +116,6 @@ void InstancedRenderer::SetMeshModel(MeshModel * meshModel_){
 			glEnableVertexAttribArray(AttrLoc_TexCoord);
 			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
 
-			InitInstanced(currentMesh);
-
 			glGenBuffers(1, &currentMesh->EBO);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentMesh->EBO);
 			if (isStatic) {
@@ -106,23 +135,46 @@ void InstancedRenderer::SetMeshModel(MeshModel * meshModel_){
 	}
 }
 
-void InstancedRenderer::InitInstanced(Mesh* currentMesh_) {
-	glGenBuffers(1, &currentMesh_->instanceVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, currentMesh_->instanceVBO);
+void InstancedRenderer::InitInstanced() {
+	int meshCount = meshModel->meshes->size();
 
-	if (isStatic) {
-		int transformCount = attachedTransforms.size();
-		matriceModel = new glm::mat4[transformCount];
-		for (int loop = 0; loop < transformCount; loop++) {
-			matriceModel[loop] = ComputeModelMatrix(attachedTransforms[loop]);
+	for (int loop = 0; loop < meshCount; loop++) {
+		Mesh* currentMesh = meshModel->meshes->at(loop);
+
+		glBindVertexArray(currentMesh->VAO);
+
+		glGenBuffers(1, &currentMesh->instanceVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, currentMesh->instanceVBO);
+		
+		if (isStatic) {
+			vector<Transform*>* tChildren = &transform->children;
+			childTransformCount = tChildren->size();
+			matriceModel = new glm::mat4[childTransformCount];
+			for (int loop = 0; loop < childTransformCount; loop++) {
+				matriceModel[loop] = ComputeModelMatrix((*tChildren)[loop]);				
+			}
+
+			glBufferData(GL_ARRAY_BUFFER, childTransformCount * sizeof(glm::mat4), &matriceModel[0], GL_STATIC_DRAW);
 		}
 
-		glBufferData(GL_ARRAY_BUFFER, attachedTransforms.size() * sizeof(glm::mat4), &matriceModel[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(AttrLoc_IstMatrix0);
+		glVertexAttribPointer(AttrLoc_IstMatrix0, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+		glVertexAttribDivisor(AttrLoc_IstMatrix0, 1);
+
+		glEnableVertexAttribArray(AttrLoc_IstMatrix1);
+		glVertexAttribPointer(AttrLoc_IstMatrix1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+		glVertexAttribDivisor(AttrLoc_IstMatrix1, 1);
+
+		glEnableVertexAttribArray(AttrLoc_IstMatrix2);
+		glVertexAttribPointer(AttrLoc_IstMatrix2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+		glVertexAttribDivisor(AttrLoc_IstMatrix2, 1);
+
+		glEnableVertexAttribArray(AttrLoc_IstMatrix3);
+		glVertexAttribPointer(AttrLoc_IstMatrix3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+		glVertexAttribDivisor(AttrLoc_IstMatrix3, 1);
+
+		glBindVertexArray(0);		
 	}
 
-	glEnableVertexAttribArray(AttrLoc_IstMatrix);
-	glBindBuffer(GL_ARRAY_BUFFER, currentMesh_->instanceVBO);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glVertexAttribDivisor(AttrLoc_IstMatrix, 1);
+	
 }

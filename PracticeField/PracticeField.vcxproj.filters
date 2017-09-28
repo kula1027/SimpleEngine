@@ -247,5 +247,8 @@
     <None Include="Materials\Shaders\transparent.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Materials\Shaders\instanced.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

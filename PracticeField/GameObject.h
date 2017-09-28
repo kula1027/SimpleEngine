@@ -20,8 +20,8 @@ private:
 	std::vector<IComponent*> components;
 
 public:
-	std::string name;
-	Transform* transform;
+	std::string name = strNoname;
+	Transform* transform = NULL;
 
 	GameObject();
 	GameObject(std::string name_);

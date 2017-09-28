@@ -15,7 +15,7 @@ out Vertex_Out{
 	out vec4 fragPos_lightSpace;
 }vertex_out;
 
-uniform mat4 MVP;
+uniform mat4 VP;
 uniform mat4 V;
 
 struct DirectionalLight{	
@@ -35,18 +35,18 @@ uniform PointLight pointLight0;
 uniform DirectionalLight directionalLight0;
 
 void main() {
-	gl_Position = MVP * vec4(attr_position, 1);
+	gl_Position = VP * attr_matModel * vec4(attr_position, 1);
 	
-	vertex_out.position_worldSpace = (M * vec4(attr_position, 1)).xyz;
+	vertex_out.position_worldSpace = (attr_matModel * vec4(attr_position, 1)).xyz;
 
-	vec3 vertexPosition_cameraspace = (V * M * vec4(attr_position, 1)).xyz;
+	vec3 vertexPosition_cameraspace = (V * attr_matModel * vec4(attr_position, 1)).xyz;
 	vertex_out.viewDirection_cameraSpace = vec3(0, 0, 0) - vertexPosition_cameraspace;
 
 	vec3 LightPosition_cameraspace = ( V * vec4(pointLight0.position_worldSpace, 1)).xyz;
 	vertex_out.lightDirection_cameraSpace = LightPosition_cameraspace + vertex_out.viewDirection_cameraSpace;
 
 	// Normal of the the vertex, in camera space
-	vertex_out.normal_cameraSpace = (V * M * vec4(attr_normal, 0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
+	vertex_out.normal_cameraSpace = (V * attr_matModel * vec4(attr_normal, 0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
 												
 	vertex_out.fragPos_lightSpace = directionalLight0.lightSpaceMatrix * vec4(vertex_out.position_worldSpace, 1.0);	
 																	
