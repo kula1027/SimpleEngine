@@ -87,7 +87,7 @@ void Scene::WonderfulWorld() {
 	go->SetRenderer(new Renderer());	
 	go->GetRenderer()->SetMeshModel(mPlane);
 	go->GetRenderer()->SetDefaultShader();	
-	go->transform->scale = glm::vec3(10, 1, 10);
+	go->transform->scale = glm::vec3(40, 1, 40);
 
 	//Grass
 	Texture* tGrass = FileManager::LoadTexture("grass.png", TextureType_DiffuseTransparent);
@@ -102,22 +102,41 @@ void Scene::WonderfulWorld() {
 			);
 	}
 
+
+	GameObject* goGrass = new GameObject();
+	InstancedRenderer* rdrGrass = new InstancedRenderer();
+	goGrass->SetRenderer(rdrGrass);
+	
+	rdrGrass->castShadow = false;
+	rdrGrass->cullingEnabled = false;
+	rdrGrass->SetMeshModel(mQuad);
+	rdrGrass->SetShader(FileManager::LoadShader("trans_inst_nocull.vert", "trans_inst_nocull.frag"));
+	
+	int grassCount = 100;
+	for (int loop = 0; loop < grassCount; loop++) {
+		for (int loop2 = 0; loop2 < grassCount; loop2++) {
+			go = new GameObject();
+			go->transform->SetParent(goGrass->transform);
+			go->transform->scale = glm::vec3(rand() % 3 + 1, 1, rand() % 3 + 1);
+			go->transform->position = glm::vec3(-rand() % 400, go->transform->scale.z, -rand() % 400);
+			go->transform->rotation = glm::vec3(90, rand() % 180, 0);
+		}
+	}
+	rdrGrass->InitInstanced();
+
+	//sphere	
 	go = new GameObject();
 	go->SetRenderer(new Renderer());
-	go->GetRenderer()->castShadow = false;
-	go->GetRenderer()->cullingEnabled = false;
-	go->GetRenderer()->SetMeshModel(mQuad);
-	go->GetRenderer()->SetShader(FileManager::LoadShader("transparent.vert", "transparent.frag"));	
-	go->transform->rotation = glm::vec3(90, 0, 0);
-	go->transform->position = glm::vec3(-8, 2, 0);
-	go->transform->scale = glm::vec3(2, 1, 2);
+	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+	go->GetRenderer()->SetShader(FileManager::LoadShader("default.vert", "deform.geo", "default_geo.frag"));
+	go->transform->position = glm::vec3(0, 5, 2);
 
 	//sphere	
 	go = new GameObject();
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
 	go->GetRenderer()->SetDefaultShader();
-	go->transform->position = glm::vec3(10, 5, 2);
+	go->transform->position = glm::vec3(-5, 5, 2);
 
 	//venus
 	go = new GameObject();
@@ -125,30 +144,14 @@ void Scene::WonderfulWorld() {
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
 	go->GetRenderer()->SetDefaultShader();
 	go->GetRenderer()->outline.draw = true;	
-	go->transform->position = glm::vec3(10, 0, -7);
+	go->transform->position = glm::vec3(-100, 0, -100);
 
 	//nanosuit
 	go = new GameObject();
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("nanosuit/nanosuit.obj"));
 	go->GetRenderer()->SetDefaultShader();
-
-	//Instanced Objects
-	InstancedRenderer* istRdr = new InstancedRenderer();
-	istRdr->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
-	istRdr->SetDefaultShader();
-
-	GameObject* istParent = new GameObject();
-	istParent->SetRenderer(istRdr);
-
-	for (int loop = 0; loop < 5; loop++) {
-		for (int loop2 = 0; loop2 < 5; loop2++) {
-			go = new GameObject();
-			go->transform->SetParent(istParent->transform);
-			go->transform->position = glm::vec3(-loop2 * 2 - 12, loop * 2 + 1, -10);
-		}
-	}
-	istRdr->InitInstanced();
+	go->transform->position = glm::vec3(10, 0, 0);
 
 	//window
 	Texture* tWindow = FileManager::LoadTexture("window.png", TextureType_DiffuseTransparent);
@@ -170,7 +173,7 @@ void Scene::WonderfulWorld() {
 	go->GetRenderer()->SetMeshModel(mQuad2);
 	go->GetRenderer()->SetShader(FileManager::LoadShader("transparent.vert", "transparent.frag"));
 	go->transform->rotation = glm::vec3(90, 0, 0);
-	go->transform->position = glm::vec3(10, 10, 0);
+	go->transform->position = glm::vec3(10, 10, -5);
 	go->transform->scale = glm::vec3(2, 1, 2);
 }
 

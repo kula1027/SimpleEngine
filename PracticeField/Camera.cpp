@@ -47,7 +47,7 @@ Camera::~Camera(){
 }
 
 void Camera::InitOffScreenDraw(){
-	offScreenData.screenShader = FileManager::LoadShader("defaultScreen.vert", "defaultScreen.frag");
+	offScreenData.screenShader = FileManager::LoadShader("PostProcess/defaultScreen.vert", "PostProcess/defaultScreen.frag");
 	offScreenData.screenShader->Use();
 	glUniform1i(offScreenData.screenShader->GetUniformLocation("screenTexture"), 0);
 

@@ -16,6 +16,17 @@ Shader* FileManager::LoadShader(string filePathVertex, string filePathFragment){
 	return shader;
 }
 
+Shader * FileManager::LoadShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment)
+{
+	string pathVertex = (string)dirPathMaterial + (string)dirPathShader + filePathVertex;
+	string pathGeometry = (string)dirPathMaterial + (string)dirPathShader + filePathGeometry;
+	string pathFragment = (string)dirPathMaterial + (string)dirPathShader + filePathFragment;
+
+	Shader* shader = new Shader((GLchar*)pathVertex.c_str(), (GLchar*)pathGeometry.c_str(), (GLchar*)pathFragment.c_str());
+
+	return shader;
+}
+
 
 Texture * FileManager::LoadTexture(std::string filePath, TextureType type_){
 	string path = dirPathMaterial + filePath;

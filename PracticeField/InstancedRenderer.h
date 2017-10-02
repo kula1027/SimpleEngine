@@ -21,6 +21,7 @@ public:
 	InstancedRenderer();
 	~InstancedRenderer();
 
+	virtual void SetShader(Shader* shader_);
 	virtual void SetDefaultShader();
 	virtual void Render(Camera* cam_, std::vector<BaseLight*> lights_);
 	virtual void SetMeshModel(MeshModel* meshModel_);

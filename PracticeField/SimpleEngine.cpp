@@ -40,7 +40,6 @@ void SimpleEngine::Begin() {
 
 	do { 
 		Time::Tick();
-		Time::PrintRenderTime(3);
 
 		InputModule::CheckInput();		
 		

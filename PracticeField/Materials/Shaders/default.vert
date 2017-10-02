@@ -6,12 +6,12 @@ layout(location = 2) in vec2 attr_texCoords;
 
 
 out Vertex_Out{
-	out vec2 uv;
-	out vec3 position_worldSpace;
-	out vec3 normal_cameraSpace;
-	out vec3 viewDirection_cameraSpace;
-	out vec3 lightDirection_cameraSpace;
-	out vec4 fragPos_lightSpace;
+	vec2 uv;
+	vec3 position_worldSpace;
+	vec3 normal_cameraSpace;
+	vec3 viewDirection_cameraSpace;
+	vec3 lightDirection_cameraSpace;
+	vec4 fragPos_lightSpace;
 }vertex_out;
 
 uniform mat4 MVP;

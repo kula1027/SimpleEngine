@@ -3,12 +3,12 @@
 out vec4 out_color;
 
 in Vertex_Out{
-	in vec2 uv;
-	in vec3 position_worldSpace;
-	in vec3 normal_cameraSpace;
-	in vec3 viewDirection_cameraSpace;
-	in vec3 lightDirection_cameraSpace;
-	in vec4 fragPos_lightSpace;
+	vec2 uv;
+	vec3 position_worldSpace;
+	vec3 normal_cameraSpace;
+	vec3 viewDirection_cameraSpace;
+	vec3 lightDirection_cameraSpace;
+	vec4 fragPos_lightSpace;
 }frag_in;
 
 uniform mat4 MV;

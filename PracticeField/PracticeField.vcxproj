@@ -173,19 +173,8 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Materials\Shaders\blur.frag" />
     <None Include="Materials\Shaders\default.frag" />
     <None Include="Materials\Shaders\default.vert" />
-    <None Include="Materials\Shaders\defaultScreen.frag" />
-    <None Include="Materials\Shaders\defaultScreen.vert" />
-    <None Include="Materials\Shaders\depthFragment.frag" />
-    <None Include="Materials\Shaders\instanced.vert" />
-    <None Include="Materials\Shaders\outline.frag" />
-    <None Include="Materials\Shaders\outline.vert" />
-    <None Include="Materials\Shaders\shadowMap.frag" />
-    <None Include="Materials\Shaders\shadowMap.vert" />
-    <None Include="Materials\Shaders\transparent.frag" />
-    <None Include="Materials\Shaders\transparent.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

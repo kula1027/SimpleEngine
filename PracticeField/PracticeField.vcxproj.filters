@@ -211,43 +211,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Materials\Shaders\depthFragment.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\defaultScreen.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\defaultScreen.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\blur.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\shadowMap.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\shadowMap.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\outline.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\outline.vert">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Materials\Shaders\default.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Materials\Shaders\default.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\transparent.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\transparent.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Materials\Shaders\instanced.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

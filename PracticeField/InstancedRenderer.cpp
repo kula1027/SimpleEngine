@@ -17,6 +17,33 @@ InstancedRenderer::~InstancedRenderer()
 }
 
 
+void InstancedRenderer::SetShader(Shader * shader_){
+	shader = shader_;
+
+	id_matrice.vp = shader->GetUniformLocation("VP");
+	id_matrice.view = shader->GetUniformLocation("V");
+
+	id_diffuse.count = shader->GetUniformLocation("texCountDiff");
+	id_diffuse.id = shader->GetUniformLocation("texture_diffuse");
+	id_specular.count = shader->GetUniformLocation("texCountSpec");
+	id_specular.id = shader->GetUniformLocation("texture_specular");
+
+	id_dLight.direction = shader->GetUniformLocation("directionalLight0.direction");
+	id_dLight.color = shader->GetUniformLocation("directionalLight0.color");
+	id_dLight.power = shader->GetUniformLocation("directionalLight0.power");
+	id_dLight.lightSpaceMatrix = shader->GetUniformLocation("directionalLight0.lightSpaceMatrix");
+	id_dLight.shadowMap = shader->GetUniformLocation("directionalLight0.shadowMap");
+
+	id_pLight.position = shader->GetUniformLocation("pointLight0.position_worldspace");
+	id_pLight.color = shader->GetUniformLocation("pointLight0.color");
+	id_pLight.power = shader->GetUniformLocation("pointLight0.power");
+
+	shader->Use();
+	glUniform1i(id_dLight.shadowMap, TEXTURE_IDX_SHADOWMAP);
+	glUniform1i(id_diffuse.id, 0);
+	glUniform1i(id_specular.id, 1);
+}
+
 void InstancedRenderer::SetDefaultShader(){
 	shader = FileManager::LoadShader(DefaultVS_Ist, DefaultFS);
 

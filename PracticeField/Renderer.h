@@ -94,9 +94,9 @@ public:
 	~Renderer();
 
 	void SetTransform(Transform* transform_);
-	void SetShader(Shader* shader_);
 	void RenderShadowMap(BaseLight* light_);
 
+	virtual void SetShader(Shader* shader_);
 	virtual void SetDefaultShader();
 	virtual void Render(Camera* cam, std::vector<BaseLight*> lights);
 	virtual void SetMeshModel(MeshModel* meshModel_);

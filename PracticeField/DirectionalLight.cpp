@@ -63,9 +63,10 @@ void DirectionalLight::EnableShadowMapBuffer(){
 	shadowMapShader->Use();
 	lightSpaceMatrix = lightProjection * lightView;
 	glUniformMatrix4fv(lightSpaceMatrixId, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-
+	
 	glViewport(0, 0, shadowData.resWidth, shadowData.resHeight);
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowData.depthMapFBO);
 	
+	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);		
 }
