@@ -10,6 +10,7 @@
 #include "PartRenderer.h"
 #include "InstancedRenderer.h"
 #include "IUpdatable.h"
+#include "MoveCamera.h"
 
 #include <string>
 
@@ -38,9 +39,11 @@ Scene* Scene::GetCurrent(){
 }
 
 void Scene::Load() {	
+	std::cout << "Load Scene...\n";
 	current = this;
 
-	GameObject* go;
+	camera = new Camera();
+	camera->AddComponent<MoveCamera>();
 	
 	//NotWonderfulWorld();
 	WonderfulWorld();
@@ -52,6 +55,8 @@ void Scene::Load() {
 }
 
 void Scene::AddGameObject(GameObject * obj){
+	cout << "GameObject Added... " << obj->name << endl;
+	obj->SetId(freeObjectId++);
 	gameObjects.push_back(obj);
 }
 
@@ -67,6 +72,9 @@ void Scene::AddLight(BaseLight * objLight){
 	lights.push_back(objLight);
 }
 
+Camera * Scene::GetCamera(){
+	return camera;
+}
 
 void Scene::WonderfulWorld() {
 	GameObject* go;
@@ -83,7 +91,7 @@ void Scene::WonderfulWorld() {
 				thatMesh->vertices[loop].Position.z
 			);
 	}
-	go = new GameObject();
+	go = new GameObject("floor");
 	go->SetRenderer(new Renderer());	
 	go->GetRenderer()->SetMeshModel(mPlane);
 	go->GetRenderer()->SetDefaultShader();	
@@ -103,7 +111,7 @@ void Scene::WonderfulWorld() {
 	}
 
 
-	GameObject* goGrass = new GameObject();
+	GameObject* goGrass = new GameObject("grass parent");
 	InstancedRenderer* rdrGrass = new InstancedRenderer();
 	goGrass->SetRenderer(rdrGrass);
 	
@@ -115,7 +123,7 @@ void Scene::WonderfulWorld() {
 	int grassCount = 100;
 	for (int loop = 0; loop < grassCount; loop++) {
 		for (int loop2 = 0; loop2 < grassCount; loop2++) {
-			go = new GameObject();
+			go = new GameObject("grass");
 			go->transform->SetParent(goGrass->transform);
 			go->transform->scale = glm::vec3(rand() % 3 + 1, 1, rand() % 3 + 1);
 			go->transform->position = glm::vec3(-rand() % 400, go->transform->scale.z, -rand() % 400);
@@ -124,22 +132,22 @@ void Scene::WonderfulWorld() {
 	}
 	rdrGrass->InitInstanced();
 
-	//sphere	
-	go = new GameObject();
+	//sphere w geo	
+	go = new GameObject("sphere geo");
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
 	go->GetRenderer()->SetShader(FileManager::LoadShader("default.vert", "deform.geo", "default_geo.frag"));
 	go->transform->position = glm::vec3(0, 5, 2);
 
 	//sphere	
-	go = new GameObject();
+	go = new GameObject("sphere");
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
 	go->GetRenderer()->SetDefaultShader();
 	go->transform->position = glm::vec3(-5, 5, 2);
 
 	//venus
-	go = new GameObject();
+	go = new GameObject("venus");
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
 	go->GetRenderer()->SetDefaultShader();
@@ -147,7 +155,7 @@ void Scene::WonderfulWorld() {
 	go->transform->position = glm::vec3(-100, 0, -100);
 
 	//nanosuit
-	go = new GameObject();
+	go = new GameObject("nano");
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("nanosuit/nanosuit.obj"));
 	go->GetRenderer()->SetDefaultShader();
@@ -166,7 +174,7 @@ void Scene::WonderfulWorld() {
 			);
 	}
 
-	go = new GameObject();
+	go = new GameObject("window");
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->castShadow = false;
 	go->GetRenderer()->cullingEnabled = false;
@@ -179,31 +187,33 @@ void Scene::WonderfulWorld() {
 
 
 void Scene::NotWonderfulWorld() {
-
+	GameObject* go = new GameObject("venus");
+	go->SetRenderer(new Renderer());
+	
+	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
+	go->GetRenderer()->SetDefaultShader();
+	go->GetRenderer()->castShadow = false;
+	go->transform->position = glm::vec3(0, 5, 2);
 }
 
 void Scene::UpdateObjects(){
-	camera.Update();
-
 	for (int loop = 0; loop < updatables.size(); loop++) {
-		updatables[loop]->Update();
+		updatables[loop]->OnUpdate();
 	}
 }
 
-
-void Scene::RenderObjectsSinglePass(){
-	glClearColor(0.2f, 0.2f, 0.2f, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	int rSize = renderers.size();
-	for (int loop = 0; loop < rSize; loop++) {
-		renderers[loop]->Render(&camera, lights);
-	}
-}
 
 void Scene::RenderObjects(){
 	int lightCount = lights.size();
 	int rdrCount = renderers.size();
 	
+	//Matrice Setup
+	camera->ComputeMatrix();
+	for (int loop = 0; loop < rdrCount; loop++) {
+		renderers[loop]->ComputeMaxtrix();
+	}
+
+	//Render ShadowMap
 	for (int loop = 0; loop < lightCount; loop++) {		
 		lights[loop]->EnableShadowMapBuffer();		
 		for (int loop2 = 0; loop2 < rdrCount; loop2++) {
@@ -211,12 +221,14 @@ void Scene::RenderObjects(){
 		}
 	}
 
-	camera.EnableOffSreenBuffer();	
+	//Render Off Screen
+	camera->EnableOffSreenBuffer();	
 	for (int loop = 0; loop < rdrCount; loop++) {
-		renderers[loop]->Render(&camera, lights);
+		renderers[loop]->Render(camera, lights);
 	}
-	skybox.Render(&camera);
+	skybox.Render(camera);
 
+	//Render on screen
 	glCullFace(GL_BACK);
-	camera.PostDraw();
+	camera->PostDraw();
 }

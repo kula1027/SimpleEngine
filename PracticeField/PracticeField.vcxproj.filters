@@ -57,9 +57,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -128,6 +125,15 @@
     </ClCompile>
     <ClCompile Include="EngineResource.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IUpdatable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCamera.cpp">
+      <Filter>Source Files\GameComponent\Modified</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +215,9 @@
     <ClInclude Include="EngineResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MoveCamera.h">
+      <Filter>Header Files\GameComponent\Modified</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Materials\Shaders\default.frag">
@@ -217,5 +226,6 @@
     <None Include="Materials\Shaders\default.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -1,12 +1,15 @@
 #include "GameObject.h"
 
+#include "IUpdatable.h"
 #include "Renderer.h"
 #include "FileManager.h"
 #include "Scene.h"
+#include <typeinfo>
 
 GameObject::GameObject(){
 	transform = new Transform();
-	Scene::GetCurrent()->AddGameObject(this);
+	transform->gameObject = this;
+	Scene::GetCurrent()->AddGameObject(this);	
 }
 
 GameObject::GameObject(std::string name_){
@@ -14,6 +17,14 @@ GameObject::GameObject(std::string name_){
 	transform = new Transform();
 	transform->gameObject = this;
 	Scene::GetCurrent()->AddGameObject(this);
+}
+
+void GameObject::SetId(unsigned int id_){
+	objectId = id_;
+}
+
+unsigned int GameObject::GetId(){
+	return objectId;
 }
 
 void GameObject::SetRenderer(Renderer * renderer_){
@@ -26,6 +37,7 @@ void GameObject::SetRenderer(Renderer * renderer_){
 Renderer * GameObject::GetRenderer(){
 	return renderer;
 }
+
 
 GameObject::~GameObject(){	
 	free(renderer);

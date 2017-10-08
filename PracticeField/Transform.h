@@ -13,6 +13,9 @@ public:
 	glm::vec3 rotation;
 	glm::vec3 scale;
 
+	glm::vec3 forward;
+	glm::vec3 right;
+
 	GameObject* gameObject;
 
 	std::vector<Transform*> children;

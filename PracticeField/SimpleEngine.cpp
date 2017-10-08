@@ -19,7 +19,7 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 		return;
 	}
 
-	GameWindow::Init(width, height, "Practice Field");
+	GameWindow::Init(width, height, name);
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
@@ -30,14 +30,21 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 	}
 
 	InputModule::Init();		
+
+	SetVsyncMode(true);
+}
+
+void SimpleEngine::LoadScene(Scene * scene_){
+	currentScene = scene_;
+	currentScene->Load();
+}
+
+void SimpleEngine::LoadScene() {
+	currentScene = new Scene();
+	currentScene->Load();
 }
 
 void SimpleEngine::Begin() {
-	SetVsyncMode(true);
-
-	currentScene = new Scene();
-	currentScene->Load();
-
 	do { 
 		Time::Tick();
 
@@ -63,13 +70,6 @@ void SimpleEngine::SetVsyncMode(bool isOn){
 	}
 }
 
-void SimpleEngine::UpdateObjects(){	
-	
-}
-
-void SimpleEngine::RenderObjects(){
-	
-}
 
 SimpleEngine::~SimpleEngine() {
 	glfwTerminate();

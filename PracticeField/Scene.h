@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Camera.h"
 #include "Skybox.h"
 
 #include <string>
@@ -12,6 +11,7 @@ class IUpdatable;
 class GameObject;
 class BaseLight;
 class Renderer;
+class Camera;
 
 using namespace std;
 
@@ -20,10 +20,12 @@ class Scene
 private:
 	static Scene* current;
 	Skybox skybox;
-	Camera camera;
+	Camera* camera;
 	
 	vector<IUpdatable*> updatables;
 	vector<GameObject*> gameObjects;
+	unsigned int freeObjectId = 0;
+
 	vector<Renderer*> renderers;
 	vector<BaseLight*> lights;
 
@@ -39,9 +41,10 @@ public:
 	void AddUpdatable(IUpdatable* upd);
 	void AddRenderer(Renderer* rdr);
 	void AddLight(BaseLight* objLight);
+
+	Camera* GetCamera();
 		
 	void UpdateObjects();
-	void RenderObjectsSinglePass();	
 	void RenderObjects();
 
 	void WonderfulWorld();

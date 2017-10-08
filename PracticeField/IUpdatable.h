@@ -2,9 +2,15 @@
 
 #include "IComponent.h"
 
-class IUpdatable : IComponent{
-public:
-	virtual void Update() = 0;
-	virtual void OnStart() = 0;
+class Transform;
+class GameObject;
+
+class IUpdatable : public IComponent{
+public:	
+	virtual void OnUpdate() {}
+	virtual void OnStart() {}
+
+	Transform* transform;
+	GameObject* gameObject;
 };
 

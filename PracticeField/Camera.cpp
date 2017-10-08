@@ -22,21 +22,15 @@ float Camera::quadVertices[] = { // vertex attributes for a quad that fills the 
 };
 
 Camera::Camera(){
+	name = "Camera";
 	std::cout << "Initialize Camera..." << std::endl;
 
-	transform = new Transform();
 	transform->position = glm::vec3(0, 10, 20);
 	projMode = PROJECTION_PERSPECTIVE;
-	fov = 0.8f;
-
+	
+	fov = 1.0f;
 	near = 0.1f;
-	far = 10000.0f;
-
-	verticalAngle = 0;
-	horizontalAngle = 3.14f;
-
-	moveSpeed = 20.0f;
-	sensitivity = 0.001f;
+	far = 1000.0f;
 
 	projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
 
@@ -84,23 +78,11 @@ void Camera::InitOffScreenDraw(){
 }
 
 void Camera::ComputeMatrix(){
-	dirForward = glm::vec3(
-		cos(verticalAngle) * sin(horizontalAngle),
-		sin(verticalAngle),
-		cos(verticalAngle) * cos(horizontalAngle)
-		);
-
-	right = glm::vec3(
-		sin(horizontalAngle - 3.14f / 2.0f),
-		0,
-		cos(horizontalAngle - 3.14f / 2.0f)
-		);
-
-	upVector = glm::cross(right, dirForward);
+	upVector = glm::cross(transform->right, transform->forward);
 
 	viewMatrix = glm::lookAt(
 		transform->position,           // Camera is here
-		transform->position + dirForward, // and looks here : at the same position, plus "direction"
+		transform->position + transform->forward, // and looks here : at the same position, plus "direction"
 		upVector                  // Head is up (set to 0,-1,0 to look upside-down)
 		);
 
@@ -117,36 +99,6 @@ glm::mat4 Camera::Vmatrix() {
 
 glm::mat4 Camera::Pmatrix() {
 	return projectionMatrix;
-}
-
-void Camera::Update(){
-	if (GameWindow::IsFocused()) {
-		horizontalAngle += sensitivity * float(GameWindow::GetWidth() / 2 - InputModule::GetMousePos()[0]);
-		verticalAngle += sensitivity * float(GameWindow::GetHeight() / 2 - InputModule::GetMousePos()[1]);
-
-		if (InputModule::IsPressed(GLFW_KEY_W)) {
-			transform->position += dirForward * Time::deltaTime * moveSpeed;
-		}
-		if (InputModule::IsPressed(GLFW_KEY_S)) {
-			transform->position -= dirForward * Time::deltaTime * moveSpeed;
-		}
-		if (InputModule::IsPressed(GLFW_KEY_D)) {
-			transform->position += right * Time::deltaTime * moveSpeed;
-		}
-		if (InputModule::IsPressed(GLFW_KEY_A)) {
-			transform->position -= right * Time::deltaTime * moveSpeed;
-		}
-		if (InputModule::IsPressed(GLFW_KEY_Q)) {
-			transform->position += Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
-		}
-		if (InputModule::IsPressed(GLFW_KEY_E)) {
-			transform->position -= Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
-		}
-	}
-	else {
-	}
-
-	ComputeMatrix();
 }
 
 void Camera::EnableOffSreenBuffer(){

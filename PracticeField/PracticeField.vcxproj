@@ -22,6 +22,7 @@
     <ProjectGuid>{408CD289-A589-4F20-ACC9-1EAD2D22DE73}</ProjectGuid>
     <RootNamespace>PracticeField</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>SimpleEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,11 +129,13 @@
     <ClCompile Include="BaseLight.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="InstancedRenderer.cpp" />
+    <ClCompile Include="IUpdatable.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshModel.cpp" />
+    <ClCompile Include="MoveCamera.cpp" />
     <ClCompile Include="PartRenderer.cpp" />
     <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -159,6 +162,7 @@
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshModel.h" />
+    <ClInclude Include="MoveCamera.h" />
     <ClInclude Include="PartRenderer.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="GameObject.h" />
@@ -173,6 +177,7 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Materials\Shaders\default.frag" />
     <None Include="Materials\Shaders\default.vert" />
   </ItemGroup>

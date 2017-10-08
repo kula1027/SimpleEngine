@@ -8,6 +8,7 @@ private:
 
 public:
 	static float deltaTime;
+	static double GetCurrentTime();
 	static void Tick();
 	static void PrintRenderTime(double t);
 };

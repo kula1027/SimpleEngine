@@ -1,11 +1,14 @@
 #include "Renderer.h"
 
+#include <chrono>
 #include "Camera.h"
 #include "Transform.h"
+#include "GameObject.h"
 #include "MeshModel.h"
 #include "Texture.h"
 #include "Lights.h"
 #include "FileManager.h"
+#include "Time.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -27,11 +30,13 @@ Renderer::~Renderer(){
 	free(outlineShader);
 }
 
-
 void Renderer::SetTransform(Transform* transform_){
 	transform = transform_;
 }
 
+void Renderer::ComputeMaxtrix(){
+	modelMatrix = ComputeModelMatrix(this->transform);
+}
 
 void Renderer::SetShader(Shader* shader_){
 	shader = shader_;
@@ -158,18 +163,18 @@ void Renderer::SetMeshModel(MeshModel * meshModel_){
 	}
 }
 
-void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
+void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	if (cullingEnabled) {
 		glEnable(GL_CULL_FACE);
-	}else {
+	}
+	else {
 		glDisable(GL_CULL_FACE);
 	}
-
-	modelMatrix = ComputeModelMatrix(this->transform);
+	
 	mvpMatrix = cam_->VPmatrix() * modelMatrix;
 
 	shader->Use();
-	
+
 	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
 	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(cam_->Vmatrix()));
 	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(modelMatrix));
@@ -180,14 +185,14 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 	glUniform1f(id_dLight.power, lights_[0]->intensity);
 	glUniform1f(id_dLight.shadowMap, lights_[0]->shadowData.depthMapTextureId);
 	glUniformMatrix4fv(id_dLight.lightSpaceMatrix, 1, GL_FALSE, glm::value_ptr(lights_[0]->lightSpaceMatrix));
-	
+
 	glActiveTexture(GL_TEXTURE0 + TEXTURE_IDX_SHADOWMAP);
-	glBindTexture(GL_TEXTURE_2D, lights_[0]->shadowData.depthMapTextureId);	
-	
+	glBindTexture(GL_TEXTURE_2D, lights_[0]->shadowData.depthMapTextureId);
+
 	/*glUniform3f(id_pLight.position, lights_[1]->position.x, lights_[1]->position.y, lights_[1]->position.z);
 	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
-	glUniform1f(id_pLight.power, lights_[1]->intensity);*/	
-
+	glUniform1f(id_pLight.power, lights_[1]->intensity);*/
+		
 	if (outline.draw) {
 		glEnable(GL_STENCIL_TEST);
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);//stencil 버퍼에 항상 1로 업데이트
@@ -200,8 +205,12 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		ApplyTexture(processingMesh);
 
 		glBindVertexArray(processingMesh->VAO);
-
-		glDrawElements(GL_TRIANGLES, processingMesh->triangles.size() * 3, GL_UNSIGNED_INT, 0);
+		glDrawElements(
+			GL_TRIANGLES,
+			processingMesh->triangles.size() * 3,
+			GL_UNSIGNED_INT,
+			NULL
+		);
 	}
 
 	if (outline.draw) {
@@ -211,13 +220,13 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		outlineShader->Use();
 		
 		glUniformMatrix4fv(outlineShader->GetUniformLocation("MVP"), 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-
+	
 		for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 			Mesh* processingMesh = meshModel->meshes->at(loop);
 			glBindVertexArray(processingMesh->VAO);
 
 			glDrawElements(GL_TRIANGLES, processingMesh->triangles.size() * 3, GL_UNSIGNED_INT, 0);
-		}	
+		}
 
 		glDisable(GL_STENCIL_TEST);
 	}
@@ -228,9 +237,7 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 }
 
 void Renderer::RenderShadowMap(BaseLight* light_){	
-	if (castShadow) {
-		modelMatrix = ComputeModelMatrix(this->transform);
-
+	if (castShadow) {		
 		glUniformMatrix4fv(light_->modelMatrixId, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
 		for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {

@@ -8,6 +8,10 @@ double Time::prevTime = 0;
 float Time::deltaTime = 0;
 double Time::accTime = 0;
 
+double Time::GetCurrentTime(){
+	return glfwGetTime();
+}
+
 void Time::Tick() {
 	double currentTime = glfwGetTime();
 	deltaTime = currentTime - prevTime;

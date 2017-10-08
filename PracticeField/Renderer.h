@@ -94,6 +94,7 @@ public:
 	~Renderer();
 
 	void SetTransform(Transform* transform_);
+	void ComputeMaxtrix();
 	void RenderShadowMap(BaseLight* light_);
 
 	virtual void SetShader(Shader* shader_);

@@ -1,7 +1,9 @@
 #pragma once
+#include "GameObject.h"
 #include <gl\glew.h>
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
+
 
 class Transform;
 class Shader;
@@ -17,19 +19,13 @@ struct OffScreenData {
 	unsigned int rbo;
 };
 
-class Camera
-{
+class Camera : public GameObject{
 private:
 	static float quadVertices[];
 	
 	float fov;
 	float near;
 	float far;
-
-	float verticalAngle;
-	float horizontalAngle;
-	glm::vec3 dirForward;
-	glm::vec3 right;
 
 	glm::vec3 upVector;
 
@@ -41,11 +37,7 @@ private:
 
 	OffScreenData offScreenData;
 
-	float moveSpeed;
-	float sensitivity;
-
 	void InitOffScreenDraw();
-	void ComputeMatrix();
 
 public:
 	Camera();
@@ -53,11 +45,9 @@ public:
 	glm::mat4 VPmatrix();
 	glm::mat4 Vmatrix();
 	glm::mat4 Pmatrix();
-	void Update();
+
+	void ComputeMatrix();
 	void EnableOffSreenBuffer();
 	void PostDraw();
-
-	Transform* transform;
-
 };
 
