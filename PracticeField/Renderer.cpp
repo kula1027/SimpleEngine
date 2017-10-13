@@ -14,15 +14,23 @@
 
 Renderer::Renderer(){
 	castShadow = true;
+	cullingEnabled = true;	
+	lineDrawEnabled = false;
+}
+
+Renderer::Renderer(MeshModel * meshModel_){
+	castShadow = true;
 	cullingEnabled = true;
-	isStatic = true;
+	lineDrawEnabled = false;
+
+	SetMeshModel(meshModel_);
 }
 
 Renderer::Renderer(Transform* transform_){
 	transform = transform_;
 	castShadow = true;
 	cullingEnabled = true;
-	isStatic = true;
+	lineDrawEnabled = false;
 }
 
 Renderer::~Renderer(){
@@ -34,7 +42,7 @@ void Renderer::SetTransform(Transform* transform_){
 	transform = transform_;
 }
 
-void Renderer::ComputeMaxtrix(){
+void Renderer::ComputeMatrix(){
 	modelMatrix = ComputeModelMatrix(this->transform);
 }
 
@@ -117,59 +125,17 @@ void Renderer::SetDefaultShader(){
 void Renderer::SetMeshModel(MeshModel * meshModel_){
 	meshModel = meshModel_;
 
-	if (meshModel->isSetup == false) {
-		int meshCount = meshModel->meshes->size();
-		for (int loop = 0; loop < meshCount; loop++) {
-			Mesh* currentMesh = meshModel->meshes->at(loop);
-
-			glGenVertexArrays(1, &currentMesh->VAO);
-			glBindVertexArray(currentMesh->VAO);
-
-			glGenBuffers(1, &currentMesh->VBO);
-			glBindBuffer(GL_ARRAY_BUFFER, currentMesh->VBO);
-			
-			if (isStatic) {
-				glBufferData(GL_ARRAY_BUFFER, currentMesh->vertices.size() * sizeof(Vertex), &currentMesh->vertices[0], GL_STATIC_DRAW);
-			}
-			else {
-				glBufferData(GL_ARRAY_BUFFER, currentMesh->vertices.size() * sizeof(Vertex), &currentMesh->vertices[0], GL_DYNAMIC_DRAW);
-			}
-
-			// Vertex Positions
-			glEnableVertexAttribArray(AttrLoc_Position);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);//현재 bind된 buffer의 내용을 기술된 attribute대로 vao에 박아넣음
-			// Vertex Normals
-			glEnableVertexAttribArray(AttrLoc_Normal);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
-			// Vertex Texture Coords
-			glEnableVertexAttribArray(AttrLoc_TexCoord);
-			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
-
-			glGenBuffers(1, &currentMesh->EBO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentMesh->EBO);
-			if (isStatic) {
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, currentMesh->triangles.size() * sizeof(Triangle),
-					&currentMesh->triangles[0], GL_STATIC_DRAW);
-			}
-			else {
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, currentMesh->triangles.size() * sizeof(Triangle),
-					&currentMesh->triangles[0], GL_DYNAMIC_DRAW);
-			}
-
-			glBindVertexArray(0);
+	int meshCount = meshModel->meshes->size();
+	for (int loop = 0; loop < meshCount; loop++) {
+		Mesh* currentMesh = meshModel->meshes->at(loop);
+		if (!currentMesh->isSetup) {
+			currentMesh->Setup();
 		}
-
-		meshModel->isSetup = true;
 	}
 }
 
 void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
-	if (cullingEnabled) {
-		glEnable(GL_CULL_FACE);
-	}
-	else {
-		glDisable(GL_CULL_FACE);
-	}
+	SetDrawingMode();
 	
 	mvpMatrix = cam_->VPmatrix() * modelMatrix;
 
@@ -205,12 +171,22 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 		ApplyTexture(processingMesh);
 
 		glBindVertexArray(processingMesh->VAO);
+
 		glDrawElements(
 			GL_TRIANGLES,
 			processingMesh->triangles.size() * 3,
 			GL_UNSIGNED_INT,
 			NULL
 		);
+		/*int count = 512;
+		for (int loop2 = 0; loop2 < count; loop2++) {
+			glDrawElements(
+				GL_TRIANGLES,
+				processingMesh->triangles.size() * 3 / count,
+				GL_UNSIGNED_INT,
+				(GLvoid*)(processingMesh->triangles.size() / count * loop2 * sizeof(Triangle))
+			);
+		}*/
 	}
 
 	if (outline.draw) {
@@ -234,6 +210,8 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	glStencilMask(0xFF);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	RestoreDrawingMode();
 }
 
 void Renderer::RenderShadowMap(BaseLight* light_){	
@@ -252,6 +230,24 @@ void Renderer::RenderShadowMap(BaseLight* light_){
 	}
 }
 
+void Renderer::SetupIdx()
+{
+	/*glBindVertexArray(this->VAO);
+
+	glGenBuffers(samplingDirCount, EBOs); 
+	for (int loop = 0; loop < samplingDirCount; loop++) {
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOs[loop]);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->arrangedTriangles[loop].size() * sizeof(Triangle),
+			&this->arrangedTriangles[loop][0], GL_STATIC_DRAW);
+	}
+	
+	/*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->triangles.size() * sizeof(Triangle),
+		&this->triangles[0], GL_STATIC_DRAW);
+
+	glBindVertexArray(0);*/
+}
+
 glm::mat4 Renderer::ComputeModelMatrix(Transform* transform_){
 	glm::mat4 mMat = glm::mat4(1.0);
 	mMat = glm::translate(mMat, transform_->position);
@@ -261,6 +257,24 @@ glm::mat4 Renderer::ComputeModelMatrix(Transform* transform_){
 	mMat = glm::scale(mMat, transform_->scale);
 	
 	return mMat;
+}
+
+void Renderer::SetDrawingMode(){
+	if (!cullingEnabled) {
+		glDisable(GL_CULL_FACE);
+	}
+	if (lineDrawEnabled) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+}
+
+void Renderer::RestoreDrawingMode(){
+	if (!cullingEnabled) {
+		glEnable(GL_CULL_FACE);
+	}
+	if (lineDrawEnabled) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 }
 
 void Renderer::ApplyTexture(Mesh* processingMesh_){

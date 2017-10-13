@@ -14,6 +14,7 @@ ArrangedMesh::ArrangedMesh(Mesh mesh_){
 	EBOs = new unsigned int[samplingDirCount];
 	arrangedTriangles = new vector<Triangle>[samplingDirCount];
 	sampleData = new SampleData[samplingDirCount];
+
 	double angle = 0;
 	for (int loop = 0; loop < samplingDirCount; loop++) {
 		cout << "Sampling Dir... " << loop << endl;
@@ -70,8 +71,6 @@ void ArrangedMesh::RearrangeFace(int idx_) {
 	vector<glm::vec3> tri0_normal;// x < 0
 	vector<Triangle> tri1;// x >= 0
 	vector<glm::vec3> tri1_normal;// x >= 0
-
-
 
 	for (int loop = 0; loop < triangles.size(); loop++) {
 		GLuint vi0 = triangles[loop].idx0;

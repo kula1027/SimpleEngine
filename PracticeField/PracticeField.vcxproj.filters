@@ -129,11 +129,17 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IUpdatable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MoveCamera.cpp">
       <Filter>Source Files\GameComponent\Modified</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeChecker.cpp">
+      <Filter>Source Files\GameComponent\Modified</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereRenderer.cpp">
+      <Filter>Source Files\GameComponent\Modified</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshModifier.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +223,15 @@
     </ClInclude>
     <ClInclude Include="MoveCamera.h">
       <Filter>Header Files\GameComponent\Modified</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeChecker.h">
+      <Filter>Header Files\GameComponent\Modified</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereRenderer.h">
+      <Filter>Header Files\GameComponent\Modified</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshModifier.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

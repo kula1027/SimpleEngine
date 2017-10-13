@@ -37,9 +37,7 @@ public:
 	~MeshModel();
 	vector<Mesh*>* meshes;
 
-	string GetDirectory();
-
-	bool isSetup;
+	string GetFilePath();
 
 protected:
 

@@ -20,7 +20,7 @@ MeshModel::~MeshModel(){
 	delete(this->meshes);
 }
 
-string MeshModel::GetDirectory(){
+string MeshModel::GetFilePath(){
 	return directory + fileName;
 }
 
@@ -33,8 +33,7 @@ void MeshModel::LoadModel(string path){
 		<< "\tMesh Count: " << scene->mNumMeshes << endl;
 
 	// Check for errors
-	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
-	{
+	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode){ // if is Not Zero
 		cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
 		return;
 	}
@@ -44,6 +43,16 @@ void MeshModel::LoadModel(string path){
 
 	// Process ASSIMP's root node recursively
 	this->ProcessNode(scene->mRootNode, scene);
+
+	int vCount = 0;
+	int tCount = 0;
+	for (int loop = 0; loop < meshes->size(); loop++) {
+		vCount += meshes->at(loop)->vertices.size();
+		tCount += meshes->at(loop)->triangles.size();
+	}
+
+	std::cout << "\tVertex Count: " << vCount
+			  << " / Triangle Count: " << tCount << std::endl;
 }
 
 void MeshModel::ProcessNode(aiNode * node, const aiScene * scene){

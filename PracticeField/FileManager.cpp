@@ -16,8 +16,7 @@ Shader* FileManager::LoadShader(string filePathVertex, string filePathFragment){
 	return shader;
 }
 
-Shader * FileManager::LoadShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment)
-{
+Shader * FileManager::LoadShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment){
 	string pathVertex = (string)dirPathMaterial + (string)dirPathShader + filePathVertex;
 	string pathGeometry = (string)dirPathMaterial + (string)dirPathShader + filePathGeometry;
 	string pathFragment = (string)dirPathMaterial + (string)dirPathShader + filePathFragment;
@@ -55,7 +54,7 @@ MeshModel* FileManager::LoadMeshModel(string filePath) {
 
 	MeshModel* foundMesh = NULL;
 	for (int loop = 0; loop < loadedMeshModels.size(); loop++) {
-		if (loadedMeshModels[loop]->GetDirectory().compare(path.c_str()) == 0) {
+		if (loadedMeshModels[loop]->GetFilePath().compare(path.c_str()) == 0) {
 			foundMesh = loadedMeshModels[loop];
 			break;
 		}

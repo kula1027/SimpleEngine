@@ -9,6 +9,11 @@ using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+
+#define AttrLoc_Position 0
+#define AttrLoc_Normal 1
+#define AttrLoc_TexCoord 2
+
 class Texture;
 
 struct Vertex {
@@ -35,8 +40,14 @@ public:
 	vector<Texture*> textures;
 	GLuint VAO, VBO, EBO;
 	GLuint instanceVBO;
+	bool isStatic;
+	bool isSetup;
 
 	Mesh();
+	void Setup();
+	void ResetupEbo();
+	void Resetup();
+
 	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture*> textures);
 };
 

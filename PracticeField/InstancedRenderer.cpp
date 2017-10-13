@@ -117,48 +117,12 @@ void InstancedRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 void InstancedRenderer::SetMeshModel(MeshModel * meshModel_){
 	meshModel = meshModel_;
 
-	if (meshModel->isSetup == false) {
-		int meshCount = meshModel->meshes->size();
-		for (int loop = 0; loop < meshCount; loop++) {
-			Mesh* currentMesh = meshModel->meshes->at(loop);
-
-			glGenVertexArrays(1, &currentMesh->VAO);
-			glBindVertexArray(currentMesh->VAO);
-
-			glGenBuffers(1, &currentMesh->VBO);
-			glBindBuffer(GL_ARRAY_BUFFER, currentMesh->VBO);
-			if (isStatic) {
-				glBufferData(GL_ARRAY_BUFFER, currentMesh->vertices.size() * sizeof(Vertex), &currentMesh->vertices[0], GL_STATIC_DRAW);
-			} else {
-				glBufferData(GL_ARRAY_BUFFER, currentMesh->vertices.size() * sizeof(Vertex), &currentMesh->vertices[0], GL_DYNAMIC_DRAW);
-			}
-
-			// Vertex Positions
-			glEnableVertexAttribArray(AttrLoc_Position);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
-			// Vertex Normals
-			glEnableVertexAttribArray(AttrLoc_Normal);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
-			// Vertex Texture Coords
-			glEnableVertexAttribArray(AttrLoc_TexCoord);
-			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
-
-			glGenBuffers(1, &currentMesh->EBO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentMesh->EBO);
-			if (isStatic) {
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, currentMesh->triangles.size() * sizeof(Triangle),
-					&currentMesh->triangles[0], GL_STATIC_DRAW);
-			}
-			else {
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, currentMesh->triangles.size() * sizeof(Triangle),
-					&currentMesh->triangles[0], GL_DYNAMIC_DRAW);
-			}
-
-			glBindVertexArray(0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+	int meshCount = meshModel->meshes->size();
+	for (int loop = 0; loop < meshCount; loop++) {
+		Mesh* currentMesh = meshModel->meshes->at(loop);
+		if (!currentMesh->isSetup) {
+			currentMesh->Setup();
 		}
-
-		meshModel->isSetup = true;
 	}
 }
 
@@ -173,7 +137,7 @@ void InstancedRenderer::InitInstanced() {
 		glGenBuffers(1, &currentMesh->instanceVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, currentMesh->instanceVBO);
 		
-		if (isStatic) {
+		if (currentMesh->isStatic) {
 			vector<Transform*>* tChildren = &transform->children;
 			childTransformCount = tChildren->size();
 			matriceModel = new glm::mat4[childTransformCount];

@@ -129,10 +129,10 @@
     <ClCompile Include="BaseLight.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="InstancedRenderer.cpp" />
-    <ClCompile Include="IUpdatable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshModel.cpp" />
+    <ClCompile Include="MeshModifier.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
     <ClCompile Include="PartRenderer.cpp" />
     <ClCompile Include="PointLight.cpp" />
@@ -143,8 +143,10 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleEngine.cpp" />
     <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="SphereRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="TimeChecker.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +164,7 @@
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshModel.h" />
+    <ClInclude Include="MeshModifier.h" />
     <ClInclude Include="MoveCamera.h" />
     <ClInclude Include="PartRenderer.h" />
     <ClInclude Include="PointLight.h" />
@@ -172,8 +175,10 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleEngine.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="SphereRenderer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="TimeChecker.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>

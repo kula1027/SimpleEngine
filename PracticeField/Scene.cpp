@@ -8,9 +8,10 @@
 #include "MeshModel.h"
 #include "Renderer.h"
 #include "PartRenderer.h"
+#include "SphereRenderer.h"
 #include "InstancedRenderer.h"
-#include "IUpdatable.h"
 #include "MoveCamera.h"
+#include "TimeChecker.h"
 
 #include <string>
 
@@ -45,17 +46,17 @@ void Scene::Load() {
 	camera = new Camera();
 	camera->AddComponent<MoveCamera>();
 	
-	//NotWonderfulWorld();
-	WonderfulWorld();
+	NotWonderfulWorld();
+	//WonderfulWorld();
 	
 	//BaseLight* pointLight = new PointLight();
 	BaseLight* directionalLight = new DirectionalLight();
 	AddLight(directionalLight);
-	//AddLight(pointLight);	
+	//AddLight(pointLight);
 }
 
 void Scene::AddGameObject(GameObject * obj){
-	cout << "GameObject Added... " << obj->name << endl;
+	//cout << "Add GameObject " << obj->name << endl;
 	obj->SetId(freeObjectId++);
 	gameObjects.push_back(obj);
 }
@@ -187,13 +188,38 @@ void Scene::WonderfulWorld() {
 
 
 void Scene::NotWonderfulWorld() {
+	//GameObject* goTimer = new GameObject("timer");
+	//goTimer->AddComponent<TimeChecker>();
+
 	GameObject* go = new GameObject("venus");
-	go->SetRenderer(new Renderer());
-	
+	SphereRenderer* sr = new SphereRenderer();
+	go->SetRenderer(sr);
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
 	go->GetRenderer()->SetDefaultShader();
 	go->GetRenderer()->castShadow = false;
-	go->transform->position = glm::vec3(0, 5, 2);
+
+	float r = sr->GetBoundingRadius();
+	glm::vec3 pos = sr->GetBoundingCenter();	
+
+	//sphere	
+	/*go = new GameObject("sphere");
+	go->SetRenderer(new Renderer(FileManager::LoadMeshModel("sphere.obj")));	
+	go->GetRenderer()->SetDefaultShader();
+	go->GetRenderer()->castShadow = false;
+	go->GetRenderer()->cullingEnabled = false;
+	go->GetRenderer()->lineDrawEnabled = true;
+	go->transform->position = pos;
+	go->transform->scale *= r;*/
+
+	//sphere	
+	go = new GameObject("sphere");
+	go->SetRenderer(new SphereRenderer());
+	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+	go->GetRenderer()->SetDefaultShader();
+	go->GetRenderer()->castShadow = false;
+	go->GetRenderer()->cullingEnabled = false;	
+	go->transform->position = glm::vec3(10, 0, 0);
+	
 }
 
 void Scene::UpdateObjects(){
@@ -210,11 +236,11 @@ void Scene::RenderObjects(){
 	//Matrice Setup
 	camera->ComputeMatrix();
 	for (int loop = 0; loop < rdrCount; loop++) {
-		renderers[loop]->ComputeMaxtrix();
+		renderers[loop]->ComputeMatrix();
 	}
 
 	//Render ShadowMap
-	for (int loop = 0; loop < lightCount; loop++) {		
+	for (int loop = 0; loop < lightCount; loop++) {	
 		lights[loop]->EnableShadowMapBuffer();		
 		for (int loop2 = 0; loop2 < rdrCount; loop2++) {
 			renderers[loop2]->RenderShadowMap(lights[loop]);

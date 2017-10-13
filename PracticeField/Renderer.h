@@ -9,9 +9,6 @@
 #define DefaultVS_Outline "outline.vert"
 #define DefaultFS_Outline "outline.frag"
 
-#define AttrLoc_Position 0
-#define AttrLoc_Normal 1
-#define AttrLoc_TexCoord 2
 #define AttrLoc_IstMatrix0 3
 #define AttrLoc_IstMatrix1 4
 #define AttrLoc_IstMatrix2 5
@@ -84,18 +81,20 @@ protected:
 
 	void ApplyTexture(Mesh* processingMesh_);
 
-	bool isStatic;
-
 	glm::mat4 ComputeModelMatrix(Transform* transform_);
+	void SetDrawingMode();
+	void RestoreDrawingMode();
 
 public:	
 	Renderer();
+	Renderer(MeshModel* meshModel_);
 	Renderer(Transform* transform_);
 	~Renderer();
 
 	void SetTransform(Transform* transform_);
-	void ComputeMaxtrix();
+	void ComputeMatrix();
 	void RenderShadowMap(BaseLight* light_);
+	void SetupIdx();
 
 	virtual void SetShader(Shader* shader_);
 	virtual void SetDefaultShader();
@@ -105,5 +104,6 @@ public:
 	Outline outline;
 	bool castShadow;
 	bool cullingEnabled;
+	bool lineDrawEnabled;
 };
 
