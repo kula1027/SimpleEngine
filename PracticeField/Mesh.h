@@ -13,24 +13,19 @@ using namespace std;
 #define AttrLoc_Position 0
 #define AttrLoc_Normal 1
 #define AttrLoc_TexCoord 2
+#define AttrLoc_Color 2
 
 class Texture;
 
 struct Vertex {
-	// Position
-	glm::vec3 Position;
-	// Normal
-	glm::vec3 Normal;
-	// TexCoords
-	glm::vec2 TexCoords;
-
-	float dotValue;
+	glm::vec3 position;
+	glm::vec3 normal;
+	glm::vec2 texCoords;
+	glm::vec3 color;
 };
 
 struct Triangle {
-	GLuint idx0;
-	GLuint idx1;
-	GLuint idx2;
+	GLuint idx[3];
 };
 
 class Mesh {
@@ -44,6 +39,8 @@ public:
 	bool isSetup;
 
 	Mesh();
+	~Mesh();
+
 	void Setup();
 	void ResetupEbo();
 	void Resetup();

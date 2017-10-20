@@ -11,6 +11,9 @@ Mesh::Mesh() {
 	isSetup = false;
 }
 
+Mesh::~Mesh(){
+}
+
 void Mesh::Setup(){
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -19,20 +22,18 @@ void Mesh::Setup(){
 
 	if (isStatic) {
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-	}
-	else {
+	} else {
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_DYNAMIC_DRAW);
 	}
 
-	// Vertex Positions
 	glEnableVertexAttribArray(AttrLoc_Position);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);//현재 bind된 buffer의 내용을 기술된 attribute대로 vao에 박아넣음
-																				// Vertex Normals
+																			
 	glEnableVertexAttribArray(AttrLoc_Normal);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
-	// Vertex Texture Coords
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
+
 	glEnableVertexAttribArray(AttrLoc_TexCoord);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoords));
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);

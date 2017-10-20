@@ -136,34 +136,23 @@ void Renderer::SetMeshModel(MeshModel * meshModel_){
 
 void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	SetDrawingMode();
-	
-	mvpMatrix = cam_->VPmatrix() * modelMatrix;
 
-	shader->Use();
-
-	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(cam_->Vmatrix()));
-	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-
-	glm::vec4 CameraSpace_dLightPos = cam_->Vmatrix() * glm::vec4(lights_[0]->position, 0);
-	glUniform3f(id_dLight.direction, CameraSpace_dLightPos.x, CameraSpace_dLightPos.y, CameraSpace_dLightPos.z);
-	glUniform3f(id_dLight.color, lights_[0]->color.x, lights_[0]->color.y, lights_[0]->color.z);
-	glUniform1f(id_dLight.power, lights_[0]->intensity);
-	glUniform1f(id_dLight.shadowMap, lights_[0]->shadowData.depthMapTextureId);
-	glUniformMatrix4fv(id_dLight.lightSpaceMatrix, 1, GL_FALSE, glm::value_ptr(lights_[0]->lightSpaceMatrix));
-
-	glActiveTexture(GL_TEXTURE0 + TEXTURE_IDX_SHADOWMAP);
-	glBindTexture(GL_TEXTURE_2D, lights_[0]->shadowData.depthMapTextureId);
-
-	/*glUniform3f(id_pLight.position, lights_[1]->position.x, lights_[1]->position.y, lights_[1]->position.z);
-	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
-	glUniform1f(id_pLight.power, lights_[1]->intensity);*/
-		
 	if (outline.draw) {
 		glEnable(GL_STENCIL_TEST);
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);//stencil 버퍼에 항상 1로 업데이트
 		glStencilMask(0xFF);//and mask
 	}
+	
+	shader->Use();
+
+	SetUniformMVP(cam_);
+
+	SetUniformDlight(cam_, lights_[0]);
+
+	/*glUniform3f(id_pLight.position, lights_[1]->position.x, lights_[1]->position.y, lights_[1]->position.z);
+	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
+	glUniform1f(id_pLight.power, lights_[1]->intensity);*/
+
 
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
@@ -178,15 +167,6 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 			GL_UNSIGNED_INT,
 			NULL
 		);
-		/*int count = 512;
-		for (int loop2 = 0; loop2 < count; loop2++) {
-			glDrawElements(
-				GL_TRIANGLES,
-				processingMesh->triangles.size() * 3 / count,
-				GL_UNSIGNED_INT,
-				(GLvoid*)(processingMesh->triangles.size() / count * loop2 * sizeof(Triangle))
-			);
-		}*/
 	}
 
 	if (outline.draw) {
@@ -266,6 +246,26 @@ void Renderer::SetDrawingMode(){
 	if (lineDrawEnabled) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
+}
+
+void Renderer::SetUniformDlight(Camera* cam_, BaseLight* dLight){
+	glm::vec4 CameraSpace_dLightPos = cam_->Vmatrix() * glm::vec4(dLight->position, 0);
+	glUniform3f(id_dLight.direction, CameraSpace_dLightPos.x, CameraSpace_dLightPos.y, CameraSpace_dLightPos.z);
+	glUniform3f(id_dLight.color, dLight->color.x, dLight->color.y, dLight->color.z);
+	glUniform1f(id_dLight.power, dLight->intensity);
+	glUniform1f(id_dLight.shadowMap, dLight->shadowData.depthMapTextureId);
+	glUniformMatrix4fv(id_dLight.lightSpaceMatrix, 1, GL_FALSE, glm::value_ptr(dLight->lightSpaceMatrix));
+
+	glActiveTexture(GL_TEXTURE0 + TEXTURE_IDX_SHADOWMAP);
+	glBindTexture(GL_TEXTURE_2D, dLight->shadowData.depthMapTextureId);
+}
+
+void Renderer::SetUniformMVP(Camera* cam_)
+{
+	mvpMatrix = cam_->VPmatrix() * modelMatrix;
+	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(cam_->Vmatrix()));
+	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 }
 
 void Renderer::RestoreDrawingMode(){

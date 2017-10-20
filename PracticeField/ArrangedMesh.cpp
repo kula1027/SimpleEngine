@@ -73,12 +73,12 @@ void ArrangedMesh::RearrangeFace(int idx_) {
 	vector<glm::vec3> tri1_normal;// x >= 0
 
 	for (int loop = 0; loop < triangles.size(); loop++) {
-		GLuint vi0 = triangles[loop].idx0;
-		GLuint vi1 = triangles[loop].idx1;
-		GLuint vi2 = triangles[loop].idx2;
+		GLuint vi0 = triangles[loop].idx[0];
+		GLuint vi1 = triangles[loop].idx[1];
+		GLuint vi2 = triangles[loop].idx[2];
 
-		glm::vec3 dir0 = vertices[vi1].Position - vertices[vi0].Position;
-		glm::vec3 dir1 = vertices[vi2].Position - vertices[vi1].Position;
+		glm::vec3 dir0 = vertices[vi1].position - vertices[vi0].position;
+		glm::vec3 dir1 = vertices[vi2].position - vertices[vi1].position;
 		glm::vec3 tempNorm = glm::cross(dir0, dir1);
 
 		if (tempNorm.x < 0) {

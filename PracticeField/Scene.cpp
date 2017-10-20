@@ -29,6 +29,8 @@ Scene::Scene(){
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
+
+	
 }
 
 Scene::~Scene(){
@@ -86,10 +88,10 @@ void Scene::WonderfulWorld() {
 	mPlane->meshes->at(0)->textures.push_back(t);
 	Mesh* thatMesh = mPlane->meshes->at(0);
 	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
-		thatMesh->vertices[loop].TexCoords = 
+		thatMesh->vertices[loop].texCoords = 
 			glm::vec2(
-				thatMesh->vertices[loop].Position.x, 
-				thatMesh->vertices[loop].Position.z
+				thatMesh->vertices[loop].position.x, 
+				thatMesh->vertices[loop].position.z
 			);
 	}
 	go = new GameObject("floor");
@@ -104,10 +106,10 @@ void Scene::WonderfulWorld() {
 	mQuad->meshes->at(0)->textures.push_back(tGrass);
 	thatMesh = mQuad->meshes->at(0);
 	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
-		thatMesh->vertices[loop].TexCoords =
+		thatMesh->vertices[loop].texCoords =
 			glm::vec2(
-				(thatMesh->vertices[loop].Position.x + 1) / 2,
-				(thatMesh->vertices[loop].Position.z + 1) / 2
+				(thatMesh->vertices[loop].position.x + 1) / 2,
+				(thatMesh->vertices[loop].position.z + 1) / 2
 			);
 	}
 
@@ -168,10 +170,10 @@ void Scene::WonderfulWorld() {
 	mQuad2->meshes->at(0)->textures.push_back(tWindow);
 	thatMesh = mQuad2->meshes->at(0);
 	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
-		thatMesh->vertices[loop].TexCoords =
+		thatMesh->vertices[loop].texCoords =
 			glm::vec2(
-			(thatMesh->vertices[loop].Position.x + 1) / 2,
-				(thatMesh->vertices[loop].Position.z + 1) / 2
+			(thatMesh->vertices[loop].position.x + 1) / 2,
+				(thatMesh->vertices[loop].position.z + 1) / 2
 			);
 	}
 
@@ -188,37 +190,35 @@ void Scene::WonderfulWorld() {
 
 
 void Scene::NotWonderfulWorld() {
-	//GameObject* goTimer = new GameObject("timer");
-	//goTimer->AddComponent<TimeChecker>();
+	GameObject* goTimer = new GameObject("timer");
+//	goTimer->AddComponent<TimeChecker>();
 
-	GameObject* go = new GameObject("venus");
-	SphereRenderer* sr = new SphereRenderer();
-	go->SetRenderer(sr);
-	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
-	go->GetRenderer()->SetDefaultShader();
-	go->GetRenderer()->castShadow = false;
+	for (int loop = 0; loop < 1; loop++) {
+		GameObject* go = new GameObject("venus");
+		SphereRenderer* sr = new SphereRenderer();
+		go->SetRenderer(sr);
+		go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
+		go->GetRenderer()->SetDefaultShader();
+		go->GetRenderer()->castShadow = false;
+		go->GetRenderer()->cullingEnabled = false;
+		go->transform->position = glm::vec3(loop, 0, -loop * 4);
+	}
 
-	float r = sr->GetBoundingRadius();
-	glm::vec3 pos = sr->GetBoundingCenter();	
-
-	//sphere	
-	/*go = new GameObject("sphere");
-	go->SetRenderer(new Renderer(FileManager::LoadMeshModel("sphere.obj")));	
-	go->GetRenderer()->SetDefaultShader();
-	go->GetRenderer()->castShadow = false;
-	go->GetRenderer()->cullingEnabled = false;
-	go->GetRenderer()->lineDrawEnabled = true;
-	go->transform->position = pos;
-	go->transform->scale *= r;*/
+	GameObject* goTemp = new GameObject("sphere");
+	goTemp->SetRenderer(new Renderer(FileManager::LoadMeshModelNoPool("sphere.obj")));
+	goTemp->GetRenderer()->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
+	goTemp->GetRenderer()->castShadow = false;
+	goTemp->GetRenderer()->cullingEnabled = false;
+	goTemp->transform->position = glm::vec3(-15, 0, 0);
 
 	//sphere	
-	go = new GameObject("sphere");
-	go->SetRenderer(new SphereRenderer());
-	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
-	go->GetRenderer()->SetDefaultShader();
-	go->GetRenderer()->castShadow = false;
-	go->GetRenderer()->cullingEnabled = false;	
-	go->transform->position = glm::vec3(10, 0, 0);
+/*	GameObject* goSphere = new GameObject("sphere");
+	goSphere->SetRenderer(new SphereRenderer());
+	goSphere->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+	goSphere->GetRenderer()->SetDefaultShader();
+	goSphere->GetRenderer()->castShadow = false;
+	goSphere->GetRenderer()->cullingEnabled = false;
+	goSphere->transform->position = glm::vec3(10, 10, 0);*/
 	
 }
 

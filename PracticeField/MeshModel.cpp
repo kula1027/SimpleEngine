@@ -17,6 +17,7 @@ MeshModel::~MeshModel(){
 	for (int loop = 0; loop < meshes->size(); loop++) {
 		delete(meshes->at(loop));
 	}
+
 	delete(this->meshes);
 }
 
@@ -83,12 +84,12 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 		vector.x = mesh->mVertices[i].x;
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
-		vertex.Position = vector;
-		// Normals
+		vertex.position = vector;
+		// normals
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
 		vector.z = mesh->mNormals[i].z;
-		vertex.Normal = vector;
+		vertex.normal = vector;
 		// Texture Coordinates
 		if (mesh->mTextureCoords[0]) // Does the mesh contain texture coordinates?
 		{
@@ -97,10 +98,10 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 			// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
 			vec.x = mesh->mTextureCoords[0][i].x;
 			vec.y = mesh->mTextureCoords[0][i].y;
-			vertex.TexCoords = vec;
+			vertex.texCoords = vec;
 		}
 		else
-			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+			vertex.texCoords = glm::vec2(0.0f, 0.0f);
 		vertices.push_back(vertex);
 	}
 	// Now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
@@ -110,9 +111,10 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 		// Retrieve all indices of the face and store them in the indices vector
 		for (GLuint j = 0; j < face.mNumIndices / 3; j++) {
 			Triangle tri;
-			tri.idx0 = face.mIndices[j * 3];
-			tri.idx1 = face.mIndices[j * 3 + 1];
-			tri.idx2 = face.mIndices[j * 3 + 2];
+			for (int loop = 0; loop < 3; loop++) {				
+				tri.idx[loop] = face.mIndices[j * 3 + loop];				
+			}
+			
 			triangles.push_back(tri);
 		}
 	}	
@@ -126,7 +128,7 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 		// Same applies to other texture as the following list summarizes:
 		// Diffuse: texture_diffuseN
 		// Specular: texture_specularN
-		// Normal: texture_normalN		
+		// normal: texture_normalN		
 		
 
 		// 1. Diffuse maps
@@ -135,7 +137,7 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 		// 2. Specular maps
 		vector<Texture*> specularMaps = this->LoadMaterialTextures(material, aiTextureType_SPECULAR);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-		// 3. Normal maps
+		// 3. normal maps
 		vector<Texture*> normalMaps = this->LoadMaterialTextures(material, aiTextureType_NORMALS);		
 		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 	}
@@ -154,9 +156,11 @@ vector<Texture*> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType
 		case aiTextureType_DIFFUSE:
 			tType = TextureType_Diffuse;
 			break;
+
 		case aiTextureType_SPECULAR:
 			tType = TextureType_Specular;
 			break;
+
 		case aiTextureType_NORMALS:
 			tType = TextureType_Normals;
 			break;
