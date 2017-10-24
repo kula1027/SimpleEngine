@@ -15,6 +15,8 @@ Mesh::~Mesh(){
 }
 
 void Mesh::Setup(){
+	if (vertices.size() <= 0)return;
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	glGenBuffers(1, &VBO);
@@ -34,6 +36,9 @@ void Mesh::Setup(){
 
 	glEnableVertexAttribArray(AttrLoc_TexCoord);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoords));
+
+	glEnableVertexAttribArray(AttrLoc_Color);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color));
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);

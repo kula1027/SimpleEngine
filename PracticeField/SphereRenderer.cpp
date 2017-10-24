@@ -58,6 +58,7 @@ void SphereRenderer::SetMeshModel(MeshModel* meshModel_){
 	}
 
 	boundingCenter = (box_max + box_min) / 2.0f;
+	
 	glm::vec3 c = glm::vec3(
 		boundingCenter.x,
 		0,
@@ -81,12 +82,12 @@ void SphereRenderer::SetMeshModel(MeshModel* meshModel_){
 	boundingRadius = largest;
 	float height = box_max.y - box_min.y;
 
-	Mesh** dividedMeshes = MeshModifier::DivideVertical(mesh, box_min.y, height, divisionCount);
+	Mesh** dividedMeshes = MeshModifier::DivideVertical(mesh, box_min.y, height, divisionCount, boundingCenter);
 
 	delete mesh;
 	meshModel->meshes->pop_back();
 
-	for (int loop = 0; loop < divisionCount; loop++) {		
+	for (int loop = 0; loop < divisionCount + 1; loop++) {		
 		dividedMeshes[loop]->Setup();
 		meshModel->meshes->push_back(dividedMeshes[loop]);
 	}
@@ -102,15 +103,19 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	SetUniformDlight(cam_, lights_[0]);
 
 	glm::vec3 dirCam = glm::normalize(cam_->transform->position - (boundingCenter + transform->position));
+	//dirCam.z = 0;
 	float angleVertical = glm::dot(dirCam, glm::vec3(0, 1, 0));	
+	float angleHorizontal = glm::dot(dirCam, glm::vec3(0, 0, 1));
+
+	//cout << angleVertical << endl;
 
 	int segEnd;
 	int segStart;
 	if (angleVertical <= 0){
 		segStart = 0;
-		segEnd = (divisionCount + 1) * ((2.0f - abs(angleVertical)) * 0.5f) + 1;
+		segEnd = (divisionCount + 1) * ((2.0f - abs(angleVertical)) * 0.5f) + additionCount;
 	} else {
-		segStart = divisionCount + 1 - (divisionCount + 1) * ((2.0f - abs(angleVertical)) * 0.5f) - 1;
+		segStart = divisionCount + 1 - (divisionCount + 1) * ((2.0f - abs(angleVertical)) * 0.5f) - additionCount;
 		segEnd = divisionCount;
 	}
 
@@ -119,8 +124,10 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	if (segStart < 0)segStart = 0;
 	if (segEnd > divisionCount)segEnd = divisionCount;
 
+	int vCount = 0;
 	for (GLuint loop = segStart; loop < segEnd; loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
+		vCount += processingMesh->vertices.size();
 
 		ApplyTexture(processingMesh);
 
@@ -133,6 +140,19 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 			NULL
 		);
 	}
+
+	Mesh* processingMesh = meshModel->meshes->at(divisionCount);
+	vCount += processingMesh->vertices.size();
+	ApplyTexture(processingMesh);
+	glBindVertexArray(processingMesh->VAO);
+	glDrawElements(
+		GL_TRIANGLES,
+		processingMesh->triangles.size() * 3,
+		GL_UNSIGNED_INT,
+		NULL
+	);
+
+	//cout << transform->gameObject->name << " / " << vCount << endl;
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);

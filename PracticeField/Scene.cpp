@@ -191,21 +191,22 @@ void Scene::WonderfulWorld() {
 
 void Scene::NotWonderfulWorld() {
 	GameObject* goTimer = new GameObject("timer");
-//	goTimer->AddComponent<TimeChecker>();
+	//goTimer->AddComponent<TimeChecker>();
 
 	for (int loop = 0; loop < 1; loop++) {
 		GameObject* go = new GameObject("venus");
 		SphereRenderer* sr = new SphereRenderer();
 		go->SetRenderer(sr);
 		go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
-		go->GetRenderer()->SetDefaultShader();
+		go->GetRenderer()->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
 		go->GetRenderer()->castShadow = false;
-		go->GetRenderer()->cullingEnabled = false;
+//		go->GetRenderer()->cullingEnabled = false;
 		go->transform->position = glm::vec3(loop, 0, -loop * 4);
 	}
 
 	GameObject* goTemp = new GameObject("sphere");
-	goTemp->SetRenderer(new Renderer(FileManager::LoadMeshModelNoPool("sphere.obj")));
+	goTemp->SetRenderer(new SphereRenderer());
+	goTemp->GetRenderer()->SetMeshModel(FileManager::LoadMeshModelNoPool("sphere.obj"));
 	goTemp->GetRenderer()->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
 	goTemp->GetRenderer()->castShadow = false;
 	goTemp->GetRenderer()->cullingEnabled = false;

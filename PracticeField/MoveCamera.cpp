@@ -60,6 +60,6 @@ void MoveCamera::OnStart(){
 
 	verticalAngle = 0;
 	horizontalAngle = 3.14f;
-	moveSpeed = 20.0f;
+	moveSpeed = 10.0f;
 	sensitivity = 0.001f;
 }

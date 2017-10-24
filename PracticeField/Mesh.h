@@ -13,7 +13,7 @@ using namespace std;
 #define AttrLoc_Position 0
 #define AttrLoc_Normal 1
 #define AttrLoc_TexCoord 2
-#define AttrLoc_Color 2
+#define AttrLoc_Color 3
 
 class Texture;
 

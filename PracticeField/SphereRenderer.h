@@ -5,11 +5,14 @@
 class SphereRenderer : public Renderer
 {
 private:
-	const int divisionCount = 10;
+	const int divisionCount = 12;
+	const int additionCount = 2;
 
 	void CalculateBoudingSphere();
 	float boundingRadius;
 	glm::vec3 boundingCenter;
+
+
 
 public:
 	SphereRenderer();
