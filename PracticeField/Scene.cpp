@@ -204,13 +204,13 @@ void Scene::NotWonderfulWorld() {
 		go->transform->position = glm::vec3(loop, 0, -loop * 4);
 	}
 
-	GameObject* goTemp = new GameObject("sphere");
+	/*GameObject* goTemp = new GameObject("sphere");
 	goTemp->SetRenderer(new SphereRenderer());
 	goTemp->GetRenderer()->SetMeshModel(FileManager::LoadMeshModelNoPool("sphere.obj"));
 	goTemp->GetRenderer()->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
 	goTemp->GetRenderer()->castShadow = false;
 	goTemp->GetRenderer()->cullingEnabled = false;
-	goTemp->transform->position = glm::vec3(-15, 0, 0);
+	goTemp->transform->position = glm::vec3(-15, 0, 0);*/
 
 	//sphere	
 /*	GameObject* goSphere = new GameObject("sphere");

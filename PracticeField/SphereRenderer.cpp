@@ -3,6 +3,7 @@
 #include "MeshModel.h"
 #include "MeshModifier.h"
 #include <iostream>
+#include <math.h>
 
 
 void SphereRenderer::CalculateBoudingSphere(){
@@ -22,8 +23,7 @@ float SphereRenderer::GetBoundingRadius(){
 	return boundingRadius;
 }
 
-glm::vec3 SphereRenderer::GetBoundingCenter()
-{
+glm::vec3 SphereRenderer::GetBoundingCenter() {
 	return boundingCenter;
 }
 
@@ -59,35 +59,49 @@ void SphereRenderer::SetMeshModel(MeshModel* meshModel_){
 
 	boundingCenter = (box_max + box_min) / 2.0f;
 	
-	glm::vec3 c = glm::vec3(
+	glm::vec3 bCenterHori = glm::vec3(
 		boundingCenter.x,
 		0,
 		boundingCenter.z
 	);
 
-	float largest = -1;
+	float largestHori = -1;
+	float largestVert = -1;
 	for (int loop = 0; loop < mesh->vertices.size(); loop++) {
-		glm::vec3 v = glm::vec3(
+		float dist = 0;
+
+		glm::vec3 hori = glm::vec3(
 			mesh->vertices[loop].position.x,
 			0,
 			mesh->vertices[loop].position.z
+		);				
+		dist = glm::distance(hori, bCenterHori);
+		if (dist > largestHori) {
+			largestHori = dist;
+		}
+
+		glm::vec3 vert = glm::vec3(
+			0,
+			mesh->vertices[loop].position.y,
+			mesh->vertices[loop].position.z
 		);
-		
-		float dist = glm::distance(v, c);
-		if (dist > largest) {
-			largest = dist;
+		dist = glm::distance(vert, bCenterHori);
+		if (dist > largestVert) {
+			largestVert = dist;
 		}
 	}
 
-	boundingRadius = largest;
-	float height = box_max.y - box_min.y;
+	boundingRadius = largestHori;
 
-	Mesh** dividedMeshes = MeshModifier::DivideVertical(mesh, box_min.y, height, divisionCount, boundingCenter);
+	radiusVert = largestVert;
+	radiusHori = largestHori;
+
+	Mesh** dividedMeshes = MeshModifier::DivideByAngle(mesh, divisionCount, idxPosition);
 
 	delete mesh;
 	meshModel->meshes->pop_back();
 
-	for (int loop = 0; loop < divisionCount + 1; loop++) {		
+	for (int loop = 0; loop < divisionCount; loop++) {
 		dividedMeshes[loop]->Setup();
 		meshModel->meshes->push_back(dividedMeshes[loop]);
 	}
@@ -102,30 +116,14 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 
 	SetUniformDlight(cam_, lights_[0]);
 
-	glm::vec3 dirCam = glm::normalize(cam_->transform->position - (boundingCenter + transform->position));
-	//dirCam.z = 0;
+	glm::vec3 dirCam =cam_->transform->position - (boundingCenter + transform->position);	
 	float angleVertical = glm::dot(dirCam, glm::vec3(0, 1, 0));	
-	float angleHorizontal = glm::dot(dirCam, glm::vec3(0, 0, 1));
-
-	//cout << angleVertical << endl;
-
-	int segEnd;
-	int segStart;
-	if (angleVertical <= 0){
-		segStart = 0;
-		segEnd = (divisionCount + 1) * ((2.0f - abs(angleVertical)) * 0.5f) + additionCount;
-	} else {
-		segStart = divisionCount + 1 - (divisionCount + 1) * ((2.0f - abs(angleVertical)) * 0.5f) - additionCount;
-		segEnd = divisionCount;
-	}
-
-	//cout << segStart << " / " << segEnd << endl;
+	float angleHorizontal = glm::dot(glm::vec3(dirCam.x, 0, dirCam.z), glm::vec3(0, 0, 1));
 	
-	if (segStart < 0)segStart = 0;
-	if (segEnd > divisionCount)segEnd = divisionCount;
-
+	
 	int vCount = 0;
-	for (GLuint loop = segStart; loop < segEnd; loop++) {
+	for (GLuint loop = 0; loop < divisionCount; loop++) {
+
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 		vCount += processingMesh->vertices.size();
 
@@ -141,21 +139,47 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 		);
 	}
 
-	Mesh* processingMesh = meshModel->meshes->at(divisionCount);
-	vCount += processingMesh->vertices.size();
-	ApplyTexture(processingMesh);
-	glBindVertexArray(processingMesh->VAO);
-	glDrawElements(
-		GL_TRIANGLES,
-		processingMesh->triangles.size() * 3,
-		GL_UNSIGNED_INT,
-		NULL
-	);
-
-	//cout << transform->gameObject->name << " / " << vCount << endl;
+	float range[2];
+	GetHorizontalAngleRange(dirCam, range);
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	RestoreDrawingMode();
+}
+
+void SphereRenderer::GetHorizontalAngleRange(glm::vec3 dirCam_, float* range_) {	
+	dirCam_ -= boundingCenter;
+
+	float squareX = dirCam_.x * dirCam_.x;
+	float squareZ = dirCam_.z * dirCam_.z;
+	float squareR = radiusHori * radiusHori;
+
+	float val = -(dirCam_.x * dirCam_.z);
+	float det = squareX * squareZ - (squareR - squareX) * (squareR - squareZ);
+	float denom = squareR - squareX;	
+
+	float m0 = (val + sqrt(det)) / denom;
+	float m1 = (val - sqrt(det)) / denom;
+
+	float k0 = sqrt(1 / (1 + (m0 * m0)));
+	float k1 = sqrt(1 / (1 + (m1 * m1)));
+	glm::vec2 adjVector[2] = {
+		glm::vec2(k0, m0 * k0),
+		glm::vec2(k1, m1 * k1)
+	};
+
+	if (glm::dot(glm::vec2(dirCam_.x, dirCam_.z), adjVector[0]) < 0) {
+		adjVector[0] *= -1;
+	}
+	if (glm::dot(glm::vec2(dirCam_.x, dirCam_.z), adjVector[1]) < 0) {
+		adjVector[1] *= -1;
+	}
+
+	cout << dirCam_.x << ", "
+		<< dirCam_.z << " / "
+		<< adjVector[0].x << " , "
+		<< adjVector[0].y << " / "
+		<< adjVector[1].x << " , "
+		<< adjVector[1].y << endl;
 }

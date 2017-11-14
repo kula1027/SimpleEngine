@@ -1,5 +1,6 @@
 #include "MeshModifier.h"
 
+#include "SphereRenderer.h"
 
 
 MeshModifier::MeshModifier()
@@ -37,43 +38,74 @@ void MeshModifier::SortTriangles(vector<Triangle>* triangles_, vector<float>* do
 	if (i < hi) SortTriangles(triangles_, dotValues, i, hi);
 }
 
-Mesh** MeshModifier::DivideVertical(Mesh * mesh_, float min_y_, float height_, int divisionCount_, glm::vec3 center_){
+Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int divisionCount_, int** idxPosition_){
 	glm::vec3 up = glm::vec3(0, 1, 0);
-	vector<Triangle>* dividedTriangles = new vector<Triangle>[divisionCount_ + 1];
-	float segmentHeight = height_ / divisionCount_;
+	vector<Triangle>* dividedTriangles = new vector<Triangle>[divisionCount_];
 
-	for (int loop = 0; loop < mesh_->triangles.size(); loop++) {		
+	for (int loop = 0; loop < mesh_->triangles.size(); loop++) {//up과의 각에 따라 divide	
 		glm::vec3 faceNormal = CalcFaceNormal(mesh_->triangles[loop], &mesh_->vertices);
 		glm::vec3 faceCenter = CalcFaceCenter(mesh_->triangles[loop], &mesh_->vertices);
 
 		glm::vec3 vColor;
-		if (glm::dot(center_ - faceCenter, faceNormal) > 0) {
-			vColor = glm::vec3(0.5f, 0, 0);
 
-			dividedTriangles[divisionCount_].push_back(mesh_->triangles[loop]);
-		} else {//inward face
-			float dotVal = glm::dot(faceNormal, up);
-			dotVal = (dotVal + 1) / 2 * divisionCount_;// 0 <= dotVal < divisionCount_		
-			if (dotVal >= divisionCount_)dotVal = divisionCount_ - 1;
-			dividedTriangles[(int)dotVal].push_back(mesh_->triangles[loop]);
-			vColor = glm::vec3(0, -glm::dot(center_ - faceCenter, faceNormal), 0.5f);
-		}
-
+		float dotVal = glm::dot(faceNormal, up);
+		dotVal = (dotVal + 1) / 2 * divisionCount_;// 0 <= dotVal < divisionCount_		
+		if (dotVal >= divisionCount_)dotVal = divisionCount_ - 1;
+		dividedTriangles[(int)dotVal].push_back(mesh_->triangles[loop]);
+		vColor = glm::vec3(1, 1, 1);
+		
 		for (int loop2 = 0; loop2 < 3; loop2++) {
 			mesh_->vertices[mesh_->triangles[loop].idx[loop2]].color = vColor;
-		}	
+		}
 	}
 
-	Mesh** dividedMesh = new Mesh*[divisionCount_ + 1];
-	for (int loop = 0; loop < divisionCount_ + 1; loop++) {
+	glm::vec3 refVec = glm::vec3(0, 0, 1);
+	idxPosition_ = new int*[divisionCount_];			
+	for (int loop = 0; loop < divisionCount_; loop++) {
+		vector<float> dotValues;		
+		
+		for (int loop2 = 0; loop2 < dividedTriangles[loop].size(); loop2++) {
+			glm::vec3 faceNormal = CalcFaceNormal(dividedTriangles[loop][loop2], &mesh_->vertices);
+			faceNormal.y = 0;			
+			float dotVal = glm::dot(faceNormal, refVec);
+			if (faceNormal.x < 0) {//0 ~ 4로 범위 변환, 시계방향 
+				dotVal = -dotVal + 1;				
+			}else {
+				dotVal += 3;
+			}
+
+			dotValues.push_back(dotVal);
+		}
+
+		SortTriangles(&dividedTriangles[loop], &dotValues, 0, dividedTriangles[loop].size() - 1);		
+		
+		idxPosition_[loop] = new int[SphereRenderer::horiDivision];
+		memset(idxPosition_[loop], -1, sizeof(int) * SphereRenderer::horiDivision);
+		int currentIdx = 0;
+		for (int loop2 = 0; loop2 < dotValues.size(); loop2++) {
+			float dv = dotValues[loop2] * SphereRenderer::horiDivision / 4;//0 <= dv <= horiDivision
+			(int)dv >= SphereRenderer::horiDivision ? dv-- : 0;
+			if (idxPosition_[loop][(int)dv] < loop2) {
+				idxPosition_[loop][(int)dv] = loop2;
+			}
+		}
+		 
+		cout << "DD: " << loop << endl;
+		for (int loop2 = 0; loop2 < 8; loop2++) {
+			cout << idxPosition_[loop][loop2] << endl;
+		}		
+	}
+
+	Mesh** dividedMesh = new Mesh*[divisionCount_];
+	for (int loop = 0; loop < divisionCount_; loop++) {
 		dividedMesh[loop] = new Mesh();
 	}
 
 	//divided triangle을 토대로 divided mesh를 구성한다.
-	for (int loop = 0; loop < divisionCount_ + 1; loop++) {//각 mesh마다
+	for (int loop = 0; loop < divisionCount_; loop++) {//각 mesh마다
 		int *vertexIndirector = new int[mesh_->vertices.size()];
 		memset(vertexIndirector, -1, sizeof(int) * mesh_->vertices.size());
-
+		
 		int idx = 0;
 		for (int loop2 = 0; loop2 < dividedTriangles[loop].size(); loop2++) {
 			int indice[3] = {
