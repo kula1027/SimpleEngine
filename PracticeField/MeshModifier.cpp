@@ -59,8 +59,9 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int divisionCount_, int** idxPo
 		}
 	}
 
+	/// <image url = "$(SolutionDir)/CommentImages/horiDivision.png"/>
 	glm::vec3 refVec = glm::vec3(0, 0, 1);
-	idxPosition_ = new int*[divisionCount_];			
+			
 	for (int loop = 0; loop < divisionCount_; loop++) {
 		vector<float> dotValues;		
 		
@@ -79,7 +80,7 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int divisionCount_, int** idxPo
 
 		SortTriangles(&dividedTriangles[loop], &dotValues, 0, dividedTriangles[loop].size() - 1);		
 		
-		idxPosition_[loop] = new int[SphereRenderer::horiDivision];
+		
 		memset(idxPosition_[loop], -1, sizeof(int) * SphereRenderer::horiDivision);
 		int currentIdx = 0;
 		for (int loop2 = 0; loop2 < dotValues.size(); loop2++) {

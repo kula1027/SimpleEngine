@@ -191,7 +191,7 @@ void Scene::WonderfulWorld() {
 
 void Scene::NotWonderfulWorld() {
 	GameObject* goTimer = new GameObject("timer");
-	//goTimer->AddComponent<TimeChecker>();
+	goTimer->AddComponent<TimeChecker>();
 
 	for (int loop = 0; loop < 1; loop++) {
 		GameObject* go = new GameObject("venus");
@@ -201,7 +201,7 @@ void Scene::NotWonderfulWorld() {
 		go->GetRenderer()->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
 		go->GetRenderer()->castShadow = false;
 //		go->GetRenderer()->cullingEnabled = false;
-		go->transform->position = glm::vec3(loop, 0, -loop * 4);
+		//go->transform->position = glm::vec3(loop, 0, -loop * 4);
 	}
 
 	/*GameObject* goTemp = new GameObject("sphere");

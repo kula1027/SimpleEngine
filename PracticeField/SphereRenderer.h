@@ -5,17 +5,17 @@
 class SphereRenderer : public Renderer
 {
 private:
-	const static int divisionCount = 6;
+	const static int divisionCount = 8;
 
 	void CalculateBoudingSphere();
-	void GetHorizontalAngleRange(glm::vec3 dirCam_, float* range_);
+	float GetHorizontalAngleRange(glm::vec3 dirCam_);
 	float boundingRadius;
 	glm::vec3 boundingCenter;
 
 	float radiusVert;
 	float radiusHori;
 
-	int** idxPosition;
+	static int** idxPosition;
 
 public:
 	const static int horiDivision = 8;
