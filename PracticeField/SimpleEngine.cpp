@@ -31,7 +31,7 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 
 	InputModule::Init();		
 
-	SetVsyncMode(false);
+	SetVsyncMode(true);
 }
 
 void SimpleEngine::LoadScene(Scene * scene_){

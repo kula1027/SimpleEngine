@@ -5,7 +5,7 @@
 class SphereRenderer : public Renderer
 {
 private:
-	const static int divisionCount = 8;
+	const static int vertDivision = 8;
 
 	void CalculateBoudingSphere();
 	float GetHorizontalAngleRange(glm::vec3 dirCam_);

@@ -191,7 +191,7 @@ void Scene::WonderfulWorld() {
 
 void Scene::NotWonderfulWorld() {
 	GameObject* goTimer = new GameObject("timer");
-	goTimer->AddComponent<TimeChecker>();
+	//goTimer->AddComponent<TimeChecker>();
 
 	for (int loop = 0; loop < 1; loop++) {
 		GameObject* go = new GameObject("venus");

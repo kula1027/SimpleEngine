@@ -33,8 +33,8 @@ void SphereRenderer::SetMeshModel(MeshModel* meshModel_){
 	Mesh* mesh = meshModel->meshes->at(0);
 	if (mesh->isSetup)return;
 
-	glm::vec3 box_max = glm::vec3(-99, -99, -99);
-	glm::vec3 box_min = glm::vec3(99, 99, 99);;
+	glm::vec3 box_max = glm::vec3(-9999, -9999, -9999);
+	glm::vec3 box_min = glm::vec3(9999, 9999, 9999);
 	for (int loop = 0; loop < mesh->vertices.size(); loop++) {
 		if (mesh->vertices[loop].position.x > box_max.x) {
 			box_max.x = mesh->vertices[loop].position.x;
@@ -96,16 +96,16 @@ void SphereRenderer::SetMeshModel(MeshModel* meshModel_){
 	radiusVert = largestVert;
 	radiusHori = largestHori;
 
-	idxPosition = new int*[divisionCount];
+	idxPosition = new int*[vertDivision];
 	for (int loop = 0; loop < horiDivision; loop++) {
 		idxPosition[loop] = new int[SphereRenderer::horiDivision];
 	}
-	Mesh** dividedMeshes = MeshModifier::DivideByAngle(mesh, divisionCount, idxPosition);
+	Mesh** dividedMeshes = MeshModifier::DivideByAngle(mesh, vertDivision, idxPosition);
 
 	delete mesh;
 	meshModel->meshes->pop_back();
 
-	for (int loop = 0; loop < divisionCount; loop++) {
+	for (int loop = 0; loop < vertDivision; loop++) {
 		dividedMeshes[loop]->Setup();
 		meshModel->meshes->push_back(dividedMeshes[loop]);
 	}
@@ -137,21 +137,21 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	};
 	hRange[0] = hRange[0] / 4 * horiDivision; //0 <= ~ < horiDivision
 	hRange[1] = hRange[1] / 4 * horiDivision;
-	
-	int a = (int)hRange[0] - 1;
-	int b = (int)hRange[1];
+
+	cout << (int)hRange[0] << ", " << (int)hRange[1] << endl;
 
 	int vCount = 0;
-	for (GLuint loop = 0; loop < divisionCount; loop++) {
+	for (GLuint loop = 0; loop < vertDivision; loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 		vCount += processingMesh->vertices.size();
 
 		int startIdx = 0;
 		int tCount = 0;
 		if((int)hRange[0] >= (horiDivision / 2)){
-			startIdx = idxPosition[loop][(int)hRange[0]];
+			startIdx = idxPosition[loop][(int)hRange[0] - 1];
+			if(loop == 0)cout << startIdx << endl;
 			tCount = idxPosition[loop][horiDivision - 1] - startIdx;	
-		}						
+		}
 
 		ApplyTexture(processingMesh);
 
