@@ -13,4 +13,3 @@ public:
 	static glm::vec3 CalcFaceNormal(Triangle face_, vector<Vertex>* vertices_);
 	static glm::vec3 CalcFaceCenter(Triangle face_, vector<Vertex>* vertices_);
 };
-

@@ -200,7 +200,7 @@ void Scene::NotWonderfulWorld() {
 		go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
 		go->GetRenderer()->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
 		go->GetRenderer()->castShadow = false;
-//		go->GetRenderer()->cullingEnabled = false;
+		go->GetRenderer()->cullingEnabled = false;
 		//go->transform->position = glm::vec3(loop, 0, -loop * 4);
 	}
 

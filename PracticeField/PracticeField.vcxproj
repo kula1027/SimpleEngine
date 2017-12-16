@@ -125,6 +125,9 @@
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="EngineResource.cpp" />
     <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="ImaginaryCube.cpp" />
+    <ClCompile Include="ImaginaryPlane.cpp" />
+    <ClCompile Include="ImaginarySphere.cpp" />
     <ClCompile Include="InputModule.cpp" />
     <ClCompile Include="BaseLight.cpp" />
     <ClCompile Include="FileManager.cpp" />
@@ -156,6 +159,9 @@
     <ClInclude Include="EngineResource.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="IComponent.h" />
+    <ClInclude Include="ImaginaryCube.h" />
+    <ClInclude Include="ImaginaryPlane.h" />
+    <ClInclude Include="ImaginarySphere.h" />
     <ClInclude Include="InputModule.h" />
     <ClInclude Include="InstancedRenderer.h" />
     <ClInclude Include="IUpdatable.h" />

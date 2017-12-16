@@ -2,18 +2,17 @@
 
 #include "Renderer.h"
 
+class ImaginarySphere;
+
 class SphereRenderer : public Renderer
 {
 private:
 	const static int vertDivision = 8;
 
 	void CalculateBoudingSphere();
-	float GetHorizontalAngleRange(glm::vec3 dirCam_);
-	float boundingRadius;
-	glm::vec3 boundingCenter;
+	float GetTangentLines(glm::vec3 dirCam_);
 
-	float radiusVert;
-	float radiusHori;
+	ImaginarySphere* boundingSphere;
 
 	static int** idxPosition;
 
@@ -22,8 +21,6 @@ public:
 	SphereRenderer();
 	~SphereRenderer();
 
-	float GetBoundingRadius();
-	glm::vec3 GetBoundingCenter();
 	virtual void SetMeshModel(MeshModel* meshModel_);
 	virtual void Render(Camera* cam_, std::vector<BaseLight*> lights_);
 };

@@ -55,6 +55,12 @@
     <Filter Include="Header Files\Material\Modified">
       <UniqueIdentifier>{fefe36ae-fb87-4e61-8d1c-7bd47f5737ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Mathmatics">
+      <UniqueIdentifier>{882424ed-68ba-4909-9899-77c8a4309bab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mathmatics">
+      <UniqueIdentifier>{40634d77-f154-4a96-ad8f-644b1045f8da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SimpleEngine.cpp">
@@ -140,6 +146,15 @@
     </ClCompile>
     <ClCompile Include="MeshModifier.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImaginaryPlane.cpp">
+      <Filter>Source Files\Mathmatics</Filter>
+    </ClCompile>
+    <ClCompile Include="ImaginarySphere.cpp">
+      <Filter>Source Files\Mathmatics</Filter>
+    </ClCompile>
+    <ClCompile Include="ImaginaryCube.cpp">
+      <Filter>Source Files\Mathmatics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +246,15 @@
       <Filter>Header Files\GameComponent\Modified</Filter>
     </ClInclude>
     <ClInclude Include="MeshModifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaginaryPlane.h">
+      <Filter>Header Files\Mathmatics</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaginarySphere.h">
+      <Filter>Header Files\Mathmatics</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaginaryCube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
