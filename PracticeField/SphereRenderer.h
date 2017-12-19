@@ -3,6 +3,8 @@
 #include "Renderer.h"
 
 class ImaginarySphere;
+class ImaginaryPlane;
+class ImaginaryDisk;
 
 class SphereRenderer : public Renderer
 {
@@ -10,8 +12,9 @@ private:
 	const static int vertDivision = 8;
 
 	void CalculateBoudingSphere();
-	float GetTangentLines(glm::vec3 dirCam_);
+	ImaginaryPlane* CalcCuttingPlane(glm::vec3 dirCam_);
 
+	ImaginaryDisk** dividedMeshDisks;
 	ImaginarySphere* boundingSphere;
 
 	static int** idxPosition;

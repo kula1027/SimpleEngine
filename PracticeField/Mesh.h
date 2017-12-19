@@ -44,6 +44,7 @@ public:
 	void Setup();
 	void ResetupEbo();
 	void Resetup();
+	int GetVertexIdxCount();
 
 	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture*> textures);
 };

@@ -156,6 +156,12 @@
     <ClCompile Include="ImaginaryCube.cpp">
       <Filter>Source Files\Mathmatics</Filter>
     </ClCompile>
+    <ClCompile Include="ImaginaryDisk.cpp">
+      <Filter>Source Files\Mathmatics</Filter>
+    </ClCompile>
+    <ClCompile Include="Calculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h">
@@ -255,6 +261,15 @@
       <Filter>Header Files\Mathmatics</Filter>
     </ClInclude>
     <ClInclude Include="ImaginaryCube.h">
+      <Filter>Header Files\Mathmatics</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaginaryDisk.h">
+      <Filter>Header Files\Mathmatics</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaginaryFigures.h">
+      <Filter>Header Files\Mathmatics</Filter>
+    </ClInclude>
+    <ClInclude Include="Calculator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,10 +1,9 @@
 #include "SphereRenderer.h"
 
-#include "ImaginaryPlane.h"
-#include "ImaginarySphere.h"
-#include "ImaginaryCube.h"
+#include "ImaginaryFigures.h"
 #include "MeshModel.h"
 #include "MeshModifier.h"
+#include "Calculator.h"
 #include <iostream>
 #include <math.h>
 
@@ -27,18 +26,31 @@ void SphereRenderer::SetMeshModel(MeshModel* meshModel_) {
 	Mesh* mesh = meshModel->meshes->at(0);
 	if (mesh->isSetup)return;
 
+	//Get Bounding(AA)
 	ImaginaryCube* boundingBox = ImaginaryCube::GetBoundingBox(mesh);	
 	boundingSphere = ImaginarySphere::GetBoundingSphere(mesh, boundingBox->center);
 
-
+	//Divide by Angle
 	idxPosition = new int*[vertDivision];
 	for (int loop = 0; loop < horiDivision; loop++) {
 		idxPosition[loop] = new int[SphereRenderer::horiDivision];
 	}
-	Mesh** dividedMeshes = MeshModifier::DivideByAngle(mesh, vertDivision, idxPosition);
-	
-	meshModel->meshes->pop_back();
+	Mesh** dividedMeshes = MeshModifier::DivideByAngle(mesh, vertDivision, idxPosition);	
 
+	//Set Disks
+	dividedMeshDisks = new ImaginaryDisk*[vertDivision];
+	float height = boundingSphere->radius * 2 / vertDivision;
+	for (int loop = 0; loop < vertDivision; loop++) {
+		glm::vec3 upCenter = glm::vec3(0, boundingSphere->radius - height * loop, 0);
+		float rad = sinf(loop * glm::pi<float>() * boundingSphere->radius);
+		if (rad < sinf((loop + 1) * glm::pi<float>() * boundingSphere->radius)) {
+			rad = sinf((loop + 1) * glm::pi<float>() * boundingSphere->radius);
+		}
+		dividedMeshDisks[loop] = new ImaginaryDisk(upCenter, height, rad);
+	}
+	
+	//Replace existing mesh w divided meshes
+	meshModel->meshes->pop_back();
 	for (int loop = 0; loop < vertDivision; loop++) {
 		dividedMeshes[loop]->Setup();
 		meshModel->meshes->push_back(dividedMeshes[loop]);
@@ -58,8 +70,10 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	SetUniformDlight(cam_, lights_[0]);
 
 	glm::vec3 dirCam = cam_->transform->position - (boundingSphere->center + transform->position);
+	dirCam = glm::vec3(10, 10, 10);
 
-	float horizonRange = GetTangentLines(dirCam);
+	boundingSphere->radius = 5;
+	ImaginaryPlane* cuttingPlane = CalcCuttingPlane(dirCam);
 	
 	int vCount = 0;	
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
@@ -67,12 +81,25 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 		vCount += processingMesh->vertices.size();
 
 		ApplyTexture(processingMesh);
+				
+		//equation on disk y
+		vec2 dir = glm::vec2(-cuttingPlane->normalVector.x, -cuttingPlane->normalVector.z);
+		float angleRef = Calculator::OrientedAngle(normalize(dir));
+		float a = cuttingPlane->normalVector.x;
+		float c = cuttingPlane->normalVector.z;
+		float d = cuttingPlane->normalVector.y * dividedMeshDisks[loop]->upCenter.y + cuttingPlane->d;
+		float dirDist = abs(d) / (sqrtf(a * a) + sqrtf(c * c));
+		float angleRange = acosf(dirDist / dividedMeshDisks[loop]->radius);		
+
+		if (cuttingPlane->normalVector.y > 0) {
+			
+		}
 
 		glBindVertexArray(processingMesh->VAO);
 
 		glDrawElements(
 			GL_TRIANGLES,
-			processingMesh->triangles.size() * 3,
+			processingMesh->GetVertexIdxCount(),
 			GL_UNSIGNED_INT,
 			NULL
 		);
@@ -82,47 +109,15 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	RestoreDrawingMode();
+	delete cuttingPlane;
 }
 
-float SphereRenderer::GetTangentLines(glm::vec3 dirCam_) {
+ImaginaryPlane* SphereRenderer::CalcCuttingPlane(glm::vec3 dirCam_) {
 	dirCam_ -= boundingSphere->center;
+	
+	float sqrRadius = boundingSphere->radius * boundingSphere->radius;	
 
-	glm::vec2 dirCamNorm = glm::normalize(glm::vec2(dirCam_.x, dirCam_.z));
-
-	float squareX = dirCam_.x * dirCam_.x;
-	float squareZ = dirCam_.z * dirCam_.z;
-	float squareR = 1 * 1;
-
-	float val = -(dirCam_.x * dirCam_.z);
-	float det = squareX * squareZ - (squareR - squareX) * (squareR - squareZ);
-	float denom = squareR - squareX;
-
-	float m0 = (val + sqrt(det)) / denom;
-	float m1 = (val - sqrt(det)) / denom;
-
-	float k0 = sqrt(1 / (1 + (m0 * m0)));
-	float k1 = sqrt(1 / (1 + (m1 * m1)));
-	glm::vec2 adjVector[2] = {
-		glm::vec2(k0, m0 * k0),
-		glm::vec2(k1, m1 * k1)
-	};
-
-	if (glm::dot(dirCamNorm, adjVector[0]) < 0) {
-		adjVector[0] *= -1;
-	}
-	if (glm::dot(dirCamNorm, adjVector[1]) < 0) {
-		adjVector[1] *= -1;
-	}
-	float angleAlpha = acosf(glm::dot(adjVector[0], dirCamNorm));
-	/*float angleBeta = 2 * angleAlpha;
-	float angleTheta = glm::pi<float>() / 2 - angleAlpha;*/
-
-	return angleAlpha + glm::pi<float>() / 2;
-
-	cout << dirCam_.x << ", "
-		<< dirCam_.z << "/ "
-		<< adjVector[0].x << ", "
-		<< adjVector[0].y << "/ "
-		<< adjVector[1].x << ", "
-		<< adjVector[1].y << endl;
+	float lengToPlane = sqrRadius / dirCam_.length();
+	
+	return new ImaginaryPlane(dirCam_, glm::normalize(dirCam_) * -lengToPlane);
 }

@@ -163,7 +163,7 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 
 		glDrawElements(
 			GL_TRIANGLES,
-			processingMesh->triangles.size() * 3,
+			processingMesh->GetVertexIdxCount(),
 			GL_UNSIGNED_INT,
 			NULL
 		);

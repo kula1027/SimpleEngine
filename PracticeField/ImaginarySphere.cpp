@@ -20,7 +20,7 @@ ImaginarySphere * ImaginarySphere::GetBoundingSphere(Mesh * mesh, glm::vec3 cent
 		float dist = glm::distance(center_, mesh->vertices[loop].position);
 
 		if (dist > largestDist) {
-			dist = largestDist;
+			largestDist = dist;
 		}		
 	}
 

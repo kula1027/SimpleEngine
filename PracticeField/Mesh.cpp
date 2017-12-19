@@ -75,6 +75,10 @@ void Mesh::Resetup()
 {
 }
 
+int Mesh::GetVertexIdxCount() {
+	return triangles.size() * 3;
+}
+
 Mesh::Mesh(vector<Vertex> vertices_, vector<Triangle> triangles_, vector<Texture*> textures_){
 	this->vertices = vertices_;
 	this->triangles = triangles_;
