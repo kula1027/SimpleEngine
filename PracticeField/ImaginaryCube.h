@@ -17,6 +17,7 @@ public:
 	ImaginaryCube(vec3 center_, vec3 max_, vec3 min_);
 	~ImaginaryCube();
 
+
 	static ImaginaryCube* GetBoundingBox(Mesh* mesh);
 };
 

@@ -91,9 +91,9 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int divisionCount_, int** idxPo
 			}
 		}
 		 
-		cout << "DD: " << loop << endl;
+		cout << "Mesh " << loop << endl;
 		for (int loop2 = 0; loop2 < 8; loop2++) {
-			cout << idxPosition_[loop][loop2] << endl;
+			cout << loop2 << " : " << idxPosition_[loop][loop2] << endl;
 		}		
 	}
 
