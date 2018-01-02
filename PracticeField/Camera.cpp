@@ -25,7 +25,7 @@ Camera::Camera(){
 	name = "Camera";
 	std::cout << "Initialize Camera..." << std::endl;
 
-	transform->position = glm::vec3(5, 14, 25);
+	transform->position = glm::vec3(0, 14, 20);
 	projMode = PROJECTION_PERSPECTIVE;
 	
 	fov = 1.0f;

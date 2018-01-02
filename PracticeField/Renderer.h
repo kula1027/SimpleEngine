@@ -98,6 +98,8 @@ public:
 	void RenderShadowMap(BaseLight* light_);
 	void SetupIdx();
 
+	MeshModel* GetMeshModel();
+
 	virtual void SetShader(Shader* shader_);
 	virtual void SetDefaultShader();
 	virtual void Render(Camera* cam, std::vector<BaseLight*> lights);

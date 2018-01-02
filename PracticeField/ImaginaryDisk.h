@@ -14,6 +14,7 @@ public:
 	float height;
 	float radius;
 	vec3 upCenter;
+	vec3 downCenter;
 	vec3 up;
 };
 

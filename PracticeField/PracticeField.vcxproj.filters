@@ -163,7 +163,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FakeCam.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GameComponent\Modified</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -276,7 +276,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FakeCam.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GameComponent\Modified</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

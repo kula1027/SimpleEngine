@@ -27,4 +27,10 @@ void FakeCam::OnUpdate()
 		transform->position -= transform->right * Time::deltaTime * moveSpeed;
 	}
 
+	if (InputModule::IsPressed(GLFW_KEY_U)) {
+		transform->position -= transform->up * Time::deltaTime * moveSpeed;
+	}
+	if (InputModule::IsPressed(GLFW_KEY_O)) {
+		transform->position += transform->up * Time::deltaTime * moveSpeed;
+	}
 }

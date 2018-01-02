@@ -9,23 +9,21 @@ class ImaginaryDisk;
 class SphereRenderer : public Renderer
 {
 private:
-	const static int vertDivision = 8;
+	int vertDivision;
+	int horiDivision;
 
 	void CalculateBoudingSphere();
-	ImaginaryPlane* CalcCuttingPlane(glm::vec3 dirCam_);
-
-	ImaginaryDisk** dividedMeshDisks;
+	ImaginaryPlane* CalcCuttingPlane(glm::vec3 dirCam_);	
 		
-
-	static int** idxPosition;
-
 public:
-	const static int horiDivision = 8;
+	
 	SphereRenderer();
 	~SphereRenderer();
 
 	Transform* fakeCamTr;
 	ImaginarySphere* boundingSphere;
+	int** idxPosition;
+	ImaginaryDisk** dividedMeshDisks;
 
 	virtual void SetMeshModel(MeshModel* meshModel_);
 	virtual void Render(Camera* cam_, std::vector<BaseLight*> lights_);

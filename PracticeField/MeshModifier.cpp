@@ -1,7 +1,7 @@
 #include "MeshModifier.h"
 
 #include "SphereRenderer.h"
-
+#include "Calculator.h"
 
 MeshModifier::MeshModifier()
 {
@@ -38,20 +38,21 @@ void MeshModifier::SortTriangles(vector<Triangle>* triangles_, vector<float>* do
 	if (i < hi) SortTriangles(triangles_, dotValues, i, hi);
 }
 
-Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int divisionCount_, int** idxPosition_){
+Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int vertDivideCount, int horiDivideCount, int** idxPosition_){
 	glm::vec3 up = glm::vec3(0, 1, 0);
-	vector<Triangle>* dividedTriangles = new vector<Triangle>[divisionCount_];
+	vector<Triangle>* dividedTriangles = new vector<Triangle>[vertDivideCount];
 
+	//Vertical Division
 	for (int loop = 0; loop < mesh_->triangles.size(); loop++) {//up과의 각에 따라 divide	
 		glm::vec3 faceNormal = CalcFaceNormal(mesh_->triangles[loop], &mesh_->vertices);
 		glm::vec3 faceCenter = CalcFaceCenter(mesh_->triangles[loop], &mesh_->vertices);
 
 		glm::vec3 vColor;
 
-		float dotVal = glm::dot(faceNormal, up);
-		dotVal = (dotVal + 1) / 2 * divisionCount_;// 0 <= dotVal < divisionCount_		
-		if (dotVal >= divisionCount_)dotVal = divisionCount_ - 1;
-		dividedTriangles[(int)dotVal].push_back(mesh_->triangles[loop]);
+		float angleBtw = acosf(glm::dot(faceNormal, up)) / Calculator::PI;//0 <= angleBtw <= 1
+		angleBtw = angleBtw * vertDivideCount;// 0 <= angleBtw <= divisionCount_		
+		if (angleBtw >= vertDivideCount)angleBtw--;//0 <= angleBtw < divisionCount_
+		dividedTriangles[(int)angleBtw].push_back(mesh_->triangles[loop]);
 		vColor = glm::vec3(1, 1, 1);
 		
 		for (int loop2 = 0; loop2 < 3; loop2++) {
@@ -62,48 +63,44 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int divisionCount_, int** idxPo
 	/// <image url = "$(SolutionDir)/CommentImages/horiDivision.png"/>
 	glm::vec3 refVec = glm::vec3(0, 0, 1);
 			
-	for (int loop = 0; loop < divisionCount_; loop++) {
-		vector<float> dotValues;		
+	
+	for (int loop = 0; loop < vertDivideCount; loop++) {		
+		vector<float> angleHoris;		
 		
 		for (int loop2 = 0; loop2 < dividedTriangles[loop].size(); loop2++) {
 			glm::vec3 faceNormal = CalcFaceNormal(dividedTriangles[loop][loop2], &mesh_->vertices);
-			faceNormal.y = 0;			
-			float dotVal = glm::dot(faceNormal, refVec);
-			if (faceNormal.x < 0) {//0 ~ 4로 범위 변환, 시계방향 
-				dotVal = -dotVal + 1;				
-			}else {
-				dotVal += 3;
-			}
+			glm::vec2 faceNormal2d = glm::normalize(glm::vec2(faceNormal.x, faceNormal.z));
+			float angle = Calculator::OrientedAngle(faceNormal2d);// 0 <= angle <= 2pi			
 
-			dotValues.push_back(dotVal);
+			angleHoris.push_back(angle);
 		}
 
-		SortTriangles(&dividedTriangles[loop], &dotValues, 0, dividedTriangles[loop].size() - 1);		
-		
-		
-		memset(idxPosition_[loop], -1, sizeof(int) * SphereRenderer::horiDivision);
-		int currentIdx = 0;
-		for (int loop2 = 0; loop2 < dotValues.size(); loop2++) {
-			float dv = dotValues[loop2] * SphereRenderer::horiDivision / 4;//0 <= dv <= horiDivision
-			(int)dv >= SphereRenderer::horiDivision ? dv-- : 0;
+		SortTriangles(&dividedTriangles[loop], &angleHoris, 0, dividedTriangles[loop].size() - 1);		
+				
+		memset(idxPosition_[loop], -1, sizeof(int) * horiDivideCount);		
+		for (int loop2 = 0; loop2 < angleHoris.size(); loop2++) {
+			float dv = angleHoris[loop2] / (Calculator::PI * 2) * horiDivideCount;//0 <= dv <= horiDivision
+			//cout << loop2 << " / " 
+			//	<< angleHoris[loop2] << endl;
+			(int)dv >= horiDivideCount ? dv-- : NULL;
 			if (idxPosition_[loop][(int)dv] < loop2) {
 				idxPosition_[loop][(int)dv] = loop2;
 			}
 		}
 		 
-		cout << "Mesh " << loop << endl;
-		for (int loop2 = 0; loop2 < 8; loop2++) {
-			cout << loop2 << " : " << idxPosition_[loop][loop2] << endl;
+		cout << "MeshVertical " << loop << " / FaceCount: " << dividedTriangles[loop].size() << endl;
+		for (int loop2 = 0; loop2 < horiDivideCount; loop2++) {
+			//cout << "\t" << loop2 << " : " << idxPosition_[loop][loop2] << endl;
 		}		
 	}
 
-	Mesh** dividedMesh = new Mesh*[divisionCount_];
-	for (int loop = 0; loop < divisionCount_; loop++) {
+	Mesh** dividedMesh = new Mesh*[vertDivideCount];
+	for (int loop = 0; loop < vertDivideCount; loop++) {
 		dividedMesh[loop] = new Mesh();
 	}
 
 	//divided triangle을 토대로 divided mesh를 구성한다.
-	for (int loop = 0; loop < divisionCount_; loop++) {//각 mesh마다
+	for (int loop = 0; loop < vertDivideCount; loop++) {//각 mesh마다
 		int *vertexIndirector = new int[mesh_->vertices.size()];
 		memset(vertexIndirector, -1, sizeof(int) * mesh_->vertices.size());
 		

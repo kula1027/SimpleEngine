@@ -228,6 +228,10 @@ void Renderer::SetupIdx()
 	glBindVertexArray(0);*/
 }
 
+MeshModel * Renderer::GetMeshModel() {
+	return meshModel;
+}
+
 glm::mat4 Renderer::ComputeModelMatrix(Transform* transform_){
 	glm::mat4 mMat = glm::mat4(1.0);
 	mMat = glm::translate(mMat, transform_->position);

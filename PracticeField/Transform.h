@@ -15,6 +15,7 @@ public:
 
 	glm::vec3 forward;
 	glm::vec3 right;
+	glm::vec3 up;
 
 	GameObject* gameObject;
 

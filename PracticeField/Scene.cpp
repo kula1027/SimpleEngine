@@ -30,9 +30,7 @@ Scene::Scene(){
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-
-	
+	glCullFace(GL_FRONT);	
 }
 
 Scene::~Scene(){
@@ -203,17 +201,16 @@ void Scene::WonderfulWorld() {
 
 void Scene::NotWonderfulWorld() {
 	GameObject* goTimer = new GameObject("timer");
-	//goTimer->AddComponent<TimeChecker>();
+	goTimer->AddComponent<TimeChecker>();
 
 	GameObject* fakeCam = new GameObject("fakeCam");
 	fakeCam->AddComponent<FakeCam>();
 	fakeCam->SetRenderer(new Renderer());
 	fakeCam->GetRenderer()->SetMeshModel(FileManager::LoadMeshModelNoPool("sphere.obj"));
 	fakeCam->GetRenderer()->SetDefaultShader();
-	fakeCam->transform->position = glm::vec3(7, 10, 10);
+	fakeCam->transform->position = glm::vec3(0, 10, 10);
 	fakeCam->transform->scale = glm::vec3(0.5f);
-	fakeCam->GetRenderer()->castShadow = false;
-	fakeCam->GetRenderer()->cullingEnabled = false;
+	fakeCam->GetRenderer()->castShadow = false;	
 
 	for (int loop = 0; loop < 0; loop++) {
 		GameObject* go = new GameObject("venus");
@@ -225,28 +222,22 @@ void Scene::NotWonderfulWorld() {
 		sr->castShadow = false;
 		sr->cullingEnabled = false;
 		//go->transform->position = glm::vec3(loop, 0, -loop * 4);
-
-		GameObject* goTemp = new GameObject("sphere");
-		goTemp->SetRenderer(new Renderer());
-		goTemp->GetRenderer()->SetMeshModel(FileManager::LoadMeshModelNoPool("sphere.obj"));
-		goTemp->GetRenderer()->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
-		goTemp->GetRenderer()->castShadow = false;
-		goTemp->GetRenderer()->lineDrawEnabled = true;
-		goTemp->GetRenderer()->cullingEnabled = false;
-		goTemp->transform->position = sr->boundingSphere->center;
-		goTemp->transform->scale = glm::vec3(sr->boundingSphere->radius);
 	}
 		
-	//sphere	
-	GameObject* goSphere = new GameObject("sphere");
+	////sphere	
 	SphereRenderer* srSphere = new SphereRenderer();
-	goSphere->SetRenderer(srSphere);
-	srSphere->fakeCamTr = fakeCam->transform;
 	srSphere->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
 	srSphere->SetDefaultShader();
-	srSphere->castShadow = false;
-	srSphere->cullingEnabled = false;
-	goSphere->transform->position = glm::vec3(20, 10, 0);
+	srSphere->fakeCamTr = fakeCam->transform;
+	for (int loop = 0; loop < 10; loop++) {
+		for (int loop2 = 0; loop2 < 10; loop2++) {
+			GameObject* goSphere = new GameObject("sphere");
+			goSphere->SetRenderer(new Renderer());
+			goSphere->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+			goSphere->GetRenderer()->SetDefaultShader();
+			goSphere->transform->position = glm::vec3(0, 10, 0);
+		}
+	}
 }
 
 void Scene::UpdateObjects(){
