@@ -70,21 +70,39 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int vertDivideCount, int horiDi
 		for (int loop2 = 0; loop2 < dividedTriangles[loop].size(); loop2++) {
 			glm::vec3 faceNormal = CalcFaceNormal(dividedTriangles[loop][loop2], &mesh_->vertices);
 			glm::vec2 faceNormal2d = glm::normalize(glm::vec2(faceNormal.x, faceNormal.z));
-			float angle = Calculator::OrientedAngle(faceNormal2d);// 0 <= angle <= 2pi			
+			
+			float angle = Calculator::OrientedAngle(faceNormal2d);// 0 <= angle <= 2pi
 
+			if (isnan(angle)) {
+				angle = 0.0f;
+			}
 			angleHoris.push_back(angle);
+			
 		}
 
 		SortTriangles(&dividedTriangles[loop], &angleHoris, 0, dividedTriangles[loop].size() - 1);		
 				
 		memset(idxPosition_[loop], -1, sizeof(int) * horiDivideCount);		
-		for (int loop2 = 0; loop2 < angleHoris.size(); loop2++) {
-			float dv = angleHoris[loop2] / (Calculator::PI * 2) * horiDivideCount;//0 <= dv <= horiDivision
-			//cout << loop2 << " / " 
+		for (int loop2 = 0; loop2 < angleHoris.size(); loop2++) {\
+			
+			float dv = angleHoris[loop2] / (Calculator::PI * 2) * horiDivideCount;//0 <= dv <= horiDivision			
+			if (isnan(dv)){
+				cout << endl;
+			}				
 			//	<< angleHoris[loop2] << endl;
 			(int)dv >= horiDivideCount ? dv-- : NULL;
 			if (idxPosition_[loop][(int)dv] < loop2) {
 				idxPosition_[loop][(int)dv] = loop2;
+			}
+		}
+
+		for (int loop2 = 0; loop2 < horiDivideCount; loop2++) {//빈 세그먼트에 대한 처리
+			if (idxPosition_[loop][loop2] == -1) {
+				if (loop2 == 0) {				
+					idxPosition_[loop][loop2] = 0;
+				} else {
+					idxPosition_[loop][loop2] = idxPosition_[loop][loop2 - 1];
+				}				
 			}
 		}
 		 
@@ -115,13 +133,12 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int vertDivideCount, int horiDi
 			Triangle tri;
 			for (int loop3 = 0; loop3 < 3; loop3++) {
 				if (vertexIndirector[indice[loop3]] == -1) {//처음보는 vertex
-					Vertex v = mesh_->vertices[indice[loop3]];										
+					Vertex v = mesh_->vertices[indice[loop3]];
 
 					dividedMesh[loop]->vertices.push_back(v);
 					vertexIndirector[indice[loop3]] = dividedMesh[loop]->vertices.size() - 1;
 					tri.idx[loop3] = idx++;
-				}
-				else {
+				} else {
 					tri.idx[loop3] = vertexIndirector[indice[loop3]];
 				}
 			}

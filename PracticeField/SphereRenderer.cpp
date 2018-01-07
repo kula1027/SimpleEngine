@@ -11,14 +11,11 @@ void SphereRenderer::CalculateBoudingSphere() {
 
 }
 
-SphereRenderer::SphereRenderer() {
-	horiDivision = 64;
-	vertDivision = 16;
+SphereRenderer::SphereRenderer() {	
 }
 
-
 SphereRenderer::~SphereRenderer() {
-	delete boundingSphere;
+	
 }
 
 void SphereRenderer::SetMeshModel(MeshModel* meshModel_) {
@@ -28,33 +25,38 @@ void SphereRenderer::SetMeshModel(MeshModel* meshModel_) {
 
 	if (mesh->isSetup)return;
 
+	renderMaterial = new SphereRenderMaterial();
+
+	renderMaterial->horiDivision = 64;
+	renderMaterial->vertDivision = 16;
+
 	//Get Bounding(AA)
 	ImaginaryCube* boundingBox = ImaginaryCube::GetBoundingBox(mesh);	
-	boundingSphere = ImaginarySphere::GetBoundingSphere(mesh, boundingBox->center);
+	renderMaterial->boundingSphere = ImaginarySphere::GetBoundingSphere(mesh, boundingBox->center);
 
 	//Divide by Angle
-	idxPosition = new int*[vertDivision];
-	for (int loop = 0; loop < vertDivision; loop++) {
-		idxPosition[loop] = new int[horiDivision];
+	renderMaterial->idxPosition = new int*[renderMaterial->vertDivision];
+	for (int loop = 0; loop < renderMaterial->vertDivision; loop++) {
+		renderMaterial->idxPosition[loop] = new int[renderMaterial->horiDivision];
 	}
-	Mesh** dividedMeshes = MeshModifier::DivideByAngle(mesh, vertDivision, horiDivision, idxPosition);	
+	Mesh** dividedMeshes = MeshModifier::DivideByAngle(mesh, renderMaterial->vertDivision, renderMaterial->horiDivision, renderMaterial->idxPosition);
 
 	//Set Disks
-	dividedMeshDisks = new ImaginaryDisk*[vertDivision];
-	float height = boundingSphere->radius * 2 / vertDivision;
-	float angleItv = Calculator::PI / vertDivision;
-	for (int loop = 0; loop < vertDivision; loop++) {
-		glm::vec3 upCenter = glm::vec3(0, boundingSphere->radius - height * loop, 0);
-		float rad = sinf(loop * angleItv) * boundingSphere->radius;
-		if (rad < sinf((loop + 1) * angleItv) * boundingSphere->radius) {
-			rad = sinf((loop + 1) * angleItv) * boundingSphere->radius;
+	renderMaterial->dividedMeshDisks = new ImaginaryDisk*[renderMaterial->vertDivision];
+	float height = renderMaterial->boundingSphere->radius * 2 / renderMaterial->vertDivision;
+	float angleItv = Calculator::PI / renderMaterial->vertDivision;
+	for (int loop = 0; loop < renderMaterial->vertDivision; loop++) {
+		glm::vec3 upCenter = glm::vec3(0, renderMaterial->boundingSphere->radius - height * loop, 0);
+		float rad = sinf(loop * angleItv) * renderMaterial->boundingSphere->radius;
+		if (rad < sinf((loop + 1) * angleItv) * renderMaterial->boundingSphere->radius) {
+			rad = sinf((loop + 1) * angleItv) * renderMaterial->boundingSphere->radius;
 		}
-		dividedMeshDisks[loop] = new ImaginaryDisk(upCenter, height, rad);
+		renderMaterial->dividedMeshDisks[loop] = new ImaginaryDisk(upCenter, height, rad);
 	}
 	
 	//Replace existing mesh w divided meshes
 	meshModel->meshes->pop_back();
-	for (int loop = 0; loop < vertDivision; loop++) {
+	for (int loop = 0; loop < renderMaterial->vertDivision; loop++) {
 		dividedMeshes[loop]->Setup();
 		meshModel->meshes->push_back(dividedMeshes[loop]);
 	}
@@ -73,7 +75,7 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	SetUniformDlight(cam_, lights_[0]);
 
 	//glm::vec3 dirCam = cam_->transform->position - (boundingSphere->center + transform->position);
-	glm::vec3 dirCam = fakeCamTr->position - (boundingSphere->center + transform->position);
+	glm::vec3 dirCam = renderMaterial->targetCamTr->position - (renderMaterial->boundingSphere->center + transform->position);
 
 	ImaginaryPlane* cuttingPlane = CalcCuttingPlane(dirCam);
 	//cout << cuttingPlane->point.x << " "
@@ -94,9 +96,9 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 		
 		float diskCenterY;
 		if (cuttingPlane->normalVector.y > 0) {
-			diskCenterY = dividedMeshDisks[loop]->upCenter.y;
+			diskCenterY = renderMaterial->dividedMeshDisks[loop]->upCenter.y;
 		} else {
-			diskCenterY = dividedMeshDisks[loop]->downCenter.y;
+			diskCenterY = renderMaterial->dividedMeshDisks[loop]->downCenter.y;
 		}
 		//ax+by+cz+d = 0에서 y가 dividedMeshDisks[loop]->upCenter.y일때 xz평면에서의 직선의 방정식
 		float a = cuttingPlane->normalVector.x;
@@ -108,19 +110,19 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 		
 		float angleRef = Calculator::OrientedAngle(dirToPlane);			
 
-		float angleRange = acosf(dirDist / dividedMeshDisks[loop]->radius);			
+		float angleRange = acosf(dirDist / renderMaterial->dividedMeshDisks[loop]->radius);
 		float angleLeft = angleRef - angleRange;
 		float angleRight = angleRef + angleRange;
 
 		//angleFrom ~ angleTo를 제외한 부분을 렌더링한다.
-		if (by + d > 0 && dirDist > dividedMeshDisks[loop]->radius) {
+		if (by + d > 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
 			glDrawElements(
 				GL_TRIANGLES,
 				processingMesh->GetVertexIdxCount(),
 				GL_UNSIGNED_INT,
 				NULL
 			);
-		} else if (by + d < 0 && dirDist > dividedMeshDisks[loop]->radius) {
+		} else if (by + d < 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
 			//draw nothing
 		} else {
 			if (by + d < 0) {
@@ -135,12 +137,12 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 				angleRight = fmod(angleRight, Calculator::PI * 2);
 			}
 
-			int idxLeft = angleLeft / (2 * Calculator::PI) * horiDivision;
-			int idxRight = angleRight / (2 * Calculator::PI) * horiDivision;
+			int idxLeft = angleLeft / (2 * Calculator::PI) * renderMaterial->horiDivision;
+			int idxRight = angleRight / (2 * Calculator::PI) * renderMaterial->horiDivision;
 
 
 			if (angleRight < 2 * Calculator::PI && angleLeft > 0 && idxLeft < idxRight) {//2 piece render									
-				GLuint faceIdxLeft = idxPosition[loop][idxLeft];
+				GLuint faceIdxLeft = renderMaterial->idxPosition[loop][idxLeft];
 				glDrawElements(
 					GL_TRIANGLES,
 					faceIdxLeft * 3,
@@ -148,8 +150,8 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 					NULL
 				);
 
-				GLuint faceIdxRight = idxPosition[loop][idxRight - 1];
-				GLuint faceCount = idxPosition[loop][horiDivision - 1] - faceIdxRight;
+				GLuint faceIdxRight = renderMaterial->idxPosition[loop][idxRight - 1];
+				GLuint faceCount = renderMaterial->idxPosition[loop][renderMaterial->horiDivision - 1] - faceIdxRight;
 				glDrawElements(
 					GL_TRIANGLES,
 					faceCount * 3,
@@ -157,24 +159,24 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 					(GLvoid*)(faceIdxRight * sizeof(Triangle))
 				);
 			} else {
-				int idxLeft = angleLeft / (2 * Calculator::PI) * horiDivision;
-				int idxRight = angleRight / (2 * Calculator::PI) * horiDivision;
+				int idxLeft = angleLeft / (2 * Calculator::PI) * renderMaterial->horiDivision;
+				int idxRight = angleRight / (2 * Calculator::PI) * renderMaterial->horiDivision;
 				//Right에서부터 Left로 렌더
-				if (idxRight >= horiDivision) {
-					idxRight %= horiDivision;
+				if (idxRight >= renderMaterial->horiDivision) {
+					idxRight %= renderMaterial->horiDivision;
 				}
 				if (idxLeft <= 0) {
-					idxLeft += horiDivision - 1;
+					idxLeft += renderMaterial->horiDivision - 1;
 				}
 
 				GLuint faceIdxRight;
 				if (idxRight < 1) {
 					faceIdxRight = 0;
 				} else {
-					faceIdxRight = idxPosition[loop][idxRight - 1];
+					faceIdxRight = renderMaterial->idxPosition[loop][idxRight - 1];
 				}
 
-				GLuint faceIdxLeft = idxPosition[loop][idxLeft];
+				GLuint faceIdxLeft = renderMaterial->idxPosition[loop][idxLeft];
 				GLuint faceCount = faceIdxLeft - faceIdxRight;
 
 				glDrawElements(
@@ -183,11 +185,7 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 					GL_UNSIGNED_INT,
 					(GLvoid*)(faceIdxRight * sizeof(Triangle))
 				);
-			}
-			
-			
-
-			
+			}									
 		}		
 			
 	} 
@@ -202,7 +200,7 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 
 ImaginaryPlane* SphereRenderer::CalcCuttingPlane(glm::vec3 dirCam_) {
 	
-	float sqrRadius = boundingSphere->radius * boundingSphere->radius;	
+	float sqrRadius = renderMaterial->boundingSphere->radius * renderMaterial->boundingSphere->radius;
 	
 	float lengToPlane = sqrRadius / glm::length(dirCam_);
 

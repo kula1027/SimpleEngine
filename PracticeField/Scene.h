@@ -39,7 +39,6 @@ public:
 
 	GameObject * FindGameObjectByName(string name_);
 
-
 	void AddGameObject(GameObject* obj);
 	void AddUpdatable(IUpdatable* upd);
 	void AddRenderer(Renderer* rdr);
