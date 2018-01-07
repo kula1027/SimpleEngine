@@ -81,7 +81,6 @@ protected:
 
 	void ApplyTexture(Mesh* processingMesh_);
 
-	glm::mat4 ComputeModelMatrix(Transform* transform_);
 	void SetDrawingMode();
 	void SetUniformDlight(Camera* cam_, BaseLight* dLight);
 	void SetUniformMVP(Camera* cam_);

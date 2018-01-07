@@ -3,7 +3,7 @@
 #include "ImaginaryFigures.h"
 #include "MeshModel.h"
 #include "MeshModifier.h"
-#include "Calculator.h"
+#include "SimpleMath.h"
 #include <iostream>
 #include <math.h>
 
@@ -44,7 +44,7 @@ void SphereRenderer::SetMeshModel(MeshModel* meshModel_) {
 	//Set Disks
 	renderMaterial->dividedMeshDisks = new ImaginaryDisk*[renderMaterial->vertDivision];
 	float height = renderMaterial->boundingSphere->radius * 2 / renderMaterial->vertDivision;
-	float angleItv = Calculator::PI / renderMaterial->vertDivision;
+	float angleItv = SimpleMath::PI / renderMaterial->vertDivision;
 	for (int loop = 0; loop < renderMaterial->vertDivision; loop++) {
 		glm::vec3 upCenter = glm::vec3(0, renderMaterial->boundingSphere->radius - height * loop, 0);
 		float rad = sinf(loop * angleItv) * renderMaterial->boundingSphere->radius;
@@ -108,7 +108,7 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 		float dirDist = abs(by + d) / (sqrtf(a * a + c * c));		
 		vec2 dirToPlane = normalize(glm::vec2(-cuttingPlane->normalVector.x, -cuttingPlane->normalVector.z));		
 		
-		float angleRef = Calculator::OrientedAngle(dirToPlane);			
+		float angleRef = SimpleMath::OrientedAngle(dirToPlane);			
 
 		float angleRange = acosf(dirDist / renderMaterial->dividedMeshDisks[loop]->radius);
 		float angleLeft = angleRef - angleRange;
@@ -126,22 +126,22 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 			//draw nothing
 		} else {
 			if (by + d < 0) {
-				angleLeft += Calculator::PI;
-				angleRight += Calculator::PI;
+				angleLeft += SimpleMath::PI;
+				angleRight += SimpleMath::PI;
 
 				float t = angleLeft;
 				angleLeft = angleRight;
 				angleRight = t;
 
-				angleLeft = fmod(angleLeft, Calculator::PI * 2);
-				angleRight = fmod(angleRight, Calculator::PI * 2);
+				angleLeft = fmod(angleLeft, SimpleMath::PI * 2);
+				angleRight = fmod(angleRight, SimpleMath::PI * 2);
 			}
 
-			int idxLeft = angleLeft / (2 * Calculator::PI) * renderMaterial->horiDivision;
-			int idxRight = angleRight / (2 * Calculator::PI) * renderMaterial->horiDivision;
+			int idxLeft = angleLeft / (2 * SimpleMath::PI) * renderMaterial->horiDivision;
+			int idxRight = angleRight / (2 * SimpleMath::PI) * renderMaterial->horiDivision;
 
 
-			if (angleRight < 2 * Calculator::PI && angleLeft > 0 && idxLeft < idxRight) {//2 piece render									
+			if (angleRight < 2 * SimpleMath::PI && angleLeft > 0 && idxLeft < idxRight) {//2 piece render									
 				GLuint faceIdxLeft = renderMaterial->idxPosition[loop][idxLeft];
 				glDrawElements(
 					GL_TRIANGLES,
@@ -159,8 +159,8 @@ void SphereRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 					(GLvoid*)(faceIdxRight * sizeof(Triangle))
 				);
 			} else {
-				int idxLeft = angleLeft / (2 * Calculator::PI) * renderMaterial->horiDivision;
-				int idxRight = angleRight / (2 * Calculator::PI) * renderMaterial->horiDivision;
+				int idxLeft = angleLeft / (2 * SimpleMath::PI) * renderMaterial->horiDivision;
+				int idxRight = angleRight / (2 * SimpleMath::PI) * renderMaterial->horiDivision;
 				//Right에서부터 Left로 렌더
 				if (idxRight >= renderMaterial->horiDivision) {
 					idxRight %= renderMaterial->horiDivision;

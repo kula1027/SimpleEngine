@@ -94,7 +94,7 @@ void Scene::WonderfulWorld() {
 
 	//floor
 	Texture* t = FileManager::LoadTexture("burnt_sand_brown.png", TextureType_Diffuse);
-	MeshModel* mPlane = FileManager::LoadMeshModel("plane.obj");
+	MeshModel* mPlane = FileManager::LoadMeshModel_Pool("plane.obj");
 	mPlane->meshes->at(0)->textures.push_back(t);
 	Mesh* thatMesh = mPlane->meshes->at(0);
 	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
@@ -112,7 +112,7 @@ void Scene::WonderfulWorld() {
 
 	//Grass
 	Texture* tGrass = FileManager::LoadTexture("grass.png", TextureType_DiffuseTransparent);
-	MeshModel* mQuad = FileManager::LoadMeshModel("quad.obj");
+	MeshModel* mQuad = FileManager::LoadMeshModel_Pool("quad.obj");
 	mQuad->meshes->at(0)->textures.push_back(tGrass);
 	thatMesh = mQuad->meshes->at(0);
 	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
@@ -140,7 +140,7 @@ void Scene::WonderfulWorld() {
 			go->transform->SetParent(goGrass->transform);
 			go->transform->scale = glm::vec3(rand() % 3 + 1, 1, rand() % 3 + 1);
 			go->transform->position = glm::vec3(-rand() % 400, go->transform->scale.z, -rand() % 400);
-			go->transform->rotation = glm::vec3(90, rand() % 180, 0);
+			go->transform->SetEulerAngles(glm::vec3(90, rand() % 180, 0));
 		}
 	}
 	rdrGrass->InitInstanced();
@@ -148,35 +148,42 @@ void Scene::WonderfulWorld() {
 	//sphere w geo	
 	go = new GameObject("sphere geo");
 	go->SetRenderer(new Renderer());
-	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("sphere.obj"));
 	go->GetRenderer()->SetShader(FileManager::LoadShader("default.vert", "deform.geo", "default_geo.frag"));
 	go->transform->position = glm::vec3(0, 5, 2);
 
 	//sphere	
 	go = new GameObject("sphere");
 	go->SetRenderer(new Renderer());
-	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("sphere.obj"));
 	go->GetRenderer()->SetDefaultShader();
 	go->transform->position = glm::vec3(-5, 5, 2);
 
 	//venus
 	go = new GameObject("venus");
 	go->SetRenderer(new Renderer());
-	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("venusm_wNormal.obj"));
+	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("venusm_wNormal.obj"));
 	go->GetRenderer()->SetDefaultShader();
 	go->GetRenderer()->outline.draw = true;	
 	go->transform->position = glm::vec3(-100, 0, -100);
 
+	//venus
+	go = new GameObject("venus");
+	go->SetRenderer(new Renderer());
+	go->transform->scale = vec3(30, 30, 30);
+	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("mountain/mount.obj"));
+	go->GetRenderer()->SetDefaultShader();
+
 	//nanosuit
 	go = new GameObject("nano");
 	go->SetRenderer(new Renderer());
-	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("nanosuit/nanosuit.obj"));
+	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("nanosuit/nanosuit.obj"));
 	go->GetRenderer()->SetDefaultShader();
 	go->transform->position = glm::vec3(10, 0, 0);
 
 	//window
 	Texture* tWindow = FileManager::LoadTexture("window.png", TextureType_DiffuseTransparent);
-	MeshModel* mQuad2 = FileManager::LoadMeshModelNoPool("quad.obj");
+	MeshModel* mQuad2 = FileManager::LoadMeshModel("quad.obj");
 	mQuad2->meshes->at(0)->textures.push_back(tWindow);
 	thatMesh = mQuad2->meshes->at(0);
 	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
@@ -193,7 +200,7 @@ void Scene::WonderfulWorld() {
 	go->GetRenderer()->cullingEnabled = false;
 	go->GetRenderer()->SetMeshModel(mQuad2);
 	go->GetRenderer()->SetShader(FileManager::LoadShader("transparent.vert", "transparent.frag"));
-	go->transform->rotation = glm::vec3(90, 0, 0);
+	go->transform->SetEulerAngles(glm::vec3(90, 0, 0));
 	go->transform->position = glm::vec3(10, 10, -5);
 	go->transform->scale = glm::vec3(2, 1, 2);
 }
@@ -206,21 +213,21 @@ void Scene::NotWonderfulWorld() {
 	GameObject* fakeCam = new GameObject("fakeCam");
 	fakeCam->AddComponent<FakeCam>();
 	fakeCam->SetRenderer(new Renderer());
-	fakeCam->GetRenderer()->SetMeshModel(FileManager::LoadMeshModelNoPool("sphere.obj"));
+	fakeCam->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
 	fakeCam->GetRenderer()->SetDefaultShader();
 	fakeCam->transform->position = glm::vec3(0, 10, 10);
 	fakeCam->transform->scale = glm::vec3(0.5f);
 	fakeCam->GetRenderer()->castShadow = false;	
 
 	SphereRenderer* srBase = new SphereRenderer();
-	srBase->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+	srBase->SetMeshModel(FileManager::LoadMeshModel_Pool("sphere.obj"));
 	srBase->renderMaterial->targetCamTr = camera->transform;
 	for (int loop = 0; loop < 15; loop++) {
 		for (int loop2 = 0; loop2 < 15; loop2++) {
 			GameObject* go = new GameObject("venus");
 			SphereRenderer* sr = new SphereRenderer();
 			go->SetRenderer(sr);
-			go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+			go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("sphere.obj"));
 			sr->renderMaterial = srBase->renderMaterial;
 			go->GetRenderer()->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
 			go->GetRenderer()->castShadow = false;

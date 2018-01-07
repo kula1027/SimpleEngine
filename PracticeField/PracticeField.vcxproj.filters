@@ -144,9 +144,6 @@
     <ClCompile Include="SphereRenderer.cpp">
       <Filter>Source Files\GameComponent\Modified</Filter>
     </ClCompile>
-    <ClCompile Include="MeshModifier.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ImaginaryPlane.cpp">
       <Filter>Source Files\Mathmatics</Filter>
     </ClCompile>
@@ -159,11 +156,14 @@
     <ClCompile Include="ImaginaryDisk.cpp">
       <Filter>Source Files\Mathmatics</Filter>
     </ClCompile>
-    <ClCompile Include="Calculator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FakeCam.cpp">
       <Filter>Source Files\GameComponent\Modified</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshModifier.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMath.cpp">
+      <Filter>Source Files\Mathmatics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +254,6 @@
     <ClInclude Include="SphereRenderer.h">
       <Filter>Header Files\GameComponent\Modified</Filter>
     </ClInclude>
-    <ClInclude Include="MeshModifier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ImaginaryPlane.h">
       <Filter>Header Files\Mathmatics</Filter>
     </ClInclude>
@@ -272,11 +269,14 @@
     <ClInclude Include="ImaginaryFigures.h">
       <Filter>Header Files\Mathmatics</Filter>
     </ClInclude>
-    <ClInclude Include="Calculator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FakeCam.h">
       <Filter>Header Files\GameComponent\Modified</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshModifier.h">
+      <Filter>Header Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>Header Files\Mathmatics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

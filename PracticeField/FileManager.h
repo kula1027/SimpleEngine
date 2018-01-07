@@ -22,7 +22,7 @@ public:
 	static Shader* LoadShader(std::string filePathVertex, std::string filePathFragment);
 	static Shader* LoadShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment);
 	static Texture* LoadTexture(std::string filePath, TextureType type_);
-	static MeshModel* LoadMeshModel(std::string filePath);	
-	static MeshModel* LoadMeshModelNoPool(std::string filePath);
+	static MeshModel* LoadMeshModel_Pool(std::string filePath);	
+	static MeshModel* LoadMeshModel(std::string filePath);
 };
 

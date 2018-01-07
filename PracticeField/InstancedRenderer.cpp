@@ -142,7 +142,7 @@ void InstancedRenderer::InitInstanced() {
 			childTransformCount = tChildren->size();
 			matriceModel = new glm::mat4[childTransformCount];
 			for (int loop = 0; loop < childTransformCount; loop++) {
-				matriceModel[loop] = ComputeModelMatrix((*tChildren)[loop]);				
+				matriceModel[loop] = (*tChildren)[loop]->GetMatrix4();
 			}
 
 			glBufferData(GL_ARRAY_BUFFER, childTransformCount * sizeof(glm::mat4), &matriceModel[0], GL_STATIC_DRAW);

@@ -1,7 +1,7 @@
 #include "MeshModifier.h"
 
 #include "SphereRenderer.h"
-#include "Calculator.h"
+#include "SimpleMath.h"
 
 MeshModifier::MeshModifier()
 {
@@ -49,7 +49,7 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int vertDivideCount, int horiDi
 
 		glm::vec3 vColor;
 
-		float angleBtw = acosf(glm::dot(faceNormal, up)) / Calculator::PI;//0 <= angleBtw <= 1
+		float angleBtw = acosf(glm::dot(faceNormal, up)) / SimpleMath::PI;//0 <= angleBtw <= 1
 		angleBtw = angleBtw * vertDivideCount;// 0 <= angleBtw <= divisionCount_		
 		if (angleBtw >= vertDivideCount)angleBtw--;//0 <= angleBtw < divisionCount_
 		dividedTriangles[(int)angleBtw].push_back(mesh_->triangles[loop]);
@@ -71,7 +71,7 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int vertDivideCount, int horiDi
 			glm::vec3 faceNormal = CalcFaceNormal(dividedTriangles[loop][loop2], &mesh_->vertices);
 			glm::vec2 faceNormal2d = glm::normalize(glm::vec2(faceNormal.x, faceNormal.z));
 			
-			float angle = Calculator::OrientedAngle(faceNormal2d);// 0 <= angle <= 2pi
+			float angle = SimpleMath::OrientedAngle(faceNormal2d);// 0 <= angle <= 2pi
 
 			if (isnan(angle)) {
 				angle = 0.0f;
@@ -85,7 +85,7 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int vertDivideCount, int horiDi
 		memset(idxPosition_[loop], -1, sizeof(int) * horiDivideCount);		
 		for (int loop2 = 0; loop2 < angleHoris.size(); loop2++) {\
 			
-			float dv = angleHoris[loop2] / (Calculator::PI * 2) * horiDivideCount;//0 <= dv <= horiDivision			
+			float dv = angleHoris[loop2] / (SimpleMath::PI * 2) * horiDivideCount;//0 <= dv <= horiDivision			
 			if (isnan(dv)){
 				cout << endl;
 			}				

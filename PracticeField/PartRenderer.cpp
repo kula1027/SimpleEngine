@@ -10,7 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 void PartRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
-	modelMatrix = ComputeModelMatrix(this->transform);
+	
 
 	shader->Use();
 

@@ -49,7 +49,7 @@ Texture * FileManager::LoadTexture(std::string filePath, TextureType type_){
 	}
 }
 
-MeshModel* FileManager::LoadMeshModel(string filePath) {
+MeshModel* FileManager::LoadMeshModel_Pool(string filePath) {
 	string path = dirPathMaterial + filePath;
 
 	MeshModel* foundMesh = NULL;
@@ -71,7 +71,7 @@ MeshModel* FileManager::LoadMeshModel(string filePath) {
 	}
 }
 
-MeshModel * FileManager::LoadMeshModelNoPool(std::string filePath){
+MeshModel * FileManager::LoadMeshModel(std::string filePath){
 	string path = dirPathMaterial + filePath;
 	MeshModel* meshModel = new MeshModel((GLchar*)path.c_str());
 

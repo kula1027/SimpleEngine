@@ -121,7 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArrangedMesh.cpp" />
-    <ClCompile Include="Calculator.cpp" />
+    <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="EngineResource.cpp" />
@@ -157,7 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrangedMesh.h" />
-    <ClInclude Include="Calculator.h" />
+    <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="EngineResource.h" />

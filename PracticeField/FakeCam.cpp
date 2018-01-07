@@ -15,22 +15,22 @@ FakeCam::~FakeCam()
 void FakeCam::OnUpdate()
 {
 	if (InputModule::IsPressed(GLFW_KEY_I)) {
-		transform->position += transform->forward * Time::deltaTime * moveSpeed;
+		transform->position += transform->GetForward() * Time::deltaTime * moveSpeed;
 	}
 	if (InputModule::IsPressed(GLFW_KEY_K)) {
-		transform->position -= transform->forward * Time::deltaTime * moveSpeed;
+		transform->position -= transform->GetForward() * Time::deltaTime * moveSpeed;
 	}
 	if (InputModule::IsPressed(GLFW_KEY_L)) {
-		transform->position += transform->right * Time::deltaTime * moveSpeed;
+		transform->position += transform->GetRight() * Time::deltaTime * moveSpeed;
 	}
 	if (InputModule::IsPressed(GLFW_KEY_J)) {
-		transform->position -= transform->right * Time::deltaTime * moveSpeed;
+		transform->position -= transform->GetRight() * Time::deltaTime * moveSpeed;
 	}
 
 	if (InputModule::IsPressed(GLFW_KEY_O)) {
-		transform->position -= transform->up * Time::deltaTime * moveSpeed;
+		transform->position -= transform->GetUp() * Time::deltaTime * moveSpeed;
 	}
 	if (InputModule::IsPressed(GLFW_KEY_U)) {
-		transform->position += transform->up * Time::deltaTime * moveSpeed;
+		transform->position += transform->GetUp() * Time::deltaTime * moveSpeed;
 	}
 }

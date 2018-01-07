@@ -25,8 +25,7 @@ Texture::Texture(string path_, TextureType type_) {
 	}
 	path = path_;
 
-	glGenTextures(1, &textureId);
-
+	glGenTextures(1, &textureId);	
 
 	if (type != TextureType_DiffuseTransparent) {
 		imageData = SOIL_load_image(path_.c_str(), &width, &height, 0, SOIL_LOAD_RGB);

@@ -20,7 +20,7 @@ ImaginarySphere::~ImaginarySphere() {
 void ImaginarySphere::Render(Camera* cam, std::vector<BaseLight*> lights) {
 	if (renderer == NULL) {
 		renderer = new Renderer();
-		renderer->SetMeshModel(FileManager::LoadMeshModelNoPool("sphere.obj"));
+		renderer->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
 		renderer->SetDefaultShader();
 		renderer->castShadow = false;
 		renderer->cullingEnabled = false;
