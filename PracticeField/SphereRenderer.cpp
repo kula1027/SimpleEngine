@@ -8,14 +8,12 @@
 #include <math.h>
 
 void SphereRenderer::CalculateBoudingSphere() {
-
 }
 
-SphereRenderer::SphereRenderer() {	
+SphereRenderer::SphereRenderer() {
 }
 
 SphereRenderer::~SphereRenderer() {
-	
 }
 
 void SphereRenderer::SetMeshModel(MeshModel* meshModel_) {

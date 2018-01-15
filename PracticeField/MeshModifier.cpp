@@ -50,6 +50,9 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int vertDivideCount, int horiDi
 		glm::vec3 vColor;
 
 		float angleBtw = acosf(glm::dot(faceNormal, up)) / SimpleMath::PI;//0 <= angleBtw <= 1
+		if (isnan(angleBtw)) {
+			angleBtw = 0.0f;
+		}
 		angleBtw = angleBtw * vertDivideCount;// 0 <= angleBtw <= divisionCount_		
 		if (angleBtw >= vertDivideCount)angleBtw--;//0 <= angleBtw < divisionCount_
 		dividedTriangles[(int)angleBtw].push_back(mesh_->triangles[loop]);
@@ -76,19 +79,17 @@ Mesh** MeshModifier::DivideByAngle(Mesh * mesh_, int vertDivideCount, int horiDi
 			if (isnan(angle)) {
 				angle = 0.0f;
 			}
-			angleHoris.push_back(angle);
-			
+			angleHoris.push_back(angle);			
 		}
 
-		SortTriangles(&dividedTriangles[loop], &angleHoris, 0, dividedTriangles[loop].size() - 1);		
+		if (dividedTriangles[loop].size() > 0) {
+			SortTriangles(&dividedTriangles[loop], &angleHoris, 0, dividedTriangles[loop].size() - 1);
+		}			
 				
 		memset(idxPosition_[loop], -1, sizeof(int) * horiDivideCount);		
-		for (int loop2 = 0; loop2 < angleHoris.size(); loop2++) {\
+		for (int loop2 = 0; loop2 < angleHoris.size(); loop2++) {
 			
-			float dv = angleHoris[loop2] / (SimpleMath::PI * 2) * horiDivideCount;//0 <= dv <= horiDivision			
-			if (isnan(dv)){
-				cout << endl;
-			}				
+			float dv = angleHoris[loop2] / (SimpleMath::PI * 2) * horiDivideCount;//0 <= dv <= horiDivision						
 			//	<< angleHoris[loop2] << endl;
 			(int)dv >= horiDivideCount ? dv-- : NULL;
 			if (idxPosition_[loop][(int)dv] < loop2) {

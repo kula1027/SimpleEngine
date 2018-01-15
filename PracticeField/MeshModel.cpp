@@ -25,13 +25,12 @@ string MeshModel::GetFilePath(){
 	return directory + fileName;
 }
 
-
 void MeshModel::LoadModel(string path){
 	// Read file via ASSIMP
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
-	std::cout << "Load Model... " + path << endl
-		<< "\tMesh Count: " << scene->mNumMeshes << endl;
+	std::cout << "Load Model... " + path << endl;
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);	
+	std::cout << "\tMesh Count: " << scene->mNumMeshes << endl;
 
 	// Check for errors
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode){ // if is Not Zero

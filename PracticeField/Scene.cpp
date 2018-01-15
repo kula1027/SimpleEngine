@@ -48,8 +48,8 @@ void Scene::Load() {
 	camera = new Camera();
 	camera->AddComponent<MoveCamera>();
 	
-	//NotWonderfulWorld();
-	WonderfulWorld();
+	NotWonderfulWorld();
+	//WonderfulWorld();
 	
 	//BaseLight* pointLight = new PointLight();
 	BaseLight* directionalLight = new DirectionalLight();
@@ -165,14 +165,7 @@ void Scene::WonderfulWorld() {
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("venusm_wNormal.obj"));
 	go->GetRenderer()->SetDefaultShader();
 	go->GetRenderer()->outline.draw = true;	
-	go->transform->position = glm::vec3(-100, 0, -100);
-
-	//venus
-	go = new GameObject("venus");
-	go->SetRenderer(new Renderer());
-	go->transform->scale = vec3(30, 30, 30);
-	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("mountain/mount.obj"));
-	go->GetRenderer()->SetDefaultShader();
+	go->transform->position = glm::vec3(-100, 0, -100);	
 
 	//nanosuit
 	go = new GameObject("nano");
@@ -216,40 +209,84 @@ void Scene::NotWonderfulWorld() {
 	fakeCam->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
 	fakeCam->GetRenderer()->SetDefaultShader();
 	fakeCam->transform->position = glm::vec3(0, 10, 10);
-	fakeCam->transform->scale = glm::vec3(0.5f);
+	fakeCam->transform->scale = glm::vec3(0.2f);
 	fakeCam->GetRenderer()->castShadow = false;	
 
-	SphereRenderer* srBase = new SphereRenderer();
-	srBase->SetMeshModel(FileManager::LoadMeshModel_Pool("sphere.obj"));
-	srBase->renderMaterial->targetCamTr = camera->transform;
-	for (int loop = 0; loop < 15; loop++) {
-		for (int loop2 = 0; loop2 < 15; loop2++) {
-			GameObject* go = new GameObject("venus");
+	char* m[] = {
+		"venusm_wNormal.obj",
+		"armadillo.obj",
+		"bunny.obj",
+		"hand.obj",
+		"sphere.obj"
+	};
+	int c = 10;
+	for (int loop = 0; loop < 5; loop++) {
+		SphereRenderer* srBase = new SphereRenderer();
+		srBase->SetMeshModel(FileManager::LoadMeshModel_Pool(m[loop]));
+		srBase->renderMaterial->targetCamTr = fakeCam->transform;
+		for (int loop2 = 0; loop2 < c; loop2++) {
+			GameObject* go = new GameObject(m[loop]);
 			SphereRenderer* sr = new SphereRenderer();
 			go->SetRenderer(sr);
-			go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("sphere.obj"));
+			go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(m[loop]));
 			sr->renderMaterial = srBase->renderMaterial;
-			go->GetRenderer()->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
-			go->GetRenderer()->castShadow = false;
-			go->GetRenderer()->cullingEnabled = true;
-			go->transform->position = glm::vec3(loop2 * 10 - 100, 0, -loop * 10);
-		}		
+			go->GetRenderer()->SetDefaultShader();
+			go->GetRenderer()->castShadow = false;			
+			go->transform->position = glm::vec3(loop * 10 - 20, 10, -loop2 * 10);
+		}
 	}
 
-	//sphere	
-	/*SphereRenderer* srSphere = new SphereRenderer();
-	srSphere->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
-	srSphere->SetDefaultShader();
-	srSphere->fakeCamTr = fakeCam->transform;
-	for (int loop = 0; loop < 1; loop++) {
-		for (int loop2 = 0; loop2 < 10; loop2++) {
-			GameObject* goSphere = new GameObject("sphere");
-			goSphere->SetRenderer(srSphere);
-			goSphere->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
-			goSphere->GetRenderer()->SetDefaultShader();
-			goSphere->transform->position = glm::vec3(0, 10, 0);
+	/*for (int loop = 0; loop < 5; loop++) {
+		for (int loop2 = 0; loop2 < c; loop2++) {
+			GameObject* go = new GameObject(m[loop]);			
+			go->SetRenderer(new Renderer());
+			go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(m[loop]));
+			go->GetRenderer()->SetDefaultShader();
+			go->GetRenderer()->castShadow = false;			
+			go->transform->position = glm::vec3(loop * 10 - 20, 10, -loop2 * 10);
 		}
 	}*/
+	//
+
+	////armadillo
+	//GameObject* go = new GameObject("armadillo");
+	//SphereRenderer* srdr = new SphereRenderer();
+	//srdr->castShadow = false;
+	//srdr->SetMeshModel(FileManager::LoadMeshModel_Pool("armadillo.obj"));
+	//srdr->renderMaterial->targetCamTr = fakeCam->transform;
+	//go->SetRenderer(srdr);	
+	//go->GetRenderer()->SetDefaultShader();
+	//go->transform->position = glm::vec3(10, 10, 0);
+
+	////bunny
+	//go = new GameObject("bunny");
+	//srdr = new SphereRenderer();
+	//srdr->castShadow = false;
+	//srdr->SetMeshModel(FileManager::LoadMeshModel_Pool("bunny.obj"));
+	//srdr->renderMaterial->targetCamTr = fakeCam->transform;
+	//go->SetRenderer(srdr);
+	//go->GetRenderer()->SetDefaultShader();
+	//go->transform->position = glm::vec3(0, 10, 0);
+
+	////hand
+	//go = new GameObject("hand");
+	//srdr = new SphereRenderer();
+	//srdr->castShadow = false;
+	//srdr->SetMeshModel(FileManager::LoadMeshModel_Pool("hand.obj"));
+	//srdr->renderMaterial->targetCamTr = fakeCam->transform;
+	//go->SetRenderer(srdr);
+	//go->GetRenderer()->SetDefaultShader();
+	//go->transform->position = glm::vec3(0, 10, 10);
+
+	////sphere
+	//go = new GameObject("sphere");
+	//srdr = new SphereRenderer();
+	//srdr->castShadow = false;
+	//srdr->SetMeshModel(FileManager::LoadMeshModel_Pool("sphere.obj"));
+	//srdr->renderMaterial->targetCamTr = fakeCam->transform;
+	//go->SetRenderer(srdr);
+	//go->GetRenderer()->SetDefaultShader();
+	//go->transform->position = glm::vec3(-20, 10, 0);
 }
 
 void Scene::UpdateObjects(){
