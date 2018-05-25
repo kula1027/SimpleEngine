@@ -7,7 +7,7 @@
 #include <sstream>
 
 Mesh::Mesh() {
-	isStatic = true;
+	isStaticDraw = true;
 	isSetup = false;
 }
 
@@ -22,27 +22,28 @@ void Mesh::Setup(){
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	if (isStatic) {
+	if (isStaticDraw) {
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 	} else {
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_DYNAMIC_DRAW);
 	}
 
 	glEnableVertexAttribArray(AttrLoc_Position);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);//현재 bind된 buffer의 내용을 기술된 attribute대로 vao에 박아넣음
+	glVertexAttribPointer(AttrLoc_Position, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);//이후 shader에서 참조할때 정의된 attribute에 따라 vbo에서 가져옴
+	//0번째 attribute를 정의
 																			
 	glEnableVertexAttribArray(AttrLoc_Normal);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
+	glVertexAttribPointer(AttrLoc_Normal, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
 
 	glEnableVertexAttribArray(AttrLoc_TexCoord);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoords));
+	glVertexAttribPointer(AttrLoc_TexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoords));
 
 	glEnableVertexAttribArray(AttrLoc_Color);
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color));
+	glVertexAttribPointer(AttrLoc_Color, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color));
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	if (isStatic) {
+	if (isStaticDraw) {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles.size() * sizeof(Triangle),
 			&triangles[0], GL_STATIC_DRAW);
 	}
@@ -75,7 +76,7 @@ void Mesh::Resetup()
 {
 }
 
-int Mesh::GetVertexIdxCount() {
+int Mesh::GetIdxCount() {
 	return triangles.size() * 3;
 }
 
@@ -83,6 +84,6 @@ Mesh::Mesh(vector<Vertex> vertices_, vector<Triangle> triangles_, vector<Texture
 	this->vertices = vertices_;
 	this->triangles = triangles_;
 	this->textures = textures_;
-	isStatic = true;
+	isStaticDraw = true;
 	isSetup = false;
 }

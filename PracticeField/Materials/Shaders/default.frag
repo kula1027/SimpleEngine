@@ -121,6 +121,5 @@ void main(){
 	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir, shadow);
 	//resultColor += CalcPointLight(pointLight0, matColor, normal, viewDir);
 	
-	
 	out_color = vec4(resultColor, 1);
 }

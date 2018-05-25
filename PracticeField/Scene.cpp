@@ -8,12 +8,14 @@
 #include "MeshModel.h"
 #include "Renderer.h"
 #include "PartRenderer.h"
-#include "SphereRenderer.h"
+#include "PreCullingRenderer_Split.h"
+#include "PreCullingRenderer.h"
 #include "InstancedRenderer.h"
 #include "MoveCamera.h"
 #include "TimeChecker.h"
 #include "FakeCam.h"
 #include "ImaginaryFigures.h"
+#include "EmptySkybox.h"
 
 #include <string>
 
@@ -28,8 +30,9 @@ Scene::Scene(){
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	
 	glEnable(GL_CULL_FACE);
+	//glDisable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);	
 }
 
@@ -90,6 +93,8 @@ Camera * Scene::GetCamera(){
 }
 
 void Scene::WonderfulWorld() {
+	skybox = new EmptySkyBox();
+
 	GameObject* go;
 
 	//floor
@@ -100,7 +105,7 @@ void Scene::WonderfulWorld() {
 	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
 		thatMesh->vertices[loop].texCoords = 
 			glm::vec2(
-				thatMesh->vertices[loop].position.x, 
+				thatMesh->vertices[loop].position.x,
 				thatMesh->vertices[loop].position.z
 			);
 	}
@@ -200,39 +205,48 @@ void Scene::WonderfulWorld() {
 
 
 void Scene::NotWonderfulWorld() {
+	skybox = new EmptySkyBox();
+
 	GameObject* goTimer = new GameObject("timer");
 	goTimer->AddComponent<TimeChecker>();
 
 	GameObject* fakeCam = new GameObject("fakeCam");
 	fakeCam->AddComponent<FakeCam>();
 	fakeCam->SetRenderer(new Renderer());
-	fakeCam->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("sphere.obj"));
+	fakeCam->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("cube.obj"));
 	fakeCam->GetRenderer()->SetDefaultShader();
-	fakeCam->transform->position = glm::vec3(0, 10, 10);
-	fakeCam->transform->scale = glm::vec3(0.2f);
+	fakeCam->transform->position = glm::vec3(0, 0, -3);
+	fakeCam->transform->scale = glm::vec3(0.05f);
 	fakeCam->GetRenderer()->castShadow = false;	
 
 	char* m[] = {
 		"venusm_wNormal.obj",
 		"armadillo.obj",
 		"bunny.obj",
-		"hand.obj",
+		"hand.obj",//3
+		"suzanne.obj",
+		"spot.obj",
+		"vase.obj",//6
 		"sphere.obj"
 	};
-	int c = 10;
-	for (int loop = 0; loop < 5; loop++) {
-		SphereRenderer* srBase = new SphereRenderer();
-		srBase->SetMeshModel(FileManager::LoadMeshModel_Pool(m[loop]));
-		srBase->renderMaterial->targetCamTr = fakeCam->transform;
-		for (int loop2 = 0; loop2 < c; loop2++) {
-			GameObject* go = new GameObject(m[loop]);
-			SphereRenderer* sr = new SphereRenderer();
-			go->SetRenderer(sr);
-			go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(m[loop]));
-			sr->renderMaterial = srBase->renderMaterial;
+
+	int c = 1;
+	int d = 1;
+	int objIdx = 6;
+	PreCullingRenderer_Split* srBase = new PreCullingRenderer_Split();
+	//srBase->SetMeshModel(FileManager::LoadMeshModel_Pool(m[objIdx]));
+	//srBase->renderMaterial->targetCamTr = fakeCam->transform;
+	for (int loop = 0; loop < c; loop++) {
+		for (int loop2 = 0; loop2 < d; loop2++) {
+			GameObject* go = new GameObject(m[objIdx]);
+			PreCullingRenderer_Split* sr = new PreCullingRenderer_Split();
+			//sr->renderMaterial = srBase->renderMaterial;
+			go->SetRenderer(new Renderer());
+			go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(m[objIdx]));			
 			go->GetRenderer()->SetDefaultShader();
-			go->GetRenderer()->castShadow = false;			
-			go->transform->position = glm::vec3(loop * 10 - 20, 10, -loop2 * 10);
+			go->GetRenderer()->castShadow = false;						
+			go->transform->position = glm::vec3(loop * 10 - c * 5, 0, -loop2 * 10);
+			//go->transform->position = glm::vec3(0, 0, 0);
 		}
 	}
 
@@ -319,7 +333,7 @@ void Scene::RenderObjects(){
 	for (int loop = 0; loop < rdrCount; loop++) {
 		renderers[loop]->Render(camera, lights);
 	}
-	skybox.Render(camera);
+	skybox->Render(camera);
 
 	//Render on screen
 	glCullFace(GL_BACK);

@@ -19,6 +19,7 @@ float SimpleMath::OrientedAngle(vec2 v) {
 	if (v.x > 0){
 		angle = SimpleMath::PI * 2 - angle;
 	} 
+
 	return angle;
 }
 

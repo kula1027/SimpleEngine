@@ -8,17 +8,17 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-Skybox::Skybox(){
+SkyBox::SkyBox(){
 	InitCubeMap();
 	InitShader();
 }
 
 
-Skybox::~Skybox()
+SkyBox::~SkyBox()
 {
 }
 
-void Skybox::InitCubeMap() {
+void SkyBox::InitCubeMap() {
 	int i = 0;
 	facePath[i++] = "Materials/skybox/right.jpg";
 	facePath[i++] = "Materials/skybox/left.jpg";
@@ -52,7 +52,7 @@ void Skybox::InitCubeMap() {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void Skybox::InitShader(){
+void SkyBox::InitShader(){
 	skyboxShader = FileManager::LoadShader("Skybox/skyboxVertex.vert", "Skybox/skyboxFragment.frag");
 
 	projMatrixID = skyboxShader->GetUniformLocation("P");
@@ -74,7 +74,7 @@ void Skybox::InitShader(){
 }
 
 
-void Skybox::Render(Camera* cam_){
+void SkyBox::Render(Camera* cam_){
 	glDepthFunc(GL_LEQUAL);
 
 	skyboxShader->Use();

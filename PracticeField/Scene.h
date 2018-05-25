@@ -19,7 +19,7 @@ class Scene
 {
 private:
 	static Scene* current;
-	Skybox skybox;
+	SkyBox* skybox;
 	Camera* camera;
 	
 	vector<IUpdatable*> updatables;

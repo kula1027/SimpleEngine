@@ -7,7 +7,7 @@ class Texture;
 class Shader;
 class Camera;
 
-class Skybox
+class SkyBox
 {
 private:
 	GLuint cubeMapId;
@@ -22,10 +22,10 @@ private:
 	
 
 public:
-	Skybox();
-	~Skybox();
+	SkyBox();
+	~SkyBox();
 
-	void Render(Camera* cam_);	
+	virtual void Render(Camera* cam_);	
 };
 
 const float skyboxVertices[] = {

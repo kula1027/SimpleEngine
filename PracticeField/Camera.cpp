@@ -26,6 +26,7 @@ Camera::Camera(){
 	std::cout << "Initialize Camera..." << std::endl;
 
 	transform->position = glm::vec3(0, 14, 30);
+	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	projMode = PROJECTION_PERSPECTIVE;
 	
 	fov = 1.0f;
@@ -109,7 +110,7 @@ void Camera::EnableOffSreenBuffer(){
 	
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_STENCIL_TEST);
-	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
+	glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
@@ -118,7 +119,7 @@ void Camera::PostDraw(){
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDisable(GL_DEPTH_TEST);
-	glClearColor(0, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	offScreenData.screenShader->Use();	

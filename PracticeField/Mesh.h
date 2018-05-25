@@ -28,14 +28,22 @@ struct Triangle {
 	GLuint idx[3];
 };
 
+struct FaceData {
+	glm::vec3 normal;
+	glm::vec3 position;
+};
+
 class Mesh {
 public:
 	vector<Vertex> vertices;
-	vector<Triangle> triangles;
+	vector<Triangle> triangles;	
 	vector<Texture*> textures;
+
+	vector<FaceData> faceData;
+
 	GLuint VAO, VBO, EBO;
 	GLuint instanceVBO;
-	bool isStatic;
+	bool isStaticDraw;
 	bool isSetup;
 
 	Mesh();
@@ -44,7 +52,7 @@ public:
 	void Setup();
 	void ResetupEbo();
 	void Resetup();
-	int GetVertexIdxCount();
+	int GetIdxCount();
 
 	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture*> textures);
 };

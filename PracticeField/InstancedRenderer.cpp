@@ -137,7 +137,7 @@ void InstancedRenderer::InitInstanced() {
 		glGenBuffers(1, &currentMesh->instanceVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, currentMesh->instanceVBO);
 		
-		if (currentMesh->isStatic) {
+		if (currentMesh->isStaticDraw) {
 			vector<Transform*>* tChildren = &transform->children;
 			childTransformCount = tChildren->size();
 			matriceModel = new glm::mat4[childTransformCount];

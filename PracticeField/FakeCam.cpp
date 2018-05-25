@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "InputModule.h"
 #include "Time.h"
+#include "Camera.h"
 
 FakeCam::FakeCam()
 {
@@ -32,5 +33,5 @@ void FakeCam::OnUpdate()
 	}
 	if (InputModule::IsPressed(GLFW_KEY_KP_4)) {
 		transform->position += transform->GetUp() * Time::deltaTime * moveSpeed;
-	}
+	}	
 }
