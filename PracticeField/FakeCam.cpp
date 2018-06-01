@@ -1,8 +1,7 @@
 #include "FakeCam.h"
-#include "GameObject.h"
+#include "Bases/BasesBundle.h"
 #include "InputModule.h"
 #include "Time.h"
-#include "Camera.h"
 
 FakeCam::FakeCam()
 {

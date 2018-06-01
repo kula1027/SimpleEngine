@@ -1,6 +1,6 @@
 #include "ImaginaryCube.h"
 
-#include "Mesh.h"
+#include "../Mesh.h"
 
 ImaginaryCube::ImaginaryCube() {
 }

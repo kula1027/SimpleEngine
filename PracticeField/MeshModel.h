@@ -10,7 +10,8 @@
 #include <GLFW\glfw3.h>
 
 #include "Shader.h"
-#include "Camera.h"
+
+#include "Bases/BasesBundle.h"
 
 // GLM Mathemtics
 #include <glm/glm.hpp>

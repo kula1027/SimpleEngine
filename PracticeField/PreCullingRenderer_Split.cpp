@@ -1,6 +1,6 @@
 #include "PreCullingRenderer_Split.h"
 
-#include "ImaginaryFigures.h"
+#include "ImaginaryFigures/ImaginaryFigures.h"
 #include "MeshModel.h"
 #include "MeshModifier.h"
 #include "SimpleMath.h"

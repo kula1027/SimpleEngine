@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Skybox.h"
+#include "../Skybox/SkyboxBundle.h"
 
 #include <string>
 #include <vector>
@@ -19,9 +19,11 @@ class Scene
 {
 private:
 	static Scene* current;
-	SkyBox* skybox;
+
+protected:
+	SkyBox * skybox;
 	Camera* camera;
-	
+
 	vector<IUpdatable*> updatables;
 	vector<GameObject*> gameObjects;
 	unsigned int freeObjectId = 0;
@@ -35,7 +37,7 @@ public:
 
 	static Scene* GetCurrent();	
 
-	void Load();
+	virtual void Load();
 
 	GameObject * FindGameObjectByName(string name_);
 
@@ -48,7 +50,4 @@ public:
 		
 	void UpdateObjects();
 	void RenderObjects();
-
-	void WonderfulWorld();
-	void NotWonderfulWorld();
 };

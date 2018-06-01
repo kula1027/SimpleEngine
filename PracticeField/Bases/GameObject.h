@@ -3,7 +3,7 @@
 #define strNoname "noname"
 
 #include "Transform.h"
-#include "Scene.h"
+#include "../Scenes/Scene.h"
 
 #include <vector>
 #include <string>

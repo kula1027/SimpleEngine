@@ -1,10 +1,10 @@
 #include "Skybox.h"
 
-#include "Texture.h"
+#include "../Texture.h"
 #include <SOIL\SOIL.h>
-#include "FileManager.h"
-#include "Shader.h"
-#include "Camera.h"
+#include "../FileManager.h"
+#include "../Shader.h"
+#include "../Camera.h"
 
 #include <glm/gtc/type_ptr.hpp>
 

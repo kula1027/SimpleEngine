@@ -1,5 +1,6 @@
 #pragma once
-#include "IUpdatable.h"
+
+#include "Bases/BasesBundle.h"
 
 class FakeCam : public IUpdatable
 {

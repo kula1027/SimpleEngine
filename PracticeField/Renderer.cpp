@@ -1,12 +1,10 @@
 #include "Renderer.h"
 
 #include <chrono>
-#include "Camera.h"
-#include "Transform.h"
-#include "GameObject.h"
+#include "Bases/BasesBundle.h"
 #include "MeshModel.h"
 #include "Texture.h"
-#include "Lights.h"
+#include "Lights/LightsBundle.h"
 #include "FileManager.h"
 #include "Time.h"
 #include <glm/gtc/matrix_transform.hpp>

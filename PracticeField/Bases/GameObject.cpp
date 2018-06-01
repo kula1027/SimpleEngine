@@ -1,9 +1,9 @@
 #include "GameObject.h"
 
 #include "IUpdatable.h"
-#include "Renderer.h"
-#include "FileManager.h"
-#include "Scene.h"
+#include "../Renderer.h"
+#include "../FileManager.h"
+#include "../Scenes/Scene.h"
 #include <typeinfo>
 
 GameObject::GameObject(){

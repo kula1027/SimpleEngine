@@ -3,8 +3,7 @@
 #include "InputModule.h"
 #include "GameWindow.h"
 #include "Time.h"
-#include "GameObject.h"
-#include "Camera.h"
+#include "Bases/BasesBundle.h"
 
 MoveCamera::MoveCamera()
 {

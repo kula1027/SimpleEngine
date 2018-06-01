@@ -8,7 +8,7 @@ class Shader;
 struct ShadowData {
 	unsigned int resWidth = 2048;
 	unsigned int resHeight = 2048;
-
+		
 	unsigned int depthMapTextureId;
 	unsigned int depthMapFBO;
 };
