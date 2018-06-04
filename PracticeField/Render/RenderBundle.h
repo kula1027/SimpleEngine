@@ -2,6 +2,7 @@
 
 #include "CullLayerRenderer.h"
 #include "InstancedRenderer.h"
+#include "OutlineRenderer.h"
 #include "PartRenderer.h"
 #include "PreCullingRenderer.h"
 #include "PreCullingRenderer_Split.h"

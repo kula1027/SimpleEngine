@@ -32,7 +32,6 @@ Renderer::Renderer(Transform* transform_){
 
 Renderer::~Renderer(){
 	free(shader);
-	free(outlineShader);
 }
 
 void Renderer::SetTransform(Transform* transform_){
@@ -70,53 +69,11 @@ void Renderer::SetShader(Shader* shader_){
 	glUniform1i(id_diffuse.id, 0);
 	glUniform1i(id_specular.id, 1);
 	
-	//Outline
-	outlineShader = FileManager::LoadShader(DefaultVS_Outline, DefaultFS_Outline);
-
-	outlineShader->Use();
-	outline.id_color = outlineShader->GetUniformLocation("outlineColor");
-	outline.id_thickness = outlineShader->GetUniformLocation("thickness");
-
-	glUniform1f(outline.id_thickness, outline.thickness);
-	glUniform3f(outline.id_color, outline.color.x, outline.color.y, outline.color.z);
+	SetAdditionalShaderData(shader_);
 }
 
-void Renderer::SetDefaultShader(){
-	shader = FileManager::LoadShader(DefualtVS, DefaultFS);
-
-	id_matrice.mvp = shader->GetUniformLocation("MVP");
-	id_matrice.view = shader->GetUniformLocation("V");
-	id_matrice.model = shader->GetUniformLocation("M");
-
-	id_diffuse.count = shader->GetUniformLocation("texCountDiff");
-	id_diffuse.id = shader->GetUniformLocation("texture_diffuse");
-	id_specular.count = shader->GetUniformLocation("texCountSpec");
-	id_specular.id = shader->GetUniformLocation("texture_specular");
-
-	id_dLight.direction = shader->GetUniformLocation("directionalLight0.direction");
-	id_dLight.color = shader->GetUniformLocation("directionalLight0.color");
-	id_dLight.power = shader->GetUniformLocation("directionalLight0.power");
-	id_dLight.lightSpaceMatrix = shader->GetUniformLocation("directionalLight0.lightSpaceMatrix");
-	id_dLight.shadowMap = shader->GetUniformLocation("directionalLight0.shadowMap");
-
-	id_pLight.position = shader->GetUniformLocation("pointLight0.position_worldspace");
-	id_pLight.color = shader->GetUniformLocation("pointLight0.color");
-	id_pLight.power = shader->GetUniformLocation("pointLight0.power");
-
-	shader->Use();
-	glUniform1i(id_dLight.shadowMap, TEXTURE_IDX_SHADOWMAP);
-	glUniform1i(id_diffuse.id, 0);
-	glUniform1i(id_specular.id, 1);
-
-	//Outline
-	outlineShader = FileManager::LoadShader(DefaultVS_Outline, DefaultFS_Outline);
-
-	outlineShader->Use();
-	outline.id_color = outlineShader->GetUniformLocation("outlineColor");
-	outline.id_thickness = outlineShader->GetUniformLocation("thickness");
-
-	glUniform1f(outline.id_thickness, outline.thickness);
-	glUniform3f(outline.id_color, outline.color.x, outline.color.y, outline.color.z);
+void Renderer::SetShader(){
+	SetShader(FileManager::LoadShader(DefualtVS, DefaultFS));
 }
 
 void Renderer::SetMeshModel(MeshModel * meshModel_){
@@ -133,18 +90,14 @@ void Renderer::SetMeshModel(MeshModel * meshModel_){
 
 void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	SetDrawingMode();
-
-	if (outline.draw) {
-		glEnable(GL_STENCIL_TEST);
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);//stencil 버퍼에 항상 1로 업데이트
-		glStencilMask(0xFF);//and mask
-	}
 	
 	shader->Use();
 
 	SetUniformMVP(cam_);
 
 	SetUniformDlight(cam_, lights_[0]);
+
+	SetUniformAdditional();
 
 	/*glUniform3f(id_pLight.position, lights_[1]->position.x, lights_[1]->position.y, lights_[1]->position.z);
 	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
@@ -164,24 +117,6 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 			GL_UNSIGNED_INT,
 			NULL
 		);
-	}
-
-	if (outline.draw) {
-		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);//stencil buffer값이 1과 다르면 그린다(pass).
-		glStencilMask(0x00);//stencil buffer에 쓰지는 않는다.
-
-		outlineShader->Use();
-		
-		glUniformMatrix4fv(outlineShader->GetUniformLocation("MVP"), 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-	
-		for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
-			Mesh* processingMesh = meshModel->meshes->at(loop);
-			glBindVertexArray(processingMesh->VAO);
-
-			glDrawElements(GL_TRIANGLES, processingMesh->triangles.size() * 3, GL_UNSIGNED_INT, 0);
-		}
-
-		glDisable(GL_STENCIL_TEST);
 	}
 
 	glStencilMask(0xFF);

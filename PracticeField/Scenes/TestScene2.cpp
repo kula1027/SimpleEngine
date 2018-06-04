@@ -39,7 +39,7 @@ void TestScene2::Load()
 	go = new GameObject("floor");
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(mPlane);
-	go->GetRenderer()->SetDefaultShader();
+	go->GetRenderer()->SetShader();
 	go->transform->scale = glm::vec3(40, 1, 40);
 
 	//Grass
@@ -88,22 +88,21 @@ void TestScene2::Load()
 	go = new GameObject("sphere");
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("sphere.obj"));
-	go->GetRenderer()->SetDefaultShader();
+	go->GetRenderer()->SetShader();
 	go->transform->position = glm::vec3(-5, 5, 2);
 
 	//venus
 	go = new GameObject("venus");
-	go->SetRenderer(new Renderer());
+	go->SetRenderer(new OutlineRenderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("venusm_wNormal.obj"));
-	go->GetRenderer()->SetDefaultShader();
-	go->GetRenderer()->outline.draw = true;
+	go->GetRenderer()->SetShader();	
 	go->transform->position = glm::vec3(-100, 0, -100);
 
 	//nanosuit
 	go = new GameObject("nano");
 	go->SetRenderer(new Renderer());
 	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool("nanosuit/nanosuit.obj"));
-	go->GetRenderer()->SetDefaultShader();
+	go->GetRenderer()->SetShader();
 	go->transform->position = glm::vec3(10, 0, 0);
 
 	//window

@@ -56,6 +56,7 @@
     <ClCompile Include="Scripts\MoveCamera.cpp" />
     <ClCompile Include="Scripts\TimeChecker.cpp" />
     <ClCompile Include="Scripts\FakeCam.cpp" />
+    <ClCompile Include="Render\OutlineRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h" />
@@ -107,5 +108,6 @@
     <ClInclude Include="Scripts\TimeChecker.h" />
     <ClInclude Include="Scripts\FakeCam.h" />
     <ClInclude Include="Scripts\ScriptBundle.h" />
+    <ClInclude Include="Render\OutlineRenderer.h" />
   </ItemGroup>
 </Project>
