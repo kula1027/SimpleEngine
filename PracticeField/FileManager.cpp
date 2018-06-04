@@ -1,7 +1,7 @@
 #include "FileManager.h"
 
-#include "Shader.h"
-#include "MeshModel.h"
+#include "Render/Shader.h"
+#include "Mesh/MeshModel.h"
 
 std::vector<MeshModel*> FileManager::loadedMeshModels;
 std::vector<Shader*> FileManager::loadedShaders;

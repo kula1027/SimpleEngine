@@ -1,11 +1,11 @@
 #include "InstancedRenderer.h"
 
 #include "Shader.h"
-#include "FileManager.h"
-#include "MeshModel.h"
+#include "../FileManager.h"
+#include "../Mesh/MeshModel.h"
 
-#include "Bases/BasesBundle.h"
-#include "Lights/LightsBundle.h"
+#include "../Bases/BasesBundle.h"
+#include "../Lights/LightsBundle.h"
 
 InstancedRenderer::InstancedRenderer(){
 	castShadow = false;

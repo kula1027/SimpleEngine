@@ -3,8 +3,8 @@
 #include <fstream>
 #include <sstream>
 
-#include "Texture.h"
-#include "FileManager.h"
+#include "../Render/Texture.h"
+#include "../FileManager.h"
 
 MeshModel::MeshModel(){}
 

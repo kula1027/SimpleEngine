@@ -1,7 +1,5 @@
 #include "FakeCam.h"
-#include "Bases/BasesBundle.h"
-#include "InputModule.h"
-#include "Time.h"
+#include "../Bases/BasesBundle.h"
 
 FakeCam::FakeCam()
 {

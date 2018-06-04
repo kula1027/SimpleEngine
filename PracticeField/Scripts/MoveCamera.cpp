@@ -1,9 +1,9 @@
 #include "MoveCamera.h"
+
 #include <gl\glew.h>
-#include "InputModule.h"
-#include "GameWindow.h"
-#include "Time.h"
-#include "Bases/BasesBundle.h"
+#include "../GameWindow.h"
+
+#include "../Bases/BasesBundle.h"
 
 MoveCamera::MoveCamera()
 {

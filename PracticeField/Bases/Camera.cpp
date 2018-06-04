@@ -5,7 +5,7 @@
 #include "../InputModule.h"
 #include "../GameWindow.h"
 #include "Time.h"
-#include "../Shader.h"
+#include "../Render/Shader.h"
 #include "../FileManager.h"
 
 

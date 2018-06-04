@@ -1,7 +1,7 @@
 #include "MeshModifier.h"
 
-#include "PreCullingRenderer_Split.h"
-#include "SimpleMath.h"
+#include "../Render/PreCullingRenderer_Split.h"
+#include "../Bases/SimpleMath.h"
 
 MeshModifier::MeshModifier()
 {

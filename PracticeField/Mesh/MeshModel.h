@@ -9,9 +9,9 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 
-#include "Shader.h"
+#include "../Render/Shader.h"
 
-#include "Bases/BasesBundle.h"
+#include "../Bases/BasesBundle.h"
 
 // GLM Mathemtics
 #include <glm/glm.hpp>

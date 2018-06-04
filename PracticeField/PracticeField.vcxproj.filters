@@ -15,29 +15,11 @@
     <None Include="Materials\Shaders\default.vert">
       <Filter>Materials\Shaders</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ArrangedMesh.cpp" />
-    <ClCompile Include="CullLayerRenderer.cpp" />
-    <ClCompile Include="PreCullingRenderer.cpp" />
-    <ClCompile Include="FakeCam.cpp" />
     <ClCompile Include="GameWindow.cpp" />
-    <ClCompile Include="InputModule.cpp" />
     <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="InstancedRenderer.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshModel.cpp" />
-    <ClCompile Include="MeshModifier.cpp" />
-    <ClCompile Include="MoveCamera.cpp" />
-    <ClCompile Include="PartRenderer.cpp" />
-    <ClCompile Include="ObjectPool.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleEngine.cpp" />
-    <ClCompile Include="PreCullingRenderer_Split.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TimeChecker.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Lights\DirectionalLight.cpp" />
     <ClCompile Include="Lights\BaseLight.cpp" />
@@ -53,32 +35,32 @@
     <ClCompile Include="Bases\Camera.cpp" />
     <ClCompile Include="Bases\GameObject.cpp" />
     <ClCompile Include="Bases\Transform.cpp" />
-    <ClCompile Include="Time.cpp" />
-    <ClCompile Include="EngineResource.cpp" />
-    <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
+    <ClCompile Include="Mesh\Mesh.cpp" />
+    <ClCompile Include="Mesh\MeshModel.cpp" />
+    <ClCompile Include="Mesh\MeshModifier.cpp" />
+    <ClCompile Include="Mesh\ArrangedMesh.cpp" />
+    <ClCompile Include="Render\CullLayerRenderer.cpp" />
+    <ClCompile Include="Render\PartRenderer.cpp" />
+    <ClCompile Include="Render\PreCullingRenderer.cpp" />
+    <ClCompile Include="Render\PreCullingRenderer_Split.cpp" />
+    <ClCompile Include="Render\Renderer.cpp" />
+    <ClCompile Include="Render\Shader.cpp" />
+    <ClCompile Include="Render\Texture.cpp" />
+    <ClCompile Include="Render\InstancedRenderer.cpp" />
+    <ClCompile Include="Bases\InputModule.cpp" />
+    <ClCompile Include="Bases\EngineResource.cpp" />
+    <ClCompile Include="Bases\SimpleMath.cpp" />
+    <ClCompile Include="Bases\Time.cpp" />
+    <ClCompile Include="Scenes\ObjectPool.cpp" />
+    <ClCompile Include="Scripts\MoveCamera.cpp" />
+    <ClCompile Include="Scripts\TimeChecker.cpp" />
+    <ClCompile Include="Scripts\FakeCam.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ArrangedMesh.h" />
-    <ClInclude Include="CullLayerRenderer.h" />
-    <ClInclude Include="PreCullingRenderer.h" />
-    <ClInclude Include="FakeCam.h" />
     <ClInclude Include="GameWindow.h" />
-    <ClInclude Include="InputModule.h" />
-    <ClInclude Include="InstancedRenderer.h" />
     <ClInclude Include="FileManager.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshModel.h" />
-    <ClInclude Include="MeshModifier.h" />
-    <ClInclude Include="MoveCamera.h" />
-    <ClInclude Include="PartRenderer.h" />
-    <ClInclude Include="ObjectPool.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleEngine.h" />
-    <ClInclude Include="PreCullingRenderer_Split.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="TimeChecker.h" />
     <ClInclude Include="Lights\DirectionalLight.h" />
     <ClInclude Include="Lights\BaseLight.h" />
     <ClInclude Include="Lights\PointLight.h" />
@@ -99,11 +81,31 @@
     <ClInclude Include="Bases\GameObject.h" />
     <ClInclude Include="Bases\Transform.h" />
     <ClInclude Include="Bases\BasesBundle.h" />
-    <ClInclude Include="Time.h" />
-    <ClInclude Include="EngineResource.h" />
-    <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="Bases\IUpdatable.h" />
     <ClInclude Include="Bases\IComponent.h" />
     <ClInclude Include="Scenes\Scene.h" />
+    <ClInclude Include="Mesh\Mesh.h" />
+    <ClInclude Include="Mesh\MeshModel.h" />
+    <ClInclude Include="Mesh\MeshModifier.h" />
+    <ClInclude Include="Mesh\MeshBundle.h" />
+    <ClInclude Include="Mesh\ArrangedMesh.h" />
+    <ClInclude Include="Render\CullLayerRenderer.h" />
+    <ClInclude Include="Render\PartRenderer.h" />
+    <ClInclude Include="Render\PreCullingRenderer.h" />
+    <ClInclude Include="Render\PreCullingRenderer_Split.h" />
+    <ClInclude Include="Render\Renderer.h" />
+    <ClInclude Include="Render\Shader.h" />
+    <ClInclude Include="Render\Texture.h" />
+    <ClInclude Include="Render\RenderBundle.h" />
+    <ClInclude Include="Render\InstancedRenderer.h" />
+    <ClInclude Include="Bases\InputModule.h" />
+    <ClInclude Include="Bases\EngineResource.h" />
+    <ClInclude Include="Bases\SimpleMath.h" />
+    <ClInclude Include="Bases\Time.h" />
+    <ClInclude Include="Scenes\ObjectPool.h" />
+    <ClInclude Include="Scripts\MoveCamera.h" />
+    <ClInclude Include="Scripts\TimeChecker.h" />
+    <ClInclude Include="Scripts\FakeCam.h" />
+    <ClInclude Include="Scripts\ScriptBundle.h" />
   </ItemGroup>
 </Project>

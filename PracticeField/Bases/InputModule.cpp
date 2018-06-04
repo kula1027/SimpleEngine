@@ -1,6 +1,6 @@
 #include "InputModule.h"
 
-#include "GameWindow.h"
+#include "../GameWindow.h"
 #include <iostream>
 
 double InputModule::mousePos[] = { 0, 0 };

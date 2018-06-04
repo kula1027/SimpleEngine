@@ -1,10 +1,9 @@
 #include "PartRenderer.h"
 
-#include "Bases/BasesBundle.h"
-#include "MeshModel.h"
+#include "../Bases/BasesBundle.h"
+#include "../Mesh/MeshBundle.h"
 #include "Texture.h"
-#include "Lights/LightsBundle.h"
-#include "ArrangedMesh.h"
+#include "../Lights/LightsBundle.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

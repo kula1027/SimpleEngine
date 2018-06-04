@@ -1,13 +1,10 @@
 #include "PreCullingRenderer_Split.h"
 
-#include "ImaginaryFigures/ImaginaryFigures.h"
-#include "MeshModel.h"
-#include "MeshModifier.h"
-#include "SimpleMath.h"
-#include "Time.h"
+#include "../ImaginaryFigures/ImaginaryFigures.h"
+#include "../Mesh/MeshBundle.h"
+#include "../Bases/BasesBundle.h"
 #include <iostream>
 #include <math.h>
-#include "InputModule.h"
 
 void PreCullingRenderer_Split::CalculateBoudingSphere() {
 }

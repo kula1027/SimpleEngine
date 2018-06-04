@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
-#include "Shader.h"
-#include "Texture.h"
+#include "../Render/Shader.h"
+#include "../Render/Texture.h"
 
 #include <fstream>
 #include <sstream>

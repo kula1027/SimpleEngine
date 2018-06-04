@@ -4,7 +4,7 @@
 #include <string>
 #include <gl\glew.h>
 
-#include "EngineResource.h"
+#include "../Bases/EngineResource.h"
 
 #define LogLength 512
 
