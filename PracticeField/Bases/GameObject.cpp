@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
 #include "IUpdatable.h"
-#include "../Renderer.h"
+#include "../Render/Renderer.h"
 #include "../FileManager.h"
 #include "../Scenes/Scene.h"
 #include <typeinfo>

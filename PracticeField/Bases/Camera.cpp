@@ -1,10 +1,8 @@
 #include "Camera.h"
 
 #include <gl\glew.h>
-#include "Transform.h"
-#include "../InputModule.h"
+#include "BasesBundle.h"
 #include "../GameWindow.h"
-#include "Time.h"
 #include "../Render/Shader.h"
 #include "../FileManager.h"
 

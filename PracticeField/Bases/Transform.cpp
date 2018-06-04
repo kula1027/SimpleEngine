@@ -1,7 +1,7 @@
 #include "Transform.h"
 
 #include <iostream>
-#include "../SimpleMath.h"
+#include "SimpleMath.h"
 
 Transform::Transform()
 {

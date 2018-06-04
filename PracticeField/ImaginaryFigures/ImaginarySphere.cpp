@@ -1,9 +1,9 @@
 #include "ImaginarySphere.h"
 
-#include "Mesh.h";
-#include "Renderer.h"
-#include "Camera.h"
-#include "FileManager.h"
+#include "../Mesh/Mesh.h"
+#include "../Render/Renderer.h"
+#include "../Bases/Camera.h"
+#include "../FileManager.h"
 
 ImaginarySphere::ImaginarySphere() {
 }

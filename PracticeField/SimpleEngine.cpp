@@ -1,11 +1,9 @@
 #include "SimpleEngine.h"
 
 #include <gl\glew.h>
-#include "ObjectPool.h"
+#include "Bases/BasesBundle.h"
 #include "GameWindow.h"
-#include "Scene.h"
-#include "InputModule.h"
-#include "Time.h"
+#include "Scenes/Scene.h"
 
 #include <assimp\postprocess.h>
 #include <assimp\cimport.h>
