@@ -9,6 +9,7 @@ in Vertex_Out{
 	vec3 viewDirection_cameraSpace;
 	vec3 lightDirection_cameraSpace;
 	vec4 fragPos_lightSpace;
+	vec3 layerColor;
 }frag_in;
 
 uniform mat4 MV;
@@ -102,7 +103,7 @@ void main(){
 	MaterialColor matColor;
 
 	if(texCountDiff == 0){
-		matColor.diffuseColor = vec3(1.0);
+		matColor.diffuseColor = vec3(0.5);
 		matColor.ambientColor = vec3(0.1);
 		matColor.specularColor = vec3(1.0);
 	}else{
@@ -119,6 +120,7 @@ void main(){
 	float shadow = CalcShadow(frag_in.fragPos_lightSpace);
 
 	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir, shadow);
+	resultColor += frag_in.layerColor * 0.5;
 	//resultColor += CalcPointLight(pointLight0, matColor, normal, viewDir);
 	
 	out_color = vec4(resultColor, 1);

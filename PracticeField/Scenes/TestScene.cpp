@@ -16,6 +16,9 @@ void TestScene::Load() {
 
 	skybox = new EmptySkyBox();
 
+	camera->transform->position = glm::vec3(0, 4, 8);
+	camera->clearColor = glm::vec4(0.8);
+
 	GameObject* goTimer = new GameObject("timer");
 	goTimer->AddComponent<TimeChecker>();
 
@@ -40,11 +43,25 @@ void TestScene::Load() {
 		"sphere.obj"
 	};
 
-	CullLayerRenderer* clRdr = new CullLayerRenderer();
-	GameObject* go = new GameObject(m[0]);
+	CullLayerRenderer* clRdr = new CullLayerRenderer();	
+	clRdr->SetMeshModel(FileManager::LoadMeshModel(m[5]));
+	clRdr->SetShader();
+	clRdr->refTransform = fakeCam->transform;
+	clRdr->castShadow = false;
+	GameObject* go = new GameObject();
+	go->SetRenderer(clRdr);
 
-	//int c = 1;
-	//int d = 1;
+	PreCullingColorLayer* srBase = new PreCullingColorLayer();
+	srBase->SetMeshModel(FileManager::LoadMeshModel_Pool(m[5]));
+	srBase->renderMaterial->targetCamTr = fakeCam->transform;
+	srBase->castShadow = false;
+	srBase->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
+	GameObject* go2 = new GameObject();	
+	go2->SetRenderer(srBase);	
+	go2->transform->position = glm::vec3(2, 0, 0);
+
+	//int c = 20;
+	//int d = 20;
 	//int objIdx = 6;
 	//PreCullingRenderer_Split* srBase = new PreCullingRenderer_Split();
 	//srBase->SetMeshModel(FileManager::LoadMeshModel_Pool(m[objIdx]));
@@ -54,7 +71,7 @@ void TestScene::Load() {
 	//		GameObject* go = new GameObject(m[objIdx]);
 	//		PreCullingRenderer_Split* sr = new PreCullingRenderer_Split();
 	//		sr->renderMaterial = srBase->renderMaterial;
-	//		go->SetRenderer(new Renderer());
+	//		go->SetRenderer(sr);
 	//		go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(m[objIdx]));
 	//		go->GetRenderer()->SetShader();
 	//		go->GetRenderer()->castShadow = false;

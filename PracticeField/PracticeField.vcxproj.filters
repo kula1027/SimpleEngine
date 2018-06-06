@@ -57,6 +57,7 @@
     <ClCompile Include="Scripts\TimeChecker.cpp" />
     <ClCompile Include="Scripts\FakeCam.cpp" />
     <ClCompile Include="Render\OutlineRenderer.cpp" />
+    <ClCompile Include="Render\PreCullingColorLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h" />
@@ -109,5 +110,6 @@
     <ClInclude Include="Scripts\FakeCam.h" />
     <ClInclude Include="Scripts\ScriptBundle.h" />
     <ClInclude Include="Render\OutlineRenderer.h" />
+    <ClInclude Include="Render\PreCullingColorLayer.h" />
   </ItemGroup>
 </Project>

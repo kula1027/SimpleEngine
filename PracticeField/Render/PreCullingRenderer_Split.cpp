@@ -62,6 +62,8 @@ void PreCullingRenderer_Split::SetMeshModel(MeshModel* meshModel_) {
 	delete boundingBox;
 }
 
+
+
 void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	SetDrawingMode();
 
@@ -89,7 +91,9 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 	int totalFaceCount = 0;
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
+
 		glBindVertexArray(processingMesh->VAO);
+	
 		vCount += processingMesh->vertices.size();
 
 		ApplyTexture(processingMesh);
@@ -112,17 +116,18 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 
 		float angleRange = acosf(dirDist / renderMaterial->dividedMeshDisks[loop]->radius);
 		float angleLeft = angleRef - angleRange;
-		float angleRight = angleRef + angleRange;
-		
+		float angleRight = angleRef + angleRange;		
+
 		//angleFrom ~ angleTo를 제외한 부분을 렌더링한다.
-		if (by + d > 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
+		if (by + d > 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {					
 			glDrawElements(
 				GL_TRIANGLES,
 				processingMesh->GetIdxCount(),
 				GL_UNSIGNED_INT,
 				NULL
-			);			
-			drawingFaces += processingMesh->triangles.size();
+			);									
+
+			drawingFaces += processingMesh->triangles.size();			
 		} else if (by + d < 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
 			//draw nothing
 		} else {
@@ -143,6 +148,7 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 
 			if (angleRight < 2 * SimpleMath::PI && angleLeft > 0 && idxLeft < idxRight) {//2 piece render									
 				GLuint faceIdxLeft = renderMaterial->idxPosition[loop][idxLeft];
+
 				glDrawElements(
 					GL_TRIANGLES,
 					faceIdxLeft * 3,
@@ -154,6 +160,7 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 
 				GLuint faceIdxRight = renderMaterial->idxPosition[loop][idxRight - 1];
 				GLuint faceCount = renderMaterial->idxPosition[loop][renderMaterial->horiDivision - 1] - faceIdxRight;
+				
 				glDrawElements(
 					GL_TRIANGLES,
 					faceCount * 3,
@@ -174,7 +181,7 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 				}
 
 				GLuint faceIdxRight;
-				if (idxRight < 1) {
+				if (idxRight <= 0) {
 					faceIdxRight = 0;
 				} else {
 					faceIdxRight = renderMaterial->idxPosition[loop][idxRight - 1];
@@ -199,6 +206,7 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 			totalFaceCount += processingMesh->triangles.size();
 		}		
 	} 
+
 		
 	if (InputModule::IsPressed(GLFW_KEY_KP_0)) {
 		cout << transform->gameObject->name << " : " << endl

@@ -20,7 +20,7 @@ struct PcRenderMaterial {
 
 class PreCullingRenderer_Split : public Renderer
 {
-private:
+protected:
 	/*int vertDivision;
 	int horiDivision;*/
 

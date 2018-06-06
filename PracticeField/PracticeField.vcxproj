@@ -121,6 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Mesh\ArrangedMesh.cpp" />
+    <ClCompile Include="Render\PreCullingColorLayer.cpp" />
     <ClCompile Include="Render\OutlineRenderer.cpp" />
     <ClCompile Include="Render\CullLayerRenderer.cpp" />
     <ClCompile Include="Skybox\EmptySkyBox.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="Mesh\ArrangedMesh.h" />
     <ClInclude Include="Bases\BasesBundle.h" />
+    <ClInclude Include="Render\PreCullingColorLayer.h" />
     <ClInclude Include="Render\OutlineRenderer.h" />
     <ClInclude Include="Render\CullLayerRenderer.h" />
     <ClInclude Include="Mesh\MeshBundle.h" />

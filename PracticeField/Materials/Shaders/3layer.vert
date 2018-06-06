@@ -11,8 +11,8 @@ out Vertex_Out{
 	vec3 normal_cameraSpace;
 	vec3 viewDirection_cameraSpace;
 	vec3 lightDirection_cameraSpace;
-	vec4 fragPos_lightSpace;
-	vec3 refViewPos_cameraSpace;
+	vec4 fragPos_lightSpace;	
+	vec3 layerColor;
 }vertex_out;
 
 uniform mat4 MVP;
@@ -52,6 +52,19 @@ void main() {
 	vertex_out.normal_cameraSpace = (V * M * vec4(attr_normal, 0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
 												
 	vertex_out.fragPos_lightSpace = directionalLight0.lightSpaceMatrix * vec4(vertex_out.position_worldSpace, 1.0);	
-																	
+
+	vec3 normal_worldSpace = (M * vec4(attr_normal, 1)).xyz;
+	vec3 dirToRef = refViewPos - vertex_out.position_worldSpace;
+	float dot_NormalRef = dot(normal_worldSpace, dirToRef);
+	normalize(dirToRef);
+	vec3 vColor;
+	if(dot_NormalRef > 0){
+		vColor = vec3(0, 1, 0);
+	}else{
+		vColor = vec3(0, 0, 1);
+	}
+		
+	vertex_out.layerColor = vColor;
+
 	vertex_out.uv = attr_texCoords;
 }

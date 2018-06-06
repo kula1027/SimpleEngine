@@ -77,7 +77,7 @@ protected:
 	void RestoreDrawingMode();
 
 	virtual void SetAdditionalShaderData(Shader* shader_) {}
-	virtual void SetUniformAdditional();
+	virtual void SetUniformAdditional() {}
 
 public:	
 	Renderer();

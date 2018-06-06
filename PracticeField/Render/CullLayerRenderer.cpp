@@ -1,6 +1,7 @@
 #include "CullLayerRenderer.h"
 
 #include "../FileManager.h"
+#include "../Bases/BasesBundle.h"
 #include "../Render/Shader.h"
 
 CullLayerRenderer::CullLayerRenderer() : Renderer() {
@@ -19,5 +20,6 @@ void CullLayerRenderer::SetAdditionalShaderData(Shader * shader_) {
 }
 
 void CullLayerRenderer::SetUniformAdditional() {
-
+	glUniform3f(id_refViewPos, 
+		refTransform->position.x, refTransform->position.y, refTransform->position.z);
 }

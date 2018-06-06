@@ -30,7 +30,7 @@ private:
 
 
 	glm::vec3 upVector;
-	glm::vec4 clearColor;
+	
 
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
@@ -48,6 +48,8 @@ public:
 	glm::mat4 VPmatrix();
 	glm::mat4 Vmatrix();
 	glm::mat4 Pmatrix();
+
+	glm::vec4 clearColor;
 
 	void ComputeMatrix();
 	void EnableOffSreenBuffer();

@@ -1,6 +1,10 @@
 #include "PreCullingRenderer.h"
 #include "PreCullingRenderer_Split.h"
 
+#include "../ImaginaryFigures/ImaginaryFigures.h"
+#include "../Mesh/MeshBundle.h"
+#include "../Bases/BasesBundle.h"
+#include <iostream>
 
 PreCullingRenderer::PreCullingRenderer()
 {
@@ -11,10 +15,6 @@ PreCullingRenderer::~PreCullingRenderer()
 {
 }
 
-#include "../ImaginaryFigures/ImaginaryFigures.h"
-#include "../Mesh/MeshBundle.h"
-#include "../Bases/BasesBundle.h"
-#include <iostream>
 
 void PreCullingRenderer::CalculateBoudingSphere() {
 }
@@ -120,12 +120,12 @@ void PreCullingRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) 
 			listDrawIndice.push_back((GLvoid*)(renderMaterial->verticalIdxer[0][loop] * sizeof(Triangle)));
 			listDrawCount.push_back(renderMaterial->verticalIdxer[1][loop] * 3);
 
-			glDrawElements(
+			/*glDrawElements(
 				GL_TRIANGLES,
 				renderMaterial->verticalIdxer[1][loop] * 3,
 				GL_UNSIGNED_INT,
 				(GLvoid*)(renderMaterial->verticalIdxer[0][loop] * sizeof(Triangle))
-			);
+			);*/
 		}
 		else if (by + d < 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
 			//draw nothing
@@ -159,7 +159,7 @@ void PreCullingRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) 
 				listDrawIndice.push_back((GLvoid*)(drawIdx * sizeof(Triangle)));
 				listDrawCount.push_back(faceCount * 3 );
 
-				glDrawElements(
+				/*glDrawElements(
 					GL_TRIANGLES,
 					faceIdxLeft * 3,
 					GL_UNSIGNED_INT,
@@ -170,7 +170,7 @@ void PreCullingRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) 
 					faceCount * 3,
 					GL_UNSIGNED_INT,
 					(GLvoid*)(drawIdx * sizeof(Triangle))
-				);
+				);*/
 			}
 			else {
 				int idxLeft = angleLeft / (2 * SimpleMath::PI) * renderMaterial->horiDivision;
@@ -198,12 +198,12 @@ void PreCullingRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) 
 				listDrawIndice.push_back((GLvoid*)(drawIdx * sizeof(Triangle)));
 				listDrawCount.push_back(faceCount * 3);
 
-				glDrawElements(
+				/*glDrawElements(
 					GL_TRIANGLES,
 					faceCount * 3,
 					GL_UNSIGNED_INT,
 					(GLvoid*)(drawIdx * sizeof(Triangle))
-				);
+				);*/
 			}
 		}
 
@@ -214,14 +214,14 @@ void PreCullingRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) 
 	}
 
 	//glMultiDrawElements(GL_TRIANGLES, &listDrawCount[0], GL_UNSIGNED_INT, &listDrawIndice[0], listDrawIndice.size());
-	/*for (int loop = 0; loop < listDrawIndice.size(); loop++) {
+	for (int loop = 0; loop < listDrawIndice.size(); loop++) {
 		glDrawElements(
 			GL_TRIANGLES,
 			listDrawCount[loop],
 			GL_UNSIGNED_INT,
 			listDrawIndice[loop]
 		);
-	}*/
+	}
 
 	if (InputModule::IsPressed(GLFW_KEY_KP_0)) {
 		cout << transform->gameObject->name << " : " << endl

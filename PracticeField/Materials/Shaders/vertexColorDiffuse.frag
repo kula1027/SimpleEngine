@@ -39,7 +39,7 @@ vec3 CalcDirLight(DirectionalLight light_, MaterialColor matColor_, vec3 normal_
 void main(){
 	MaterialColor matColor;
 
-	matColor.diffuseColor = frag_in.color;
+	matColor.diffuseColor = vec3(0.5);
 	matColor.ambientColor = vec3(0.1);
 	matColor.specularColor = vec3(1.0);
 	
@@ -49,6 +49,7 @@ void main(){
 	vec3 resultColor = vec3(0.0);
 
 	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir);
+	resultColor += frag_in.color * 0.5;
 	
 	out_color = vec4(resultColor, 1);
 }
