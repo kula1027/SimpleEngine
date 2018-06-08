@@ -50,7 +50,7 @@ uniform DirectionalLight directionalLight0;
 vec3 CalcDirLight(DirectionalLight light_, MaterialColor matColor_, vec3 normal_, vec3 viewDir_, float shadow_){
 	vec3 lightDir = normalize(-directionalLight0.direction);
 
-	float diff = max( dot( normal_,lightDir ), 0);
+	float diff = max( dot( normal_,lightDir ), 0) + 0.3;
 	vec3 reflectDir = reflect(-lightDir, normal_);
 	float spec = pow(max(dot(viewDir_, reflectDir), 0.0), 32);
 
@@ -105,7 +105,7 @@ void main(){
 	if(texCountDiff == 0){
 		matColor.diffuseColor = vec3(0.5);
 		matColor.ambientColor = vec3(0.1);
-		matColor.specularColor = vec3(1.0);
+		matColor.specularColor = vec3(0.3);
 	}else{
 		matColor.diffuseColor = texture( texture_diffuse, frag_in.uv ).rgb;
 		matColor.ambientColor = vec3(0.1,0.1,0.1) * matColor.diffuseColor;

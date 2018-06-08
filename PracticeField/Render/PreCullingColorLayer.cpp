@@ -14,7 +14,7 @@ PreCullingColorLayer::~PreCullingColorLayer() {
 }
 
 void PreCullingColorLayer::ColorTriangles(glm::vec3 color_, Mesh * mesh_, int from, int count) {
-	for (int loop = from; loop < count; loop++) {
+	for (int loop = from; loop < from + count; loop++) {
 		for (int loop2 = 0; loop2 < 3; loop2++) {
 			int idx = mesh_->triangles[loop].idx[loop2];
 			mesh_->vertices[idx].color = color_;
@@ -81,11 +81,11 @@ void PreCullingColorLayer::Render(Camera * cam_, std::vector<BaseLight*> lights_
 		float angleLeft = angleRef - angleRange;
 		float angleRight = angleRef + angleRange;
 
-		ColorTriangles(glm::vec3(0, 1, 0), processingMesh, NULL, processingMesh->triangles.size());
+		ColorTriangles(glm::vec3(0, 0, 1), processingMesh, NULL, processingMesh->triangles.size());
 
 		//angleFrom ~ angleTo를 제외한 부분을 렌더링한다.
 		if (by + d > 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
-			ColorTriangles(glm::vec3(0, 0, 1), processingMesh, 0, processingMesh->triangles.size());		
+			ColorTriangles(glm::vec3(0, 1, 0), processingMesh, 0, processingMesh->triangles.size());		
 					
 		} else if (by + d < 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
 			//draw nothing
@@ -108,15 +108,14 @@ void PreCullingColorLayer::Render(Camera * cam_, std::vector<BaseLight*> lights_
 			if (angleRight < 2 * SimpleMath::PI && angleLeft > 0 && idxLeft < idxRight) {//2 piece render									
 				GLuint faceIdxLeft = renderMaterial->idxPosition[loop][idxLeft];
 
-				ColorTriangles(glm::vec3(0, 1, 1), processingMesh, NULL, faceIdxLeft);
+				ColorTriangles(glm::vec3(0, 1, 0), processingMesh, 0, faceIdxLeft);
 
 				drawingFaces += faceIdxLeft;
 
 				GLuint faceIdxRight = renderMaterial->idxPosition[loop][idxRight - 1];
 				GLuint faceCount = renderMaterial->idxPosition[loop][renderMaterial->horiDivision - 1] - faceIdxRight;
 		
-				//ColorTriangles(glm::vec3(1, 0, 1), processingMesh, faceIdxRight, faceCount);
-				cout << "ASD?";
+				ColorTriangles(glm::vec3(0, 1, 0), processingMesh, faceIdxRight, faceCount);				
 				drawingFaces += faceCount;
 			} else {
 				int idxLeft = angleLeft / (2 * SimpleMath::PI) * renderMaterial->horiDivision;
@@ -139,7 +138,7 @@ void PreCullingColorLayer::Render(Camera * cam_, std::vector<BaseLight*> lights_
 				GLuint faceIdxLeft = renderMaterial->idxPosition[loop][idxLeft];
 				GLuint faceCount = faceIdxLeft - faceIdxRight;
 
-				ColorTriangles(glm::vec3(1, 1, 1), processingMesh, faceIdxRight, faceCount);
+				ColorTriangles(glm::vec3(0, 1, 0), processingMesh, faceIdxRight, faceCount);
 
 				drawingFaces += faceCount;
 			}

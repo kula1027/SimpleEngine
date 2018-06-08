@@ -53,7 +53,7 @@ void main() {
 												
 	vertex_out.fragPos_lightSpace = directionalLight0.lightSpaceMatrix * vec4(vertex_out.position_worldSpace, 1.0);	
 
-	vec3 normal_worldSpace = (M * vec4(attr_normal, 1)).xyz;
+	vec3 normal_worldSpace = (M * vec4(attr_normal, 0)).xyz;
 	vec3 dirToRef = refViewPos - vertex_out.position_worldSpace;
 	float dot_NormalRef = dot(normal_worldSpace, dirToRef);
 	normalize(dirToRef);
