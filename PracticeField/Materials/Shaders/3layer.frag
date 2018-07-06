@@ -104,7 +104,7 @@ void main(){
 
 	if(texCountDiff == 0){
 		matColor.diffuseColor = vec3(0.5);
-		matColor.ambientColor = vec3(0.1);
+		matColor.ambientColor = vec3(0.5);
 		matColor.specularColor = vec3(0.3);
 	}else{
 		matColor.diffuseColor = texture( texture_diffuse, frag_in.uv ).rgb;
@@ -120,7 +120,11 @@ void main(){
 	float shadow = CalcShadow(frag_in.fragPos_lightSpace);
 
 	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir, shadow);
-	resultColor += frag_in.layerColor * 0.5;
+	vec3 fColor = vec3(1.0f);
+	if(frag_in.layerColor.x <= 0.99f){
+		fColor = vec3(0.4);
+	}
+	resultColor *= fColor;
 	//resultColor += CalcPointLight(pointLight0, matColor, normal, viewDir);
 	
 	out_color = vec4(resultColor, 1);

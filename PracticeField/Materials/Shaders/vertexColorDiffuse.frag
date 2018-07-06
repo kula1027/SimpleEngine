@@ -40,8 +40,8 @@ void main(){
 	MaterialColor matColor;
 
 	matColor.diffuseColor = vec3(0.5);
-	matColor.ambientColor = vec3(0.1);
-	matColor.specularColor = vec3(1.0);
+	matColor.ambientColor = vec3(0.5);
+	matColor.specularColor = vec3(0.3);
 	
 	vec3 viewDir = normalize(frag_in.viewDirection_cameraSpace);
 	vec3 normal = normalize(frag_in.normal_cameraSpace);
@@ -49,7 +49,11 @@ void main(){
 	vec3 resultColor = vec3(0.0);
 
 	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir);
-	resultColor += frag_in.color * 0.5;
+	vec3 fColor = vec3(1.0f);
+	if(frag_in.color.x <= 0.99f){
+		fColor = vec3(0.4);
+	}
+	resultColor *= fColor;
 	
 	out_color = vec4(resultColor, 1);
 }

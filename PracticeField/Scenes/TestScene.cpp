@@ -16,7 +16,7 @@ void TestScene::Load() {
 
 	skybox = new EmptySkyBox();
 
-	camera->transform->position = glm::vec3(3.5, 2, 0.2);
+	camera->transform->position = glm::vec3(3, 5, -1);
 	camera->clearColor = glm::vec4(1.0);
 
 	GameObject* goTimer = new GameObject("timer");
@@ -27,7 +27,7 @@ void TestScene::Load() {
 	fakeCam->SetRenderer(new Renderer());
 	fakeCam->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("cube.obj"));
 	fakeCam->GetRenderer()->SetShader();
-	fakeCam->transform->position = glm::vec3(-2, 2, -3);
+	fakeCam->transform->position = glm::vec3(0, 0, 10);
 	fakeCam->transform->scale = glm::vec3(0.01f);
 	fakeCam->GetRenderer()->castShadow = false;
 
@@ -41,25 +41,31 @@ void TestScene::Load() {
 		"spot.obj",
 		"vase.obj",//6
 		"sphere.obj"
-	};
+	};	
 
 	CullLayerRenderer* clRdr = new CullLayerRenderer();	
-	clRdr->SetMeshModel(FileManager::LoadMeshModel(m[7]));	
+	clRdr->SetMeshModel(FileManager::LoadMeshModel(m[0]));	
 	clRdr->SetShader();
 	clRdr->refTransform = fakeCam->transform;
 	clRdr->castShadow = false;
 	GameObject* go = new GameObject();
 	go->SetRenderer(clRdr);
-	////->transform->position = glm::vec3(2, 0, 0);
+	go->transform->position = glm::vec3(0, 0, 0);
 
-	/*PreCullingColorLayer* srBase = new PreCullingColorLayer();
-	srBase->SetMeshModel(FileManager::LoadMeshModel(m[7]));
-	srBase->renderMaterial->targetCamTr = fakeCam->transform;
-	srBase->castShadow = false;
-	srBase->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
-	GameObject* go2 = new GameObject();	
-	go2->SetRenderer(srBase);	
-	go2->transform->position = glm::vec3(0, 0, 0);*/
+	/*GameObject* norm = new GameObject();
+	norm->SetRenderer(new Renderer());
+	norm->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel(m[5]));
+	norm->GetRenderer()->SetShader();*/
+
+
+	//PreCullingColorLayer* srBase = new PreCullingColorLayer();
+	//srBase->SetMeshModel(FileManager::LoadMeshModel(m[0]));
+	//srBase->renderMaterial->targetCamTr = fakeCam->transform;
+	//srBase->castShadow = false;
+	//srBase->SetShader(FileManager::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
+	//GameObject* go2 = new GameObject();	
+	//go2->SetRenderer(srBase);	
+	//go2->transform->position = glm::vec3(0, 0, 0);
 
 	//PreCullingRenderer_Split* rdrSplit = new PreCullingRenderer_Split();
 	//rdrSplit->SetMeshModel(FileManager::LoadMeshModel(m[5]));

@@ -57,11 +57,11 @@ void main() {
 	vec3 dirToRef = refViewPos - vertex_out.position_worldSpace;
 	float dot_NormalRef = dot(normal_worldSpace, dirToRef);
 	normalize(dirToRef);
-	vec3 vColor;
+	vec3 vColor = vec3(1, 1, 1);
 	if(dot_NormalRef > 0){
-		vColor = vec3(0, 1, 0);
+		vColor = vec3(1, 1, 1);
 	}else{
-		vColor = vec3(0, 0, 1);
+		vColor = vec3(0.4f, 0.4f, 0.4f);
 	}
 		
 	vertex_out.layerColor = vColor;
