@@ -290,13 +290,15 @@ void MeshModifier::RearrangeHorizontal(Mesh* mesh_, vector<Triangle>* dividedTri
 		}
 
 		memset(idxPosition_[loop], -1, sizeof(int) * hCount);
-		for (int loop2 = 0; loop2 < angleHoris.size(); loop2++) {//수평각에 따른 idx 맵핑
-
+		for (int loop2 = 0; loop2 < angleHoris.size(); loop2++) {//수평각에 따른 idx 맵핑			
 			float dv = angleHoris[loop2] / (SimpleMath::PI * 2) * hCount;//0 <= dv <= horiDivision						
 																				  //	<< angleHoris[loop2] << endl;
 			(int)dv >= hCount ? dv-- : NULL;
 			if (idxPosition_[loop][(int)dv] < loop2) {
 				idxPosition_[loop][(int)dv] = loop2;
+			}
+			if (loop2 == angleHoris.size() - 1) {
+				idxPosition_[loop][(int)dv] = loop2 + 1;
 			}
 		}
 

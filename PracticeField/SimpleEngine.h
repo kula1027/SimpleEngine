@@ -5,14 +5,14 @@ class Scene;
 class SimpleEngine
 {
 private:
-	Scene* currentScene;
+	static Scene* currentScene;
 
 public:
 	~SimpleEngine();
-	void Initialize(int width, int height, const char* name);
-	void LoadScene(Scene* scene_);
-	void LoadScene();
-	void Begin();	
-	void SetVsyncMode(bool flag);
+	static void Initialize(int width, int height, const char* name);
+	static void LoadScene(Scene* scene_);
+	static void LoadScene();
+	static void Begin();
+	static void SetVsyncMode(bool flag);
 };
 

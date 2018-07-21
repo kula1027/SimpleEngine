@@ -9,6 +9,8 @@
 #include <assimp\cimport.h>
 #include <assimp\scene.h>
 
+Scene* SimpleEngine::currentScene;
+
 void SimpleEngine::Initialize(int width, int height, const char* name){
 	if (!glfwInit()){
 		fprintf(stderr, "Failed to initialize GLFW\n");
@@ -28,8 +30,6 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 	}
 
 	InputModule::Init();		
-
-	SetVsyncMode(true);
 }
 
 void SimpleEngine::LoadScene(Scene * scene_){

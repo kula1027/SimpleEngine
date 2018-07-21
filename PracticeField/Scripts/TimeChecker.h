@@ -3,7 +3,7 @@
 #pragma once
 class TimeChecker : public IUpdatable {
 private:
-	float showingTimeItv = 2;
+	float showingTimeItv = 5;
 	float timePrev;
 	float timeAcc;
 	int frameCount;

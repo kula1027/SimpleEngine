@@ -37,8 +37,7 @@ void Scene::Load() {
 	camera->AddComponent<MoveCamera>();	
 	
 	//BaseLight* pointLight = new PointLight();
-	BaseLight* directionalLight = new DirectionalLight();
-	AddLight(directionalLight);
+	
 	//AddLight(pointLight);
 }
 
@@ -84,7 +83,7 @@ void Scene::UpdateObjects(){
 void Scene::RenderObjects(){
 	int lightCount = lights.size();
 	int rdrCount = renderers.size();
-	
+
 	//Matrice Setup
 	camera->ComputeMatrix();
 	for (int loop = 0; loop < rdrCount; loop++) {
@@ -93,18 +92,22 @@ void Scene::RenderObjects(){
 
 	//Render ShadowMap
 	for (int loop = 0; loop < lightCount; loop++) {	
+		if (lights[loop]->isShadowCaster == false)continue;
+
 		lights[loop]->EnableShadowMapBuffer();		
 		for (int loop2 = 0; loop2 < rdrCount; loop2++) {
 			renderers[loop2]->RenderShadowMap(lights[loop]);
 		}
 	}
 
-	//Render Off Screen
+	//Render Off Screen	
 	camera->EnableOffSreenBuffer();	
 	for (int loop = 0; loop < rdrCount; loop++) {
 		renderers[loop]->Render(camera, lights);
 	}
 	skybox->Render(camera);
+
+	PerformanceCheck::OnEndFrame();
 
 	//Render on screen
 	glCullFace(GL_BACK);

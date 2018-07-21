@@ -11,46 +11,60 @@ TestScene::~TestScene() {
 void TestScene::Load() {
 	Scene::Load();
 
-	BaseLight* directionalLight = new DirectionalLight();
-	AddLight(directionalLight);
-
 	skybox = new EmptySkyBox();
 
-	camera->transform->position = glm::vec3(3, 5, -1);
+	BaseLight* directionalLight = new DirectionalLight();
+	directionalLight->isShadowCaster = false;
+	AddLight(directionalLight);
+
+	SimpleEngine::SetVsyncMode(false);
+
+	camera->transform->position = glm::vec3(4, 4, 20);
 	camera->clearColor = glm::vec4(1.0);
 
-	GameObject* goTimer = new GameObject("timer");
-	goTimer->AddComponent<TimeChecker>();
+	//GameObject* goTimer = new GameObject("timer");
+	//goTimer->AddComponent<TimeChecker>();
 
 	GameObject* fakeCam = new GameObject("fakeCam");
 	fakeCam->AddComponent<FakeCam>();
 	fakeCam->SetRenderer(new Renderer());
 	fakeCam->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("cube.obj"));
 	fakeCam->GetRenderer()->SetShader();
-	fakeCam->transform->position = glm::vec3(0, 0, 10);
-	fakeCam->transform->scale = glm::vec3(0.01f);
+	fakeCam->transform->position = glm::vec3(0, 5, 0);
+	fakeCam->transform->scale = glm::vec3(0.1f);
 	fakeCam->GetRenderer()->castShadow = false;
 
 
 	char* m[] = {
-		"venusm_wNormal.obj",
-		"armadillo.obj",
-		"bunny.obj",
-		"hand.obj",//3
 		"suzanne.obj",
 		"spot.obj",
-		"vase.obj",//6
-		"sphere.obj"
+		"vase.obj",//2
+		"venusm_wNormal.obj",
+		"bunny.obj",//4
+		"armadillo.obj",
+		"sphere.obj",//6
+		"hand.obj",	
+		"sandstone.obj",//8
+		"buddha.obj"
 	};	
 
-	CullLayerRenderer* clRdr = new CullLayerRenderer();	
-	clRdr->SetMeshModel(FileManager::LoadMeshModel(m[0]));	
-	clRdr->SetShader();
-	clRdr->refTransform = fakeCam->transform;
-	clRdr->castShadow = false;
-	GameObject* go = new GameObject();
-	go->SetRenderer(clRdr);
-	go->transform->position = glm::vec3(0, 0, 0);
+	char* sp[] = {
+		"Sphere/sphere_32_16.obj",
+		"Sphere/sphere_64_32.obj",
+		"Sphere/sphere_128_64.obj",
+		"Sphere/sphere_256_128.obj",
+		"Sphere/sphere_512_256.obj",
+		"Sphere/sphere_1024_512.obj"
+	};
+
+	//CullLayerRenderer* clRdr = new CullLayerRenderer();	
+	//clRdr->SetMeshModel(FileManager::LoadMeshModel(m[0]));	
+	//clRdr->SetShader();
+	//clRdr->refTransform = fakeCam->transform;
+	//clRdr->castShadow = false;
+	//GameObject* go = new GameObject();
+	//go->SetRenderer(clRdr);
+	//go->transform->position = glm::vec3(0, 0, 0);
 
 	/*GameObject* norm = new GameObject();
 	norm->SetRenderer(new Renderer());
@@ -75,24 +89,61 @@ void TestScene::Load() {
 	//GameObject* go3 = new GameObject();
 	//go3->SetRenderer(rdrSplit);
 	//go3->transform->position = glm::vec3(-2, 0, 0);
-//
-//	int c = 20;
-//	int d = 20;
-//	int objIdx = 6;
-//	PreCullingRenderer_Split* srBase = new PreCullingRenderer_Split();
-//	srBase->SetMeshModel(FileManager::LoadMeshModel_Pool(m[objIdx]));
-//	srBase->renderMaterial->targetCamTr = fakeCam->transform;
-//	for (int loop = 0; loop < c; loop++) {
-//		for (int loop2 = 0; loop2 < d; loop2++) {
-//			GameObject* go = new GameObject(m[objIdx]);
-//			PreCullingRenderer_Split* sr = new PreCullingRenderer_Split();
-//			sr->renderMaterial = srBase->renderMaterial;
-//			go->SetRenderer(sr);
-//			go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(m[objIdx]));
-//			go->GetRenderer()->SetShader();
-//			go->GetRenderer()->castShadow = false;
-//			go->transform->position = glm::vec3(loop * 10 - c * 5, 0, -loop2 * 10);
-//			//go->transform->position = glm::vec3(0, 0, 0);
-//		}
-//	}
+
+	//for (int loop = 0; loop < 4; loop++) {
+	//	GameObject* go = new GameObject(m[loop]);
+	//	PreCullingRenderer_Split* sr = new PreCullingRenderer_Split();
+	//	sr->renderMaterial->vertDivision = 4;
+	//	sr->SetMeshModel(FileManager::LoadMeshModel_Pool(sp[loop]));
+	//	sr->renderMaterial->targetCamTr = fakeCam->transform;
+
+	//	sr->renderMaterial = sr->renderMaterial;
+	//	go->SetRenderer(sr);
+	//	go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(sp[loop]));
+	//	go->GetRenderer()->SetShader();
+	//	go->GetRenderer()->castShadow = false;
+	//	go->transform->position = glm::vec3(loop * 2, 0, 0);
+	//}
+
+	int c = 5;
+	int d = 5;
+	int e = 5;
+	int objIdx = 4;
+
+	bool splitRender = true;
+
+	if (splitRender) {
+		PreCullingRenderer_Split* srBase = new PreCullingRenderer_Split();
+		srBase->renderMaterial->vertDivision = 16;
+		srBase->renderMaterial->horiDivision = 32;
+		srBase->SetMeshModel(FileManager::LoadMeshModel_Pool(sp[objIdx]));
+		srBase->renderMaterial->targetCamTr = camera->transform;
+		for (int loop = 0; loop < c; loop++) {
+			for (int loop2 = 0; loop2 < d; loop2++) {
+				for (int loop3 = 0; loop3 < e; loop3++) {
+					GameObject* go = new GameObject(sp[objIdx]);
+					PreCullingRenderer_Split* sr = new PreCullingRenderer_Split();
+					sr->renderMaterial = srBase->renderMaterial;
+					go->SetRenderer(sr);
+					go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(sp[objIdx]));
+					go->GetRenderer()->SetShader();
+					go->GetRenderer()->castShadow = false;
+					go->transform->position = glm::vec3(loop * 2, loop2 * 2, loop3 * 2);					
+				}				
+			}
+		}
+	}else {
+		for (int loop = 0; loop < c; loop++) {
+			for (int loop2 = 0; loop2 < d; loop2++) {
+				for (int loop3 = 0; loop3 < e; loop3++) {
+					GameObject* go = new GameObject(m[objIdx]);
+					go->SetRenderer(new Renderer);
+					go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(sp[objIdx]));
+					go->GetRenderer()->SetShader();
+					go->GetRenderer()->castShadow = false;
+					go->transform->position = glm::vec3(loop * 2, loop2 * 2, loop3 * 2);
+				}
+			}
+		}
+	}	
 }

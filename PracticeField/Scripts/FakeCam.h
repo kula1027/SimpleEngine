@@ -10,6 +10,6 @@ public:
 
 	virtual void OnUpdate();
 
-	float moveSpeed = 5;
+	float moveSpeed = 50;
 };
 

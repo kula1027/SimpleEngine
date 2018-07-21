@@ -58,6 +58,7 @@
     <ClCompile Include="Scripts\FakeCam.cpp" />
     <ClCompile Include="Render\OutlineRenderer.cpp" />
     <ClCompile Include="Render\PreCullingColorLayer.cpp" />
+    <ClCompile Include="PerformanceCheck.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h" />
@@ -111,5 +112,6 @@
     <ClInclude Include="Scripts\ScriptBundle.h" />
     <ClInclude Include="Render\OutlineRenderer.h" />
     <ClInclude Include="Render\PreCullingColorLayer.h" />
+    <ClInclude Include="PerformanceCheck.h" />
   </ItemGroup>
 </Project>

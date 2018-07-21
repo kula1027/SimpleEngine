@@ -15,8 +15,8 @@ void TimeChecker::OnUpdate(){
 	frameCount++;
 
 	if (timeAcc >= showingTimeItv) {
-		std::cout << "FPS: " << frameCount / showingTimeItv << std::endl;
-			//<< " / TPF: " << 1.0f / (frameCount / showingTimeItv) << "\n";
+		std::cout << "FPS: " << frameCount / showingTimeItv
+			<< " / TPF: " << (timeAcc / frameCount) * 1000 << " ms \n";
 		timeAcc -= showingTimeItv;
 		frameCount = 0;
 	}

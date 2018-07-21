@@ -106,7 +106,7 @@ void Camera::EnableOffSreenBuffer(){
 	glViewport(0, 0, GameWindow::GetWidth(), GameWindow::GetHeight());
 	glBindFramebuffer(GL_FRAMEBUFFER, offScreenData.frameBuffer);
 	
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);	
 	glDisable(GL_STENCIL_TEST);
 	glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);

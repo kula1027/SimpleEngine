@@ -103,7 +103,6 @@ void Renderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
 	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
 	glUniform1f(id_pLight.power, lights_[1]->intensity);*/
 
-
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 
@@ -185,8 +184,7 @@ void Renderer::SetUniformDlight(Camera* cam_, BaseLight* dLight){
 	glBindTexture(GL_TEXTURE_2D, dLight->shadowData.depthMapTextureId);
 }
 
-void Renderer::SetUniformMVP(Camera* cam_)
-{
+void Renderer::SetUniformMVP(Camera* cam_){
 	mvpMatrix = cam_->VPmatrix() * modelMatrix;
 	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
 	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(cam_->Vmatrix()));

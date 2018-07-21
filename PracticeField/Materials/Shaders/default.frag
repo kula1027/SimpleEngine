@@ -57,7 +57,7 @@ vec3 CalcDirLight(DirectionalLight light_, MaterialColor matColor_, vec3 normal_
 	vec3 diffuse = directionalLight0.color * directionalLight0.power * diff * matColor_.diffuseColor;
 	vec3 specular = vec3(0.3) * directionalLight0.color  * spec;	
 
-	return (ambient + shadow_ * (diffuse + specular));
+	return (ambient + 1 * (diffuse + specular));
 }
 
 vec3 CalcPointLight(PointLight light_, MaterialColor matColor_, vec3 normal_, vec3 viewDir_){

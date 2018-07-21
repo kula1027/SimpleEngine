@@ -6,10 +6,16 @@
 #include <iostream>
 #include <math.h>
 
+#include "../PerformanceCheck.h"
+
 void PreCullingRenderer_Split::CalculateBoudingSphere() {
 }
 
 PreCullingRenderer_Split::PreCullingRenderer_Split() {
+	renderMaterial = new PcRenderMaterial();
+
+	renderMaterial->horiDivision = 64;
+	renderMaterial->vertDivision = 4;
 }
 
 PreCullingRenderer_Split::~PreCullingRenderer_Split() {
@@ -20,12 +26,7 @@ void PreCullingRenderer_Split::SetMeshModel(MeshModel* meshModel_) {
 
 	Mesh* mesh = meshModel->meshes->at(0);
 
-	if (mesh->isSetup)return;
-
-	renderMaterial = new PcRenderMaterial();
-
-	renderMaterial->horiDivision = 64;
-	renderMaterial->vertDivision = 4;
+	if (mesh->isSetup)return;	
 
 	//Get Bounding(AA)
 	ImaginaryCube* boundingBox = ImaginaryCube::GetBoundingBox(mesh);	
@@ -89,6 +90,7 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 	int drawingFaces = 0;	
 	int frontFaceCount = 0;
 	int totalFaceCount = 0;
+	int drawCallCount = 0;
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 
@@ -127,7 +129,8 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 				NULL
 			);									
 
-			drawingFaces += processingMesh->triangles.size();			
+			drawingFaces += processingMesh->triangles.size();	
+			drawCallCount++;
 		} else if (by + d < 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
 			//draw nothing
 		} else {
@@ -169,6 +172,8 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 				);
 
 				drawingFaces += faceCount;
+
+				drawCallCount += 2;
 			} else {
 				int idxLeft = angleLeft / (2 * SimpleMath::PI) * renderMaterial->horiDivision;
 				int idxRight = angleRight / (2 * SimpleMath::PI) * renderMaterial->horiDivision;
@@ -198,23 +203,27 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 				);
 
 				drawingFaces += faceCount;
+				drawCallCount++;
 			}									
 		}		
 			
 		if (InputModule::IsPressed(GLFW_KEY_KP_0)) {
-			frontFaceCount += CalcFrontFaceCount(processingMesh, renderMaterial->targetCamTr->position);
+			//frontFaceCount += CalcFrontFaceCount(processingMesh, renderMaterial->targetCamTr->position);
 			totalFaceCount += processingMesh->triangles.size();
 		}		
 	} 
 
 		
-	if (InputModule::IsPressed(GLFW_KEY_KP_0)) {
+	/*if (InputModule::IsPressed(GLFW_KEY_KP_0)) {
 		cout << transform->gameObject->name << " : " << endl
 			<< "Drawing Face Count: " << drawingFaces << endl
 			<< "Real BackFace Count: " << frontFaceCount << endl
 			<< "Total Face Count: " << totalFaceCount << endl
 			<< endl;
-	}
+	}*/
+
+	PerformanceCheck::AddFaceCount(drawingFaces);
+	PerformanceCheck::AddDrawCallCount(drawCallCount);
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
