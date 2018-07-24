@@ -4,7 +4,7 @@
 #include "../Mesh/MeshModel.h"
 #include "Texture.h"
 #include "../Lights/LightsBundle.h"
-#include "../FileManager.h"
+#include "../FilePooler.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 OutlineRenderer::OutlineRenderer()
@@ -18,7 +18,7 @@ OutlineRenderer::~OutlineRenderer()
 
 void OutlineRenderer::SetAdditionalShaderData(Shader * shader_)
 {
-	outlineShader = FileManager::LoadShader(DefaultVS_Outline, DefaultFS_Outline);
+	outlineShader = FilePooler::LoadShader(DefaultVS_Outline, DefaultFS_Outline);
 
 	outlineShader->Use();
 	outline.id_color = outlineShader->GetUniformLocation("outlineColor");

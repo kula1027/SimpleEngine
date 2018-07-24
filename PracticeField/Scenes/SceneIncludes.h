@@ -4,7 +4,7 @@
 
 #include "../Bases/BasesBundle.h"
 #include "../Lights/LightsBundle.h"
-#include "../FileManager.h"
+#include "../FilePooler.h"
 #include "../Mesh/MeshBundle.h"
 #include "../Render/RenderBundle.h"
 #include "../ImaginaryFigures/ImaginaryFigures.h"
@@ -12,5 +12,7 @@
 
 #include "../Scripts/ScriptBundle.h"
 #include "../PerformanceCheck.h"
+
+#include "RenderData.h"
 
 #include <string>

@@ -1,6 +1,6 @@
 #include "CullLayerRenderer.h"
 
-#include "../FileManager.h"
+#include "../FilePooler.h"
 #include "../Bases/BasesBundle.h"
 #include "../Render/Shader.h"
 
@@ -12,7 +12,7 @@ CullLayerRenderer::~CullLayerRenderer() {
 }
 
 void CullLayerRenderer::SetShader() {
-	Renderer::SetShader(FileManager::LoadShader(VS_LayerCull, FS_LayerCulled));
+	Renderer::SetShader(FilePooler::LoadShader(VS_LayerCull, FS_LayerCulled));
 }
 
 void CullLayerRenderer::SetAdditionalShaderData(Shader * shader_) {

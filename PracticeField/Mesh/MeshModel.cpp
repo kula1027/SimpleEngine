@@ -4,11 +4,11 @@
 #include <sstream>
 
 #include "../Render/Texture.h"
-#include "../FileManager.h"
+#include "../FilePooler.h"
 
 MeshModel::MeshModel(){}
 
-MeshModel::MeshModel(GLchar * path){
+MeshModel::MeshModel(string path){
 	this->meshes = new vector<Mesh*>();
 	this->LoadModel(path);
 }
@@ -22,10 +22,14 @@ MeshModel::~MeshModel(){
 }
 
 string MeshModel::GetFilePath(){
-	return directory + fileName;
+	return filePath;
 }
 
 void MeshModel::LoadModel(string path){
+	this->filePath = path;
+
+	path = dirPathMaterial + path;
+
 	// Read file via ASSIMP
 	Assimp::Importer importer;
 	std::cout << "Load Model... " + path << endl;
@@ -37,9 +41,6 @@ void MeshModel::LoadModel(string path){
 		cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
 		return;
 	}
-	// Retrieve the directory path of the filepath
-	this->directory = path.substr(0, path.find_last_of('/') + 1);
-	this->fileName = path.substr(path.find_last_of('/') + 1, path.size());
 	
 	// Process ASSIMP's root node recursively
 	this->ProcessNode(scene->mRootNode, scene);
@@ -173,11 +174,9 @@ vector<Texture*> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType
 		mat->GetTexture(type, i, &str);
 		
 		string filePath = string(str.C_Str());
-		std::cout << "\tLoad Texture... " << filePath << std::endl;
+		std::cout << "\tLoad Texture... " << filePath << std::endl;	
 
-		filePath = directory.substr(directory.find_first_of('/') + 1, directory.size()) + filePath;
-
-		Texture* texture = FileManager::LoadTexture(filePath, tType);
+		Texture* texture = FilePooler::LoadTexture(filePath, tType);
 		textures.push_back(texture);
 	}
 

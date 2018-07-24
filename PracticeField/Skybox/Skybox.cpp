@@ -1,15 +1,14 @@
 #include "Skybox.h"
 
 #include <SOIL\SOIL.h>
-#include "../FileManager.h"
+#include "../FilePooler.h"
 #include "../Render/RenderBundle.h"
 #include "../Bases/Camera.h"
 
 #include <glm/gtc/type_ptr.hpp>
 
 SkyBox::SkyBox(){
-	InitCubeMap();
-	InitShader();
+	
 }
 
 
@@ -17,14 +16,13 @@ SkyBox::~SkyBox()
 {
 }
 
-void SkyBox::InitCubeMap() {
-	int i = 0;
-	facePath[i++] = "Materials/skybox/right.jpg";
-	facePath[i++] = "Materials/skybox/left.jpg";
-	facePath[i++] = "Materials/skybox/top.jpg";
-	facePath[i++] = "Materials/skybox/bottom.jpg";
-	facePath[i++] = "Materials/skybox/back.jpg";
-	facePath[i] = "Materials/skybox/front.jpg";
+void SkyBox::InitCubeMap() {	
+	facePath[SkyBox_Right] = "Materials/skybox/right.jpg";
+	facePath[SkyBox_Left] = "Materials/skybox/left.jpg";
+	facePath[SkyBox_Top] = "Materials/skybox/top.jpg";
+	facePath[SkyBox_Bottom] = "Materials/skybox/bottom.jpg";
+	facePath[SkyBox_Back] = "Materials/skybox/back.jpg";
+	facePath[SkyBox_Front] = "Materials/skybox/front.jpg";
 
 	glGenTextures(1, &cubeMapId);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapId);
@@ -52,7 +50,7 @@ void SkyBox::InitCubeMap() {
 }
 
 void SkyBox::InitShader(){
-	skyboxShader = FileManager::LoadShader("Skybox/skyboxVertex.vert", "Skybox/skyboxFragment.frag");
+	skyboxShader = FilePooler::LoadShader("Skybox/skyboxVertex.vert", "Skybox/skyboxFragment.frag");
 
 	projMatrixID = skyboxShader->GetUniformLocation("P");
 	viewMatrixID = skyboxShader->GetUniformLocation("V");
@@ -72,6 +70,11 @@ void SkyBox::InitShader(){
 	glBindVertexArray(0);
 }
 
+
+void SkyBox::SetUp() {
+	InitCubeMap();
+	InitShader();
+}
 
 void SkyBox::Render(Camera* cam_){
 	glDepthFunc(GL_LEQUAL);

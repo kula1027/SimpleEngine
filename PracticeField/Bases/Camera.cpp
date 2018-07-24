@@ -4,8 +4,8 @@
 #include "BasesBundle.h"
 #include "../GameWindow.h"
 #include "../Render/Shader.h"
-#include "../FileManager.h"
-
+#include "../FilePooler.h"
+#include "../RenderPipeLine/RPL_Forward.h"
 
 
 float Camera::quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
@@ -33,6 +33,8 @@ Camera::Camera(){
 
 	projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
 
+	renderPipeLine = new RPL_Forward();
+
 	InitOffScreenDraw();
 }
 
@@ -40,7 +42,7 @@ Camera::~Camera(){
 }
 
 void Camera::InitOffScreenDraw(){
-	offScreenData.screenShader = FileManager::LoadShader("PostProcess/defaultScreen.vert", "PostProcess/defaultScreen.frag");
+	offScreenData.screenShader = FilePooler::LoadShader("PostProcess/defaultScreen.vert", "PostProcess/defaultScreen.frag");
 	offScreenData.screenShader->Use();
 	glUniform1i(offScreenData.screenShader->GetUniformLocation("screenTexture"), 0);
 
@@ -74,6 +76,10 @@ void Camera::InitOffScreenDraw(){
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void Camera::Render(RenderData* renderData_) {
+	renderPipeLine->Render(renderData_);
 }
 
 void Camera::ComputeMatrix(){

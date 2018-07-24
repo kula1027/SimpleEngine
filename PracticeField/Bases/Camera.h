@@ -7,6 +7,8 @@
 
 class Transform;
 class Shader;
+class RenderPipeLine;
+class RenderData;
 
 #define PROJECTION_ORTHO 0;
 #define PROJECTION_PERSPECTIVE 1;
@@ -28,6 +30,7 @@ private:
 	float far;
 
 
+	RenderPipeLine* renderPipeLine;
 
 	glm::vec3 upVector;
 	
@@ -50,6 +53,8 @@ public:
 	glm::mat4 Pmatrix();
 
 	glm::vec4 clearColor;
+
+	void Render(RenderData* renderData_);
 
 	void ComputeMatrix();
 	void EnableOffSreenBuffer();

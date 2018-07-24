@@ -2,7 +2,7 @@
 #include <gl\glew.h>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../FileManager.h"
+#include "../FilePooler.h"
 #include "../Render/Shader.h"
 
 
@@ -48,7 +48,7 @@ void DirectionalLight::InitShadowMap(){
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	shadowMapShader = FileManager::LoadShader("shadowMap.vert", "shadowMap.frag");
+	shadowMapShader = FilePooler::LoadShader("shadowMap.vert", "shadowMap.frag");
 	lightSpaceMatrixId = shadowMapShader->GetUniformLocation("lightSpaceMatrix");
 	modelMatrixId = shadowMapShader->GetUniformLocation("modelMatrix");
 }

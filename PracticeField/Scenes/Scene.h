@@ -12,6 +12,7 @@ class GameObject;
 class BaseLight;
 class Renderer;
 class Camera;
+class RenderData;
 
 using namespace std;
 
@@ -22,14 +23,15 @@ private:
 
 protected:
 	SkyBox * skybox;
-	Camera* camera;
+	Camera* mainCamera;
 
 	vector<IUpdatable*> updatables;
 	vector<GameObject*> gameObjects;
-	unsigned int freeObjectId = 0;
+	unsigned long freeObjectId = 0;
 
+	RenderData* renderData;
 	vector<Renderer*> renderers;
-	vector<BaseLight*> lights;
+	vector<BaseLight*> lights;	
 
 public:
 	Scene();
@@ -46,7 +48,7 @@ public:
 	void AddRenderer(Renderer* rdr);
 	void AddLight(BaseLight* objLight);
 
-	Camera* GetCamera();
+	Camera* GetMainCamera();
 		
 	void UpdateObjects();
 	void RenderObjects();

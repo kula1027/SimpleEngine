@@ -73,6 +73,10 @@
     <IncludePath>$(SolutionDir)\includes;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)\includes;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\libraries;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -117,14 +121,18 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SOIL.lib;assimp.lib;glew32.lib;opengl32.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Mesh\ArrangedMesh.cpp" />
     <ClCompile Include="PerformanceCheck.cpp" />
+    <ClCompile Include="Scenes\RenderData.cpp" />
+    <ClCompile Include="RenderPipeLine\RenderPipeLine.cpp" />
     <ClCompile Include="Render\PreCullingColorLayer.cpp" />
     <ClCompile Include="Render\OutlineRenderer.cpp" />
     <ClCompile Include="Render\CullLayerRenderer.cpp" />
+    <ClCompile Include="RenderPipeLine\RPL_Forward.cpp" />
     <ClCompile Include="Skybox\EmptySkyBox.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Render\PreCullingRenderer.cpp" />
@@ -140,7 +148,7 @@
     <ClCompile Include="ImaginaryFigures\ImaginarySphere.cpp" />
     <ClCompile Include="Bases\InputModule.cpp" />
     <ClCompile Include="Lights\BaseLight.cpp" />
-    <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="FilePooler.cpp" />
     <ClCompile Include="Render\InstancedRenderer.cpp" />
     <ClCompile Include="Mesh\Mesh.cpp" />
     <ClCompile Include="Mesh\MeshModel.cpp" />
@@ -167,11 +175,14 @@
     <ClInclude Include="Mesh\ArrangedMesh.h" />
     <ClInclude Include="Bases\BasesBundle.h" />
     <ClInclude Include="PerformanceCheck.h" />
+    <ClInclude Include="Scenes\RenderData.h" />
+    <ClInclude Include="RenderPipeLine\RenderPipeLine.h" />
     <ClInclude Include="Render\PreCullingColorLayer.h" />
     <ClInclude Include="Render\OutlineRenderer.h" />
     <ClInclude Include="Render\CullLayerRenderer.h" />
     <ClInclude Include="Mesh\MeshBundle.h" />
     <ClInclude Include="Render\RenderBundle.h" />
+    <ClInclude Include="RenderPipeLine\RPL_Forward.h" />
     <ClInclude Include="Scripts\ScriptBundle.h" />
     <ClInclude Include="Skybox\EmptySkyBox.h" />
     <ClInclude Include="Render\PreCullingRenderer.h" />
@@ -193,7 +204,7 @@
     <ClInclude Include="Render\InstancedRenderer.h" />
     <ClInclude Include="Bases\IUpdatable.h" />
     <ClInclude Include="Lights\BaseLight.h" />
-    <ClInclude Include="FileManager.h" />
+    <ClInclude Include="FilePooler.h" />
     <ClInclude Include="Lights\LightsBundle.h" />
     <ClInclude Include="Mesh\Mesh.h" />
     <ClInclude Include="Mesh\MeshModel.h" />

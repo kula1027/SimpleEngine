@@ -85,34 +85,73 @@ void Shader::CreateProgram(GLuint shader0, GLuint shader1){
 	}
 }
 
-Shader::Shader(GLchar* vertexPath_, GLchar* fragmentPath_){
-	GLuint vShader = CreateShader(vertexPath_, GL_VERTEX_SHADER);
-	GLuint fShader = CreateShader(fragmentPath_, GL_FRAGMENT_SHADER);
+void Shader::LoadProgram(string vertexPath_, string geometryPath_, string fragmentPath_){
+	filePathVertex = vertexPath_;
+	filePathGeometry = geometryPath_;
+	filePathFragment = fragmentPath_;
 
-	CreateProgram(vShader, fShader);
+	cout << "Load Shader: ";
 
-	glDeleteShader(vShader);
+	GLuint vShader = CreateShader(
+		(GLchar*)(dirPathShader + vertexPath_).c_str(),
+		GL_VERTEX_SHADER
+	);
+
+	cout << vertexPath_;
+
+	GLuint fShader = CreateShader(
+		(GLchar*)(dirPathShader + fragmentPath_).c_str(),
+		GL_FRAGMENT_SHADER
+	);
+
+	cout << " / " << fragmentPath_;
+
+	if (geometryPath_.length() > 0) {
+		GLuint gShader = CreateShader(
+			(GLchar*)(dirPathShader + geometryPath_).c_str(),
+			GL_GEOMETRY_SHADER
+		);
+
+		cout << " / " << geometryPath_;
+
+		CreateProgram(vShader, gShader, fShader);
+
+		glDeleteShader(gShader);
+	} else {
+		CreateProgram(vShader, fShader);
+	}
+	
+	cout << endl;
+
+	glDeleteShader(vShader);	
 	glDeleteShader(fShader);
 }
 
-Shader::Shader(GLchar* vertexPath_, GLchar* geometryPath_, GLchar* fragmentPath_){
-	GLuint vShader = CreateShader(vertexPath_, GL_VERTEX_SHADER);
-	GLuint gShader = CreateShader(geometryPath_, GL_GEOMETRY_SHADER);
-	GLuint fShader = CreateShader(fragmentPath_, GL_FRAGMENT_SHADER);
-	
-	CreateProgram(vShader, gShader, fShader);
+Shader::Shader(string vertexPath_, string fragmentPath_){
+	LoadProgram(vertexPath_, "", fragmentPath_);
+}
 
-	glDeleteShader(vShader);
-	glDeleteShader(gShader);
-	glDeleteShader(fShader);
+Shader::Shader(string vertexPath_, string geometryPath_, string fragmentPath_){
+	LoadProgram(vertexPath_, geometryPath_, fragmentPath_);
 }
 
 Shader::~Shader(){
 	glDeleteProgram(this->shaderID);
 }
 
-char* Shader::GetFilePath(){
-	return "";
+string Shader::GetDirectoryVertex()
+{
+	return filePathVertex;
+}
+
+string Shader::GetDirectoryGeometry()
+{
+	return filePathGeometry;
+}
+
+string Shader::GetDirectoryFragment()
+{
+	return filePathFragment;
 }
 
 void Shader::Use(){

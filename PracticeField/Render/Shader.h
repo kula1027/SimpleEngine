@@ -8,7 +8,10 @@
 
 #define LogLength 512
 
+#define dirPathShader "Materials/Shaders/"
 #define TEXTURE_IDX_SHADOWMAP 10
+
+using namespace std;
 
 class Shader : EngineResource
 {
@@ -20,11 +23,19 @@ private:
 	void CreateProgram(GLuint shader0, GLuint shader1, GLuint shader2);
 	void CreateProgram(GLuint shader0, GLuint shader1);
 
+	void LoadProgram(string vertexPath_, string geometryPath_, string fragmentPath_);
+
+	string filePathVertex;
+	string filePathGeometry;
+	string filePathFragment;	
+
 public:
-	Shader(GLchar* vertexPath_, GLchar* fragmentPath_);
-	Shader(GLchar* vertexPath_, GLchar* geometryPath_, GLchar* fragmentPath_);
+	Shader(string vertexPath_, string fragmentPath_);
+	Shader(string vertexPath_, string geometryPath_, string fragmentPath_);
 	~Shader();
-	char* GetFilePath();
+	string GetDirectoryVertex();
+	string GetDirectoryGeometry();
+	string GetDirectoryFragment();
 	
 	void Use();
 	GLuint GetUniformLocation(GLchar* var_name);

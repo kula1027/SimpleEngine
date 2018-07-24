@@ -24,6 +24,7 @@
 
 #include "Mesh.h"
 
+#define dirPathMaterial "Materials/"
 
 using namespace std;
 
@@ -34,7 +35,7 @@ class MeshModel
 public:
 	/*  Functions   */
 	MeshModel();
-	MeshModel(GLchar* path);
+	MeshModel(string path);
 	~MeshModel();
 	vector<Mesh*>* meshes;
 
@@ -43,9 +44,8 @@ public:
 protected:
 
 private:
-	/*  Model Data  */
-	string directory;	
-	string fileName;
+	/*  Model Data  */		
+	string filePath;
 
 	void ProcessNode(aiNode* node, const aiScene* scene);
 	Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);

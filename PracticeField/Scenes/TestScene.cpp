@@ -19,8 +19,8 @@ void TestScene::Load() {
 
 	SimpleEngine::SetVsyncMode(false);
 
-	camera->transform->position = glm::vec3(4, 4, 20);
-	camera->clearColor = glm::vec4(1.0);
+	mainCamera->transform->position = glm::vec3(4, 4, 20);
+	mainCamera->clearColor = glm::vec4(1.0);
 
 	//GameObject* goTimer = new GameObject("timer");
 	//goTimer->AddComponent<TimeChecker>();
@@ -28,7 +28,7 @@ void TestScene::Load() {
 	GameObject* fakeCam = new GameObject("fakeCam");
 	fakeCam->AddComponent<FakeCam>();
 	fakeCam->SetRenderer(new Renderer());
-	fakeCam->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel("cube.obj"));
+	fakeCam->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("cube.obj"));
 	fakeCam->GetRenderer()->SetShader();
 	fakeCam->transform->position = glm::vec3(0, 5, 0);
 	fakeCam->transform->scale = glm::vec3(0.1f);
@@ -105,19 +105,19 @@ void TestScene::Load() {
 	//	go->transform->position = glm::vec3(loop * 2, 0, 0);
 	//}
 
-	int c = 5;
-	int d = 5;
-	int e = 5;
-	int objIdx = 4;
+	int c = 15;
+	int d = 15;
+	int e = 15;
+	int objIdx = 2;
 
-	bool splitRender = true;
+	bool splitRender = false;
 
 	if (splitRender) {
 		PreCullingRenderer_Split* srBase = new PreCullingRenderer_Split();
 		srBase->renderMaterial->vertDivision = 16;
 		srBase->renderMaterial->horiDivision = 32;
-		srBase->SetMeshModel(FileManager::LoadMeshModel_Pool(sp[objIdx]));
-		srBase->renderMaterial->targetCamTr = camera->transform;
+		srBase->SetMeshModel(FilePooler::LoadMeshModel(sp[objIdx]));
+		srBase->renderMaterial->targetCamTr = mainCamera->transform;
 		for (int loop = 0; loop < c; loop++) {
 			for (int loop2 = 0; loop2 < d; loop2++) {
 				for (int loop3 = 0; loop3 < e; loop3++) {
@@ -125,7 +125,7 @@ void TestScene::Load() {
 					PreCullingRenderer_Split* sr = new PreCullingRenderer_Split();
 					sr->renderMaterial = srBase->renderMaterial;
 					go->SetRenderer(sr);
-					go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(sp[objIdx]));
+					go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel(sp[objIdx]));
 					go->GetRenderer()->SetShader();
 					go->GetRenderer()->castShadow = false;
 					go->transform->position = glm::vec3(loop * 2, loop2 * 2, loop3 * 2);					
@@ -138,7 +138,7 @@ void TestScene::Load() {
 				for (int loop3 = 0; loop3 < e; loop3++) {
 					GameObject* go = new GameObject(m[objIdx]);
 					go->SetRenderer(new Renderer);
-					go->GetRenderer()->SetMeshModel(FileManager::LoadMeshModel_Pool(sp[objIdx]));
+					go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel(sp[objIdx]));
 					go->GetRenderer()->SetShader();
 					go->GetRenderer()->castShadow = false;
 					go->transform->position = glm::vec3(loop * 2, loop2 * 2, loop3 * 2);

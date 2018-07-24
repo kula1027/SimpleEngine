@@ -19,6 +19,8 @@ Scene::Scene(){
 	glEnable(GL_CULL_FACE);
 	//glDisable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);	
+
+	renderData = new RenderData();
 }
 
 Scene::~Scene(){
@@ -33,8 +35,8 @@ void Scene::Load() {
 	std::cout << "Load Scene...\n";
 	current = this;
 
-	camera = new Camera();
-	camera->AddComponent<MoveCamera>();	
+	mainCamera = new Camera();
+	mainCamera->AddComponent<MoveCamera>();	
 	
 	//BaseLight* pointLight = new PointLight();
 	
@@ -69,8 +71,8 @@ void Scene::AddLight(BaseLight * objLight){
 	lights.push_back(objLight);
 }
 
-Camera * Scene::GetCamera(){
-	return camera;
+Camera * Scene::GetMainCamera(){
+	return mainCamera;
 }
 
 void Scene::UpdateObjects(){
@@ -85,7 +87,7 @@ void Scene::RenderObjects(){
 	int rdrCount = renderers.size();
 
 	//Matrice Setup
-	camera->ComputeMatrix();
+	mainCamera->ComputeMatrix();
 	for (int loop = 0; loop < rdrCount; loop++) {
 		renderers[loop]->ComputeMatrix();
 	}
@@ -101,15 +103,15 @@ void Scene::RenderObjects(){
 	}
 
 	//Render Off Screen	
-	camera->EnableOffSreenBuffer();	
+	mainCamera->EnableOffSreenBuffer();	
 	for (int loop = 0; loop < rdrCount; loop++) {
-		renderers[loop]->Render(camera, lights);
+		renderers[loop]->Render(mainCamera, lights);
 	}
-	skybox->Render(camera);
+	skybox->Render(mainCamera);
 
 	PerformanceCheck::OnEndFrame();
 
 	//Render on screen
 	glCullFace(GL_BACK);
-	camera->PostDraw();
+	mainCamera->PostDraw();
 }

@@ -7,6 +7,13 @@ class Texture;
 class Shader;
 class Camera;
 
+#define SkyBox_Right 0
+#define SkyBox_Left 1
+#define SkyBox_Top 2
+#define SkyBox_Bottom 3
+#define SkyBox_Back 4
+#define SkyBox_Front 5
+
 class SkyBox
 {
 private:
@@ -25,6 +32,7 @@ public:
 	SkyBox();
 	~SkyBox();
 
+	void SetUp();
 	virtual void Render(Camera* cam_);	
 };
 

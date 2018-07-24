@@ -5,7 +5,7 @@
 #include "../Mesh/MeshModel.h"
 #include "Texture.h"
 #include "../Lights/LightsBundle.h"
-#include "../FileManager.h"
+#include "../FilePooler.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -73,7 +73,7 @@ void Renderer::SetShader(Shader* shader_){
 }
 
 void Renderer::SetShader(){
-	SetShader(FileManager::LoadShader(DefualtVS, DefaultFS));
+	SetShader(FilePooler::LoadShader(DefualtVS, DefaultFS));
 }
 
 void Renderer::SetMeshModel(MeshModel * meshModel_){
