@@ -20,7 +20,7 @@ void TestScene2::Load()
 	BaseLight* directionalLight = new DirectionalLight();
 	AddLight(directionalLight);
 
-	skybox = new SkyBox();
+	mainCamera->skybox = new SkyBox();
 
 	GameObject* go;
 

@@ -22,16 +22,15 @@ private:
 	static Scene* current;
 
 protected:
-	SkyBox * skybox;
 	Camera* mainCamera;
 
 	vector<IUpdatable*> updatables;
 	vector<GameObject*> gameObjects;
 	unsigned long freeObjectId = 0;
 
-	RenderData* renderData;
+	RenderData* renderData;/*
 	vector<Renderer*> renderers;
-	vector<BaseLight*> lights;	
+	vector<BaseLight*> lights;	*/
 
 public:
 	Scene();

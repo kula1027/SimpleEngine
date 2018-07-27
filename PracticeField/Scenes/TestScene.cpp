@@ -11,8 +11,6 @@ TestScene::~TestScene() {
 void TestScene::Load() {
 	Scene::Load();
 
-	skybox = new EmptySkyBox();
-
 	BaseLight* directionalLight = new DirectionalLight();
 	directionalLight->isShadowCaster = false;
 	AddLight(directionalLight);

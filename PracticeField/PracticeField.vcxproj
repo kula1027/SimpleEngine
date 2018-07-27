@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClCompile Include="Mesh\ArrangedMesh.cpp" />
     <ClCompile Include="PerformanceCheck.cpp" />
+    <ClCompile Include="RenderPipeLine\RPL_Deferred.cpp" />
     <ClCompile Include="Scenes\RenderData.cpp" />
     <ClCompile Include="RenderPipeLine\RenderPipeLine.cpp" />
     <ClCompile Include="Render\PreCullingColorLayer.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Mesh\ArrangedMesh.h" />
     <ClInclude Include="Bases\BasesBundle.h" />
     <ClInclude Include="PerformanceCheck.h" />
+    <ClInclude Include="RenderPipeLine\RPL_Deferred.h" />
     <ClInclude Include="Scenes\RenderData.h" />
     <ClInclude Include="RenderPipeLine\RenderPipeLine.h" />
     <ClInclude Include="Render\PreCullingColorLayer.h" />

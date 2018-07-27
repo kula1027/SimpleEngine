@@ -64,11 +64,11 @@ void Scene::AddUpdatable(IUpdatable * upd){
 }
 
 void Scene::AddRenderer(Renderer * rdr){
-	renderers.push_back(rdr);
+	renderData->AddRenderer(rdr);
 }
 
-void Scene::AddLight(BaseLight * objLight){
-	lights.push_back(objLight);
+void Scene::AddLight(BaseLight * light_){
+	renderData->AddLight(light_);
 }
 
 Camera * Scene::GetMainCamera(){
@@ -81,37 +81,37 @@ void Scene::UpdateObjects(){
 	}
 }
 
-
 void Scene::RenderObjects(){
-	int lightCount = lights.size();
-	int rdrCount = renderers.size();
+	mainCamera->Render(renderData);
+	//int lightCount = lights.size();
+	//int rdrCount = renderers.size();
 
-	//Matrice Setup
-	mainCamera->ComputeMatrix();
-	for (int loop = 0; loop < rdrCount; loop++) {
-		renderers[loop]->ComputeMatrix();
-	}
+	////Matrice Setup
+	//mainCamera->ComputeMatrix();
+	//for (int loop = 0; loop < rdrCount; loop++) {
+	//	renderers[loop]->ComputeMatrix();
+	//}
 
-	//Render ShadowMap
-	for (int loop = 0; loop < lightCount; loop++) {	
-		if (lights[loop]->isShadowCaster == false)continue;
+	////Render ShadowMap
+	//for (int loop = 0; loop < lightCount; loop++) {	
+	//	if (lights[loop]->isShadowCaster == false)continue;
 
-		lights[loop]->EnableShadowMapBuffer();		
-		for (int loop2 = 0; loop2 < rdrCount; loop2++) {
-			renderers[loop2]->RenderShadowMap(lights[loop]);
-		}
-	}
+	//	lights[loop]->EnableShadowMapBuffer();		
+	//	for (int loop2 = 0; loop2 < rdrCount; loop2++) {
+	//		renderers[loop2]->RenderShadowMap(lights[loop]);
+	//	}
+	//}
 
-	//Render Off Screen	
-	mainCamera->EnableOffSreenBuffer();	
-	for (int loop = 0; loop < rdrCount; loop++) {
-		renderers[loop]->Render(mainCamera, lights);
-	}
-	skybox->Render(mainCamera);
+	////Render Off Screen	
+	//mainCamera->EnableOffSreenBuffer();	
+	//for (int loop = 0; loop < rdrCount; loop++) {
+	//	renderers[loop]->Render(mainCamera, lights);
+	//}
+	//skybox->Render(mainCamera);
 
-	PerformanceCheck::OnEndFrame();
+	//PerformanceCheck::OnEndFrame();
 
-	//Render on screen
-	glCullFace(GL_BACK);
-	mainCamera->PostDraw();
+	////Render on screen
+	//glCullFace(GL_BACK);
+	//mainCamera->PostDraw();
 }

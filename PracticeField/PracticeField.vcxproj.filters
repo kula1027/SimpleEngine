@@ -62,6 +62,7 @@
     <ClCompile Include="RenderPipeLine\RenderPipeLine.cpp" />
     <ClCompile Include="RenderPipeLine\RPL_Forward.cpp" />
     <ClCompile Include="Scenes\RenderData.cpp" />
+    <ClCompile Include="RenderPipeLine\RPL_Deferred.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h" />
@@ -119,5 +120,6 @@
     <ClInclude Include="RenderPipeLine\RenderPipeLine.h" />
     <ClInclude Include="RenderPipeLine\RPL_Forward.h" />
     <ClInclude Include="Scenes\RenderData.h" />
+    <ClInclude Include="RenderPipeLine\RPL_Deferred.h" />
   </ItemGroup>
 </Project>

@@ -13,22 +13,13 @@ class RenderData;
 #define PROJECTION_ORTHO 0;
 #define PROJECTION_PERSPECTIVE 1;
 
-struct OffScreenData {
-	Shader* screenShader;
-	unsigned int texColorBuffer;
-	unsigned int frameBuffer;
-	unsigned int quadVAO, quadVBO;
-	unsigned int rbo;
-};
+
 
 class Camera : public GameObject{
 private:
-	static float quadVertices[];
-	
 	float fov;
 	float near;
 	float far;
-
 
 	RenderPipeLine* renderPipeLine;
 
@@ -41,10 +32,6 @@ private:
 
 	int projMode;
 
-	OffScreenData offScreenData;
-
-	void InitOffScreenDraw();
-
 public:
 	Camera();
 	~Camera();
@@ -53,11 +40,13 @@ public:
 	glm::mat4 Pmatrix();
 
 	glm::vec4 clearColor;
+	glm::vec2 normalizedViewPort;
+
+	SkyBox * skybox;
 
 	void Render(RenderData* renderData_);
 
 	void ComputeMatrix();
-	void EnableOffSreenBuffer();
-	void PostDraw();
+	void RenderSkyBox();
 };
 
