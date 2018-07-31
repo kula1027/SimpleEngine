@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-#include "../Render/Shader.h"
+#include "../Render/Shaders/BaseShader.h"
 #include "../Render/Texture.h"
 
 #include <fstream>

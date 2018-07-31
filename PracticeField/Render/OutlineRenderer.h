@@ -1,5 +1,5 @@
 #pragma once
-#include "Renderer.h"
+#include "DefaultRenderer.h"
 #include <vector>
 
 #define DefaultVS_Outline "outline.vert"
@@ -15,13 +15,13 @@ struct Outline {
 };
 
 class OutlineRenderer :
-	public Renderer
+	public DefaultRenderer
 {
 private:
-	Shader * outlineShader = NULL;
+	BaseShader * outlineShader = NULL;
 
 protected:
-	void SetAdditionalShaderData(Shader* shader_);
+	void SetAdditionalShaderData(BaseShader* shader_);
 
 public:
 	OutlineRenderer();

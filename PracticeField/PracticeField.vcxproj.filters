@@ -43,8 +43,6 @@
     <ClCompile Include="Render\PartRenderer.cpp" />
     <ClCompile Include="Render\PreCullingRenderer.cpp" />
     <ClCompile Include="Render\PreCullingRenderer_Split.cpp" />
-    <ClCompile Include="Render\Renderer.cpp" />
-    <ClCompile Include="Render\Shader.cpp" />
     <ClCompile Include="Render\Texture.cpp" />
     <ClCompile Include="Render\InstancedRenderer.cpp" />
     <ClCompile Include="Bases\InputModule.cpp" />
@@ -59,10 +57,15 @@
     <ClCompile Include="Render\PreCullingColorLayer.cpp" />
     <ClCompile Include="PerformanceCheck.cpp" />
     <ClCompile Include="FilePooler.cpp" />
-    <ClCompile Include="RenderPipeLine\RenderPipeLine.cpp" />
-    <ClCompile Include="RenderPipeLine\RPL_Forward.cpp" />
     <ClCompile Include="Scenes\RenderData.cpp" />
-    <ClCompile Include="RenderPipeLine\RPL_Deferred.cpp" />
+    <ClCompile Include="RenderPath\RenderPath.cpp" />
+    <ClCompile Include="RenderPath\RP_Deferred.cpp" />
+    <ClCompile Include="RenderPath\RP_Forward.cpp" />
+    <ClCompile Include="RenderPath\RP_SimpleSingle.cpp" />
+    <ClCompile Include="Render\DefaultRenderer.cpp" />
+    <ClCompile Include="Render\BaseRenderer.cpp" />
+    <ClCompile Include="Render\Shaders\BaseShader.cpp" />
+    <ClCompile Include="Render\Shaders\DefaultShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h" />
@@ -99,8 +102,6 @@
     <ClInclude Include="Render\PartRenderer.h" />
     <ClInclude Include="Render\PreCullingRenderer.h" />
     <ClInclude Include="Render\PreCullingRenderer_Split.h" />
-    <ClInclude Include="Render\Renderer.h" />
-    <ClInclude Include="Render\Shader.h" />
     <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="Render\RenderBundle.h" />
     <ClInclude Include="Render\InstancedRenderer.h" />
@@ -117,9 +118,15 @@
     <ClInclude Include="Render\PreCullingColorLayer.h" />
     <ClInclude Include="PerformanceCheck.h" />
     <ClInclude Include="FilePooler.h" />
-    <ClInclude Include="RenderPipeLine\RenderPipeLine.h" />
-    <ClInclude Include="RenderPipeLine\RPL_Forward.h" />
     <ClInclude Include="Scenes\RenderData.h" />
-    <ClInclude Include="RenderPipeLine\RPL_Deferred.h" />
+    <ClInclude Include="RenderPath\RenderPath.h" />
+    <ClInclude Include="RenderPath\RP_Deferred.h" />
+    <ClInclude Include="RenderPath\RP_Forward.h" />
+    <ClInclude Include="RenderPath\RenderPathBundle.h" />
+    <ClInclude Include="RenderPath\RP_SimpleSingle.h" />
+    <ClInclude Include="Render\DefaultRenderer.h" />
+    <ClInclude Include="Render\BaseRenderer.h" />
+    <ClInclude Include="Render\Shaders\BaseShader.h" />
+    <ClInclude Include="Render\Shaders\DefaultShader.h" />
   </ItemGroup>
 </Project>

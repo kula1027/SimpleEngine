@@ -19,13 +19,14 @@ void TestScene::Load() {
 
 	mainCamera->transform->position = glm::vec3(4, 4, 20);
 	mainCamera->clearColor = glm::vec4(1.0);
+	//mainCamera->renderPath = RenderPath_SimpleSingle;
 
 	//GameObject* goTimer = new GameObject("timer");
 	//goTimer->AddComponent<TimeChecker>();
 
 	GameObject* fakeCam = new GameObject("fakeCam");
 	fakeCam->AddComponent<FakeCam>();
-	fakeCam->SetRenderer(new Renderer());
+	fakeCam->SetRenderer(new DefaultRenderer());
 	fakeCam->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("cube.obj"));
 	fakeCam->GetRenderer()->SetShader();
 	fakeCam->transform->position = glm::vec3(0, 5, 0);
@@ -103,9 +104,9 @@ void TestScene::Load() {
 	//	go->transform->position = glm::vec3(loop * 2, 0, 0);
 	//}
 
-	int c = 15;
-	int d = 15;
-	int e = 15;
+	int c = 5;
+	int d = 5;
+	int e = 5;
 	int objIdx = 2;
 
 	bool splitRender = false;
@@ -135,7 +136,7 @@ void TestScene::Load() {
 			for (int loop2 = 0; loop2 < d; loop2++) {
 				for (int loop3 = 0; loop3 < e; loop3++) {
 					GameObject* go = new GameObject(m[objIdx]);
-					go->SetRenderer(new Renderer);
+					go->SetRenderer(new DefaultRenderer);
 					go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel(sp[objIdx]));
 					go->GetRenderer()->SetShader();
 					go->GetRenderer()->castShadow = false;

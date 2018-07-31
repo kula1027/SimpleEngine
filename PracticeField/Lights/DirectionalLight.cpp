@@ -3,7 +3,7 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../FilePooler.h"
-#include "../Render/Shader.h"
+#include "../Render/Shaders/BaseShader.h"
 
 
 DirectionalLight::DirectionalLight(){

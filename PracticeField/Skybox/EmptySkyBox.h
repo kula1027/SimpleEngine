@@ -7,5 +7,6 @@ public:
 	EmptySkyBox();
 	~EmptySkyBox();
 	virtual void Render(Camera* cam);
+	virtual void Initialize();
 };
 

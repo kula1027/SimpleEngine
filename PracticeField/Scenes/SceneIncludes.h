@@ -13,6 +13,7 @@
 #include "../Scripts/ScriptBundle.h"
 #include "../PerformanceCheck.h"
 
+#include "../RenderPath/RenderPathBundle.h"
 #include "RenderData.h"
 
 #include <string>

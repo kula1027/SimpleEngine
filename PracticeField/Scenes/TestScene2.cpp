@@ -37,7 +37,7 @@ void TestScene2::Load()
 			);
 	}
 	go = new GameObject("floor");
-	go->SetRenderer(new Renderer());
+	go->SetRenderer(new DefaultRenderer());
 	go->GetRenderer()->SetMeshModel(mPlane);
 	go->GetRenderer()->SetShader();
 	go->transform->scale = glm::vec3(40, 1, 40);
@@ -79,14 +79,14 @@ void TestScene2::Load()
 
 	//sphere w geo	
 	go = new GameObject("sphere geo");
-	go->SetRenderer(new Renderer());
+	go->SetRenderer(new DefaultRenderer());
 	go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
 	go->GetRenderer()->SetShader(FilePooler::LoadShader("default.vert", "deform.geo", "default_geo.frag"));
 	go->transform->position = glm::vec3(0, 5, 2);
 
 	//sphere	
 	go = new GameObject("sphere");
-	go->SetRenderer(new Renderer());
+	go->SetRenderer(new DefaultRenderer());
 	go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
 	go->GetRenderer()->SetShader();
 	go->transform->position = glm::vec3(-5, 5, 2);
@@ -100,7 +100,7 @@ void TestScene2::Load()
 
 	//nanosuit
 	go = new GameObject("nano");
-	go->SetRenderer(new Renderer());
+	go->SetRenderer(new DefaultRenderer());
 	go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
 	go->GetRenderer()->SetShader();
 	go->transform->position = glm::vec3(10, 0, 0);
@@ -119,7 +119,7 @@ void TestScene2::Load()
 	}
 
 	go = new GameObject("window");
-	go->SetRenderer(new Renderer());
+	go->SetRenderer(new DefaultRenderer());
 	go->GetRenderer()->castShadow = false;
 	go->GetRenderer()->cullingEnabled = false;
 	go->GetRenderer()->SetMeshModel(mQuad2);

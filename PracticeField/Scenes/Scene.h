@@ -6,11 +6,11 @@
 #include <vector>
 
 class MeshModel;
-class Shader;
+class BaseShader;
 class IUpdatable;
 class GameObject;
 class BaseLight;
-class Renderer;
+class BaseRenderer;
 class Camera;
 class RenderData;
 
@@ -39,12 +39,13 @@ public:
 	static Scene* GetCurrent();	
 
 	virtual void Load();
+	void Initialize();
 
 	GameObject * FindGameObjectByName(string name_);
 
 	void AddGameObject(GameObject* obj);
 	void AddUpdatable(IUpdatable* upd);
-	void AddRenderer(Renderer* rdr);
+	void AddRenderer(BaseRenderer* rdr);
 	void AddLight(BaseLight* objLight);
 
 	Camera* GetMainCamera();

@@ -2,9 +2,9 @@
 
 #include "../FilePooler.h"
 #include "../Bases/BasesBundle.h"
-#include "../Render/Shader.h"
+#include "../Render/Shaders/BaseShader.h"
 
-CullLayerRenderer::CullLayerRenderer() : Renderer() {
+CullLayerRenderer::CullLayerRenderer() : DefaultRenderer() {
 }
 
 
@@ -12,10 +12,10 @@ CullLayerRenderer::~CullLayerRenderer() {
 }
 
 void CullLayerRenderer::SetShader() {
-	Renderer::SetShader(FilePooler::LoadShader(VS_LayerCull, FS_LayerCulled));
+	DefaultRenderer::SetShader(FilePooler::LoadShader(VS_LayerCull, FS_LayerCulled));
 }
 
-void CullLayerRenderer::SetAdditionalShaderData(Shader * shader_) {
+void CullLayerRenderer::SetAdditionalShaderData(BaseShader * shader_) {
 	id_refViewPos = shader_->GetUniformLocation("refViewPos");
 }
 

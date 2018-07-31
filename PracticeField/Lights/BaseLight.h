@@ -3,7 +3,7 @@
 #include <glm\glm.hpp>
 #include <string>
 
-class Shader;
+class BaseShader;
 
 struct ShadowData {
 	unsigned int resWidth = 2048;

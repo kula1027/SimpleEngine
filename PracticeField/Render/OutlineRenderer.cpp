@@ -16,7 +16,7 @@ OutlineRenderer::~OutlineRenderer()
 {
 }
 
-void OutlineRenderer::SetAdditionalShaderData(Shader * shader_)
+void OutlineRenderer::SetAdditionalShaderData(BaseShader * shader_)
 {
 	outlineShader = FilePooler::LoadShader(DefaultVS_Outline, DefaultFS_Outline);
 

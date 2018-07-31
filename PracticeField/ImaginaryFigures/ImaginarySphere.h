@@ -6,7 +6,7 @@
 using namespace glm;
 
 class Mesh;
-class Renderer;
+class DefaultRenderer;
 class Camera;
 class BaseLight;
 
@@ -20,7 +20,7 @@ public:
 	ImaginarySphere(vec3 center_, float radius_);
 	~ImaginarySphere();
 
-	Renderer* renderer = NULL;
+	DefaultRenderer* renderer = NULL;
 	void Render(Camera* cam, std::vector<BaseLight*> lights);
 
 	static ImaginarySphere* GetBoundingSphere(Mesh* mesh, glm::vec3 center_);

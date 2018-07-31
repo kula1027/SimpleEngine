@@ -6,14 +6,12 @@
 
 
 class Transform;
-class Shader;
-class RenderPipeLine;
+class BaseShader;
+class RenderPath;
 class RenderData;
 
-#define PROJECTION_ORTHO 0;
-#define PROJECTION_PERSPECTIVE 1;
-
-
+#define PROJECTION_ORTHO 0
+#define PROJECTION_PERSPECTIVE 1
 
 class Camera : public GameObject{
 private:
@@ -21,11 +19,10 @@ private:
 	float near;
 	float far;
 
-	RenderPipeLine* renderPipeLine;
+	RenderPath* renderPipeLine;
 
 	glm::vec3 upVector;
 	
-
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
 	glm::mat4 vpMatrix;
@@ -44,7 +41,10 @@ public:
 
 	SkyBox * skybox;
 
+	virtual void Initialize();
+
 	void Render(RenderData* renderData_);
+	int renderPath;
 
 	void ComputeMatrix();
 	void RenderSkyBox();

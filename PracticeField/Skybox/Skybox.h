@@ -4,7 +4,7 @@
 #include <gl\glew.h>
 
 class Texture;
-class Shader;
+class BaseShader;
 class Camera;
 
 #define SkyBox_Right 0
@@ -19,7 +19,7 @@ class SkyBox
 private:
 	GLuint cubeMapId;
 	std::string facePath[6];
-	Shader* skyboxShader;
+	BaseShader* skyboxShader;
 
 	GLuint VAO, VBO;
 	GLuint projMatrixID, viewMatrixID, cubemapID;
@@ -32,7 +32,7 @@ public:
 	SkyBox();
 	~SkyBox();
 
-	void SetUp();
+	virtual void Initialize();
 	virtual void Render(Camera* cam_);	
 };
 

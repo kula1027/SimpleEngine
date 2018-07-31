@@ -1,6 +1,6 @@
 #include "InstancedRenderer.h"
 
-#include "Shader.h"
+#include "Shaders/BaseShader.h"
 #include "../FilePooler.h"
 #include "../Mesh/MeshModel.h"
 
@@ -17,7 +17,7 @@ InstancedRenderer::~InstancedRenderer()
 }
 
 
-void InstancedRenderer::SetShader(Shader * shader_){
+void InstancedRenderer::SetShader(BaseShader * shader_){
 	shader = shader_;
 
 	id_matrice.vp = shader->GetUniformLocation("VP");
@@ -45,7 +45,7 @@ void InstancedRenderer::SetShader(Shader * shader_){
 }
 
 void InstancedRenderer::SetDefaultShader(){
-	shader = FilePooler::LoadShader(DefaultVS_Ist, DefaultFS);
+	shader = FilePooler::LoadShader(DefaultVS_Ist, defaultFS);
 
 	id_matrice.vp = shader->GetUniformLocation("VP");
 	id_matrice.view = shader->GetUniformLocation("V");

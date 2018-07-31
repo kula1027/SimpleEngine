@@ -4,7 +4,7 @@
 
 class DirectionalLight : public BaseLight{
 private:
-	Shader* shadowMapShader;
+	BaseShader* shadowMapShader;
 
 	unsigned int lightSpaceMatrixId;
 	glm::mat4 lightView;

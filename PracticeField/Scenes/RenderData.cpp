@@ -11,7 +11,7 @@ RenderData::~RenderData()
 {
 }
 
-void RenderData::AddRenderer(Renderer * rdr_) {
+void RenderData::AddRenderer(BaseRenderer * rdr_) {
 	renderers.push_back(rdr_);
 }
 

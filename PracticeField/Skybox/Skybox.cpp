@@ -71,7 +71,7 @@ void SkyBox::InitShader(){
 }
 
 
-void SkyBox::SetUp() {
+void SkyBox::Initialize() {
 	InitCubeMap();
 	InitShader();
 }

@@ -43,6 +43,20 @@ void Scene::Load() {
 	//AddLight(pointLight);
 }
 
+void Scene::Initialize() {
+	for (int loop = 0; loop < gameObjects.size(); loop++) {
+		gameObjects[loop]->Initialize();
+	}
+
+	for (int loop = 0; loop < updatables.size(); loop++) {
+		updatables[loop]->Initialize();
+	}
+
+	for (int loop = 0; loop < updatables.size(); loop++) {
+		updatables[loop]->OnStart();
+	}
+}
+
 GameObject* Scene::FindGameObjectByName(string name_) {
 	for (int loop = 0; loop < gameObjects.size(); loop++) {
 		if (gameObjects[loop]->name.compare(name_)) {
@@ -63,7 +77,7 @@ void Scene::AddUpdatable(IUpdatable * upd){
 	updatables.push_back(upd);
 }
 
-void Scene::AddRenderer(Renderer * rdr){
+void Scene::AddRenderer(BaseRenderer * rdr){
 	renderData->AddRenderer(rdr);
 }
 
@@ -83,35 +97,4 @@ void Scene::UpdateObjects(){
 
 void Scene::RenderObjects(){
 	mainCamera->Render(renderData);
-	//int lightCount = lights.size();
-	//int rdrCount = renderers.size();
-
-	////Matrice Setup
-	//mainCamera->ComputeMatrix();
-	//for (int loop = 0; loop < rdrCount; loop++) {
-	//	renderers[loop]->ComputeMatrix();
-	//}
-
-	////Render ShadowMap
-	//for (int loop = 0; loop < lightCount; loop++) {	
-	//	if (lights[loop]->isShadowCaster == false)continue;
-
-	//	lights[loop]->EnableShadowMapBuffer();		
-	//	for (int loop2 = 0; loop2 < rdrCount; loop2++) {
-	//		renderers[loop2]->RenderShadowMap(lights[loop]);
-	//	}
-	//}
-
-	////Render Off Screen	
-	//mainCamera->EnableOffSreenBuffer();	
-	//for (int loop = 0; loop < rdrCount; loop++) {
-	//	renderers[loop]->Render(mainCamera, lights);
-	//}
-	//skybox->Render(mainCamera);
-
-	//PerformanceCheck::OnEndFrame();
-
-	////Render on screen
-	//glCullFace(GL_BACK);
-	//mainCamera->PostDraw();
 }

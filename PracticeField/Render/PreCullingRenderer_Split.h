@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderer.h"
+#include "DefaultRenderer.h"
 
 class ImaginarySphere;
 class ImaginaryPlane;
@@ -18,7 +18,7 @@ struct PcRenderMaterial {
 };
 
 
-class PreCullingRenderer_Split : public Renderer
+class PreCullingRenderer_Split : public DefaultRenderer
 {
 protected:
 	/*int vertDivision;

@@ -3,7 +3,7 @@
 #include <vector>
 
 class SkyBox;
-class Renderer;
+class BaseRenderer;
 class BaseLight;
 
 class RenderData {
@@ -15,10 +15,10 @@ public:
 	RenderData();
 	~RenderData();	
 
-	std::vector<Renderer*> renderers;
+	std::vector<BaseRenderer*> renderers;
 	std::vector<BaseLight*> lights;
 
-	void AddRenderer(Renderer* rdr_);
+	void AddRenderer(BaseRenderer* rdr_);
 	void AddLight(BaseLight* light_);
 };
 

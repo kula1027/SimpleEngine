@@ -1,7 +1,7 @@
 #pragma once
-#include "Renderer.h"
+#include "DefaultRenderer.h"
 
-class PartRenderer : public Renderer
+class PartRenderer : public DefaultRenderer
 {
 private:
 	int bindedBuffer = -1;

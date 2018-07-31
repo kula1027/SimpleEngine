@@ -43,6 +43,8 @@ void SimpleEngine::LoadScene() {
 }
 
 void SimpleEngine::Begin() {
+	currentScene->Initialize();
+
 	do { 
 		Time::Tick();
 

@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
 #include "IUpdatable.h"
-#include "../Render/Renderer.h"
+#include "../Render/DefaultRenderer.h"
 #include "../FilePooler.h"
 #include "../Scenes/Scene.h"
 #include <typeinfo>
@@ -19,6 +19,12 @@ GameObject::GameObject(std::string name_){
 	Scene::GetCurrent()->AddGameObject(this);
 }
 
+void GameObject::Initialize() {
+	for (int loop = 0; loop < components.size(); loop++) {
+		components[loop]->Initialize();
+	}
+}
+
 void GameObject::SetId(unsigned int id_){
 	objectId = id_;
 }
@@ -27,14 +33,14 @@ unsigned int GameObject::GetId(){
 	return objectId;
 }
 
-void GameObject::SetRenderer(Renderer * renderer_){
+void GameObject::SetRenderer(BaseRenderer * renderer_){
 	renderer_->SetTransform(transform);
 
 	Scene::GetCurrent()->AddRenderer(renderer_);
 	renderer = renderer_;
 }
 
-Renderer * GameObject::GetRenderer(){
+BaseRenderer * GameObject::GetRenderer(){
 	return renderer;
 }
 

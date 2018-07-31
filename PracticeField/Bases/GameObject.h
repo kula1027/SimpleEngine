@@ -9,7 +9,7 @@
 #include <string>
 #include <glm/gtc/matrix_transform.hpp>
 
-class Renderer;
+class BaseRenderer;
 class BaseLight;
 
 class IComponent;
@@ -17,7 +17,7 @@ class IComponent;
 class GameObject {
 private:	
 	unsigned int objectId;
-	Renderer* renderer;
+	BaseRenderer* renderer;
 	std::vector<IComponent*> components;
 
 public:
@@ -28,10 +28,12 @@ public:
 	~GameObject();
 	GameObject(std::string name_);
 
+	virtual void Initialize();
+
 	void SetId(unsigned int id_);
 	unsigned int GetId();
-	void SetRenderer(Renderer* renderer_);
-	Renderer* GetRenderer();
+	void SetRenderer(BaseRenderer* renderer_);
+	BaseRenderer* GetRenderer();
 
 	template <class T>
 	T* AddComponent();

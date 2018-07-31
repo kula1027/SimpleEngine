@@ -1,7 +1,7 @@
 #include "ImaginarySphere.h"
 
 #include "../Mesh/Mesh.h"
-#include "../Render/Renderer.h"
+#include "../Render/DefaultRenderer.h"
 #include "../Bases/Camera.h"
 #include "../FilePooler.h"
 
@@ -19,7 +19,7 @@ ImaginarySphere::~ImaginarySphere() {
 
 void ImaginarySphere::Render(Camera* cam, std::vector<BaseLight*> lights) {
 	if (renderer == NULL) {
-		renderer = new Renderer();
+		renderer = new DefaultRenderer();
 		renderer->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
 		renderer->SetShader();
 		renderer->castShadow = false;

@@ -1,17 +1,17 @@
 #pragma once
-#include "Renderer.h"
+#include "DefaultRenderer.h"
 
 #define VS_LayerCull "3layer.vert"
 #define FS_LayerCulled "3layer.frag"
 
 
-class CullLayerRenderer : public Renderer
+class CullLayerRenderer : public DefaultRenderer
 {
 private:
 	int id_refViewPos;
 
 protected:
-	void SetAdditionalShaderData(Shader* shader_);
+	void SetAdditionalShaderData(BaseShader* shader_);
 	void SetUniformAdditional();	
 
 public:

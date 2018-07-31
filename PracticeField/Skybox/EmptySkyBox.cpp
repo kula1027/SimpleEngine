@@ -14,3 +14,6 @@ EmptySkyBox::~EmptySkyBox()
 void EmptySkyBox::Render(Camera * cam)
 {
 }
+
+void EmptySkyBox::Initialize() {
+}

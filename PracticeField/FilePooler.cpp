@@ -1,18 +1,18 @@
 #include "FilePooler.h"
 
-#include "Render/Shader.h"
+#include "Render/Shaders/BaseShader.h"
 #include "Mesh/MeshModel.h"
 
 std::vector<MeshModel*> FilePooler::loadedMeshModels;
-std::vector<Shader*> FilePooler::loadedShaders;
+std::vector<BaseShader*> FilePooler::loadedShaders;
 std::vector<Texture*> FilePooler::loadedTextures;
 
-Shader* FilePooler::LoadShader(string filePathVertex, string filePathFragment){
+BaseShader* FilePooler::LoadShader(string filePathVertex, string filePathFragment){
 	return LoadShader(filePathVertex, "", filePathFragment);
 }
 
-Shader * FilePooler::LoadShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment){
-	Shader* retShader = NULL;
+BaseShader * FilePooler::LoadShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment){
+	BaseShader* retShader = NULL;
 
 	for (int loop = 0; loop < loadedShaders.size(); loop++) {
 		int hit = 0;
@@ -33,7 +33,7 @@ Shader * FilePooler::LoadShader(std::string filePathVertex, std::string filePath
 	}
 
 	if (retShader == NULL) {
-		retShader = new Shader(filePathVertex, filePathGeometry, filePathFragment);
+		retShader = new BaseShader(filePathVertex, filePathGeometry, filePathFragment);
 		loadedShaders.push_back(retShader);
 	}
 

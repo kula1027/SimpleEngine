@@ -3,14 +3,14 @@
 #include <gl\glew.h>
 #include "BasesBundle.h"
 #include "../GameWindow.h"
-#include "../Render/Shader.h"
+#include "../Render/Shaders/BaseShader.h"
 #include "../FilePooler.h"
-#include "../RenderPipeLine/RPL_Forward.h"
+
+#include "../RenderPath/RenderPathBundle.h"
 
 
 Camera::Camera(){
-	name = "Camera";
-	std::cout << "Initialize Camera..." << std::endl;
+	name = "Camera";	
 
 	transform->position = glm::vec3(0, 14, 30);
 	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -20,19 +20,57 @@ Camera::Camera(){
 	near = 0.1f;
 	far = 1000.0f;
 
-	projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
-
 	normalizedViewPort.x = 1;
 	normalizedViewPort.y = 1;
 	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	renderPipeLine = new RPL_Forward();
 	skybox = new EmptySkyBox();
+	renderPath = RenderPath_Forward;
 }
 
 Camera::~Camera(){
 }
 
+
+void Camera::Initialize() {
+	std::cout << "Initialize Camera..." << std::endl;
+
+	switch (projMode) {
+	case PROJECTION_PERSPECTIVE:
+		projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
+		break;
+
+	case PROJECTION_ORTHO:
+		//projectionMatrix = glm::ortho(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
+		//TODO
+		break;
+
+	default:
+		projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
+		break;
+	}
+	
+	switch (renderPath) {
+	case RenderPath_Forward:
+		renderPipeLine = new RP_Forward();
+		break;
+
+	case RenderPath_Deferred:
+		//renderPipeLine = new RP_Deferred();
+		break;
+
+	case RenderPath_SimpleSingle:
+		renderPipeLine = new RP_SimpleSingle();
+		break;
+
+	default:
+		renderPipeLine = new RP_Forward();
+		break;
+	}
+
+	renderPipeLine->Initialize();
+	skybox->Initialize();
+}
 
 void Camera::Render(RenderData* renderData_) {
 	renderPipeLine->Render(this, renderData_);
