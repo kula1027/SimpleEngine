@@ -11,16 +11,17 @@ TestScene::~TestScene() {
 void TestScene::Load() {
 	Scene::Load();
 
-	BaseLight* directionalLight = new DirectionalLight();
-	directionalLight->isShadowCaster = false;
-	AddLight(directionalLight);
-
 	SimpleEngine::SetVsyncMode(false);
 
 	mainCamera->transform->position = glm::vec3(4, 4, 20);
-	mainCamera->clearColor = glm::vec4(1.0);
-	//mainCamera->renderPath = RenderPath_SimpleSingle;
+	mainCamera->clearColor = glm::vec4(0.8f);
+	//mainCamera->renderMode = RenderPath_SimpleSingle;
 
+
+	BaseLight* directionalLight = new DirectionalLight();
+	directionalLight->isShadowCaster = false;
+	AddLight(directionalLight);
+	
 	//GameObject* goTimer = new GameObject("timer");
 	//goTimer->AddComponent<TimeChecker>();
 

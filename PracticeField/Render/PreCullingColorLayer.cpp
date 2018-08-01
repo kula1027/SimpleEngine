@@ -29,21 +29,17 @@ void PreCullingColorLayer::ColorTriangles(glm::vec3 color_, Mesh * mesh_, int fr
 	glBindVertexArray(mesh_->VAO);
 }
 
-void PreCullingColorLayer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
+void PreCullingColorLayer::Render(RenderData* renderData_) {
 	SetDrawingMode();
 
-	shader->Use();
-
-	SetUniformMVP(cam_);
-
-	SetUniformDlight(cam_, lights_[0]);
+	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
 
 	//glm::vec3 dirCam = cam_->transform->position - (boundingSphere->center + transform->position);
 	glm::vec3 dirCam = renderMaterial->targetCamTr->position - (renderMaterial->boundingSphere->center + transform->position);
 
 	ImaginaryPlane* cuttingPlane = CalcCuttingPlane(dirCam);
 	//cout << cuttingPlane->point.x << " "
-	//	<< cuttingPlane->point.y << " "
+	//	<< cuttingPlane->pointRenderData* renderData_.y << " "
 	//	<< cuttingPlane->point.z << " / "
 	//	<< cuttingPlane->normalVector.x << " "
 	//	<< cuttingPlane->normalVector.y << " "
@@ -61,7 +57,7 @@ void PreCullingColorLayer::Render(Camera * cam_, std::vector<BaseLight*> lights_
 
 		vCount += processingMesh->vertices.size();
 
-		ApplyTexture(processingMesh);
+		shader->ApplyTexture(processingMesh);
 
 		float diskCenterY;
 		if (cuttingPlane->normalVector.y > 0) {

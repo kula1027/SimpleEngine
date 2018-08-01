@@ -1,6 +1,6 @@
 #pragma once
 
-class RenderData;
+class SceneRenderData;
 class Camera;
 class BaseShader;
 
@@ -29,5 +29,5 @@ public:
 
 	virtual void Initialize() {}
 
-	virtual void Render(Camera* mainCamera, RenderData* renderData) = 0;
+	virtual void Render(Camera* mainCamera, SceneRenderData* renderData) = 0;
 };

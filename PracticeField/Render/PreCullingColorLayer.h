@@ -23,5 +23,5 @@ public:
 
 	void ColorTriangles(glm::vec3 color_, Mesh * mesh_, int from, int count);
 
-	void Render(Camera* cam_, std::vector<BaseLight*> lights_);
+	void Render(RenderData* renderData_);
 };

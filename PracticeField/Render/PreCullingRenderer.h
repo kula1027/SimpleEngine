@@ -43,6 +43,6 @@ public:
 	PcRendererMaterial* renderMaterial;
 
 	virtual void SetMeshModel(MeshModel* meshModel_);
-	virtual void Render(Camera* cam_, std::vector<BaseLight*> lights_);
+	virtual void Render(RenderData* renderData_);
 };
 

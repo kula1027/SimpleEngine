@@ -20,6 +20,9 @@ GameObject::GameObject(std::string name_){
 }
 
 void GameObject::Initialize() {
+	if(renderer != NULL)
+		renderer->Initialize();
+
 	for (int loop = 0; loop < components.size(); loop++) {
 		components[loop]->Initialize();
 	}
@@ -43,7 +46,6 @@ void GameObject::SetRenderer(BaseRenderer * renderer_){
 BaseRenderer * GameObject::GetRenderer(){
 	return renderer;
 }
-
 
 GameObject::~GameObject(){	
 	free(renderer);

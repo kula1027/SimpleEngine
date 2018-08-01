@@ -20,11 +20,10 @@ Scene::Scene(){
 	//glDisable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);	
 
-	renderData = new RenderData();
+	renderData = new SceneRenderData();
 }
 
 Scene::~Scene(){
-
 }
 
 Scene* Scene::GetCurrent(){
@@ -37,13 +36,11 @@ void Scene::Load() {
 
 	mainCamera = new Camera();
 	mainCamera->AddComponent<MoveCamera>();	
-	
-	//BaseLight* pointLight = new PointLight();
-	
-	//AddLight(pointLight);
 }
 
 void Scene::Initialize() {
+	FilePooler::InitializeShaders();
+
 	for (int loop = 0; loop < gameObjects.size(); loop++) {
 		gameObjects[loop]->Initialize();
 	}
@@ -95,6 +92,6 @@ void Scene::UpdateObjects(){
 	}
 }
 
-void Scene::RenderObjects(){
-	mainCamera->Render(renderData);
+void Scene::RenderScene(){
+	mainCamera->Render(renderData);	
 }

@@ -6,14 +6,14 @@ class SkyBox;
 class BaseRenderer;
 class BaseLight;
 
-class RenderData {
+// Scene -> RenderPath Param Obj
+class SceneRenderData {
 protected:
 	
 
 public:	
-
-	RenderData();
-	~RenderData();	
+	SceneRenderData();
+	~SceneRenderData();	
 
 	std::vector<BaseRenderer*> renderers;
 	std::vector<BaseLight*> lights;

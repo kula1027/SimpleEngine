@@ -18,60 +18,10 @@ InstancedRenderer::~InstancedRenderer()
 
 
 void InstancedRenderer::SetShader(BaseShader * shader_){
-	shader = shader_;
-
-	id_matrice.vp = shader->GetUniformLocation("VP");
-	id_matrice.view = shader->GetUniformLocation("V");
-
-	id_diffuse.count = shader->GetUniformLocation("texCountDiff");
-	id_diffuse.id = shader->GetUniformLocation("texture_diffuse");
-	id_specular.count = shader->GetUniformLocation("texCountSpec");
-	id_specular.id = shader->GetUniformLocation("texture_specular");
-
-	id_dLight.direction = shader->GetUniformLocation("directionalLight0.direction");
-	id_dLight.color = shader->GetUniformLocation("directionalLight0.color");
-	id_dLight.power = shader->GetUniformLocation("directionalLight0.power");
-	id_dLight.lightSpaceMatrix = shader->GetUniformLocation("directionalLight0.lightSpaceMatrix");
-	id_dLight.shadowMap = shader->GetUniformLocation("directionalLight0.shadowMap");
-
-	id_pLight.position = shader->GetUniformLocation("pointLight0.position_worldspace");
-	id_pLight.color = shader->GetUniformLocation("pointLight0.color");
-	id_pLight.power = shader->GetUniformLocation("pointLight0.power");
-
-	shader->Use();
-	glUniform1i(id_dLight.shadowMap, TEXTURE_IDX_SHADOWMAP);
-	glUniform1i(id_diffuse.id, 0);
-	glUniform1i(id_specular.id, 1);
+	shader = shader_;	
 }
 
-void InstancedRenderer::SetDefaultShader(){
-	shader = FilePooler::LoadShader(DefaultVS_Ist, defaultFS);
-
-	id_matrice.vp = shader->GetUniformLocation("VP");
-	id_matrice.view = shader->GetUniformLocation("V");
-
-	id_diffuse.count = shader->GetUniformLocation("texCountDiff");
-	id_diffuse.id = shader->GetUniformLocation("texture_diffuse");
-	id_specular.count = shader->GetUniformLocation("texCountSpec");
-	id_specular.id = shader->GetUniformLocation("texture_specular");
-
-	id_dLight.direction = shader->GetUniformLocation("directionalLight0.direction");
-	id_dLight.color = shader->GetUniformLocation("directionalLight0.color");
-	id_dLight.power = shader->GetUniformLocation("directionalLight0.power");
-	id_dLight.lightSpaceMatrix = shader->GetUniformLocation("directionalLight0.lightSpaceMatrix");
-	id_dLight.shadowMap = shader->GetUniformLocation("directionalLight0.shadowMap");
-
-	id_pLight.position = shader->GetUniformLocation("pointLight0.position_worldspace");
-	id_pLight.color = shader->GetUniformLocation("pointLight0.color");
-	id_pLight.power = shader->GetUniformLocation("pointLight0.power");
-
-	shader->Use();
-	glUniform1i(id_dLight.shadowMap, TEXTURE_IDX_SHADOWMAP);
-	glUniform1i(id_diffuse.id, 0);
-	glUniform1i(id_specular.id, 1);
-}
-
-void InstancedRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
+void InstancedRenderer::Render(RenderData* renderData_){
 	if (cullingEnabled) {
 		glEnable(GL_CULL_FACE);
 	}
@@ -79,31 +29,12 @@ void InstancedRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		glDisable(GL_CULL_FACE);
 	}	
 
-	shader->Use();
-
-	glUniformMatrix4fv(id_matrice.vp, 1, GL_FALSE, glm::value_ptr(cam_->VPmatrix()));
-	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(cam_->Vmatrix()));	
-
-	glm::vec4 CameraSpace_dLightPos = cam_->Vmatrix() * glm::vec4(lights_[0]->position, 0);
-	glUniform3f(id_dLight.direction, CameraSpace_dLightPos.x, CameraSpace_dLightPos.y, CameraSpace_dLightPos.z);
-	glUniform3f(id_dLight.color, lights_[0]->color.x, lights_[0]->color.y, lights_[0]->color.z);
-	glUniform1f(id_dLight.power, lights_[0]->intensity);
-	glUniform1f(id_dLight.shadowMap, lights_[0]->shadowData.depthMapTextureId);
-	glUniformMatrix4fv(id_dLight.lightSpaceMatrix, 1, GL_FALSE, glm::value_ptr(lights_[0]->lightSpaceMatrix));
-
-	glActiveTexture(GL_TEXTURE0 + TEXTURE_IDX_SHADOWMAP);
-	glBindTexture(GL_TEXTURE_2D, lights_[0]->shadowData.depthMapTextureId);
-
-	/*glUniform3f(id_pLight.position, lights_[1]->position.x, lights_[1]->position.y, lights_[1]->position.z);
-	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
-	glUniform1f(id_pLight.power, lights_[1]->intensity);*/
-
-	//glClear(GL_STENCIL_BUFFER_BIT);
+	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
 
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 
-		ApplyTexture(processingMesh);
+		shader->ApplyTexture(processingMesh);
 
 		glBindVertexArray(processingMesh->VAO);
 

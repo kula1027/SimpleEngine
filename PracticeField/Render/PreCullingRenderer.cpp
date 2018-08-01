@@ -60,14 +60,12 @@ void PreCullingRenderer::SetMeshModel(MeshModel* meshModel_) {
 	delete boundingBox;
 }
 
-void PreCullingRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
+void PreCullingRenderer::Render(RenderData* renderData_) {
 	SetDrawingMode();
 
 	shader->Use();
 
-	SetUniformMVP(cam_);
-
-	SetUniformDlight(cam_, lights_[0]);
+	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
 
 	//glm::vec3 dirCam = cam_->transform->position - (boundingSphere->center + transform->position);
 	glm::vec3 dirCam = renderMaterial->targetCamTr->position - (renderMaterial->boundingSphere->center + transform->position);
@@ -92,7 +90,7 @@ void PreCullingRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_) 
 	
 	Mesh* processingMesh = meshModel->meshes->at(0);
 	glBindVertexArray(processingMesh->VAO);
-	ApplyTexture(processingMesh);
+	shader->ApplyTexture(processingMesh);
 	for (GLuint loop = 0; loop < renderMaterial->vertDivision; loop++) {								
 		float diskCenterY;
 		if (cuttingPlane->normalVector.y > 0) {

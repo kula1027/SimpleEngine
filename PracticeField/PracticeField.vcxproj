@@ -125,13 +125,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Render\RenderData.cpp" />
+    <ClCompile Include="Render\Shaders\InstancedShader.cpp" />
     <ClCompile Include="Render\Shaders\DefaultShader.cpp" />
     <ClCompile Include="Render\BaseRenderer.cpp" />
     <ClCompile Include="Mesh\ArrangedMesh.cpp" />
     <ClCompile Include="PerformanceCheck.cpp" />
     <ClCompile Include="RenderPath\RP_Deferred.cpp" />
     <ClCompile Include="RenderPath\RP_SimpleSingle.cpp" />
-    <ClCompile Include="Scenes\RenderData.cpp" />
+    <ClCompile Include="Scenes\SceneRenderData.cpp" />
     <ClCompile Include="RenderPath\RenderPath.cpp" />
     <ClCompile Include="Render\PreCullingColorLayer.cpp" />
     <ClCompile Include="Render\OutlineRenderer.cpp" />
@@ -176,6 +178,8 @@
     <ClCompile Include="Bases\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Render\RenderData.h" />
+    <ClInclude Include="Render\Shaders\InstancedShader.h" />
     <ClInclude Include="Render\Shaders\DefaultShader.h" />
     <ClInclude Include="Render\BaseRenderer.h" />
     <ClInclude Include="Mesh\ArrangedMesh.h" />
@@ -184,7 +188,8 @@
     <ClInclude Include="RenderPath\RenderPathBundle.h" />
     <ClInclude Include="RenderPath\RP_Deferred.h" />
     <ClInclude Include="RenderPath\RP_SimpleSingle.h" />
-    <ClInclude Include="Scenes\RenderData.h" />
+    <ClInclude Include="Render\Shaders\ShaderBundle.h" />
+    <ClInclude Include="Scenes\SceneRenderData.h" />
     <ClInclude Include="RenderPath\RenderPath.h" />
     <ClInclude Include="Render\PreCullingColorLayer.h" />
     <ClInclude Include="Render\OutlineRenderer.h" />

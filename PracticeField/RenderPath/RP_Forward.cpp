@@ -2,6 +2,7 @@
 #include "../Scenes/SceneIncludes.h"
 #include "../GameWindow.h"
 
+#include "../Render/RenderData.h"
 
 RP_Forward::RP_Forward() {
 	
@@ -11,7 +12,7 @@ RP_Forward::~RP_Forward() {
 }
 
 void RP_Forward::InitOffScreenDraw() {
-	offScreenData.screenShader = FilePooler::LoadShader("PostProcess/defaultScreen.vert", "PostProcess/defaultScreen.frag");
+	offScreenData.screenShader = new BaseShader("PostProcess/defaultScreen.vert", "PostProcess/defaultScreen.frag");
 	offScreenData.screenShader->Use();
 	glUniform1i(offScreenData.screenShader->GetUniformLocation("screenTexture"), 0);
 
@@ -38,39 +39,43 @@ void RP_Forward::InitOffScreenDraw() {
 
 	glGenRenderbuffers(1, &offScreenData.rbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, offScreenData.rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 720);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, GameWindow::GetWidth(), GameWindow::GetHeight());
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, offScreenData.rbo);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void RP_Forward::Render(Camera* mainCamera_, RenderData * renderData_){
-	int lightCount = renderData_->lights.size();
-	int rdrCount = renderData_->renderers.size();
+void RP_Forward::Render(Camera* mainCamera_, SceneRenderData * sceneRenderData_){
+	int lightCount = sceneRenderData_->lights.size();
+	int rdrCount = sceneRenderData_->renderers.size();
 
 	//Matrice Setup
 	mainCamera_->ComputeMatrix();
 	for (int loop = 0; loop < rdrCount; loop++) {
-		renderData_->renderers[loop]->ComputeMatrix();
+		sceneRenderData_->renderers[loop]->ComputeMatrix(mainCamera_);
 	}
 
-	//Render ShadowMap
-	for (int loop = 0; loop < lightCount; loop++) {
-		if (renderData_->lights[loop]->isShadowCaster == false)continue;
+	////Render ShadowMap
+	/*for (int loop = 0; loop < lightCount; loop++) {
+		if (sceneRenderData_->lights[loop]->isShadowCaster == false)continue;
 
-		renderData_->lights[loop]->EnableShadowMapBuffer();
+		sceneRenderData_->lights[loop]->EnableShadowMapBuffer();
 		for (int loop2 = 0; loop2 < rdrCount; loop2++) {
-			renderData_->renderers[loop2]->RenderShadowMap(renderData_->lights[loop]);
+			sceneRenderData_->renderers[loop2]->RenderShadowMap(sceneRenderData_->lights[loop]);
 		}
-	}
+	}*/
 
 	//Render Off Screen	
 	EnableOffSreenBuffer(mainCamera_);
+	RenderData rd;
+	rd.camera = mainCamera_;
+	rd.lights = &(sceneRenderData_->lights);
 	for (int loop = 0; loop < rdrCount; loop++) {
-		renderData_->renderers[loop]->Render(mainCamera_, renderData_->lights);
+		sceneRenderData_->renderers[loop]->Render(&rd);
 	}
 	mainCamera_->RenderSkyBox();	
 
@@ -79,7 +84,6 @@ void RP_Forward::Render(Camera* mainCamera_, RenderData * renderData_){
 	//Render on screen
 	glCullFace(GL_BACK);
 	PostDraw();
-
 }
 
 void RP_Forward::Initialize() {
@@ -104,6 +108,7 @@ void RP_Forward::EnableOffSreenBuffer(Camera* cam_) {
 		cam_->clearColor.z,
 		cam_->clearColor.w
 	);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
@@ -112,11 +117,13 @@ void RP_Forward::PostDraw() {
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDisable(GL_DEPTH_TEST);
-	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
+	glClearColor(0.0f, 0.7f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	offScreenData.screenShader->Use();
 	glBindVertexArray(offScreenData.quadVAO);
+
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, offScreenData.texColorBuffer);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

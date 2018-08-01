@@ -6,6 +6,6 @@ public:
 	RP_SimpleSingle();
 	~RP_SimpleSingle();
 
-	virtual void Render(Camera* mainCamera, RenderData* renderData);
+	virtual void Render(Camera* mainCamera, SceneRenderData* renderData);
 };
 

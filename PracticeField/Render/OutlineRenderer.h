@@ -27,7 +27,7 @@ public:
 	OutlineRenderer();
 	~OutlineRenderer();
 	
-	void Render(Camera* cam_, std::vector<BaseLight*> lights_);
+	void Render(RenderData* renderData_);
 
 	Outline outline;
 };

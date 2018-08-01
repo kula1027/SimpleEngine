@@ -8,7 +8,7 @@
 class Transform;
 class BaseShader;
 class RenderPath;
-class RenderData;
+class SceneRenderData;
 
 #define PROJECTION_ORTHO 0
 #define PROJECTION_PERSPECTIVE 1
@@ -19,7 +19,7 @@ private:
 	float near;
 	float far;
 
-	RenderPath* renderPipeLine;
+	RenderPath* renderPath;
 
 	glm::vec3 upVector;
 	
@@ -43,8 +43,8 @@ public:
 
 	virtual void Initialize();
 
-	void Render(RenderData* renderData_);
-	int renderPath;
+	void Render(SceneRenderData* renderData_);
+	int renderMode;
 
 	void ComputeMatrix();
 	void RenderSkyBox();

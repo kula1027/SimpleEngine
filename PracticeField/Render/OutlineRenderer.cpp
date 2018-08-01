@@ -28,7 +28,7 @@ void OutlineRenderer::SetAdditionalShaderData(BaseShader * shader_)
 	glUniform3f(outline.id_color, outline.color.x, outline.color.y, outline.color.z);
 }
 
-void OutlineRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
+void OutlineRenderer::Render(RenderData* renderData_){
 	SetDrawingMode();
 
 	if (outline.draw) {
@@ -37,11 +37,7 @@ void OutlineRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 		glStencilMask(0xFF);//and mask
 	}
 
-	shader->Use();
-
-	SetUniformMVP(cam_);
-
-	SetUniformDlight(cam_, lights_[0]);
+	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
 
 	/*glUniform3f(id_pLight.position, lights_[1]->position.x, lights_[1]->position.y, lights_[1]->position.z);
 	glUniform3f(id_pLight.color, lights_[1]->color.x, lights_[1]->color.y, lights_[1]->color.z);
@@ -51,7 +47,7 @@ void OutlineRenderer::Render(Camera * cam_, std::vector<BaseLight*> lights_){
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 
-		ApplyTexture(processingMesh);
+		shader->ApplyTexture(processingMesh);
 
 		glBindVertexArray(processingMesh->VAO);
 

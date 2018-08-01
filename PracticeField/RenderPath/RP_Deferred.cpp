@@ -9,5 +9,5 @@ RP_Deferred::RP_Deferred() {
 RP_Deferred::~RP_Deferred() {
 }
 
-void RP_Deferred::Render(Camera * mainCamera, RenderData * renderData) {
+void RP_Deferred::Render(Camera * mainCamera, SceneRenderData * renderData) {
 }

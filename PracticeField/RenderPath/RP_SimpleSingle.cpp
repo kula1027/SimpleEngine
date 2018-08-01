@@ -2,6 +2,8 @@
 #include "../Scenes/SceneIncludes.h"
 #include "../GameWindow.h"
 
+#include "../Render/RenderData.h"
+
 //Simplest RenderPath
 //No Shadows, Single Pass
 
@@ -12,7 +14,7 @@ RP_SimpleSingle::RP_SimpleSingle() {
 RP_SimpleSingle::~RP_SimpleSingle() {
 }
 
-void RP_SimpleSingle::Render(Camera* mainCamera_, RenderData * renderData_) {
+void RP_SimpleSingle::Render(Camera* mainCamera_, SceneRenderData * sceneRenderData_) {
 	glClearColor(
 		mainCamera_->clearColor.x,
 		mainCamera_->clearColor.y,
@@ -22,18 +24,22 @@ void RP_SimpleSingle::Render(Camera* mainCamera_, RenderData * renderData_) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	int lightCount = renderData_->lights.size();
-	int rdrCount = renderData_->renderers.size();
+	int lightCount = sceneRenderData_->lights.size();
+	int rdrCount = sceneRenderData_->renderers.size();
 
 	//Matrice Setup
 	mainCamera_->ComputeMatrix();
 	for (int loop = 0; loop < rdrCount; loop++) {
-		renderData_->renderers[loop]->ComputeMatrix();
+		sceneRenderData_->renderers[loop]->ComputeMatrix(mainCamera_);
 	}
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	RenderData rd;
+	rd.camera = mainCamera_;
+	rd.lights = &(sceneRenderData_->lights);
+
 	for (int loop = 0; loop < rdrCount; loop++) {
-		renderData_->renderers[loop]->Render(mainCamera_, renderData_->lights);
+		sceneRenderData_->renderers[loop]->Render(&rd);
 	}
 	mainCamera_->RenderSkyBox();
 

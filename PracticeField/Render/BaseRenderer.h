@@ -1,7 +1,8 @@
 #pragma once
 
 #include <gl/glew.h>
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
+
 #include <vector>
 #include <string>
 
@@ -12,37 +13,7 @@ class MeshModel;
 class BaseLight;
 class Mesh;
 class MeshModel;
-
-struct ID_matrice {
-	GLuint mvp = -1;
-	GLuint view = -1;
-	GLuint model = -1;
-	GLuint vp = -1;
-};
-
-struct ID_dLight {
-	GLuint direction;
-	GLuint color;
-	GLuint power;
-	GLuint lightSpaceMatrix;
-	GLuint shadowMap;
-};
-
-struct ID_pLight {
-	GLuint position;
-	GLuint color;
-	GLuint power;
-};
-
-struct ID_diffuseTexture {
-	GLuint count;
-	GLuint id;
-};
-
-struct ID_specularTexture {
-	GLuint count;
-	GLuint id;
-};
+class RenderData;
 
 class BaseRenderer {
 protected:
@@ -62,11 +33,13 @@ public:
 	BaseRenderer(Transform* transform_);
 	~BaseRenderer();
 
+	void Initialize();
+
 	bool castShadow;
 	bool cullingEnabled;
 	bool lineDrawEnabled;
 
-	virtual void Render(Camera* cam, std::vector<BaseLight*> lights) = 0;
+	virtual void Render(RenderData* renderData_) = 0;
 	virtual void SetShader(BaseShader* shader_) {}
 	virtual void SetShader() {}
 	void SetMeshModel(MeshModel* meshModel_);
@@ -74,7 +47,7 @@ public:
 	MeshModel* GetMeshModel();
 
 	void SetTransform(Transform* transform_);
-	void ComputeMatrix();
+	void ComputeMatrix(Camera* camera_);
 	virtual void RenderShadowMap(BaseLight* light_) {}
 };
 

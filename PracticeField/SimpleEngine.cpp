@@ -52,7 +52,7 @@ void SimpleEngine::Begin() {
 		
 		currentScene->UpdateObjects();
 			
-		currentScene->RenderObjects();
+		currentScene->RenderScene();
 		
 		glfwSwapBuffers(GameWindow::GetWindow());
 

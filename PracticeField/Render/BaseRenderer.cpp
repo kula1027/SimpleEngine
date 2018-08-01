@@ -29,6 +29,10 @@ BaseRenderer::BaseRenderer(Transform* transform_) {
 BaseRenderer::~BaseRenderer() {
 }
 
+void BaseRenderer::Initialize() {	
+	shader->Initialize();
+}
+
 void BaseRenderer::SetMeshModel(MeshModel * meshModel_) {
 	meshModel = meshModel_;
 
@@ -50,6 +54,7 @@ void BaseRenderer::SetTransform(Transform* transform_) {
 	transform = transform_;
 }
 
-void BaseRenderer::ComputeMatrix() {
+void BaseRenderer::ComputeMatrix(Camera* camera_) {
 	modelMatrix = transform->GetMatrix4();
+	mvpMatrix = camera_->VPmatrix() * modelMatrix;
 }

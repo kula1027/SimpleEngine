@@ -25,7 +25,7 @@ Camera::Camera(){
 	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	skybox = new EmptySkyBox();
-	renderPath = RenderPath_Forward;
+	renderMode = RenderPath_Forward;
 }
 
 Camera::~Camera(){
@@ -50,9 +50,9 @@ void Camera::Initialize() {
 		break;
 	}
 	
-	switch (renderPath) {
+	switch (renderMode) {
 	case RenderPath_Forward:
-		renderPipeLine = new RP_Forward();
+		renderPath = new RP_Forward();
 		break;
 
 	case RenderPath_Deferred:
@@ -60,20 +60,20 @@ void Camera::Initialize() {
 		break;
 
 	case RenderPath_SimpleSingle:
-		renderPipeLine = new RP_SimpleSingle();
+		renderPath = new RP_SimpleSingle();
 		break;
 
 	default:
-		renderPipeLine = new RP_Forward();
+		renderPath = new RP_Forward();
 		break;
 	}
 
-	renderPipeLine->Initialize();
+	renderPath->Initialize();
 	skybox->Initialize();
 }
 
-void Camera::Render(RenderData* renderData_) {
-	renderPipeLine->Render(this, renderData_);
+void Camera::Render(SceneRenderData* sceneRenderData_) {
+	renderPath->Render(this, sceneRenderData_);
 }
 
 void Camera::ComputeMatrix(){

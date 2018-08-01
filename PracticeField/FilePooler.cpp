@@ -33,8 +33,16 @@ BaseShader * FilePooler::LoadShader(std::string filePathVertex, std::string file
 	}
 
 	if (retShader == NULL) {
-		retShader = new BaseShader(filePathVertex, filePathGeometry, filePathFragment);
-		loadedShaders.push_back(retShader);
+		cout << "Load Shader: " << endl
+			<< "\t V:" << filePathVertex << endl
+			<< "\t G:" << filePathGeometry << endl
+			<< "\t F:" << filePathFragment << endl;
+		retShader = BaseShader::GetShader(filePathVertex, filePathGeometry, filePathFragment);
+		if (retShader == NULL) {
+			cout << "No Matching Shader Found" << endl;
+		} else {
+			loadedShaders.push_back(retShader);
+		}		
 	}
 
 	return retShader;
@@ -77,5 +85,11 @@ MeshModel* FilePooler::LoadMeshModel(string filePath) {
 		loadedMeshModels.push_back(meshModel);
 
 		return meshModel;
+	}
+}
+
+void FilePooler::InitializeShaders() {
+	for (int loop = 0; loop < loadedShaders.size(); loop++) {
+		loadedShaders[loop]->Initialize();
 	}
 }

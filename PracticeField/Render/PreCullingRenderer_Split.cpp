@@ -65,14 +65,10 @@ void PreCullingRenderer_Split::SetMeshModel(MeshModel* meshModel_) {
 
 
 
-void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lights_) {
+void PreCullingRenderer_Split::Render(RenderData* renderData_) {
 	SetDrawingMode();
 
-	shader->Use();
-
-	SetUniformMVP(cam_);
-
-	SetUniformDlight(cam_, lights_[0]);
+	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
 
 	//glm::vec3 dirCam = cam_->transform->position - (boundingSphere->center + transform->position);
 	glm::vec3 dirCam = renderMaterial->targetCamTr->position - (renderMaterial->boundingSphere->center + transform->position);
@@ -98,7 +94,7 @@ void PreCullingRenderer_Split::Render(Camera * cam_, std::vector<BaseLight*> lig
 	
 		vCount += processingMesh->vertices.size();
 
-		ApplyTexture(processingMesh);
+		shader->ApplyTexture(processingMesh);
 		
 		float diskCenterY;
 		if (cuttingPlane->normalVector.y > 0) {

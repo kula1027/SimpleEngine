@@ -5,7 +5,11 @@
 #include <sstream>
 #include <iostream>
 
-std::string BaseShader::ReadCodeFromFile(std::string path_){
+#include "ShaderBundle.h"
+
+
+#pragma region Init
+std::string BaseShader::ReadCodeFromFile(std::string path_) {
 	std::string strCode;
 	std::ifstream fileStream;
 	fileStream.exceptions(std::ifstream::badbit);
@@ -16,14 +20,14 @@ std::string BaseShader::ReadCodeFromFile(std::string path_){
 		strStream << fileStream.rdbuf();
 		fileStream.close();
 		strCode = strStream.str();
-	}catch (std::ifstream::failure e) {
+	} catch (std::ifstream::failure e) {
 		std::cout << "Error _ ReadCodeFromFile _ " << path_ << std::endl;
 	}
 
 	return strCode;
 }
 
-void BaseShader::CompileCode(int shaderId_, const GLchar* code_){
+void BaseShader::CompileCode(int shaderId_, const GLchar* code_) {
 	GLint success;
 	GLchar infoLog[LogLength];
 
@@ -37,7 +41,7 @@ void BaseShader::CompileCode(int shaderId_, const GLchar* code_){
 	}
 }
 
-GLuint BaseShader::CreateShader(GLchar* path_, int shaderType_){
+GLuint BaseShader::CreateShader(GLchar* path_, int shaderType_) {
 	std::string code = ReadCodeFromFile(path_);
 	const GLchar* chCode = code.c_str();
 
@@ -48,7 +52,7 @@ GLuint BaseShader::CreateShader(GLchar* path_, int shaderType_){
 	return shader;
 }
 
-void BaseShader::CreateProgram(GLuint shader0, GLuint shader1, GLuint shader2){
+void BaseShader::CreateProgram(GLuint shader0, GLuint shader1, GLuint shader2) {
 	GLint success;
 	GLchar infoLog[LogLength];
 
@@ -60,14 +64,13 @@ void BaseShader::CreateProgram(GLuint shader0, GLuint shader1, GLuint shader2){
 	glLinkProgram(this->shaderID);
 	// Print linking errors if any
 	glGetProgramiv(this->shaderID, GL_LINK_STATUS, &success);
-	if (!success)
-	{
+	if (!success) {
 		glGetProgramInfoLog(this->shaderID, LogLength, NULL, infoLog);
 		std::cout << "Error _ CreateProgram\n" << infoLog << std::endl;
 	}
 }
 
-void BaseShader::CreateProgram(GLuint shader0, GLuint shader1){
+void BaseShader::CreateProgram(GLuint shader0, GLuint shader1) {
 	GLint success;
 	GLchar infoLog[LogLength];
 
@@ -78,80 +81,96 @@ void BaseShader::CreateProgram(GLuint shader0, GLuint shader1){
 	glLinkProgram(this->shaderID);
 	// Print linking errors if any
 	glGetProgramiv(this->shaderID, GL_LINK_STATUS, &success);
-	if (!success)
-	{
+	if (!success) {
 		glGetProgramInfoLog(this->shaderID, LogLength, NULL, infoLog);
 		std::cout << "Error _ CreateProgram\n" << infoLog << std::endl;
 	}
 }
 
-void BaseShader::LoadProgram(string vertexPath_, string geometryPath_, string fragmentPath_){
-	filePathVertex = vertexPath_;
-	filePathGeometry = geometryPath_;
-	filePathFragment = fragmentPath_;
-
-	cout << "Load Shader: " << endl;
-
+void BaseShader::LoadProgram(string vertexPath_, string geometryPath_, string fragmentPath_) {
 	GLuint vShader = CreateShader(
 		(GLchar*)(dirPathShader + vertexPath_).c_str(),
 		GL_VERTEX_SHADER
-	);
-
-	cout << "\t" << vertexPath_ << endl;
+	);	
 
 	GLuint fShader = CreateShader(
 		(GLchar*)(dirPathShader + fragmentPath_).c_str(),
 		GL_FRAGMENT_SHADER
 	);
 
-	cout << "\t" << fragmentPath_ << endl;
-
+	
 	if (geometryPath_.length() > 0) {
 		GLuint gShader = CreateShader(
 			(GLchar*)(dirPathShader + geometryPath_).c_str(),
 			GL_GEOMETRY_SHADER
 		);
-
-		cout << "\t" << geometryPath_ << endl;
-
+		
 		CreateProgram(vShader, gShader, fShader);
 
 		glDeleteShader(gShader);
 	} else {
 		CreateProgram(vShader, fShader);
-	}	
+	}
 
-	glDeleteShader(vShader);	
+	glDeleteShader(vShader);
 	glDeleteShader(fShader);
 }
 
 BaseShader::BaseShader() {
 }
 
-BaseShader::BaseShader(string vertexPath_, string fragmentPath_){
-	LoadProgram(vertexPath_, "", fragmentPath_);
+BaseShader::BaseShader(std::string filePathVertex_, std::string filePathFragment_) {
+	filePathVertex = filePathVertex_;
+	filePathGeometry = "";
+	filePathFragment = filePathFragment_;
+
+	LoadProgram(filePathVertex, filePathGeometry, filePathFragment);
 }
 
-BaseShader::BaseShader(string vertexPath_, string geometryPath_, string fragmentPath_){
-	LoadProgram(vertexPath_, geometryPath_, fragmentPath_);
+BaseShader::BaseShader(std::string filePathVertex_, std::string filePathGeometry_, std::string filePathFragment_) {
+	filePathVertex = filePathVertex_;
+	filePathGeometry = filePathGeometry_;
+	filePathFragment = filePathFragment_;	
+	
+	LoadProgram(filePathVertex, filePathGeometry, filePathFragment);
 }
+
+//return matching shader instance
+BaseShader * BaseShader::GetShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment) {
+	if (filePathVertex.compare("default.vert") == 0 &&
+		filePathGeometry.compare("") == 0 &&
+		filePathFragment.compare("default.frag") == 0) {
+		return new DefaultShader();
+	}
+	if (filePathVertex.compare("shadowMap.vert") == 0 &&
+		filePathGeometry.compare("") == 0 &&
+		filePathFragment.compare("shadowMap.frag") == 0) {
+		return new BaseShader("shadowMap.vert", "shadowMap.frag");
+	}
+	if (filePathVertex.compare("trans_inst_nocull.vert") == 0 &&
+		filePathGeometry.compare("") == 0 &&
+		filePathFragment.compare("trans_inst_nocull.frag") == 0) {
+		return new InstancedShader();
+	}
+	
+	return NULL;
+}
+#pragma endregion
 
 BaseShader::~BaseShader(){
 	glDeleteProgram(this->shaderID);
 }
 
-string BaseShader::GetDirectoryVertex()
-{
+string BaseShader::GetDirectoryVertex() {
 	return filePathVertex;
 }
 
-string BaseShader::GetDirectoryGeometry()
-{
+string BaseShader::GetDirectoryGeometry() {
 	return filePathGeometry;
+	glCreateProgram();
 }
 
-string BaseShader::GetDirectoryFragment()
-{
+string BaseShader::GetDirectoryFragment() {
 	return filePathFragment;
 }
 

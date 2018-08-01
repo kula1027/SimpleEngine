@@ -12,7 +12,7 @@ class GameObject;
 class BaseLight;
 class BaseRenderer;
 class Camera;
-class RenderData;
+class SceneRenderData;
 
 using namespace std;
 
@@ -28,7 +28,7 @@ protected:
 	vector<GameObject*> gameObjects;
 	unsigned long freeObjectId = 0;
 
-	RenderData* renderData;/*
+	SceneRenderData* renderData;/*
 	vector<Renderer*> renderers;
 	vector<BaseLight*> lights;	*/
 
@@ -51,5 +51,5 @@ public:
 	Camera* GetMainCamera();
 		
 	void UpdateObjects();
-	void RenderObjects();
+	void RenderScene();
 };

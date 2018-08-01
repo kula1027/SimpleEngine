@@ -14,6 +14,6 @@
 #include "../PerformanceCheck.h"
 
 #include "../RenderPath/RenderPathBundle.h"
-#include "RenderData.h"
+#include "SceneRenderData.h"
 
 #include <string>
