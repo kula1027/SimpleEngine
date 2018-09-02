@@ -21,7 +21,6 @@ void PreCullingColorLayer::ColorTriangles(glm::vec3 color_, Mesh * mesh_, int fr
 			int idx = mesh_->triangles[loop].idx[loop2];
 			mesh_->vertices[idx].color = color_;
 		}
-
 	}
 
 	mesh_->Setup();
@@ -79,12 +78,12 @@ void PreCullingColorLayer::Render(RenderData* renderData_) {
 		float angleLeft = angleRef - angleRange;
 		float angleRight = angleRef + angleRange;
 
-		ColorTriangles(glm::vec3(0.4, 0.4, 0.4), processingMesh, NULL, processingMesh->triangles.size());
+		ColorTriangles(glm::vec3(0.7, 0.7, 0.7), processingMesh, NULL, processingMesh->triangles.size());
 
 		//angleFrom ~ angleTo를 제외한 부분을 렌더링한다.
 		if (by + d > 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
-			ColorTriangles(glm::vec3(1, 1, 1), processingMesh, 0, processingMesh->triangles.size());		
-					
+			ColorTriangles(glm::vec3(1, 1, 1), processingMesh, 0, processingMesh->triangles.size());					
+			
 		} else if (by + d < 0 && dirDist > renderMaterial->dividedMeshDisks[loop]->radius) {
 			//draw nothing
 		} else {

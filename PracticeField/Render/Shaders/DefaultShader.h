@@ -8,6 +8,7 @@ class Mesh;
 class DefaultShader : public BaseShader {
 public:
 	DefaultShader();
+	DefaultShader(string vs, string fs);
 	~DefaultShader();
 
 	ID_matrice id_matrice;

@@ -15,6 +15,9 @@ out Vertex_Out{
 	vec3 layerColor;
 }vertex_out;
 
+out vec3 refViewPos_worldSpace;
+out vec3 normal_worldSpace;
+
 uniform mat4 MVP;
 uniform mat4 V;
 uniform mat4 M;
@@ -52,6 +55,9 @@ void main() {
 	vertex_out.normal_cameraSpace = (V * M * vec4(attr_normal, 0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
 												
 	vertex_out.fragPos_lightSpace = directionalLight0.lightSpaceMatrix * vec4(vertex_out.position_worldSpace, 1.0);	
+
+	refViewPos_worldSpace = refViewPos;
+	normal_worldSpace = attr_normal;
 
 	vec3 normal_worldSpace = (M * vec4(attr_normal, 0)).xyz;
 	vec3 dirToRef = refViewPos - vertex_out.position_worldSpace;

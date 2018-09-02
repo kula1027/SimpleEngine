@@ -5,8 +5,8 @@
 
 #include "../Bases/BasesBundle.h"
 
-MoveCamera::MoveCamera()
-{
+MoveCamera::MoveCamera(){
+
 }
 
 
@@ -55,6 +55,15 @@ void MoveCamera::OnUpdate(){
 		);
 	}
 
+	if (InputModule::IsPressed(GLFW_KEY_KP_ENTER)) {
+		std::cout << "Cam Tr: " <<
+			transform->position.x << ", " <<
+			transform->position.y << ", " <<
+			transform->position.z << " / " <<
+			horizontalAngle << ", " << verticalAngle <<
+			endl;
+
+	}
 	
 }
 

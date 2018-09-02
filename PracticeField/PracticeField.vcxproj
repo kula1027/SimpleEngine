@@ -176,6 +176,7 @@
     <ClCompile Include="Bases\Time.cpp" />
     <ClCompile Include="Scripts\TimeChecker.cpp" />
     <ClCompile Include="Bases\Transform.cpp" />
+    <ClCompile Include="Scenes\TestScene3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Render\RenderData.h" />
@@ -241,10 +242,14 @@
     <ClInclude Include="Bases\Time.h" />
     <ClInclude Include="Scripts\TimeChecker.h" />
     <ClInclude Include="Bases\Transform.h" />
+    <ClInclude Include="Scenes\TestScene3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Materials\Shaders\default.frag" />
     <None Include="Materials\Shaders\default.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,7 +3,7 @@
 #include <gl\glew.h>
 #include "Bases/BasesBundle.h"
 #include "GameWindow.h"
-#include "Scenes/Scene.h"
+#include "Scenes/SceneBundle.h"
 
 #include <assimp\postprocess.h>
 #include <assimp\cimport.h>
@@ -38,7 +38,7 @@ void SimpleEngine::LoadScene(Scene * scene_){
 }
 
 void SimpleEngine::LoadScene() {
-	currentScene = new Scene();
+	currentScene = new TestScene3();
 	currentScene->Load();
 }
 

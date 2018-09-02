@@ -152,6 +152,21 @@ BaseShader * BaseShader::GetShader(std::string filePathVertex, std::string fileP
 		filePathFragment.compare("trans_inst_nocull.frag") == 0) {
 		return new InstancedShader();
 	}
+	if (filePathVertex.compare("3layer.vert") == 0 &&
+		filePathGeometry.compare("") == 0 &&
+		filePathFragment.compare("3layer.frag") == 0) {
+		return new DefaultShader("3layer.vert", "3layer.frag");
+	}
+	if (filePathVertex.compare("3layer.vert") == 0 &&
+		filePathGeometry.compare("") == 0 &&
+		filePathFragment.compare("3layer.frag") == 0) {
+		return new DefaultShader("3layer.vert", "3layer.frag");
+	}
+	if (filePathVertex.compare("vertexColorDiffuse.vert") == 0 &&
+		filePathGeometry.compare("") == 0 &&
+		filePathFragment.compare("vertexColorDiffuse.frag") == 0) {
+		return new DefaultShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag");
+	}
 	
 	return NULL;
 }

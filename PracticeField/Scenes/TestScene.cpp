@@ -52,7 +52,7 @@ void TestScene::Load() {
 		"Sphere/sphere_32_16.obj",
 		"Sphere/sphere_64_32.obj",
 		"Sphere/sphere_128_64.obj",
-		"Sphere/sphere_256_128.obj",
+		"Sphere/sphere_256_128.obj",//3
 		"Sphere/sphere_512_256.obj",
 		"Sphere/sphere_1024_512.obj"
 	};
@@ -108,9 +108,9 @@ void TestScene::Load() {
 	int c = 5;
 	int d = 5;
 	int e = 5;
-	int objIdx = 2;
+	int objIdx = 4;
 
-	bool splitRender = false;
+	bool splitRender = true;
 
 	if (splitRender) {
 		PreCullingRenderer_Split* srBase = new PreCullingRenderer_Split();

@@ -31,4 +31,13 @@ void FakeCam::OnUpdate()
 	if (InputModule::IsPressed(GLFW_KEY_KP_4)) {
 		transform->position += transform->GetUp() * Time::deltaTime * moveSpeed;
 	}	
+
+	if (InputModule::IsPressed(GLFW_KEY_KP_ENTER)) {
+		std::cout << "fCam Pos: " <<
+			transform->position.x << ", " <<
+			transform->position.y << ", " <<
+			transform->position.z <<
+			endl;
+
+	}
 }

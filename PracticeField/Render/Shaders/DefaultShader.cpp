@@ -14,6 +14,13 @@ DefaultShader::DefaultShader() {
 	LoadProgram(filePathVertex, "", filePathFragment);
 }
 
+DefaultShader::DefaultShader(string vs, string fs) {
+	filePathVertex = vs;
+	filePathFragment = fs;
+
+	LoadProgram(filePathVertex, "", filePathFragment);
+}
+
 DefaultShader::~DefaultShader() {
 }
 

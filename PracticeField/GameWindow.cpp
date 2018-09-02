@@ -19,6 +19,7 @@ void GameWindow::Init(int w_, int h_, const char* name_){
 	glfwMakeContextCurrent(window);
 
 	glfwSetWindowFocusCallback(window, GameWindow::FocusCallBack);
+	glfwSetWindowPos(window, 100, 50);
 	glfwFocusWindow(window);
 	isFocused = true;
 }

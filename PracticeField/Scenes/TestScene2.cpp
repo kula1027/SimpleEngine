@@ -84,12 +84,12 @@ void TestScene2::Load()
 	//go->GetRenderer()->SetShader(FilePooler::LoadShader("default.vert", "deform.geo", "default_geo.frag"));
 	//go->transform->position = glm::vec3(0, 5, 2);
 
-	//sphere	
-	go = new GameObject("sphere");
-	go->SetRenderer(new DefaultRenderer());
-	go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
-	go->GetRenderer()->SetShader();
-	go->transform->position = glm::vec3(-5, 5, 2);
+	////sphere	
+	//go = new GameObject("sphere");
+	//go->SetRenderer(new DefaultRenderer());
+	//go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
+	//go->GetRenderer()->SetShader();
+	//go->transform->position = glm::vec3(-5, 5, 2);
 
 	////venus
 	//go = new GameObject("venus");
