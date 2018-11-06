@@ -38,7 +38,7 @@ void SimpleEngine::LoadScene(Scene * scene_){
 }
 
 void SimpleEngine::LoadScene() {
-	currentScene = new TestScene3();
+	currentScene = new TestScene_Texture();
 	currentScene->Load();
 }
 

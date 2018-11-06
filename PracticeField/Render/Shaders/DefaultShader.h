@@ -20,7 +20,7 @@ public:
 	virtual void Initialize();	
 
 	virtual void SetUniforms(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_);
-	virtual void ApplyTexture(Mesh* mesh_);
+	virtual void ApplyTexture(std::vector<Texture*> textures_);
 
 	void SetUniformDlight(Camera* cam_, BaseLight* dLight_);
 	void SetUniformMVP(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_);	

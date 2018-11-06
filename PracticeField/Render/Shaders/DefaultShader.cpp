@@ -64,26 +64,26 @@ void DefaultShader::SetUniformMVP(RenderData* renderData_, glm::mat4 modelMat_, 
 	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(modelMat_));
 }
 
-void DefaultShader::ApplyTexture(Mesh * mesh_) {
-	if (mesh_->textures.size() <= 0) {
+void DefaultShader::ApplyTexture(std::vector<Texture*> textures_) {		
+	if (textures_.size() <= 0) {
 		glUniform1i(id_diffuse.count, 0);
 	} else {
 		GLuint diffuseNr = 0;
 		GLuint specularNr = 1;
 
 		glUniform1i(id_diffuse.count, 1);
-		for (GLuint i = 0; i < mesh_->textures.size(); i++) {
+		for (GLuint i = 0; i < textures_.size(); i++) {
 			GLuint textureId;
-			switch (mesh_->textures[i]->type) {
+			switch (textures_[i]->type) {
 			case TextureType_Diffuse:
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, mesh_->textures[i]->textureId);
+				glBindTexture(GL_TEXTURE_2D, textures_[i]->textureId);
 				diffuseNr++;
 				break;
 
 			case TextureType_Specular:
 				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, mesh_->textures[i]->textureId);
+				glBindTexture(GL_TEXTURE_2D, textures_[i]->textureId);
 				specularNr++;
 				break;
 
@@ -93,7 +93,10 @@ void DefaultShader::ApplyTexture(Mesh * mesh_) {
 
 			case TextureType_DiffuseTransparent:
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, mesh_->textures[i]->textureId);
+				glBindTexture(GL_TEXTURE_2D, textures_[i]->textureId);
+				break;
+				
+			default:				
 				break;
 			}
 

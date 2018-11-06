@@ -50,6 +50,7 @@ class Camera;
 class BaseLight;
 class RenderData;
 class Mesh;
+class Texture;
 
 class BaseShader : EngineResource {
 private:
@@ -86,7 +87,7 @@ public:
 
 	virtual void Initialize() {}
 	virtual void SetUniforms(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_) {}
-	virtual void ApplyTexture(Mesh* mesh_) {}
+	virtual void ApplyTexture(std::vector<Texture*> textures_) {}
 	virtual void OnEndUse();
 };
 

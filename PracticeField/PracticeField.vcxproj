@@ -139,6 +139,7 @@
     <ClCompile Include="Render\OutlineRenderer.cpp" />
     <ClCompile Include="Render\CullLayerRenderer.cpp" />
     <ClCompile Include="RenderPath\RP_Forward.cpp" />
+    <ClCompile Include="Scenes\TestScene_Texture.cpp" />
     <ClCompile Include="Skybox\EmptySkyBox.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Render\PreCullingRenderer.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Mesh\MeshBundle.h" />
     <ClInclude Include="Render\RenderBundle.h" />
     <ClInclude Include="RenderPath\RP_Forward.h" />
+    <ClInclude Include="Scenes\TestScene_Texture.h" />
     <ClInclude Include="Scripts\ScriptBundle.h" />
     <ClInclude Include="Skybox\EmptySkyBox.h" />
     <ClInclude Include="Render\PreCullingRenderer.h" />

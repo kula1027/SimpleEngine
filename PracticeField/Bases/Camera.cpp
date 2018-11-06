@@ -12,7 +12,7 @@
 Camera::Camera(){
 	name = "Camera";	
 
-	transform->position = glm::vec3(0, 14, 30);
+	transform->position = glm::vec3(0, 0, 0);
 	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	projMode = PROJECTION_PERSPECTIVE;
 	

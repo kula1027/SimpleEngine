@@ -13,7 +13,7 @@ void TestScene::Load() {
 
 	SimpleEngine::SetVsyncMode(false);
 
-	mainCamera->transform->position = glm::vec3(4, 4, 20);
+	mainCamera->transform->position = glm::vec3(6, 8, -80);
 	mainCamera->clearColor = glm::vec4(0.8f);
 	//mainCamera->renderMode = RenderPath_SimpleSingle;
 
@@ -45,7 +45,8 @@ void TestScene::Load() {
 		"sphere.obj",//6
 		"hand.obj",	
 		"sandstone.obj",//8
-		"buddha.obj"
+		"buddha.obj",
+		"Sphere/sphere_256_128.obj"
 	};	
 
 	char* sp[] = {
@@ -106,30 +107,30 @@ void TestScene::Load() {
 	//}
 
 	int c = 5;
-	int d = 5;
+	int d = 4;
 	int e = 5;
-	int objIdx = 4;
+	int objIdx = 5;
 
 	bool splitRender = true;
 
 	if (splitRender) {
 		PreCullingRenderer_Split* srBase = new PreCullingRenderer_Split();
-		srBase->renderMaterial->vertDivision = 16;
+		srBase->renderMaterial->vertDivision = 8;
 		srBase->renderMaterial->horiDivision = 32;
-		srBase->SetMeshModel(FilePooler::LoadMeshModel(sp[objIdx]));
+		srBase->SetMeshModel(FilePooler::LoadMeshModel(m[objIdx]));
 		srBase->renderMaterial->targetCamTr = mainCamera->transform;
 		for (int loop = 0; loop < c; loop++) {
 			for (int loop2 = 0; loop2 < d; loop2++) {
 				for (int loop3 = 0; loop3 < e; loop3++) {
-					GameObject* go = new GameObject(sp[objIdx]);
+					GameObject* go = new GameObject(m[objIdx]);
 					PreCullingRenderer_Split* sr = new PreCullingRenderer_Split();
 					sr->renderMaterial = srBase->renderMaterial;
 					go->SetRenderer(sr);
-					go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel(sp[objIdx]));
+					go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel(m[objIdx]));
 					go->GetRenderer()->SetShader();
 					go->GetRenderer()->castShadow = false;
-					go->transform->position = glm::vec3(loop * 2, loop2 * 2, loop3 * 2);					
-				}				
+					go->transform->position = glm::vec3(loop * 4, loop2 * 4, loop3 * 4);					
+				}
 			}
 		}
 	}else {
@@ -138,10 +139,10 @@ void TestScene::Load() {
 				for (int loop3 = 0; loop3 < e; loop3++) {
 					GameObject* go = new GameObject(m[objIdx]);
 					go->SetRenderer(new DefaultRenderer);
-					go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel(sp[objIdx]));
+					go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel(m[objIdx]));
 					go->GetRenderer()->SetShader();
 					go->GetRenderer()->castShadow = false;
-					go->transform->position = glm::vec3(loop * 2, loop2 * 2, loop3 * 2);
+					go->transform->position = glm::vec3(loop * 4, loop2 * 4, loop3 * 4);
 				}
 			}
 		}

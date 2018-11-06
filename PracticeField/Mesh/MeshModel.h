@@ -45,7 +45,8 @@ protected:
 
 private:
 	/*  Model Data  */		
-	string filePath;
+	string fileName;
+	string dirPath;
 
 	void ProcessNode(aiNode* node, const aiScene* scene);
 	Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);

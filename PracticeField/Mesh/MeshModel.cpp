@@ -22,25 +22,27 @@ MeshModel::~MeshModel(){
 }
 
 string MeshModel::GetFilePath(){
-	return filePath;
+	return dirPath + fileName;
 }
 
 void MeshModel::LoadModel(string path){
-	this->filePath = path;
+	size_t foundIdx = path.find_last_of('/');
+	this->dirPath = path.substr(0, foundIdx + 1);
+	this->fileName = path.substr(foundIdx + 1);
 
-	path = dirPathMaterial + path;
+	string fullFilePath = dirPathMaterial + dirPath + fileName;	
 
 	// Read file via ASSIMP
 	Assimp::Importer importer;
-	std::cout << "Load Model... " + path << endl;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);	
-	std::cout << "\tMesh Count: " << scene->mNumMeshes << endl;
+	std::cout << "Load Model... " + fullFilePath << endl;
+	const aiScene* scene = importer.ReadFile(fullFilePath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
 
 	// Check for errors
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode){ // if is Not Zero
 		cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
 		return;
 	}
+	std::cout << "\tMesh Count: " << scene->mNumMeshes << endl;
 	
 	// Process ASSIMP's root node recursively
 	this->ProcessNode(scene->mRootNode, scene);
@@ -173,10 +175,9 @@ vector<Texture*> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType
 		aiString str;
 		mat->GetTexture(type, i, &str);
 		
-		string filePath = string(str.C_Str());
-		std::cout << "\tLoad Texture... " << filePath << std::endl;	
+		string fileName = string(str.C_Str());		
 
-		Texture* texture = FilePooler::LoadTexture(filePath, tType);
+		Texture* texture = FilePooler::LoadTexture(dirPathMaterial + dirPath + fileName, tType);
 		textures.push_back(texture);
 	}
 

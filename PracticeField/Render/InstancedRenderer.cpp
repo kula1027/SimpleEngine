@@ -34,7 +34,7 @@ void InstancedRenderer::Render(RenderData* renderData_){
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 
-		shader->ApplyTexture(processingMesh);
+		shader->ApplyTexture(processingMesh->textures);
 
 		glBindVertexArray(processingMesh->VAO);
 

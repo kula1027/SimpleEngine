@@ -31,6 +31,7 @@ void PreCullingRenderer_Split::SetMeshModel(MeshModel* meshModel_) {
 	//Get Bounding(AA)
 	ImaginaryCube* boundingBox = ImaginaryCube::GetBoundingBox(mesh);	
 	renderMaterial->boundingSphere = ImaginarySphere::GetBoundingSphere(mesh, boundingBox->center);
+	cout << "BoundingSphere R: " << renderMaterial->boundingSphere->radius << endl;
 
 	//Divide by Angle
 	renderMaterial->idxPosition = new int*[renderMaterial->vertDivision];
@@ -53,8 +54,11 @@ void PreCullingRenderer_Split::SetMeshModel(MeshModel* meshModel_) {
 	}
 	
 	//Replace existing mesh w divided meshes
-	meshModel->meshes->pop_back();
-	for (int loop = 0; loop < renderMaterial->vertDivision; loop++) {
+	meshModel->meshes->pop_back();	
+	if (mesh->textures.size() > 0) {
+		renderMaterial->textures.push_back(mesh->textures.at(0));
+	}	
+	for (int loop = 0; loop < renderMaterial->vertDivision; loop++) {		
 		dividedMeshes[loop]->Setup();
 		meshModel->meshes->push_back(dividedMeshes[loop]);
 	}
@@ -87,14 +91,14 @@ void PreCullingRenderer_Split::Render(RenderData* renderData_) {
 	int frontFaceCount = 0;
 	int totalFaceCount = 0;
 	int drawCallCount = 0;
+
+	shader->ApplyTexture(renderMaterial->textures);
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 
 		glBindVertexArray(processingMesh->VAO);
 	
-		vCount += processingMesh->vertices.size();
-
-		shader->ApplyTexture(processingMesh);
+		vCount += processingMesh->vertices.size();		
 		
 		float diskCenterY;
 		if (cuttingPlane->normalVector.y > 0) {

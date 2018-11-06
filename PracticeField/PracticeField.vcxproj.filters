@@ -69,6 +69,7 @@
     <ClCompile Include="Scenes\SceneRenderData.cpp" />
     <ClCompile Include="Render\RenderData.cpp" />
     <ClCompile Include="Scenes\TestScene3.cpp" />
+    <ClCompile Include="Scenes\TestScene_Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Render\RenderData.h" />
     <ClInclude Include="Render\Shaders\ShaderBundle.h" />
     <ClInclude Include="Scenes\TestScene3.h" />
+    <ClInclude Include="Scenes\TestScene_Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />

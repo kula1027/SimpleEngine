@@ -50,18 +50,18 @@ BaseShader * FilePooler::LoadShader(std::string filePathVertex, std::string file
 
 
 Texture * FilePooler::LoadTexture(std::string filePath, TextureType type_){
-	string path = dirPathMaterial + filePath;
+	std::cout << "\tLoad Texture... " << filePath << std::endl;	
 
 	Texture* retTexture = NULL;
 	for (int loop = 0; loop < loadedTextures.size(); loop++) {
-		if (loadedTextures[loop]->GetDirectory().compare(path.c_str()) == 0) {
+		if (loadedTextures[loop]->GetDirectory().compare(filePath.c_str()) == 0) {
 			retTexture = loadedTextures[loop];
 			break;
 		}
 	}
 
 	if (retTexture == NULL) {
-		retTexture = new Texture(path, type_);
+		retTexture = new Texture(filePath, type_);
 		loadedTextures.push_back(retTexture);
 	} 
 

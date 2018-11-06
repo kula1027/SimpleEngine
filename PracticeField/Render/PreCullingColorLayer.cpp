@@ -56,7 +56,7 @@ void PreCullingColorLayer::Render(RenderData* renderData_) {
 
 		vCount += processingMesh->vertices.size();
 
-		shader->ApplyTexture(processingMesh);
+		shader->ApplyTexture(processingMesh->textures);
 
 		float diskCenterY;
 		if (cuttingPlane->normalVector.y > 0) {

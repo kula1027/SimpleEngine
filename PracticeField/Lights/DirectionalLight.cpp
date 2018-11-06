@@ -9,7 +9,7 @@
 DirectionalLight::DirectionalLight(){
 	intensity = 0.8f;
 	color = glm::vec3(1, 1, 1);
-	position = glm::vec3(-2, -2, -2);
+	position = glm::vec3(-2, -2, 2);
 	isShadowCaster = true;
 
 	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 100.0f);

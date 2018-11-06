@@ -90,7 +90,7 @@ void PreCullingRenderer::Render(RenderData* renderData_) {
 	
 	Mesh* processingMesh = meshModel->meshes->at(0);
 	glBindVertexArray(processingMesh->VAO);
-	shader->ApplyTexture(processingMesh);
+	shader->ApplyTexture(processingMesh->textures);
 	for (GLuint loop = 0; loop < renderMaterial->vertDivision; loop++) {								
 		float diskCenterY;
 		if (cuttingPlane->normalVector.y > 0) {

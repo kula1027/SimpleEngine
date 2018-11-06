@@ -5,6 +5,7 @@
 class ImaginarySphere;
 class ImaginaryPlane;
 class ImaginaryDisk;
+class Texture;
 
 
 struct PcRenderMaterial {
@@ -12,6 +13,7 @@ struct PcRenderMaterial {
 	ImaginarySphere* boundingSphere;
 	int** idxPosition;
 	ImaginaryDisk** dividedMeshDisks;
+	std::vector<Texture*> textures;
 
 	int vertDivision = 4;
 	int horiDivision = 4;
@@ -26,7 +28,7 @@ protected:
 
 	void CalculateBoudingSphere();
 	ImaginaryPlane* CalcCuttingPlane(glm::vec3 dirCam_);
-	int CalcFrontFaceCount(Mesh * mesh_, glm::vec3 vPosition);	
+	int CalcFrontFaceCount(Mesh * mesh_, glm::vec3 vPosition);		
 		
 public:	
 	PreCullingRenderer_Split();

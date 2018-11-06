@@ -70,8 +70,8 @@ void MoveCamera::OnUpdate(){
 void MoveCamera::OnStart(){
 	cam = static_cast<Camera*>(gameObject);
 
-	verticalAngle = 0;
 	horizontalAngle = 3.14f;
+	verticalAngle = 0.f;
 	moveSpeed = 20.0f;
 	sensitivity = 0.001f;
 }

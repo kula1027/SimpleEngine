@@ -81,7 +81,7 @@ void main(){
 	resultColor += CalcDirLight(directionalLight0, matColor, normal, viewDir);
 
 	float fColor = 1.0f;
-	if(dot(normal_worldSpace, refViewPos_worldSpace) < 0){
+	if(dot(normal_worldSpace, refViewPos_worldSpace) < 0){	
 		fColor = 0.7f;
 	}
 	

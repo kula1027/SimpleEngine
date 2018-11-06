@@ -38,11 +38,11 @@ void DefaultRenderer::Render(RenderData* renderData_) {
 	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
 
 	SetUniformAdditional();
-
+	static int a = 0;
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
-
-		shader->ApplyTexture(processingMesh);
+	
+		shader->ApplyTexture(processingMesh->textures);
 
 		glBindVertexArray(processingMesh->VAO);
 
@@ -55,8 +55,7 @@ void DefaultRenderer::Render(RenderData* renderData_) {
 	}
 
 	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
+	glBindTexture(GL_TEXTURE_2D, 0);	
 	RestoreDrawingMode();
 }
 
