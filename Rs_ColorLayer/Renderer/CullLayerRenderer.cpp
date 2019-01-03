@@ -1,8 +1,8 @@
 #include "CullLayerRenderer.h"
 
-#include "../FilePooler.h"
-#include "../Bases/BasesBundle.h"
-#include "../Render/Shaders/BaseShader.h"
+#include <FilePooler.h>
+#include <Bases/BasesBundle.h>
+#include <Render/Shaders/BaseShader.h>
 
 CullLayerRenderer::CullLayerRenderer() : DefaultRenderer() {
 }

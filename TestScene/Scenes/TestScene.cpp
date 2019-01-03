@@ -1,19 +1,19 @@
-#include "TestScene2.h"
+#include "TestScene.h"
 
-#include "SceneIncludes.h"
+#include <Scenes/SceneIncludes.h>
 
 #include <string>
 
-TestScene2::TestScene2() : Scene()
+TestScene::TestScene() : Scene()
 {
 }
 
 
-TestScene2::~TestScene2()
+TestScene::~TestScene()
 {
 }
 
-void TestScene2::Load()
+void TestScene::Load()
 {
 	Scene::Load();
 

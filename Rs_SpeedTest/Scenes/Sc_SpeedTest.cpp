@@ -1,14 +1,15 @@
-#include "TestScene.h"
-#include "SceneIncludes.h"
+#include "Sc_SpeedTest.h"
 
-TestScene::TestScene() : Scene() {
+#include <Scenes/SceneIncludes.h>
+
+Sc_SpeedTest::Sc_SpeedTest() : Scene() {
 }
 
 
-TestScene::~TestScene() {
+Sc_SpeedTest::~Sc_SpeedTest() {
 }
 
-void TestScene::Load() {
+void Sc_SpeedTest::Load() {
 	Scene::Load();
 
 	SimpleEngine::SetVsyncMode(false);

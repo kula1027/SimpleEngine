@@ -7,6 +7,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+
+
 SkyBox::SkyBox(){
 	
 }
@@ -17,12 +19,12 @@ SkyBox::~SkyBox()
 }
 
 void SkyBox::InitCubeMap() {	
-	facePath[SkyBox_Right] = "Materials/skybox/right.jpg";
-	facePath[SkyBox_Left] = "Materials/skybox/left.jpg";
-	facePath[SkyBox_Top] = "Materials/skybox/top.jpg";
-	facePath[SkyBox_Bottom] = "Materials/skybox/bottom.jpg";
-	facePath[SkyBox_Back] = "Materials/skybox/back.jpg";
-	facePath[SkyBox_Front] = "Materials/skybox/front.jpg";
+	facePath[SkyBox_Right] = DirPathSkyBox + string("right.jpg");
+	facePath[SkyBox_Left] = DirPathSkyBox + string("left.jpg");
+	facePath[SkyBox_Top] = DirPathSkyBox + string("top.jpg");
+	facePath[SkyBox_Bottom] = DirPathSkyBox + string("bottom.jpg");
+	facePath[SkyBox_Back] = DirPathSkyBox + string("back.jpg");
+	facePath[SkyBox_Front] = DirPathSkyBox + string("front.jpg");
 
 	glGenTextures(1, &cubeMapId);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapId);

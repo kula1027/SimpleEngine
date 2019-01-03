@@ -1,7 +1,7 @@
 #pragma once
-#include "DefaultRenderer.h"
+#include <Render/DefaultRenderer.h>
 
-#define VS_LayerCull "3layer.vert"
+#define VS_LayerCull "3layer.vert" //·»´õ·¯ Àü¿ë ½¦ÀÌ´õ
 #define FS_LayerCulled "3layer.frag"
 
 

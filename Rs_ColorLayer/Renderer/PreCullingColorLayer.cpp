@@ -1,8 +1,8 @@
 #include "PreCullingColorLayer.h"
 
-#include "../ImaginaryFigures/ImaginaryFigures.h"
-#include "../Mesh/MeshBundle.h"
-#include "../Bases/BasesBundle.h"
+#include <ImaginaryFigures/ImaginaryFigures.h>
+#include <Mesh/MeshBundle.h>
+#include <Bases/BasesBundle.h>
 #include <iostream>
 #include <math.h>
 

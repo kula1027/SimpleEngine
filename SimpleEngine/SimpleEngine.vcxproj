@@ -193,12 +193,9 @@
     <ClInclude Include="RenderPath\RP_Forward.h" />
     <ClInclude Include="RenderPath\RP_SimpleSingle.h" />
     <ClInclude Include="Render\BaseRenderer.h" />
-    <ClInclude Include="Render\CullLayerRenderer.h" />
     <ClInclude Include="Render\DefaultRenderer.h" />
     <ClInclude Include="Render\InstancedRenderer.h" />
     <ClInclude Include="Render\OutlineRenderer.h" />
-    <ClInclude Include="Render\PartRenderer.h" />
-    <ClInclude Include="Render\PreCullingColorLayer.h" />
     <ClInclude Include="Render\PreCullingRenderer.h" />
     <ClInclude Include="Render\PreCullingRenderer_Split.h" />
     <ClInclude Include="Render\RenderBundle.h" />
@@ -213,9 +210,6 @@
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SceneIncludes.h" />
     <ClInclude Include="Scenes\SceneRenderData.h" />
-    <ClInclude Include="Scenes\TestScene.h" />
-    <ClInclude Include="Scenes\TestScene2.h" />
-    <ClInclude Include="Scenes\TestScene3.h" />
     <ClInclude Include="Scripts\FakeCam.h" />
     <ClInclude Include="Scripts\MoveCamera.h" />
     <ClInclude Include="Scripts\ScriptBundle.h" />
@@ -253,12 +247,9 @@
     <ClCompile Include="RenderPath\RP_Forward.cpp" />
     <ClCompile Include="RenderPath\RP_SimpleSingle.cpp" />
     <ClCompile Include="Render\BaseRenderer.cpp" />
-    <ClCompile Include="Render\CullLayerRenderer.cpp" />
     <ClCompile Include="Render\DefaultRenderer.cpp" />
     <ClCompile Include="Render\InstancedRenderer.cpp" />
     <ClCompile Include="Render\OutlineRenderer.cpp" />
-    <ClCompile Include="Render\PartRenderer.cpp" />
-    <ClCompile Include="Render\PreCullingColorLayer.cpp" />
     <ClCompile Include="Render\PreCullingRenderer.cpp" />
     <ClCompile Include="Render\PreCullingRenderer_Split.cpp" />
     <ClCompile Include="Render\RenderData.cpp" />
@@ -270,9 +261,6 @@
     <ClCompile Include="Scenes\ObjectPool.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Scenes\SceneRenderData.cpp" />
-    <ClCompile Include="Scenes\TestScene.cpp" />
-    <ClCompile Include="Scenes\TestScene2.cpp" />
-    <ClCompile Include="Scenes\TestScene3.cpp" />
     <ClCompile Include="Scripts\FakeCam.cpp" />
     <ClCompile Include="Scripts\MoveCamera.cpp" />
     <ClCompile Include="Scripts\TimeChecker.cpp" />

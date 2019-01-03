@@ -18,12 +18,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\TestScene.cpp">
+    <ClCompile Include="Scenes\TestScene_Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scenes\TestScene.h">
+    <ClInclude Include="Scenes\TestScene_Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

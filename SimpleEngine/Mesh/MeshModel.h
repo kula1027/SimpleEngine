@@ -24,7 +24,7 @@
 
 #include "Mesh.h"
 
-#define dirPathMaterial "../Materials/"
+#define DirPathMaterial "../Materials/"
 
 using namespace std;
 

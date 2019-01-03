@@ -1,15 +1,16 @@
-#include "TestScene3.h"
-#include "SceneIncludes.h"
+#include "Sc_ColorLayer.h"
+#include <Scenes/SceneIncludes.h>
+#include "Renderer/PreCullingColorLayer.h"
 
 
-TestScene3::TestScene3() : Scene() {
+Sc_ColorLayer::Sc_ColorLayer() : Scene() {
 }
 
 
-TestScene3::~TestScene3() {
+Sc_ColorLayer::~Sc_ColorLayer() {
 }
 
-void TestScene3::Load() {
+void Sc_ColorLayer::Load() {
 	Scene::Load();
 
 	SimpleEngine::SetVsyncMode(true);
@@ -63,9 +64,9 @@ void TestScene3::Load() {
 
 
 	PreCullingColorLayer* srBase = new PreCullingColorLayer();
-	srBase->renderMaterial->horiDivision = 256;
-	srBase->renderMaterial->vertDivision = 128;
-	srBase->SetMeshModel(new MeshModel("Sphere/sphere_1024_512.obj"));
+	srBase->renderMaterial->horiDivision = 128;
+	srBase->renderMaterial->vertDivision = 32;
+	srBase->SetMeshModel(new MeshModel("bunny.obj"));
 	srBase->renderMaterial->targetCamTr = fakeCam->transform;
 	srBase->SetShader(FilePooler::LoadShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag"));
 	GameObject* go2 = new GameObject();

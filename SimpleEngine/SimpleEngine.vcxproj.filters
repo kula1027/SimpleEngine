@@ -105,9 +105,6 @@
     <ClInclude Include="Render\BaseRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Render\CullLayerRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Render\DefaultRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -115,12 +112,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Render\OutlineRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\PartRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\PreCullingColorLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Render\PreCullingRenderer.h">
@@ -166,15 +157,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\SceneRenderData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\TestScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\TestScene2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\TestScene3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\FakeCam.h">
@@ -281,9 +263,6 @@
     <ClCompile Include="Render\BaseRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Render\CullLayerRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Render\DefaultRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -291,12 +270,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Render\OutlineRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\PartRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\PreCullingColorLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Render\PreCullingRenderer.cpp">
@@ -333,15 +306,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\SceneRenderData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenes\TestScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenes\TestScene2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenes\TestScene3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\FakeCam.cpp">

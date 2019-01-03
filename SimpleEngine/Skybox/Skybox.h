@@ -7,6 +7,8 @@ class Texture;
 class BaseShader;
 class Camera;
 
+#define DirPathSkyBox "../Materials/skybox/"
+
 #define SkyBox_Right 0
 #define SkyBox_Left 1
 #define SkyBox_Top 2

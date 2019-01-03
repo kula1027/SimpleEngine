@@ -30,7 +30,7 @@ void MeshModel::LoadModel(string path){
 	this->dirPath = path.substr(0, foundIdx + 1);
 	this->fileName = path.substr(foundIdx + 1);
 
-	string fullFilePath = dirPathMaterial + dirPath + fileName;	
+	string fullFilePath = DirPathMaterial + dirPath + fileName;	
 
 	// Read file via ASSIMP
 	Assimp::Importer importer;
@@ -177,7 +177,7 @@ vector<Texture*> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType
 		
 		string fileName = string(str.C_Str());		
 
-		Texture* texture = FilePooler::LoadTexture(dirPathMaterial + dirPath + fileName, tType);
+		Texture* texture = FilePooler::LoadTexture(DirPathMaterial + dirPath + fileName, tType);
 		textures.push_back(texture);
 	}
 

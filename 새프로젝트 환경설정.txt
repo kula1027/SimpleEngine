@@ -1,0 +1,20 @@
+플젝 설정에서..
+
+프로젝트 레퍼런스
+
+Debugging - Environment
+	PATH=$(SolutionDir)dll
+
+VC++ Directories - 
+	Include Dir 
+		$(SolutionDir)includes;$(SolutionDir)SimpleEngine;$(IncludePath)
+	Lib Dir
+		$(SolutionDir)libraries;$(LibraryPath)
+
+Linker - Input 라이브러리 추가
+SimpleEngine.lib
+SOIL.lib
+assimp.lib
+glew32.lib
+opengl32.lib
+glfw3.lib
