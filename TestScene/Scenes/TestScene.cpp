@@ -21,11 +21,12 @@ void TestScene::Load()
 	AddLight(directionalLight);
 
 	mainCamera->skybox = new SkyBox();
+	mainCamera->transform->position = glm::vec3(0, 20, 0);
 
 	GameObject* go;
 
 	//floor
-	Texture* t = FilePooler::LoadTexture("burnt_sand_brown.png", TextureType_Diffuse);
+	Texture* t = FilePooler::LoadTexture("../Materials/burnt_sand_brown.png", TextureType_Diffuse);
 	MeshModel* mPlane = FilePooler::LoadMeshModel("plane.obj");
 	mPlane->meshes->at(0)->textures.push_back(t);
 	Mesh* thatMesh = mPlane->meshes->at(0);
@@ -43,7 +44,7 @@ void TestScene::Load()
 	go->transform->scale = glm::vec3(40, 1, 40);
 
 	//Grass
-	Texture* tGrass = FilePooler::LoadTexture("grass.png", TextureType_DiffuseTransparent);
+	Texture* tGrass = FilePooler::LoadTexture("../Materials/grass.png", TextureType_DiffuseTransparent);
 	MeshModel* mQuad = FilePooler::LoadMeshModel("quad.obj");
 	mQuad->meshes->at(0)->textures.push_back(tGrass);
 	thatMesh = mQuad->meshes->at(0);
@@ -98,12 +99,12 @@ void TestScene::Load()
 	//go->GetRenderer()->SetShader();	
 	//go->transform->position = glm::vec3(-100, 0, -100);
 
-	////nanosuit
-	//go = new GameObject("nano");
-	//go->SetRenderer(new DefaultRenderer());
-	//go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
-	//go->GetRenderer()->SetShader();
-	//go->transform->position = glm::vec3(10, 0, 0);
+	//nanosuit
+	go = new GameObject("nano");
+	go->SetRenderer(new DefaultRenderer());
+	go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
+	go->GetRenderer()->SetShader();
+	go->transform->position = glm::vec3(10, 0, 0);
 
 	////window
 	//Texture* tWindow = FilePooler::LoadTexture("window.png", TextureType_DiffuseTransparent);

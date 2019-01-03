@@ -6,6 +6,7 @@ public:
 	RP_Deferred();
 	~RP_Deferred();
 
+	virtual void Initialize();
 	virtual void Render(Camera* mainCamera, SceneRenderData* renderData);
 };
 

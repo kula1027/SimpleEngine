@@ -23,6 +23,9 @@ protected:
 	static float quadVertices[];
 	static int quadSize;
 
+	OffScreenData offScreenData;
+	void InitOffScreenDraw();
+
 public:
 	RenderPath();
 	~RenderPath();	
