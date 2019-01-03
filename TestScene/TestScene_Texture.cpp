@@ -1,6 +1,6 @@
 #include "TestScene_Texture.h"
 
-#include "SceneIncludes.h"
+#include "Scenes/SceneIncludes.h"
 
 #include <string>
 

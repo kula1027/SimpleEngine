@@ -10,7 +10,7 @@
 
 #define LogLength 512
 
-#define dirPathShader "Shaders/"
+#define dirPathShader "../Shaders/"
 #define TEXTURE_IDX_SHADOWMAP 10
 
 using namespace std;

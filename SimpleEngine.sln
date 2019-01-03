@@ -3,7 +3,43 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleEngine", "SimpleEngine\SimpleEngine.vcxproj", "{662366CA-BBC5-48B7-B2E6-43685BC254B6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleEngine", "SimpleEngine\SimpleEngine.vcxproj", "{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestScene", "TestScene\TestScene.vcxproj", "{03CA1921-96CF-48B3-B105-5703FC71D0D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{AFF76A8A-64F9-4925-B406-80EB8590CE1F}"
+	ProjectSection(SolutionItems) = preProject
+		Shaders\3layer.frag = Shaders\3layer.frag
+		Shaders\3layer.vert = Shaders\3layer.vert
+		Shaders\default.frag = Shaders\default.frag
+		Shaders\default.vert = Shaders\default.vert
+		Shaders\default_geo.frag = Shaders\default_geo.frag
+		Shaders\deform.geo = Shaders\deform.geo
+		Shaders\instanced.vert = Shaders\instanced.vert
+		Shaders\outline.frag = Shaders\outline.frag
+		Shaders\outline.vert = Shaders\outline.vert
+		Shaders\shadowMap.frag = Shaders\shadowMap.frag
+		Shaders\shadowMap.vert = Shaders\shadowMap.vert
+		Shaders\trans_inst_nocull.frag = Shaders\trans_inst_nocull.frag
+		Shaders\trans_inst_nocull.vert = Shaders\trans_inst_nocull.vert
+		Shaders\transparent.frag = Shaders\transparent.frag
+		Shaders\transparent.vert = Shaders\transparent.vert
+		Shaders\vertexColorDiffuse.frag = Shaders\vertexColorDiffuse.frag
+		Shaders\vertexColorDiffuse.vert = Shaders\vertexColorDiffuse.vert
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skybox", "Skybox", "{C80D6693-E758-43AC-9034-0DC7562677F6}"
+	ProjectSection(SolutionItems) = preProject
+		Shaders\Skybox\skyboxFragment.frag = Shaders\Skybox\skyboxFragment.frag
+		Shaders\Skybox\skyboxVertex.vert = Shaders\Skybox\skyboxVertex.vert
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostProcess", "PostProcess", "{6F916945-9C72-4265-A56E-AA5AA4EC27B1}"
+	ProjectSection(SolutionItems) = preProject
+		Shaders\PostProcess\blur.frag = Shaders\PostProcess\blur.frag
+		Shaders\PostProcess\defaultScreen.frag = Shaders\PostProcess\defaultScreen.frag
+		Shaders\PostProcess\defaultScreen.vert = Shaders\PostProcess\defaultScreen.vert
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +49,31 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{662366CA-BBC5-48B7-B2E6-43685BC254B6}.Debug|x64.ActiveCfg = Debug|x64
-		{662366CA-BBC5-48B7-B2E6-43685BC254B6}.Debug|x64.Build.0 = Debug|x64
-		{662366CA-BBC5-48B7-B2E6-43685BC254B6}.Debug|x86.ActiveCfg = Debug|x64
-		{662366CA-BBC5-48B7-B2E6-43685BC254B6}.Debug|x86.Build.0 = Debug|x64
-		{662366CA-BBC5-48B7-B2E6-43685BC254B6}.Release|x64.ActiveCfg = Release|x64
-		{662366CA-BBC5-48B7-B2E6-43685BC254B6}.Release|x64.Build.0 = Release|x64
-		{662366CA-BBC5-48B7-B2E6-43685BC254B6}.Release|x86.ActiveCfg = Release|Win32
-		{662366CA-BBC5-48B7-B2E6-43685BC254B6}.Release|x86.Build.0 = Release|Win32
+		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}.Debug|x64.ActiveCfg = Debug|x64
+		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}.Debug|x64.Build.0 = Debug|x64
+		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}.Debug|x86.ActiveCfg = Debug|Win32
+		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}.Debug|x86.Build.0 = Debug|Win32
+		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}.Release|x64.ActiveCfg = Release|x64
+		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}.Release|x64.Build.0 = Release|x64
+		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}.Release|x86.ActiveCfg = Release|Win32
+		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}.Release|x86.Build.0 = Release|Win32
+		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Debug|x64.ActiveCfg = Debug|x64
+		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Debug|x64.Build.0 = Debug|x64
+		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Debug|x86.ActiveCfg = Debug|Win32
+		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Debug|x86.Build.0 = Debug|Win32
+		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x64.ActiveCfg = Release|x64
+		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x64.Build.0 = Release|x64
+		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x86.ActiveCfg = Release|Win32
+		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C80D6693-E758-43AC-9034-0DC7562677F6} = {AFF76A8A-64F9-4925-B406-80EB8590CE1F}
+		{6F916945-9C72-4265-A56E-AA5AA4EC27B1} = {AFF76A8A-64F9-4925-B406-80EB8590CE1F}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {89C69D17-F7A0-4F4A-95E2-27A5ABDFAE40}
+		SolutionGuid = {3934C5A2-4966-4805-9EAF-9AD08D2DB4C7}
 	EndGlobalSection
 EndGlobal

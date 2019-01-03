@@ -24,7 +24,7 @@
 
 #include "Mesh.h"
 
-#define dirPathMaterial "Materials/"
+#define dirPathMaterial "../Materials/"
 
 using namespace std;
 
@@ -33,7 +33,6 @@ class Texture;
 class MeshModel
 {
 public:
-	/*  Functions   */
 	MeshModel();
 	MeshModel(string path);
 	~MeshModel();

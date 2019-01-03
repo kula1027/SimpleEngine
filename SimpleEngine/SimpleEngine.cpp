@@ -3,7 +3,6 @@
 #include <gl\glew.h>
 #include "Bases/BasesBundle.h"
 #include "GameWindow.h"
-#include "Scenes/SceneBundle.h"
 
 #include <assimp\postprocess.h>
 #include <assimp\cimport.h>
@@ -34,11 +33,6 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 
 void SimpleEngine::LoadScene(Scene * scene_){
 	currentScene = scene_;
-	currentScene->Load();
-}
-
-void SimpleEngine::LoadScene() {
-	currentScene = new TestScene_Texture();
 	currentScene->Load();
 }
 

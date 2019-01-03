@@ -1,5 +1,7 @@
 #pragma once
-#include "Scene.h"
+
+#include <Scenes/Scene.h>
+
 
 class TestScene_Texture : public Scene {
 public:
