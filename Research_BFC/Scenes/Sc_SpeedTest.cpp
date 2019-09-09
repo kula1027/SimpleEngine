@@ -31,7 +31,7 @@ void Sc_SpeedTest::Load() {
 	//goTimer->AddComponent<TimeChecker>();
 
 	EngineObject* fakeCam = new EngineObject("fakeCam");
-	fakeCam->AddComponent<FakeCam>();
+	fakeCam->AttachComponent(new FakeCam());
 	fakeCam->SetRenderer(new DefaultRenderer());
 	fakeCam->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("cube.obj"));
 	fakeCam->GetRenderer()->SetShader();

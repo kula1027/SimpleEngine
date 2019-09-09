@@ -221,7 +221,7 @@ void PreCullingRenderer::Render(RenderData* renderData_) {
 	}
 
 	if (InputModule::IsPressed(GLFW_KEY_KP_0)) {
-		cout << transform->gameObject->name << " : " << endl
+		cout << transform->engineObject->name << " : " << endl
 			<< "Drawing Face Count: " << drawingFaces << endl
 			<< "Real BackFace Count: " << frontFaceCount << endl
 			<< "Total Face Count: " << totalFaceCount << endl

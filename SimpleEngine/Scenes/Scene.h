@@ -19,7 +19,6 @@ using namespace std;
 class Scene
 {
 private:
-	static Scene* current;
 
 protected:
 	Camera* mainCamera;
@@ -36,6 +35,8 @@ public:
 
 	static Scene* GetCurrent();
 	static void RegisterObject(EngineObject*);
+	static void RegisterRenderer(BaseRenderer*);
+	static void RegisterScript(BaseScript*);
 
 	virtual void Unload();
 	virtual void Load();
@@ -49,7 +50,7 @@ public:
 
 	Camera* GetMainCamera();
 		
-	void UpdateObjects();
+	void UpdateScripts();
 	void RenderScene();
 
 	void SetLineRenderingMode(bool value_);

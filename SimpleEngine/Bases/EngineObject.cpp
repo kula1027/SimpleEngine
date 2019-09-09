@@ -6,31 +6,22 @@
 #include "../Scenes/Scene.h"
 #include <typeinfo>
 
-EngineObject::EngineObject(){
+void EngineObject::Initialize() {
 	transform = new Transform();
-	transform->gameObject = this;
-	Scene::RegisterObject(this);	
-
-	if (renderer != NULL)
-		renderer->Initialize();
-
-	for (int loop = 0; loop < components.size(); loop++) {
-		components[loop]->Initialize();
-	}
-}
-
-EngineObject::EngineObject(std::string name_){
-	name = name_;
-	transform = new Transform();
-	transform->gameObject = this;
+	transform->engineObject = this;
 	Scene::RegisterObject(this);
 
 	if (renderer != NULL)
 		renderer->Initialize();
+}
 
-	for (int loop = 0; loop < components.size(); loop++) {
-		components[loop]->Initialize();
-	}
+EngineObject::EngineObject(){
+	Initialize();
+}
+
+EngineObject::EngineObject(std::string name_){
+	name = name_;
+	Initialize();
 }
 
 void EngineObject::SetId(unsigned int id_){
@@ -41,15 +32,20 @@ unsigned int EngineObject::GetId(){
 	return objectId;
 }
 
-void EngineObject::SetRenderer(BaseRenderer * renderer_){
-	renderer_->SetTransform(transform);
 
-	Scene::GetCurrent()->AddRenderer(renderer_);
-	renderer = renderer_;
-}
+BaseComponent * EngineObject::AttachComponent(BaseComponent* baseComponent_) {
+	components.push_back(baseComponent_);
+	baseComponent_->OnAttachedToObject(this);
 
-BaseRenderer * EngineObject::GetRenderer(){
-	return renderer;
+	if (BaseScript* script = dynamic_cast<BaseScript*>(baseComponent_)) {
+		script->engineObject = this;
+		script->transform = this->transform;
+		Scene::RegisterScript(script);
+
+		script->OnStart();
+	}
+
+	return nullptr;
 }
 
 EngineObject::~EngineObject(){	

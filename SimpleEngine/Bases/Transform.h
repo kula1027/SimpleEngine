@@ -40,7 +40,7 @@ public:
 
 	void Rotate(vec3 eulerAngles);
 #pragma endregion
-	EngineObject* gameObject;
+	EngineObject* engineObject;
 
 	std::vector<Transform*> children;
 	Transform* parent = NULL;

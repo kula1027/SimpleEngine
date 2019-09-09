@@ -23,7 +23,7 @@ void TestScene::Load()
 	mainCamera->SetSkybox(new SkyBox());	
 	mainCamera->transform->position = glm::vec3(0, 10, 0);
 
-	EngineObject* go;
+	EngineObject* eo;
 
 	//floor
 	Texture* t = FilePooler::LoadTexture("../Materials/burnt_sand_brown.png", TextureType_Diffuse);
@@ -37,12 +37,14 @@ void TestScene::Load()
 				thatMesh->vertices[loop].position.z
 			);
 	}
-	go = new EngineObject("floor");
-	go->SetRenderer(new DefaultRenderer());
-	go->GetRenderer()->SetMeshModel(mPlane);
-	go->GetRenderer()->SetShader();
-	go->transform->scale = glm::vec3(40, 1, 40);
+	eo = new EngineObject("floor");
+	DefaultRenderer* dRdr = new DefaultRenderer();
+	eo->AttachComponent(dRdr);	
+	dRdr->SetMeshModel(mPlane);
+	dRdr->SetShader();
+	eo->transform->scale = glm::vec3(40, 1, 40);
 
+	
 	//Grass
 	Texture* tGrass = FilePooler::LoadTexture("../Materials/grass.png", TextureType_DiffuseTransparent);
 	MeshModel* mQuad = FilePooler::LoadMeshModel("quad.obj");
@@ -59,7 +61,7 @@ void TestScene::Load()
 
 	EngineObject* goGrass = new EngineObject("grass parent");
 	InstancedRenderer* rdrGrass = new InstancedRenderer();
-	goGrass->SetRenderer(rdrGrass);
+	goGrass->AttachComponent(rdrGrass);	
 
 	rdrGrass->castShadow = false;
 	//rdrGrass->cullingEnabled = false;
@@ -69,11 +71,11 @@ void TestScene::Load()
 	int grassCount = 100;
 	for (int loop = 0; loop < grassCount; loop++) {
 		for (int loop2 = 0; loop2 < grassCount; loop2++) {
-			go = new EngineObject("grass");
-			go->transform->SetParent(goGrass->transform);
-			go->transform->scale = glm::vec3(rand() % 3 + 1, 1, rand() % 3 + 1);
-			go->transform->position = glm::vec3(-rand() % 400, go->transform->scale.z, -rand() % 400);
-			go->transform->SetEulerAngles(glm::vec3(90, rand() % 180, 0));
+			eo = new EngineObject("grass");
+			eo->transform->SetParent(goGrass->transform);
+			eo->transform->scale = glm::vec3(rand() % 3 + 1, 1, rand() % 3 + 1);
+			eo->transform->position = glm::vec3(-rand() % 400, eo->transform->scale.z, -rand() % 400);
+			eo->transform->SetEulerAngles(glm::vec3(90, rand() % 180, 0));
 		}
 	}
 	rdrGrass->InitInstanced();
@@ -100,11 +102,12 @@ void TestScene::Load()
 	//go->transform->position = glm::vec3(-100, 0, -100);
 
 	//nanosuit
-	go = new EngineObject("nano");
-	go->SetRenderer(new DefaultRenderer());
-	go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
-	go->GetRenderer()->SetShader();
-	go->transform->position = glm::vec3(0, 0, -30);
+	eo = new EngineObject("nano");
+	dRdr = new DefaultRenderer();
+	eo->AttachComponent(dRdr);
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
+	dRdr->SetShader();
+	eo->transform->position = glm::vec3(0, 0, -30);
 
 	////window
 	//Texture* tWindow = FilePooler::LoadTexture("window.png", TextureType_DiffuseTransparent);
@@ -128,4 +131,6 @@ void TestScene::Load()
 	//go->transform->SetEulerAngles(glm::vec3(90, 0, 0));
 	//go->transform->position = glm::vec3(10, 10, -5);
 	//go->transform->scale = glm::vec3(2, 1, 2);
+
+	
 }

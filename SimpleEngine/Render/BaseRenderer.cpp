@@ -44,10 +44,6 @@ MeshModel * BaseRenderer::GetMeshModel() {
 }
 
 
-void BaseRenderer::SetTransform(Transform* transform_) {
-	transform = transform_;
-}
-
 void BaseRenderer::ComputeMatrix(Camera* camera_) {
 	modelMatrix = transform->GetMatrix4();
 	mvpMatrix = camera_->VPmatrix() * modelMatrix;
@@ -55,4 +51,11 @@ void BaseRenderer::ComputeMatrix(Camera* camera_) {
 
 glm::mat4 BaseRenderer::Mmatrix() {
 	return modelMatrix;
+}
+
+void BaseRenderer::OnAttachedToObject(EngineObject* obj_) {
+	BaseComponent::OnAttachedToObject(obj_);
+
+	transform = obj_->transform;
+	Scene::RegisterRenderer(this);
 }

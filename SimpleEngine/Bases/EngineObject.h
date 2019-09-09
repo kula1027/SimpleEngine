@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <glm/gtc/matrix_transform.hpp>
+#include <Debugger/SP_Debugger.h>
 
 class BaseRenderer;
 class BaseLight;
@@ -15,10 +16,12 @@ class BaseLight;
 class BaseComponent;
 
 class EngineObject {
-private:	
+private:
 	unsigned int objectId;
 	BaseRenderer* renderer;
 	std::vector<BaseComponent*> components;
+
+	void Initialize();
 
 public:
 	std::string name = strNoname;
@@ -30,30 +33,12 @@ public:
 
 	void SetId(unsigned int id_);
 	unsigned int GetId();
-	void SetRenderer(BaseRenderer* renderer_);
-	BaseRenderer* GetRenderer();
 
-	template <class T>
-	T* AddComponent();
+	BaseComponent* AttachComponent(BaseComponent*);
 
 	template <class T>
 	T* GetComponent();
 };
-
-template<class T> 
-T* EngineObject::AddComponent(){
-	T* t = new T;
-	if (BaseScript* upd = dynamic_cast< BaseScript* >(t)) {
-		upd->gameObject = this;
-		upd->transform = this->transform;
-		Scene::GetCurrent()->AddScript(upd);
-		components.push_back(t);
-
-		upd->OnStart();
-	}
-
-	return t;
-}
 
 template<class T>
 T * EngineObject::GetComponent(){

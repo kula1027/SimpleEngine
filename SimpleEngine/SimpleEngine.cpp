@@ -46,7 +46,7 @@ void SimpleEngine::Begin() {
 
 		InputModule::CheckInput();		
 		
-		currentScene->UpdateObjects();
+		currentScene->UpdateScripts();
 			
 		currentScene->RenderScene();
 		
@@ -64,6 +64,10 @@ void SimpleEngine::SetVsyncMode(bool isOn){
 		std::cout << "Vsync Off" << std::endl;
 		glfwSwapInterval(0);
 	}
+}
+
+Scene * SimpleEngine::GetCurrentScene() {
+	return currentScene;
 }
 
 

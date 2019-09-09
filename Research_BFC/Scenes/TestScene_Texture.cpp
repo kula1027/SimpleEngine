@@ -44,7 +44,7 @@ void TestScene_Texture::Load() {
 
 
 	EngineObject* fakeCam = new EngineObject("fakeCam");
-	fakeCam->AddComponent<FakeCam>();
+	fakeCam->AttachComponent(new FakeCam());
 	fakeCam->SetRenderer(new DefaultRenderer());
 	fakeCam->GetRenderer()->SetMeshModel(new MeshModel("cube.obj"));
 	fakeCam->GetRenderer()->SetShader();

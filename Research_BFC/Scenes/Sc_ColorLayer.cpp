@@ -31,15 +31,16 @@ void Sc_ColorLayer::Load() {
 
 	EngineObject* fakeCam = new EngineObject("fakeCam");
 	
-	fakeCam->AddComponent<FakeCam>();
-	fakeCam->SetRenderer(new DefaultRenderer());
-	fakeCam->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("cube.obj"));
-	fakeCam->GetRenderer()->SetShader();
+	fakeCam->AttachComponent(new FakeCam());
+	DefaultRenderer* dRdr = new DefaultRenderer();
+	fakeCam->AttachComponent(dRdr);	
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("cube.obj"));
+	dRdr->SetShader();
 	glm::vec3 tPos = normalize(glm::vec3(-1, 0, 0));
 	tPos *= 4;
 	fakeCam->transform->position = glm::vec3(tPos.x, 0, tPos.z);
 	fakeCam->transform->scale = glm::vec3(0.03f);
-	fakeCam->GetRenderer()->castShadow = false;
+	dRdr->castShadow = false;
 
 	const char* m[] = {
 		"suzanne.obj",

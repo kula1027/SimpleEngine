@@ -218,6 +218,7 @@
     <ClInclude Include="Skybox\SkyboxBundle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bases\BaseComponent.cpp" />
     <ClCompile Include="Bases\Camera.cpp" />
     <ClCompile Include="Bases\EngineResource.cpp" />
     <ClCompile Include="Bases\EngineObject.cpp" />

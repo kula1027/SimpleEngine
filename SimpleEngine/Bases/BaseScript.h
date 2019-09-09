@@ -11,6 +11,6 @@ public:
 	virtual void OnStart() {}
 
 	Transform* transform;
-	EngineObject* gameObject;
+	EngineObject* engineObject;
 };
 

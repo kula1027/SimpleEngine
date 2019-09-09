@@ -4,8 +4,6 @@
 
 #include <string>
 
-Scene* Scene::current;
-
 Scene::Scene(){
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -27,11 +25,19 @@ Scene::~Scene(){
 }
 
 Scene* Scene::GetCurrent(){
-	return current;
+	return SimpleEngine::GetCurrentScene();
 }
 
 void Scene::RegisterObject(EngineObject * obj_) {
-	current->AddEngineObject(obj_);
+	SimpleEngine::GetCurrentScene()->AddEngineObject(obj_);
+}
+
+void Scene::RegisterRenderer(BaseRenderer *rdr_) {
+	SimpleEngine::GetCurrentScene()->AddRenderer(rdr_);
+}
+
+void Scene::RegisterScript(BaseScript *script_) {
+	SimpleEngine::GetCurrentScene()->AddScript(script_);
 }
 
 void Scene::Unload() {
@@ -40,10 +46,9 @@ void Scene::Unload() {
 
 void Scene::Load() {
 	SP_Debugger::Log("Load Scene...");
-	current = this;
 
 	mainCamera = new Camera();
-	mainCamera->AddComponent<MoveCamera>();	
+	mainCamera->AttachComponent(new MoveCamera());
 }
 
 EngineObject* Scene::FindEngineObjectByName(string name_) {
@@ -57,7 +62,6 @@ EngineObject* Scene::FindEngineObjectByName(string name_) {
 }
 
 void Scene::AddEngineObject(EngineObject * obj){
-	//cout << "Add GameObject " << obj->name << endl;
 	obj->SetId(freeObjectId++);
 	engineObjects.push_back(obj);
 }
@@ -79,7 +83,7 @@ Camera * Scene::GetMainCamera(){
 	return mainCamera;
 }
 
-void Scene::UpdateObjects(){
+void Scene::UpdateScripts(){
 	for (int loop = 0; loop < scripts.size(); loop++) {
 		scripts[loop]->OnUpdate();
 	}

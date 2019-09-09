@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Bases/BaseComponent.h>
+
 #include <gl/glew.h>
 #include <glm/glm.hpp>
 
@@ -15,13 +17,13 @@ class Mesh;
 class MeshModel;
 class RenderData;
 
-class BaseRenderer {
+class BaseRenderer : public BaseComponent{
 protected:
 	std::string defaultVS;
 	std::string defaultFS;
 	BaseShader* shader = NULL;
 
-	Transform* transform = NULL;//ref to gameObject transform
+	Transform* transform = NULL;//ref to engineObject transform
 	MeshModel* meshModel = NULL;
 
 	glm::mat4 modelMatrix;
@@ -45,9 +47,9 @@ public:
 
 	MeshModel* GetMeshModel();
 
-	void SetTransform(Transform* transform_);
 	void ComputeMatrix(Camera* camera_);
 	glm::mat4 Mmatrix();
 	virtual void RenderShadowMap(BaseLight* light_) {}
+	virtual void OnAttachedToObject(EngineObject*) override;
 };
 

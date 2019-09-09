@@ -68,7 +68,7 @@ void MoveCamera::OnUpdate(){
 }
 
 void MoveCamera::OnStart(){
-	cam = static_cast<Camera*>(gameObject);
+	cam = static_cast<Camera*>(engineObject);
 
 	horizontalAngle = 3.14f;
 	verticalAngle = 0.f;
