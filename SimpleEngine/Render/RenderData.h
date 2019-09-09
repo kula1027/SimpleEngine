@@ -12,5 +12,5 @@ public:
 	~RenderData();
 
 	Camera* camera;
-	std::vector<BaseLight*>* lights;
+	std::vector<BaseLight*>* lights;	
 };

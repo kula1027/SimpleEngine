@@ -7,45 +7,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleEngine", "SimpleEngin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestScene", "TestScene\TestScene.vcxproj", "{03CA1921-96CF-48B3-B105-5703FC71D0D4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{AFF76A8A-64F9-4925-B406-80EB8590CE1F}"
-	ProjectSection(SolutionItems) = preProject
-		Shaders\3layer.frag = Shaders\3layer.frag
-		Shaders\3layer.vert = Shaders\3layer.vert
-		Shaders\default.frag = Shaders\default.frag
-		Shaders\default.vert = Shaders\default.vert
-		Shaders\default_geo.frag = Shaders\default_geo.frag
-		Shaders\deform.geo = Shaders\deform.geo
-		Shaders\instanced.vert = Shaders\instanced.vert
-		Shaders\outline.frag = Shaders\outline.frag
-		Shaders\outline.vert = Shaders\outline.vert
-		Shaders\shadowMap.frag = Shaders\shadowMap.frag
-		Shaders\shadowMap.vert = Shaders\shadowMap.vert
-		Shaders\trans_inst_nocull.frag = Shaders\trans_inst_nocull.frag
-		Shaders\trans_inst_nocull.vert = Shaders\trans_inst_nocull.vert
-		Shaders\transparent.frag = Shaders\transparent.frag
-		Shaders\transparent.vert = Shaders\transparent.vert
-		Shaders\vertexColorDiffuse.frag = Shaders\vertexColorDiffuse.frag
-		Shaders\vertexColorDiffuse.vert = Shaders\vertexColorDiffuse.vert
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Research_BFC", "Research_BFC\Research_BFC.vcxproj", "{E670AD15-D474-47EE-814F-D378016D6C68}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C} = {5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skybox", "Skybox", "{C80D6693-E758-43AC-9034-0DC7562677F6}"
-	ProjectSection(SolutionItems) = preProject
-		Shaders\Skybox\skyboxFragment.frag = Shaders\Skybox\skyboxFragment.frag
-		Shaders\Skybox\skyboxVertex.vert = Shaders\Skybox\skyboxVertex.vert
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostProcess", "PostProcess", "{6F916945-9C72-4265-A56E-AA5AA4EC27B1}"
-	ProjectSection(SolutionItems) = preProject
-		Shaders\PostProcess\blur.frag = Shaders\PostProcess\blur.frag
-		Shaders\PostProcess\defaultScreen.frag = Shaders\PostProcess\defaultScreen.frag
-		Shaders\PostProcess\defaultScreen.vert = Shaders\PostProcess\defaultScreen.vert
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rs_TextureTest", "Rs_TextureTest\Rs_TextureTest.vcxproj", "{1587557A-D8D6-4941-A4FA-11B473AE276C}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rs_SpeedTest", "Rs_SpeedTest\Rs_SpeedTest.vcxproj", "{09E73DCB-9104-4CC4-896C-691F65203067}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rs_ColorLayer", "Rs_ColorLayer\Rs_ColorLayer.vcxproj", "{2873C44F-B169-4EE5-ACB7-A4BC3E4B7EE5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shaders", "Shaders\Shaders.vcxitems", "{77447C03-2DD6-4110-A7F5-5B9634C41571}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,37 +38,17 @@ Global
 		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x64.Build.0 = Release|x64
 		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x86.ActiveCfg = Release|Win32
 		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x86.Build.0 = Release|Win32
-		{1587557A-D8D6-4941-A4FA-11B473AE276C}.Debug|x64.ActiveCfg = Debug|x64
-		{1587557A-D8D6-4941-A4FA-11B473AE276C}.Debug|x64.Build.0 = Debug|x64
-		{1587557A-D8D6-4941-A4FA-11B473AE276C}.Debug|x86.ActiveCfg = Debug|Win32
-		{1587557A-D8D6-4941-A4FA-11B473AE276C}.Debug|x86.Build.0 = Debug|Win32
-		{1587557A-D8D6-4941-A4FA-11B473AE276C}.Release|x64.ActiveCfg = Release|x64
-		{1587557A-D8D6-4941-A4FA-11B473AE276C}.Release|x64.Build.0 = Release|x64
-		{1587557A-D8D6-4941-A4FA-11B473AE276C}.Release|x86.ActiveCfg = Release|Win32
-		{1587557A-D8D6-4941-A4FA-11B473AE276C}.Release|x86.Build.0 = Release|Win32
-		{09E73DCB-9104-4CC4-896C-691F65203067}.Debug|x64.ActiveCfg = Debug|x64
-		{09E73DCB-9104-4CC4-896C-691F65203067}.Debug|x64.Build.0 = Debug|x64
-		{09E73DCB-9104-4CC4-896C-691F65203067}.Debug|x86.ActiveCfg = Debug|Win32
-		{09E73DCB-9104-4CC4-896C-691F65203067}.Debug|x86.Build.0 = Debug|Win32
-		{09E73DCB-9104-4CC4-896C-691F65203067}.Release|x64.ActiveCfg = Release|x64
-		{09E73DCB-9104-4CC4-896C-691F65203067}.Release|x64.Build.0 = Release|x64
-		{09E73DCB-9104-4CC4-896C-691F65203067}.Release|x86.ActiveCfg = Release|Win32
-		{09E73DCB-9104-4CC4-896C-691F65203067}.Release|x86.Build.0 = Release|Win32
-		{2873C44F-B169-4EE5-ACB7-A4BC3E4B7EE5}.Debug|x64.ActiveCfg = Debug|x64
-		{2873C44F-B169-4EE5-ACB7-A4BC3E4B7EE5}.Debug|x64.Build.0 = Debug|x64
-		{2873C44F-B169-4EE5-ACB7-A4BC3E4B7EE5}.Debug|x86.ActiveCfg = Debug|Win32
-		{2873C44F-B169-4EE5-ACB7-A4BC3E4B7EE5}.Debug|x86.Build.0 = Debug|Win32
-		{2873C44F-B169-4EE5-ACB7-A4BC3E4B7EE5}.Release|x64.ActiveCfg = Release|x64
-		{2873C44F-B169-4EE5-ACB7-A4BC3E4B7EE5}.Release|x64.Build.0 = Release|x64
-		{2873C44F-B169-4EE5-ACB7-A4BC3E4B7EE5}.Release|x86.ActiveCfg = Release|Win32
-		{2873C44F-B169-4EE5-ACB7-A4BC3E4B7EE5}.Release|x86.Build.0 = Release|Win32
+		{E670AD15-D474-47EE-814F-D378016D6C68}.Debug|x64.ActiveCfg = Debug|x64
+		{E670AD15-D474-47EE-814F-D378016D6C68}.Debug|x64.Build.0 = Debug|x64
+		{E670AD15-D474-47EE-814F-D378016D6C68}.Debug|x86.ActiveCfg = Debug|Win32
+		{E670AD15-D474-47EE-814F-D378016D6C68}.Debug|x86.Build.0 = Debug|Win32
+		{E670AD15-D474-47EE-814F-D378016D6C68}.Release|x64.ActiveCfg = Release|x64
+		{E670AD15-D474-47EE-814F-D378016D6C68}.Release|x64.Build.0 = Release|x64
+		{E670AD15-D474-47EE-814F-D378016D6C68}.Release|x86.ActiveCfg = Release|Win32
+		{E670AD15-D474-47EE-814F-D378016D6C68}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C80D6693-E758-43AC-9034-0DC7562677F6} = {AFF76A8A-64F9-4925-B406-80EB8590CE1F}
-		{6F916945-9C72-4265-A56E-AA5AA4EC27B1} = {AFF76A8A-64F9-4925-B406-80EB8590CE1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3934C5A2-4966-4805-9EAF-9AD08D2DB4C7}

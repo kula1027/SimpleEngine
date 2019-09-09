@@ -6,7 +6,7 @@
 #define DefaultVS_Ist "instanced.vert"
 
 class Transform;
-class GameObject;
+class EngineObject;
 
 class InstancedRenderer : public DefaultRenderer
 {
@@ -16,6 +16,7 @@ private:
 	glm::mat4 vpMatrix;
 
 	int childTransformCount = 0;
+	bool cullingEnabled = false;//HACK
 
 public:
 	InstancedRenderer();

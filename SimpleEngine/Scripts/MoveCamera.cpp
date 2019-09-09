@@ -20,22 +20,22 @@ void MoveCamera::OnUpdate(){
 		verticalAngle += sensitivity * float(GameWindow::GetHeight() / 2 - InputModule::GetMousePos()[1]);
 
 		if (InputModule::IsPressed(GLFW_KEY_W)) {			
-			transform->position += cam->transform->GetForward() * Time::deltaTime * moveSpeed;
+			transform->position += cam->transform->GetForward() * SP_Time::deltaTime * moveSpeed;
 		}
 		if (InputModule::IsPressed(GLFW_KEY_S)) {
-			transform->position -= cam->transform->GetForward() * Time::deltaTime * moveSpeed;
+			transform->position -= cam->transform->GetForward() * SP_Time::deltaTime * moveSpeed;
 		}
 		if (InputModule::IsPressed(GLFW_KEY_D)) {
-			transform->position += cam->transform->GetRight() * Time::deltaTime * moveSpeed;
+			transform->position += cam->transform->GetRight() * SP_Time::deltaTime * moveSpeed;
 		}
 		if (InputModule::IsPressed(GLFW_KEY_A)) {
-			transform->position -= cam->transform->GetRight() * Time::deltaTime * moveSpeed;
+			transform->position -= cam->transform->GetRight() * SP_Time::deltaTime * moveSpeed;
 		}
 		if (InputModule::IsPressed(GLFW_KEY_Q)) {
-			transform->position += Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
+			transform->position += SP_Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
 		}
 		if (InputModule::IsPressed(GLFW_KEY_E)) {
-			transform->position -= Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
+			transform->position -= SP_Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
 		}
 
 		cam->transform->SetForward(

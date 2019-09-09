@@ -21,9 +21,15 @@
     <ClCompile Include="Scenes\TestScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\TestScene2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes\TestScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\TestScene2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

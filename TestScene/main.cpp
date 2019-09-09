@@ -1,4 +1,5 @@
 #include "SimpleEngine.h"
+#include "Scenes/TestScene2.h"
 #include "Scenes/TestScene.h"
 
 int main() {

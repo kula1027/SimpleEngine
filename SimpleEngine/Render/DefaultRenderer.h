@@ -8,10 +8,7 @@
 #define AttrLoc_IstMatrix3 6
 
 class DefaultRenderer : public BaseRenderer{
-protected:		
-	void SetDrawingMode();
-	
-	void RestoreDrawingMode();
+protected:			
 
 	virtual void SetAdditionalShaderData(BaseShader* shader_) {}
 	virtual void SetUniformAdditional() {}

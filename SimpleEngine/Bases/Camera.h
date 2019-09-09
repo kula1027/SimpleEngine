@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "EngineObject.h"
 #include <gl\glew.h>
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
@@ -13,7 +13,7 @@ class SceneRenderData;
 #define PROJECTION_ORTHO 0
 #define PROJECTION_PERSPECTIVE 1
 
-class Camera : public GameObject{
+class Camera : public EngineObject{
 private:
 	float fov;
 	float near;
@@ -29,6 +29,8 @@ private:
 
 	int projMode;
 
+	SkyBox * skybox;
+
 public:
 	Camera();
 	~Camera();
@@ -39,9 +41,8 @@ public:
 	glm::vec4 clearColor;
 	glm::vec2 normalizedViewPort;
 
-	SkyBox * skybox;
-
-	virtual void Initialize();
+	void SetSkybox(SkyBox* skybox_);
+	SkyBox* GetSkybox();
 
 	void Render(SceneRenderData* renderData_);
 	int renderMode;

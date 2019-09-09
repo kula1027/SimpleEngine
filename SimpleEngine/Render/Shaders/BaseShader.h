@@ -82,6 +82,7 @@ public:
 	void Use();
 		
 	GLuint GetUniformLocation(const GLchar* var_name);
+	void SetMat4(const char* var_name, glm::mat4 mat4_);
 
 	static BaseShader* GetShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment);
 

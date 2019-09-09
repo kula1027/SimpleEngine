@@ -7,8 +7,8 @@
 
 class MeshModel;
 class BaseShader;
-class IUpdatable;
-class GameObject;
+class BaseScript;
+class EngineObject;
 class BaseLight;
 class BaseRenderer;
 class Camera;
@@ -24,27 +24,26 @@ private:
 protected:
 	Camera* mainCamera;
 
-	vector<IUpdatable*> updatables;
-	vector<GameObject*> gameObjects;
+	vector<BaseScript*> scripts;
+	vector<EngineObject*> engineObjects;
 	unsigned long freeObjectId = 0;
 
-	SceneRenderData* renderData;/*
-	vector<Renderer*> renderers;
-	vector<BaseLight*> lights;	*/
+	SceneRenderData* renderData;
 
 public:
 	Scene();
 	~Scene();
 
-	static Scene* GetCurrent();	
+	static Scene* GetCurrent();
+	static void RegisterObject(EngineObject*);
 
+	virtual void Unload();
 	virtual void Load();
-	void Initialize();
 
-	GameObject * FindGameObjectByName(string name_);
+	EngineObject * FindEngineObjectByName(string name_);
 
-	void AddGameObject(GameObject* obj);
-	void AddUpdatable(IUpdatable* upd);
+	void AddEngineObject(EngineObject* obj);
+	void AddScript(BaseScript* upd);
 	void AddRenderer(BaseRenderer* rdr);
 	void AddLight(BaseLight* objLight);
 
@@ -52,4 +51,7 @@ public:
 		
 	void UpdateObjects();
 	void RenderScene();
+
+	void SetLineRenderingMode(bool value_);
+	void SetFaceCullingMode(bool value_);
 };

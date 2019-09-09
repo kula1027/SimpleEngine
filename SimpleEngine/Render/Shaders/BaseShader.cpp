@@ -7,6 +7,8 @@
 
 #include "ShaderBundle.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 
 #pragma region Init
 std::string BaseShader::ReadCodeFromFile(std::string path_) {
@@ -168,6 +170,8 @@ BaseShader * BaseShader::GetShader(std::string filePathVertex, std::string fileP
 		return new DefaultShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag");
 	}
 	
+	printf("No Matching Shaders Found.\n");
+
 	return NULL;
 }
 #pragma endregion
@@ -195,6 +199,11 @@ void BaseShader::Use(){
 
 GLuint BaseShader::GetUniformLocation(const GLchar* var_name){
 	return glGetUniformLocation(shaderID, var_name);
+}
+
+void BaseShader::SetMat4(const char* var_name, glm::mat4 mat4_){
+	GLuint loc = GetUniformLocation(var_name);
+	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat4_));
 }
 
 void BaseShader::OnEndUse(){

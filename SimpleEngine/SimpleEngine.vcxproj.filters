@@ -24,22 +24,10 @@
     <ClInclude Include="Bases\EngineResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bases\GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bases\IComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Bases\InputModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bases\IUpdatable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Bases\SimpleMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bases\Time.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bases\Transform.h">
@@ -72,12 +60,6 @@
     <ClInclude Include="Lights\PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh\ArrangedMesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh\ArrangedMeshModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -85,9 +67,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mesh\MeshModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh\MeshModifier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Render\Shaders\BaseShader.h">
@@ -112,12 +91,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Render\OutlineRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\PreCullingRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\PreCullingRenderer_Split.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Render\RenderBundle.h">
@@ -159,16 +132,10 @@
     <ClInclude Include="Scenes\SceneRenderData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\FakeCam.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scripts\MoveCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\ScriptBundle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\TimeChecker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Skybox\EmptySkyBox.h">
@@ -189,7 +156,34 @@
     <ClInclude Include="SimpleEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PerformanceCheck.h">
+    <ClInclude Include="Render\Shaders\GBufferShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Renderer_Deferred.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\SceneRenderData_df.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Debugger\PerformanceCheck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Debugger\SP_Debugger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bases\BaseScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bases\BaseComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bases\EngineObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bases\SP_Time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Debugger\DebugBundle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -200,16 +194,10 @@
     <ClCompile Include="Bases\EngineResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bases\GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Bases\InputModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bases\SimpleMath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bases\Time.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bases\Transform.cpp">
@@ -236,19 +224,10 @@
     <ClCompile Include="Lights\PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh\ArrangedMesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh\ArrangedMeshModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mesh\MeshModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh\MeshModifier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Render\Shaders\BaseShader.cpp">
@@ -270,12 +249,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Render\OutlineRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\PreCullingRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\PreCullingRenderer_Split.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Render\RenderData.cpp">
@@ -308,13 +281,7 @@
     <ClCompile Include="Scenes\SceneRenderData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\FakeCam.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\MoveCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\TimeChecker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Skybox\EmptySkyBox.cpp">
@@ -329,14 +296,33 @@
     <ClCompile Include="GameWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PerformanceCheck.cpp">
+    <ClCompile Include="SimpleEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleEngine.cpp">
+    <ClCompile Include="Render\Shaders\GBufferShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Renderer_Deferred.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\SceneRenderData_df.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debugger\PerformanceCheck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debugger\SP_Debugger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bases\EngineObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bases\SP_Time.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+    <Text Include="TODOS.txt" />
   </ItemGroup>
 </Project>

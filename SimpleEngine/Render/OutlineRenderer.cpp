@@ -29,8 +29,6 @@ void OutlineRenderer::SetAdditionalShaderData(BaseShader * shader_)
 }
 
 void OutlineRenderer::Render(RenderData* renderData_){
-	SetDrawingMode();
-
 	if (outline.draw) {
 		glEnable(GL_STENCIL_TEST);
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);//stencil 버퍼에 항상 1로 업데이트
@@ -80,6 +78,4 @@ void OutlineRenderer::Render(RenderData* renderData_){
 	glStencilMask(0xFF);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
-
-	RestoreDrawingMode();
 }

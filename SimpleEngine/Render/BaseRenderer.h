@@ -36,8 +36,7 @@ public:
 	void Initialize();
 
 	bool castShadow;
-	bool cullingEnabled;
-	bool lineDrawEnabled;
+	bool receiveShadow;//TODO not implemented
 
 	virtual void Render(RenderData* renderData_) = 0;
 	virtual void SetShader(BaseShader* shader_) {}
@@ -48,6 +47,7 @@ public:
 
 	void SetTransform(Transform* transform_);
 	void ComputeMatrix(Camera* camera_);
+	glm::mat4 Mmatrix();
 	virtual void RenderShadowMap(BaseLight* light_) {}
 };
 

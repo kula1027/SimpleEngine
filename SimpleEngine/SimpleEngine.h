@@ -14,5 +14,6 @@ public:
 	static void LoadScene();
 	static void Begin();
 	static void SetVsyncMode(bool flag);
+
 };
 

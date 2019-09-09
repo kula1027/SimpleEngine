@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{77447c03-2dd6-4110-a7f5-5b9634c41571}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)3layer.frag" />
+    <None Include="$(MSBuildThisFileDirectory)3layer.vert" />
+    <None Include="$(MSBuildThisFileDirectory)default.frag" />
+    <None Include="$(MSBuildThisFileDirectory)default.vert" />
+    <None Include="$(MSBuildThisFileDirectory)default_geo.frag" />
+    <None Include="$(MSBuildThisFileDirectory)deform.geo" />
+    <None Include="$(MSBuildThisFileDirectory)instanced.vert" />
+    <None Include="$(MSBuildThisFileDirectory)outline.frag" />
+    <None Include="$(MSBuildThisFileDirectory)outline.vert" />
+    <None Include="$(MSBuildThisFileDirectory)shadowMap.frag" />
+    <None Include="$(MSBuildThisFileDirectory)shadowMap.vert" />
+    <None Include="$(MSBuildThisFileDirectory)transparent.frag" />
+    <None Include="$(MSBuildThisFileDirectory)transparent.vert" />
+    <None Include="$(MSBuildThisFileDirectory)trans_inst_nocull.frag" />
+    <None Include="$(MSBuildThisFileDirectory)trans_inst_nocull.vert" />
+    <None Include="$(MSBuildThisFileDirectory)vertexColorDiffuse.frag" />
+    <None Include="$(MSBuildThisFileDirectory)vertexColorDiffuse.vert" />
+  </ItemGroup>
+</Project>

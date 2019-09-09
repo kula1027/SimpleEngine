@@ -13,7 +13,7 @@ protected:
 
 public:	
 	SceneRenderData();
-	~SceneRenderData();	
+	~SceneRenderData();
 
 	std::vector<BaseRenderer*> renderers;
 	std::vector<BaseLight*> lights;

@@ -2,6 +2,7 @@
 
 #include "Render/Shaders/BaseShader.h"
 #include "Mesh/MeshModel.h"
+#include <Debugger/SP_Debugger.h>
 
 std::vector<MeshModel*> FilePooler::loadedMeshModels;
 std::vector<BaseShader*> FilePooler::loadedShaders;
@@ -33,17 +34,21 @@ BaseShader * FilePooler::LoadShader(std::string filePathVertex, std::string file
 	}
 
 	if (retShader == NULL) {
-		cout << "Load Shader: " << endl
-			<< "\t V:" << filePathVertex << endl
-			<< "\t G:" << filePathGeometry << endl
-			<< "\t F:" << filePathFragment << endl;
+		SP_Debugger::Log("Load Shader: ");
+		SP_Debugger::Log("\t V : " + filePathVertex);
+		SP_Debugger::Log("\t G : " + filePathGeometry);
+		SP_Debugger::Log("\t F : " + filePathFragment);
+
 		retShader = BaseShader::GetShader(filePathVertex, filePathGeometry, filePathFragment);
+
 		if (retShader == NULL) {
-			cout << "No Matching Shader Found" << endl;
+			SP_Debugger::Log("Matching Shader not found");
 		} else {
 			loadedShaders.push_back(retShader);
 		}		
 	}
+
+	retShader->Initialize();
 
 	return retShader;
 }
@@ -85,11 +90,5 @@ MeshModel* FilePooler::LoadMeshModel(string filePath) {
 		loadedMeshModels.push_back(meshModel);
 
 		return meshModel;
-	}
-}
-
-void FilePooler::InitializeShaders() {
-	for (int loop = 0; loop < loadedShaders.size(); loop++) {
-		loadedShaders[loop]->Initialize();
 	}
 }

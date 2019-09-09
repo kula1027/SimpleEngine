@@ -32,15 +32,17 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 }
 
 void SimpleEngine::LoadScene(Scene * scene_){
+	if (currentScene != NULL) {
+		currentScene->Unload();
+	}	
+
 	currentScene = scene_;
 	currentScene->Load();
 }
 
 void SimpleEngine::Begin() {
-	currentScene->Initialize();
-
 	do { 
-		Time::Tick();
+		SP_Time::Tick();
 
 		InputModule::CheckInput();		
 		

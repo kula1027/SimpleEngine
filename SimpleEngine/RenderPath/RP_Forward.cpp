@@ -1,6 +1,7 @@
 #include "RP_Forward.h"
+
 #include "../Scenes/SceneIncludes.h"
-#include "../GameWindow.h"
+#include <GameWindow.h>
 
 #include "../Render/RenderData.h"
 
@@ -24,24 +25,24 @@ void RP_Forward::Render(Camera* mainCamera_, SceneRenderData * sceneRenderData_)
 	}
 
 	////Render ShadowMap
-	/*for (int loop = 0; loop < lightCount; loop++) {
+	for (int loop = 0; loop < lightCount; loop++) {
 		if (sceneRenderData_->lights[loop]->isShadowCaster == false)continue;
 
 		sceneRenderData_->lights[loop]->EnableShadowMapBuffer();
 		for (int loop2 = 0; loop2 < rdrCount; loop2++) {
 			sceneRenderData_->renderers[loop2]->RenderShadowMap(sceneRenderData_->lights[loop]);
 		}
-	}*/
+	}
 
 	//Render Off Screen	
 	EnableOffSreenBuffer(mainCamera_);
-	RenderData rd;
+	RenderData rd;//HACK: 네이밍이 이상?
 	rd.camera = mainCamera_;
 	rd.lights = &(sceneRenderData_->lights);
 	for (int loop = 0; loop < rdrCount; loop++) {
 		sceneRenderData_->renderers[loop]->Render(&rd);
 	}
-	mainCamera_->RenderSkyBox();	
+	mainCamera_->RenderSkyBox();
 
 	PerformanceCheck::OnEndFrame();
 
@@ -55,8 +56,6 @@ void RP_Forward::Initialize() {
 }
 
 void RP_Forward::EnableOffSreenBuffer(Camera* cam_) {
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 	glViewport(
 		0, 0, 
 		GameWindow::GetWidth() * cam_->normalizedViewPort.x,

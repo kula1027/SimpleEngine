@@ -30,48 +30,41 @@ Scene* Scene::GetCurrent(){
 	return current;
 }
 
-void Scene::Load() {	
-	std::cout << "Load Scene...\n";
+void Scene::RegisterObject(EngineObject * obj_) {
+	current->AddEngineObject(obj_);
+}
+
+void Scene::Unload() {
+	SP_Debugger::Log("Unload Scene...");
+}
+
+void Scene::Load() {
+	SP_Debugger::Log("Load Scene...");
 	current = this;
 
 	mainCamera = new Camera();
 	mainCamera->AddComponent<MoveCamera>();	
 }
 
-void Scene::Initialize() {
-	FilePooler::InitializeShaders();
-
-	for (int loop = 0; loop < gameObjects.size(); loop++) {
-		gameObjects[loop]->Initialize();
-	}
-
-	for (int loop = 0; loop < updatables.size(); loop++) {
-		updatables[loop]->Initialize();
-	}
-
-	for (int loop = 0; loop < updatables.size(); loop++) {
-		updatables[loop]->OnStart();
-	}
-}
-
-GameObject* Scene::FindGameObjectByName(string name_) {
-	for (int loop = 0; loop < gameObjects.size(); loop++) {
-		if (gameObjects[loop]->name.compare(name_)) {
-			return gameObjects[loop];
+EngineObject* Scene::FindEngineObjectByName(string name_) {
+	for (int loop = 0; loop < engineObjects.size(); loop++) {
+		if (engineObjects[loop]->name.compare(name_)) {
+			return engineObjects[loop];
 		}
 	}
 
 	return NULL;
 }
 
-void Scene::AddGameObject(GameObject * obj){
+void Scene::AddEngineObject(EngineObject * obj){
 	//cout << "Add GameObject " << obj->name << endl;
 	obj->SetId(freeObjectId++);
-	gameObjects.push_back(obj);
+	engineObjects.push_back(obj);
 }
 
-void Scene::AddUpdatable(IUpdatable * upd){
-	updatables.push_back(upd);
+void Scene::AddScript(BaseScript * scpt){
+	scripts.push_back(scpt);
+	scpt->OnStart();
 }
 
 void Scene::AddRenderer(BaseRenderer * rdr){
@@ -87,11 +80,28 @@ Camera * Scene::GetMainCamera(){
 }
 
 void Scene::UpdateObjects(){
-	for (int loop = 0; loop < updatables.size(); loop++) {
-		updatables[loop]->OnUpdate();
+	for (int loop = 0; loop < scripts.size(); loop++) {
+		scripts[loop]->OnUpdate();
 	}
 }
 
 void Scene::RenderScene(){
-	mainCamera->Render(renderData);	
+	mainCamera->Render(renderData);
+	
+}
+
+void Scene::SetLineRenderingMode(bool value_) {
+	if (value_) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	} else {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+}
+
+void Scene::SetFaceCullingMode(bool value_) {
+	if (value_) {
+		glEnable(GL_CULL_FACE);
+	} else {
+		glDisable(GL_CULL_FACE);
+	}
 }

@@ -16,10 +16,9 @@ DefaultRenderer::DefaultRenderer(){
 	defaultFS = "default.frag";
 }
 
-
 DefaultRenderer::~DefaultRenderer(){
-}
 
+}
 
 void DefaultRenderer::SetShader(BaseShader* shader_){
 	shader = shader_;
@@ -31,14 +30,10 @@ void DefaultRenderer::SetShader() {
 	SetShader(FilePooler::LoadShader(defaultVS, defaultFS));
 }
 
-
-void DefaultRenderer::Render(RenderData* renderData_) {
-	SetDrawingMode();
-	
+void DefaultRenderer::Render(RenderData* renderData_) {	
 	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
 
-	SetUniformAdditional();
-	static int a = 0;
+	SetUniformAdditional();	
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 	
@@ -56,7 +51,6 @@ void DefaultRenderer::Render(RenderData* renderData_) {
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);	
-	RestoreDrawingMode();
 }
 
 void DefaultRenderer::RenderShadowMap(BaseLight* light_){	
@@ -72,26 +66,5 @@ void DefaultRenderer::RenderShadowMap(BaseLight* light_){
 		}
 
 		glBindVertexArray(0);
-	}
-}
-
-
-void DefaultRenderer::SetDrawingMode(){
-	if (!cullingEnabled) {
-		glDisable(GL_CULL_FACE);
-	}
-	if (lineDrawEnabled) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-}
-
-
-
-void DefaultRenderer::RestoreDrawingMode(){
-	if (!cullingEnabled) {
-		glEnable(GL_CULL_FACE);
-	}
-	if (lineDrawEnabled) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 }

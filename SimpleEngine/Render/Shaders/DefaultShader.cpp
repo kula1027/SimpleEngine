@@ -5,6 +5,8 @@
 #include "../RenderData.h"
 #include "../../Mesh/Mesh.h"
 
+#include <Debugger/SP_Debugger.h>
+
 #include "../Texture.h"
 
 DefaultShader::DefaultShader() {

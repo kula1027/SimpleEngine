@@ -4,10 +4,7 @@
 class RP_Forward : public RenderPath{
 private:
 
-protected:
-	
-
-	
+protected:	
 	void EnableOffSreenBuffer(Camera* cam_);
 	void PostDraw();
 

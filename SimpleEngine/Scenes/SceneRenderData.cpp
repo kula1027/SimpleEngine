@@ -2,13 +2,11 @@
 
 
 
-SceneRenderData::SceneRenderData()
-{
+SceneRenderData::SceneRenderData(){
 }
 
 
-SceneRenderData::~SceneRenderData()
-{
+SceneRenderData::~SceneRenderData(){
 }
 
 void SceneRenderData::AddRenderer(BaseRenderer * rdr_) {

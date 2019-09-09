@@ -5,7 +5,7 @@
 
 class Camera;
 
-class MoveCamera : public IUpdatable {
+class MoveCamera : public BaseScript {
 private:
 	float moveSpeed;
 	float sensitivity;

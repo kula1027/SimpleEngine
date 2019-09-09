@@ -6,7 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 
-class GameObject;
+class EngineObject;
 
 using namespace glm;
 class Transform
@@ -40,7 +40,7 @@ public:
 
 	void Rotate(vec3 eulerAngles);
 #pragma endregion
-	GameObject* gameObject;
+	EngineObject* gameObject;
 
 	std::vector<Transform*> children;
 	Transform* parent = NULL;

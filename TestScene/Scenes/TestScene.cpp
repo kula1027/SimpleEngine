@@ -20,10 +20,10 @@ void TestScene::Load()
 	BaseLight* directionalLight = new DirectionalLight();
 	AddLight(directionalLight);
 
-	mainCamera->skybox = new SkyBox();
-	mainCamera->transform->position = glm::vec3(0, 20, 0);
+	mainCamera->SetSkybox(new SkyBox());	
+	mainCamera->transform->position = glm::vec3(0, 10, 0);
 
-	GameObject* go;
+	EngineObject* go;
 
 	//floor
 	Texture* t = FilePooler::LoadTexture("../Materials/burnt_sand_brown.png", TextureType_Diffuse);
@@ -37,7 +37,7 @@ void TestScene::Load()
 				thatMesh->vertices[loop].position.z
 			);
 	}
-	go = new GameObject("floor");
+	go = new EngineObject("floor");
 	go->SetRenderer(new DefaultRenderer());
 	go->GetRenderer()->SetMeshModel(mPlane);
 	go->GetRenderer()->SetShader();
@@ -57,19 +57,19 @@ void TestScene::Load()
 	}
 
 
-	GameObject* goGrass = new GameObject("grass parent");
+	EngineObject* goGrass = new EngineObject("grass parent");
 	InstancedRenderer* rdrGrass = new InstancedRenderer();
 	goGrass->SetRenderer(rdrGrass);
 
 	rdrGrass->castShadow = false;
-	rdrGrass->cullingEnabled = false;
+	//rdrGrass->cullingEnabled = false;
 	rdrGrass->SetMeshModel(mQuad);
 	rdrGrass->SetShader(FilePooler::LoadShader("trans_inst_nocull.vert", "trans_inst_nocull.frag"));
 
 	int grassCount = 100;
 	for (int loop = 0; loop < grassCount; loop++) {
 		for (int loop2 = 0; loop2 < grassCount; loop2++) {
-			go = new GameObject("grass");
+			go = new EngineObject("grass");
 			go->transform->SetParent(goGrass->transform);
 			go->transform->scale = glm::vec3(rand() % 3 + 1, 1, rand() % 3 + 1);
 			go->transform->position = glm::vec3(-rand() % 400, go->transform->scale.z, -rand() % 400);
@@ -100,11 +100,11 @@ void TestScene::Load()
 	//go->transform->position = glm::vec3(-100, 0, -100);
 
 	//nanosuit
-	go = new GameObject("nano");
+	go = new EngineObject("nano");
 	go->SetRenderer(new DefaultRenderer());
 	go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
 	go->GetRenderer()->SetShader();
-	go->transform->position = glm::vec3(10, 0, 0);
+	go->transform->position = glm::vec3(0, 0, -30);
 
 	////window
 	//Texture* tWindow = FilePooler::LoadTexture("window.png", TextureType_DiffuseTransparent);

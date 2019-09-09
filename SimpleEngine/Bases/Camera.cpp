@@ -1,6 +1,7 @@
 #include "Camera.h"
 
 #include <gl\glew.h>
+#include <Debugger/SP_Debugger.h>
 #include "BasesBundle.h"
 #include "../GameWindow.h"
 #include "../Render/Shaders/BaseShader.h"
@@ -26,14 +27,9 @@ Camera::Camera(){
 
 	skybox = new EmptySkyBox();
 	renderMode = RenderPath_Forward;
-}
 
-Camera::~Camera(){
-}
+	SP_Debugger::Log("Initialize Camera...");
 
-
-void Camera::Initialize() {
-	std::cout << "Initialize Camera..." << std::endl;
 
 	switch (projMode) {
 	case PROJECTION_PERSPECTIVE:
@@ -46,17 +42,18 @@ void Camera::Initialize() {
 		break;
 
 	default:
+		SP_Debugger::Error("Projection mode not defined.");
 		projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
 		break;
 	}
-	
+
 	switch (renderMode) {
 	case RenderPath_Forward:
 		renderPath = new RP_Forward();
 		break;
 
 	case RenderPath_Deferred:
-		//renderPipeLine = new RP_Deferred();
+		renderPath = new RP_Deferred();
 		break;
 
 	case RenderPath_SimpleSingle:
@@ -64,12 +61,30 @@ void Camera::Initialize() {
 		break;
 
 	default:
+		SP_Debugger::Error("RenderPath not defined.");
 		renderPath = new RP_Forward();
 		break;
 	}
 
 	renderPath->Initialize();
 	skybox->Initialize();
+}
+
+Camera::~Camera(){
+}
+
+
+void Camera::SetSkybox(SkyBox * skybox_) {
+	if (skybox != NULL) {
+		free(skybox);
+	}
+
+	skybox = skybox_;
+	skybox->Initialize();
+}
+
+SkyBox * Camera::GetSkybox() {
+	return skybox;
 }
 
 void Camera::Render(SceneRenderData* sceneRenderData_) {

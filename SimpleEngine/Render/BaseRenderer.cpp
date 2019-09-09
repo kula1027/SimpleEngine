@@ -6,15 +6,11 @@
 
 BaseRenderer::BaseRenderer() {
 	castShadow = false;
-	cullingEnabled = true;
-	lineDrawEnabled = false;
 }
 
 
 BaseRenderer::BaseRenderer(MeshModel * meshModel_) {
 	castShadow = true;
-	cullingEnabled = true;
-	lineDrawEnabled = false;
 
 	SetMeshModel(meshModel_);
 }
@@ -22,8 +18,6 @@ BaseRenderer::BaseRenderer(MeshModel * meshModel_) {
 BaseRenderer::BaseRenderer(Transform* transform_) {
 	transform = transform_;
 	castShadow = true;
-	cullingEnabled = true;
-	lineDrawEnabled = false;
 }
 
 BaseRenderer::~BaseRenderer() {
@@ -57,4 +51,8 @@ void BaseRenderer::SetTransform(Transform* transform_) {
 void BaseRenderer::ComputeMatrix(Camera* camera_) {
 	modelMatrix = transform->GetMatrix4();
 	mvpMatrix = camera_->VPmatrix() * modelMatrix;
+}
+
+glm::mat4 BaseRenderer::Mmatrix() {
+	return modelMatrix;
 }

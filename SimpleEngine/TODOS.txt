@@ -1,0 +1,6 @@
+파일 디렉토리 경로 정리
+	Texture, mesh, skybox...
+
+고정된 Uniform은 매 프레임 갱신 필요 X -> static object 구현
+
+Shadow Casting List, uniform setting list 구현
