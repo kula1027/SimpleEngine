@@ -15,9 +15,8 @@ class MeshModel;
 class BaseLight;
 class Mesh;
 class MeshModel;
-class RenderData;
 
-class BaseRenderer : public BaseComponent{
+class MeshRenderer : public BaseComponent{
 protected:
 	std::string defaultVS;
 	std::string defaultFS;
@@ -29,26 +28,31 @@ protected:
 	glm::mat4 modelMatrix;
 	glm::mat4 mvpMatrix;
 
-public:
-	BaseRenderer();
-	BaseRenderer(MeshModel* meshModel_);
-	BaseRenderer(Transform* transform_);
-	~BaseRenderer();
+	virtual void SetAdditionalShaderData(BaseShader* shader_) {}
+	virtual void SetUniformAdditional() {}
 
-	void Initialize();
+public:
+	MeshRenderer();
+	MeshRenderer(MeshModel* meshModel_);
+	virtual ~MeshRenderer();
+
+	void Initialize(MeshModel* meshModel_);
 
 	bool castShadow;
 	bool receiveShadow;//TODO not implemented
 
-	virtual void Render(RenderData* renderData_) = 0;
+	virtual void RenderMesh(Camera* camera_, std::vector<BaseLight*>* lights_);
+	virtual void RenderMesh();
 	virtual void SetShader(BaseShader* shader_) {}
 	virtual void SetShader() {}
 	void SetMeshModel(MeshModel* meshModel_);
 
 	MeshModel* GetMeshModel();
+	BaseShader* GetShader();
 
 	void ComputeMatrix(Camera* camera_);
 	glm::mat4 Mmatrix();
+	glm::mat4 MVPmatrix();
 	virtual void RenderShadowMap(BaseLight* light_) {}
 	virtual void OnAttachedToObject(EngineObject*) override;
 };

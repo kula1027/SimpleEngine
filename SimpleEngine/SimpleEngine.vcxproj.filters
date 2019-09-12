@@ -72,31 +72,13 @@
     <ClInclude Include="Render\Shaders\BaseShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Render\Shaders\DefaultShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Render\Shaders\InstancedShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Render\Shaders\ShaderBundle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Render\BaseRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\DefaultRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\InstancedRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\OutlineRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Render\RenderBundle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\RenderData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Render\Texture.h">
@@ -156,15 +138,6 @@
     <ClInclude Include="SimpleEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Render\Shaders\GBufferShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\Renderer_Deferred.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\SceneRenderData_df.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Debugger\PerformanceCheck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -184,6 +157,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Debugger\DebugBundle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Shaders\Deferred\ShaderDeferredLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Shaders\Deferred\ShaderDeferredGeo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\MeshRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\BaseShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\InstancedShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\ShaderBundle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\Forward\ShaderForward.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\Deferred\ShaderDeferredGeo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\Deferred\ShaderDeferredLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -228,30 +231,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mesh\MeshModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\Shaders\BaseShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\Shaders\DefaultShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\Shaders\InstancedShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\BaseRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\DefaultRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\InstancedRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\OutlineRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\RenderData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Render\Texture.cpp">
@@ -299,15 +278,6 @@
     <ClCompile Include="SimpleEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Render\Shaders\GBufferShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\Renderer_Deferred.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenes\SceneRenderData_df.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Debugger\PerformanceCheck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -321,6 +291,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bases\BaseComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\MeshRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders\BaseShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders\InstancedShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders\Forward\ShaderForward.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders\Deferred\ShaderDeferredGeo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders\Deferred\ShaderDeferredLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

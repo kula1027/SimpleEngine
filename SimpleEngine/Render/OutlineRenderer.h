@@ -14,8 +14,7 @@ struct Outline {
 
 };
 
-class OutlineRenderer :
-	public DefaultRenderer
+class OutlineRenderer //:	public DefaultRenderer
 {
 private:
 	BaseShader * outlineShader = NULL;
@@ -27,7 +26,7 @@ public:
 	OutlineRenderer();
 	~OutlineRenderer();
 	
-	void Render(RenderData* renderData_);
+//	void Render(RenderData* renderData_);
 
 	Outline outline;
 };

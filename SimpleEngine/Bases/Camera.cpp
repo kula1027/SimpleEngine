@@ -4,19 +4,20 @@
 #include <Debugger/SP_Debugger.h>
 #include "BasesBundle.h"
 #include "../GameWindow.h"
-#include "../Render/Shaders/BaseShader.h"
+#include <Shaders/BaseShader.h>
 #include "../FilePooler.h"
 
 #include "../RenderPath/RenderPathBundle.h"
 
 
 Camera::Camera(){
+	DebugLog("Initialize Camera...");
+
 	name = "Camera";	
 
 	transform->position = glm::vec3(0, 0, 0);
 	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	projMode = PROJECTION_PERSPECTIVE;
-	
+
 	fov = 1.0f;
 	near = 0.1f;
 	far = 1000.0f;
@@ -26,11 +27,8 @@ Camera::Camera(){
 	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	skybox = new EmptySkyBox();
-	renderMode = RenderPath_Forward;
 
-	SP_Debugger::Log("Initialize Camera...");
-
-
+	projMode = PROJECTION_PERSPECTIVE;
 	switch (projMode) {
 	case PROJECTION_PERSPECTIVE:
 		projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
@@ -42,26 +40,27 @@ Camera::Camera(){
 		break;
 
 	default:
-		SP_Debugger::Error("Projection mode not defined.");
+		DebugError("Projection mode not defined.");		
 		projectionMatrix = glm::perspective(fov, (float)GameWindow::GetWidth() / (float)GameWindow::GetHeight(), near, far);
 		break;
 	}
 
+	renderMode = DefaultRenderMode;
 	switch (renderMode) {
-	case RenderPath_Forward:
+	case RenderMode_Forward:
 		renderPath = new RP_Forward();
 		break;
 
-	case RenderPath_Deferred:
+	case RenderMode_Deferred:
 		renderPath = new RP_Deferred();
 		break;
 
-	case RenderPath_SimpleSingle:
+	case RenderMode_SimpleSingle:
 		renderPath = new RP_SimpleSingle();
 		break;
 
 	default:
-		SP_Debugger::Error("RenderPath not defined.");
+		DebugError("RenderPath not defined.");
 		renderPath = new RP_Forward();
 		break;
 	}

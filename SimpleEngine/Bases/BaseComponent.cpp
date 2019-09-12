@@ -7,3 +7,6 @@ void BaseComponent::OnAttachedToObject(EngineObject * obj_) {
 EngineObject * BaseComponent::GetAttachedObject() {
 	return engineObject;
 }
+
+BaseComponent::~BaseComponent() {
+}

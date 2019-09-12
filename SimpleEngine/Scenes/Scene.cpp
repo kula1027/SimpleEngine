@@ -5,23 +5,22 @@
 #include <string>
 
 Scene::Scene(){
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-	//glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//TODO RenderPath에 종속되야 할듯함
+	//glEnable(GL_DEPTH_TEST);
+
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	//glDisable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);	
+	//glCullFace(GL_BACK);
 
 	renderData = new SceneRenderData();
 }
 
 Scene::~Scene(){
+	free(renderData);
 }
 
 Scene* Scene::GetCurrent(){
@@ -32,20 +31,24 @@ void Scene::RegisterObject(EngineObject * obj_) {
 	SimpleEngine::GetCurrentScene()->AddEngineObject(obj_);
 }
 
-void Scene::RegisterRenderer(BaseRenderer *rdr_) {
+void Scene::RegisterRenderer(MeshRenderer *rdr_) {
 	SimpleEngine::GetCurrentScene()->AddRenderer(rdr_);
+}
+
+void Scene::RegisterLight(BaseLight* light_) {
+	SimpleEngine::GetCurrentScene()->AddLight(light_);
 }
 
 void Scene::RegisterScript(BaseScript *script_) {
 	SimpleEngine::GetCurrentScene()->AddScript(script_);
 }
 
-void Scene::Unload() {
-	SP_Debugger::Log("Unload Scene...");
+void Scene::Unload() {	
+	DebugLog("Unload Scene...");
 }
 
-void Scene::Load() {
-	SP_Debugger::Log("Load Scene...");
+void Scene::Load() {	
+	DebugLog("Load Scene...");	
 
 	mainCamera = new Camera();
 	mainCamera->AttachComponent(new MoveCamera());
@@ -66,13 +69,13 @@ void Scene::AddEngineObject(EngineObject * obj){
 	engineObjects.push_back(obj);
 }
 
-void Scene::AddScript(BaseScript * scpt){
-	scripts.push_back(scpt);
-	scpt->OnStart();
+void Scene::AddScript(BaseScript * script_){
+	scripts.push_back(script_);
+	script_->OnStart();
 }
 
-void Scene::AddRenderer(BaseRenderer * rdr){
-	renderData->AddRenderer(rdr);
+void Scene::AddRenderer(MeshRenderer * rdr_){
+	renderData->AddRenderer(rdr_);
 }
 
 void Scene::AddLight(BaseLight * light_){
@@ -92,20 +95,5 @@ void Scene::UpdateScripts(){
 void Scene::RenderScene(){
 	mainCamera->Render(renderData);
 	
-}
-
-void Scene::SetLineRenderingMode(bool value_) {
-	if (value_) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	} else {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-}
-
-void Scene::SetFaceCullingMode(bool value_) {
-	if (value_) {
-		glEnable(GL_CULL_FACE);
-	} else {
-		glDisable(GL_CULL_FACE);
-	}
+	PerformanceCheck::OnEndFrame();
 }

@@ -13,7 +13,6 @@ public:
 	static void LoadScene(Scene* scene_);
 	static void LoadScene();
 	static void Begin();
-	static void SetVsyncMode(bool flag);
 	static Scene* GetCurrentScene();
 };
 

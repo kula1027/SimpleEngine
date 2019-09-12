@@ -3,7 +3,7 @@
 #include <vector>
 
 class SkyBox;
-class BaseRenderer;
+class MeshRenderer;
 class BaseLight;
 
 // Scene -> RenderPath Param Obj
@@ -15,10 +15,10 @@ public:
 	SceneRenderData();
 	~SceneRenderData();
 
-	std::vector<BaseRenderer*> renderers;
+	std::vector<MeshRenderer*> renderers;
 	std::vector<BaseLight*> lights;
 
-	void AddRenderer(BaseRenderer* rdr_);
+	void AddRenderer(MeshRenderer* rdr_);
 	void AddLight(BaseLight* light_);
 };
 

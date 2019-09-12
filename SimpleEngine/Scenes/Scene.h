@@ -10,7 +10,7 @@ class BaseShader;
 class BaseScript;
 class EngineObject;
 class BaseLight;
-class BaseRenderer;
+class MeshRenderer;
 class Camera;
 class SceneRenderData;
 
@@ -19,6 +19,10 @@ using namespace std;
 class Scene
 {
 private:
+	void AddEngineObject(EngineObject* obj);
+	void AddScript(BaseScript* upd);
+	void AddRenderer(MeshRenderer* rdr);
+	void AddLight(BaseLight* objLight);
 
 protected:
 	Camera* mainCamera;
@@ -31,28 +35,21 @@ protected:
 
 public:
 	Scene();
-	~Scene();
+	virtual ~Scene();
 
 	static Scene* GetCurrent();
 	static void RegisterObject(EngineObject*);
-	static void RegisterRenderer(BaseRenderer*);
+	static void RegisterRenderer(MeshRenderer*);
+	static void RegisterLight(BaseLight*);
 	static void RegisterScript(BaseScript*);
 
 	virtual void Unload();
 	virtual void Load();
 
-	EngineObject * FindEngineObjectByName(string name_);
-
-	void AddEngineObject(EngineObject* obj);
-	void AddScript(BaseScript* upd);
-	void AddRenderer(BaseRenderer* rdr);
-	void AddLight(BaseLight* objLight);
+	EngineObject * FindEngineObjectByName(string name_);	
 
 	Camera* GetMainCamera();
 		
 	void UpdateScripts();
 	void RenderScene();
-
-	void SetLineRenderingMode(bool value_);
-	void SetFaceCullingMode(bool value_);
 };

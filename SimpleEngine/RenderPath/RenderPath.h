@@ -4,9 +4,6 @@ class SceneRenderData;
 class Camera;
 class BaseShader;
 
-#define RenderPath_Forward 0
-#define RenderPath_Deferred 1
-#define RenderPath_SimpleSingle 2
 
 #include <glm\glm.hpp>
 
@@ -25,6 +22,9 @@ protected:
 
 	OffScreenData offScreenData;
 	void InitOffScreenDraw();
+	void EnableOffSreenBuffer(Camera* cam_);
+
+	void PostDraw();
 
 public:
 	RenderPath();

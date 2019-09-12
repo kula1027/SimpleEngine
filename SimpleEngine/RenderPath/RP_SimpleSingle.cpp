@@ -2,8 +2,6 @@
 #include "../Scenes/SceneIncludes.h"
 #include "../GameWindow.h"
 
-#include "../Render/RenderData.h"
-
 //Simplest RenderPath
 //No Shadows, Single Pass
 
@@ -34,14 +32,10 @@ void RP_SimpleSingle::Render(Camera* mainCamera_, SceneRenderData * sceneRenderD
 	}
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	RenderData rd;
-	rd.camera = mainCamera_;
-	rd.lights = &(sceneRenderData_->lights);
+	
 
 	for (int loop = 0; loop < rdrCount; loop++) {
-		sceneRenderData_->renderers[loop]->Render(&rd);
+		//sceneRenderData_->renderers[loop]->Render(&rd);
 	}
-	mainCamera_->RenderSkyBox();
-
-	PerformanceCheck::OnEndFrame();	
+	mainCamera_->RenderSkyBox();	
 }

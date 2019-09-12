@@ -15,6 +15,5 @@
 
 #include "../RenderPath/RenderPathBundle.h"
 #include "SceneRenderData.h"
-#include "SceneRenderData_df.h"
 
 #include "../Debugger/SP_Debugger.h"

@@ -4,3 +4,21 @@
 고정된 Uniform은 매 프레임 갱신 필요 X -> static object 구현
 
 Shadow Casting List, uniform setting list 구현
+
+
+cascade shadow
+instanced rendering fix
+
+Engine 기능
+	- UI
+		- Text
+		- Panel
+
+	- Mesh Collider
+		- 아마 PhysX? 활용
+
+	- Terrain
+		- Marching Cude
+	
+	- water
+		

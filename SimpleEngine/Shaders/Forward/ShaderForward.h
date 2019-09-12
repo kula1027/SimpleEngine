@@ -1,15 +1,15 @@
 #pragma once
-#include "BaseShader.h"
+#include <Shaders/BaseShader.h>
 
 class Camera;
 class BaseLight;
 class Mesh;
 
-class DefaultShader : public BaseShader {
+class ShaderForward : public BaseShader {
 public:
-	DefaultShader();
-	DefaultShader(string vs, string fs);
-	~DefaultShader();
+	ShaderForward();
+	ShaderForward(string vs, string fs);
+	~ShaderForward();
 
 	ID_matrice id_matrice;
 	ID_dLight id_dLight;
@@ -19,7 +19,8 @@ public:
 
 	virtual void Initialize();	
 
-	virtual void SetUniforms(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_);
+	virtual void SetUniforms(
+		Camera* camera_, MeshRenderer* renderer_, std::vector<BaseLight*>* lights_) override;
 	virtual void ApplyTexture(std::vector<Texture*> textures_);
 
 	void SetUniformDlight(Camera* cam_, BaseLight* dLight_);

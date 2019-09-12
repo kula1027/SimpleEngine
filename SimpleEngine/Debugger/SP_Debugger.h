@@ -2,6 +2,18 @@
 
 #include <iostream>
 #include <string>
+#include <EngineDef.h>
+
+#ifdef DEBUGMODE
+#define DebugLog(string) SP_Debugger::Log(string)
+#define DebugError(string) SP_Debugger::Error(string)
+#define DebugWarning(string) SP_Debugger::Warning(string)
+#else
+#define DebugLog(string) 
+#define DebugError(string)
+#define DebugWarning(string)
+#endif
+
 
 using namespace::std;
 class SP_Debugger {

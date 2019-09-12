@@ -1,11 +1,14 @@
 #pragma once
 #include "RenderPath.h"
 
-class GBufferShader;
+class ShaderDeferredGeo;
+class ShaderDeferredLight;
 
 class RP_Deferred : public RenderPath{
 private:
-	GBufferShader* gBufferShader;
+	ShaderDeferredGeo* shaderDeferredGeo;
+	ShaderDeferredLight* shaderDeferredLight;
+
 
 public:
 	unsigned int gBuffer;

@@ -4,7 +4,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Texture.h"
-#include "RenderData.h"
 
 #include "../Bases/BasesBundle.h"
 #include "../Mesh/MeshModel.h"
@@ -31,7 +30,7 @@ void DefaultRenderer::SetShader() {
 }
 
 void DefaultRenderer::Render(RenderData* renderData_) {	
-	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
+	//shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
 
 	SetUniformAdditional();	
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {

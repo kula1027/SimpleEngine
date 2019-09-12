@@ -15,8 +15,8 @@ void PerformanceCheck::OnEndFrame(){
 	numFrame++;
 
 	if (timeElapsed >= showingTimeItv) {
-		std::cout << "FPS: " << numFrame / showingTimeItv
-			<< " / TPF: " << (timeElapsed / numFrame) * 1000 << " ms \n";
+		/*std::cout << "FPS: " << numFrame / showingTimeItv
+			<< " / TPF: " << (timeElapsed / numFrame) * 1000 << " ms \n";*/
 		timeElapsed -= showingTimeItv;
 		numFrame = 0;
 	}

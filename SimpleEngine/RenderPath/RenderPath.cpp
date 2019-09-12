@@ -1,8 +1,6 @@
 #include "RenderPath.h"
-#include "../Scenes/SceneIncludes.h"
-#include "../GameWindow.h"
-
-#include "../Render/RenderData.h"
+#include <Scenes/SceneIncludes.h>
+#include <GameWindow.h>
 
 float RenderPath::quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
 										 // positions   // texCoords
@@ -67,4 +65,24 @@ void RenderPath::InitOffScreenDraw() {
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void RenderPath::EnableOffSreenBuffer(Camera* cam_) {
+	glViewport(
+		0, 0,
+		GameWindow::GetWidth() * cam_->normalizedViewPort.x,
+		GameWindow::GetHeight() * cam_->normalizedViewPort.y
+	);
+	glBindFramebuffer(GL_FRAMEBUFFER, offScreenData.frameBuffer);
+
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
+	glClearColor(
+		cam_->clearColor.x,
+		cam_->clearColor.y,
+		cam_->clearColor.z,
+		cam_->clearColor.w
+	);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }

@@ -142,7 +142,7 @@ BaseShader * BaseShader::GetShader(std::string filePathVertex, std::string fileP
 	if (filePathVertex.compare("default.vert") == 0 &&
 		filePathGeometry.compare("") == 0 &&
 		filePathFragment.compare("default.frag") == 0) {
-		return new DefaultShader();
+		return new ShaderForward();
 	}
 	if (filePathVertex.compare("shadowMap.vert") == 0 &&
 		filePathGeometry.compare("") == 0 &&
@@ -157,17 +157,17 @@ BaseShader * BaseShader::GetShader(std::string filePathVertex, std::string fileP
 	if (filePathVertex.compare("3layer.vert") == 0 &&
 		filePathGeometry.compare("") == 0 &&
 		filePathFragment.compare("3layer.frag") == 0) {
-		return new DefaultShader("3layer.vert", "3layer.frag");
+		return new ShaderForward("3layer.vert", "3layer.frag");
 	}
 	if (filePathVertex.compare("3layer.vert") == 0 &&
 		filePathGeometry.compare("") == 0 &&
 		filePathFragment.compare("3layer.frag") == 0) {
-		return new DefaultShader("3layer.vert", "3layer.frag");
+		return new ShaderForward("3layer.vert", "3layer.frag");
 	}
 	if (filePathVertex.compare("vertexColorDiffuse.vert") == 0 &&
 		filePathGeometry.compare("") == 0 &&
 		filePathFragment.compare("vertexColorDiffuse.frag") == 0) {
-		return new DefaultShader("vertexColorDiffuse.vert", "vertexColorDiffuse.frag");
+		return new ShaderForward("vertexColorDiffuse.vert", "vertexColorDiffuse.frag");
 	}
 	
 	printf("No Matching Shaders Found.\n");
@@ -201,10 +201,21 @@ GLuint BaseShader::GetUniformLocation(const GLchar* var_name){
 	return glGetUniformLocation(shaderID, var_name);
 }
 
-void BaseShader::SetMat4(const char* var_name, glm::mat4 mat4_){
-	GLuint loc = GetUniformLocation(var_name);
+void BaseShader::SetMat4(string var_name, glm::mat4 mat4_){
+	GLuint loc = GetUniformLocation(var_name.c_str());
 	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat4_));
 }
+
+void BaseShader::SetVec3(string var_name, glm::vec3 vec3_) {
+	GLuint loc = GetUniformLocation(var_name.c_str());
+	glUniform3f(loc, vec3_.x, vec3_.y, vec3_.z);
+}
+
+void BaseShader::SetInt(string var_name, int val_) {
+	GLuint loc = GetUniformLocation(var_name.c_str());
+	glUniform1i(loc, val_);
+}
+
 
 void BaseShader::OnEndUse(){
 }

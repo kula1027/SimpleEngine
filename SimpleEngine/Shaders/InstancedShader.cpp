@@ -1,8 +1,7 @@
 #include "InstancedShader.h"
-#include "../../Bases/Camera.h"
-#include "../../Lights/DirectionalLight.h"
+#include <Bases/Camera.h>
+#include <Lights/DirectionalLight.h>
 #include <glm/gtc/type_ptr.hpp>
-#include "../RenderData.h"
 
 
 InstancedShader::InstancedShader() {
@@ -41,12 +40,12 @@ void InstancedShader::Initialize() {
 	glUniform1i(id_specular.id, 1);
 }
 
-void InstancedShader::SetUniforms(RenderData * renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_) {
-	Use();
-
-	glUniformMatrix4fv(id_matrice.vp, 1, GL_FALSE, glm::value_ptr(renderData_->camera->VPmatrix()));
-	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(renderData_->camera->Vmatrix()));
-
-	SetUniformDlight(renderData_->camera, (*renderData_->lights)[0]);
-}
+//void InstancedShader::SetUniforms(RenderData * renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_) {
+//	Use();
+//
+//	glUniformMatrix4fv(id_matrice.vp, 1, GL_FALSE, glm::value_ptr(renderData_->camera->VPmatrix()));
+//	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(renderData_->camera->Vmatrix()));
+//
+//	SetUniformDlight(renderData_->camera, (*renderData_->lights)[0]);
+//}
 

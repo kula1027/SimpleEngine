@@ -9,7 +9,7 @@ SceneRenderData::SceneRenderData(){
 SceneRenderData::~SceneRenderData(){
 }
 
-void SceneRenderData::AddRenderer(BaseRenderer * rdr_) {
+void SceneRenderData::AddRenderer(MeshRenderer * rdr_) {
 	renderers.push_back(rdr_);
 }
 

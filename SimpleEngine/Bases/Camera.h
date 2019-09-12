@@ -28,6 +28,7 @@ private:
 	glm::mat4 vpMatrix;
 
 	int projMode;
+	int renderMode;
 
 	SkyBox * skybox;
 
@@ -45,7 +46,6 @@ public:
 	SkyBox* GetSkybox();
 
 	void Render(SceneRenderData* renderData_);
-	int renderMode;
 
 	void ComputeMatrix();
 	void RenderSkyBox();

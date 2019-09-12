@@ -10,7 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <Debugger/SP_Debugger.h>
 
-class BaseRenderer;
+class MeshRenderer;
 class BaseLight;
 
 class BaseComponent;
@@ -18,7 +18,6 @@ class BaseComponent;
 class EngineObject {
 private:
 	unsigned int objectId;
-	BaseRenderer* renderer;
 	std::vector<BaseComponent*> components;
 
 	void Initialize();

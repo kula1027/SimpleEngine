@@ -21,29 +21,29 @@ void InstancedRenderer::SetShader(BaseShader * shader_){
 	shader = shader_;	
 }
 
-void InstancedRenderer::Render(RenderData* renderData_){
-	if (cullingEnabled) {
-		glEnable(GL_CULL_FACE);
-	}
-	else {
-		glDisable(GL_CULL_FACE);
-	}	
-
-	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
-
-	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
-		Mesh* processingMesh = meshModel->meshes->at(loop);
-
-		shader->ApplyTexture(processingMesh->textures);
-
-		glBindVertexArray(processingMesh->VAO);
-
-		glDrawElementsInstanced(GL_TRIANGLES, processingMesh->triangles.size() * 3, GL_UNSIGNED_INT, 0, childTransformCount);
-	}
-
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
+//void InstancedRenderer::Render(RenderData* renderData_){
+//	if (cullingEnabled) {
+//		glEnable(GL_CULL_FACE);
+//	}
+//	else {
+//		glDisable(GL_CULL_FACE);
+//	}	
+//
+////	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
+//
+//	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
+//		Mesh* processingMesh = meshModel->meshes->at(loop);
+//
+//		shader->ApplyTexture(processingMesh->textures);
+//
+//		glBindVertexArray(processingMesh->VAO);
+//
+//		glDrawElementsInstanced(GL_TRIANGLES, processingMesh->triangles.size() * 3, GL_UNSIGNED_INT, 0, childTransformCount);
+//	}
+//
+//	glBindVertexArray(0);
+//	glBindTexture(GL_TEXTURE_2D, 0);
+//}
 
 void InstancedRenderer::SetMeshModel(MeshModel * meshModel_){
 	meshModel = meshModel_;

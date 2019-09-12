@@ -10,9 +10,6 @@ void EngineObject::Initialize() {
 	transform = new Transform();
 	transform->engineObject = this;
 	Scene::RegisterObject(this);
-
-	if (renderer != NULL)
-		renderer->Initialize();
 }
 
 EngineObject::EngineObject(){
@@ -49,7 +46,6 @@ BaseComponent * EngineObject::AttachComponent(BaseComponent* baseComponent_) {
 }
 
 EngineObject::~EngineObject(){	
-	free(renderer);
 	free(transform);
 	for (int loop = 0; loop < components.size(); loop++) {
 		free(components[loop]);

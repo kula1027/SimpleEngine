@@ -1,32 +1,33 @@
-#include "DefaultShader.h"
-#include "../../Bases/Camera.h"
-#include "../../Lights/DirectionalLight.h"
+#include "ShaderForward.h"
+#include <Bases/Camera.h>
+#include <Lights/LightsBundle.h>
+#include <Render/MeshRenderer.h>
 #include <glm/gtc/type_ptr.hpp>
-#include "../RenderData.h"
+
 #include "../../Mesh/Mesh.h"
 
 #include <Debugger/SP_Debugger.h>
 
-#include "../Texture.h"
+#include <Render/Texture.h>
 
-DefaultShader::DefaultShader() {
-	filePathVertex = "default.vert";
-	filePathFragment = "default.frag";
+ShaderForward::ShaderForward() {
+	filePathVertex = "Forward/forward.vert";
+	filePathFragment = "Forward/forward.frag";
 
 	LoadProgram(filePathVertex, "", filePathFragment);
 }
 
-DefaultShader::DefaultShader(string vs, string fs) {
+ShaderForward::ShaderForward(string vs, string fs) {
 	filePathVertex = vs;
 	filePathFragment = fs;
 
 	LoadProgram(filePathVertex, "", filePathFragment);
 }
 
-DefaultShader::~DefaultShader() {
+ShaderForward::~ShaderForward() {
 }
 
-void DefaultShader::Initialize() {
+void ShaderForward::Initialize() {
 	id_matrice.mvp = GetUniformLocation("MVP");
 	id_matrice.view = GetUniformLocation("V");
 	id_matrice.model = GetUniformLocation("M");
@@ -52,21 +53,18 @@ void DefaultShader::Initialize() {
 	glUniform1i(id_specular.id, 1);
 }
 
-void DefaultShader::SetUniforms(RenderData * renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_) {
+void ShaderForward::SetUniforms(Camera * camera_, MeshRenderer * renderer_, std::vector<BaseLight*>* lights_) {
 	Use();
+	
+	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(renderer_->MVPmatrix()));
+	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(camera_->Vmatrix()));
+	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(renderer_->Mmatrix()));
 
-	SetUniformMVP(renderData_, modelMat_, mvpMat_);
+	SetUniformDlight(camera_, lights_->at(0));
 
-	SetUniformDlight(renderData_->camera, (*renderData_->lights)[0]);
 }
 
-void DefaultShader::SetUniformMVP(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_) {
-	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(mvpMat_));
-	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(renderData_->camera->Vmatrix()));
-	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(modelMat_));
-}
-
-void DefaultShader::ApplyTexture(std::vector<Texture*> textures_) {		
+void ShaderForward::ApplyTexture(std::vector<Texture*> textures_) {		
 	if (textures_.size() <= 0) {
 		glUniform1i(id_diffuse.count, 0);
 	} else {
@@ -106,11 +104,11 @@ void DefaultShader::ApplyTexture(std::vector<Texture*> textures_) {
 	}
 }
 
-void DefaultShader::SetUniformDlight(Camera* cam_, BaseLight* dLight_) {	
-	glm::vec4 CameraSpace_dLightPos = cam_->Vmatrix() * glm::vec4(dLight_->position, 0);
+void ShaderForward::SetUniformDlight(Camera* cam_, BaseLight* dLight_) {	
+	glm::vec4 CameraSpace_dLightPos = cam_->Vmatrix() * glm::vec4(dLight_->GetPosition(), 0);
 	glUniform3f(id_dLight.direction, CameraSpace_dLightPos.x, CameraSpace_dLightPos.y, CameraSpace_dLightPos.z);
-	glUniform3f(id_dLight.color, dLight_->color.x, dLight_->color.y, dLight_->color.z);
-	glUniform1f(id_dLight.power, dLight_->intensity);
+	glUniform3f(id_dLight.color, dLight_->GetColor().x, dLight_->GetColor().y, dLight_->GetColor().z);
+	glUniform1f(id_dLight.power, dLight_->GetIntensity());
 	glUniform1f(id_dLight.shadowMap, dLight_->shadowData.depthMapTextureId);
 	glUniformMatrix4fv(id_dLight.lightSpaceMatrix, 1, GL_FALSE, glm::value_ptr(dLight_->lightSpaceMatrix));
 

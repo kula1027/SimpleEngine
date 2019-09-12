@@ -8,6 +8,8 @@
 #include <assimp\cimport.h>
 #include <assimp\scene.h>
 
+#include <EngineDef.h>
+
 Scene* SimpleEngine::currentScene;
 
 void SimpleEngine::Initialize(int width, int height, const char* name){
@@ -28,6 +30,7 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 		return;
 	}
 
+	glfwSwapInterval(VsyncMode);
 	InputModule::Init();		
 }
 
@@ -54,16 +57,6 @@ void SimpleEngine::Begin() {
 
 		glfwPollEvents();		
 	} while (GameWindow::ShouldClose() && !InputModule::IsPressed(GLFW_KEY_ESCAPE));
-}
-
-void SimpleEngine::SetVsyncMode(bool isOn){
-	if (isOn) {
-		std::cout << "Vsync On" << std::endl;
-		glfwSwapInterval(1);
-	}else{
-		std::cout << "Vsync Off" << std::endl;
-		glfwSwapInterval(0);
-	}
 }
 
 Scene * SimpleEngine::GetCurrentScene() {

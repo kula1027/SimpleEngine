@@ -16,15 +16,24 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)3layer.frag" />
     <None Include="$(MSBuildThisFileDirectory)3layer.vert" />
-    <None Include="$(MSBuildThisFileDirectory)default.frag" />
-    <None Include="$(MSBuildThisFileDirectory)default.vert" />
     <None Include="$(MSBuildThisFileDirectory)default_geo.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light.vert" />
     <None Include="$(MSBuildThisFileDirectory)deform.geo" />
+    <None Include="$(MSBuildThisFileDirectory)Forward\forward.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Forward\forward.vert" />
     <None Include="$(MSBuildThisFileDirectory)instanced.vert" />
     <None Include="$(MSBuildThisFileDirectory)outline.frag" />
     <None Include="$(MSBuildThisFileDirectory)outline.vert" />
+    <None Include="$(MSBuildThisFileDirectory)PostProcess\blur.frag" />
+    <None Include="$(MSBuildThisFileDirectory)PostProcess\defaultScreen.frag" />
+    <None Include="$(MSBuildThisFileDirectory)PostProcess\defaultScreen.vert" />
     <None Include="$(MSBuildThisFileDirectory)shadowMap.frag" />
     <None Include="$(MSBuildThisFileDirectory)shadowMap.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Skybox\skyboxFragment.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Skybox\skyboxVertex.vert" />
     <None Include="$(MSBuildThisFileDirectory)transparent.frag" />
     <None Include="$(MSBuildThisFileDirectory)transparent.vert" />
     <None Include="$(MSBuildThisFileDirectory)trans_inst_nocull.frag" />

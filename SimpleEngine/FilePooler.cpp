@@ -1,6 +1,6 @@
 #include "FilePooler.h"
 
-#include "Render/Shaders/BaseShader.h"
+#include <Shaders/BaseShader.h>
 #include "Mesh/MeshModel.h"
 #include <Debugger/SP_Debugger.h>
 
@@ -12,6 +12,7 @@ BaseShader* FilePooler::LoadShader(string filePathVertex, string filePathFragmen
 	return LoadShader(filePathVertex, "", filePathFragment);
 }
 
+//????
 BaseShader * FilePooler::LoadShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment){
 	BaseShader* retShader = NULL;
 
@@ -42,7 +43,9 @@ BaseShader * FilePooler::LoadShader(std::string filePathVertex, std::string file
 		retShader = BaseShader::GetShader(filePathVertex, filePathGeometry, filePathFragment);
 
 		if (retShader == NULL) {
-			SP_Debugger::Log("Matching Shader not found");
+			DebugError("Matching Shader not found");		
+			DebugError("\t" + filePathVertex);
+			DebugError("\t" + filePathFragment);
 		} else {
 			loadedShaders.push_back(retShader);
 		}		

@@ -23,7 +23,7 @@ public:
 	~InstancedRenderer();
 
 	virtual void SetShader(BaseShader* shader_);
-	virtual void Render(RenderData* renderData_);
+	//virtual void Render(RenderData* renderData_);
 	virtual void SetMeshModel(MeshModel* meshModel_);
 
 	void InitInstanced();
