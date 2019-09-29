@@ -20,7 +20,7 @@ public:
 	static BaseShader* LoadShader(std::string filePathVertex, std::string filePathFragment);
 	static BaseShader* LoadShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment);
 
-	static Texture* LoadTexture(std::string filePath, TextureType type_);//TODO: 로드할때 텍스쳐 타입 필요없음
+	static Texture* LoadTexture(std::string filePath);
 	static MeshModel* LoadMeshModel(std::string filePath);		
 
 	static void InitializeShaders();

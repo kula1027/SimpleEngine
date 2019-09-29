@@ -11,6 +11,7 @@ class BaseScript;
 class EngineObject;
 class BaseLight;
 class MeshRenderer;
+class BaseRenderMaterial;
 class Camera;
 class SceneRenderData;
 
@@ -19,10 +20,10 @@ using namespace std;
 class Scene
 {
 private:
-	void AddEngineObject(EngineObject* obj);
-	void AddScript(BaseScript* upd);
-	void AddRenderer(MeshRenderer* rdr);
-	void AddLight(BaseLight* objLight);
+	void AddEngineObject(EngineObject* obj_);
+	void AddScript(BaseScript* upd_);
+	void AddRenderer(MeshRenderer* rdr_);	
+	void AddLight(BaseLight* light_);
 
 protected:
 	Camera* mainCamera;
@@ -39,7 +40,7 @@ public:
 
 	static Scene* GetCurrent();
 	static void RegisterObject(EngineObject*);
-	static void RegisterRenderer(MeshRenderer*);
+	static void RegisterRenderer(MeshRenderer*);	
 	static void RegisterLight(BaseLight*);
 	static void RegisterScript(BaseScript*);
 

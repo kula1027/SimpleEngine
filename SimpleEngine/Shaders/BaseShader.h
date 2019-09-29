@@ -10,7 +10,7 @@
 
 #define LogLength 512
 
-#define dirPathShader "../Shaders/"//FIXME class파일과 셰이더 파일이 같은 디렉토리에 있는게 좋을듯
+#define dirPathShader "../Shaders/"
 #define TEXTURE_IDX_SHADOWMAP 10
 
 using namespace std;

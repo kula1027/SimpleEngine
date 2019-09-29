@@ -14,13 +14,11 @@ float RenderPath::quadVertices[] = { // vertex attributes for a quad that fills 
 };
 
 int RenderPath::quadSize = 24;
-//팩트: Rendering Path에 따라 다른 형태로 오브젝트들을 관리해야함.
 //eg. 디퍼드 + 포워드 조합. 디퍼드로 그려질 것과 그렇지 않을 것을 분리 관리해야함
 //Render Path는 카메라에 귀속되는 개념
 //하지만 오브젝트 관리는 Scene이 함.
 //따라서 Scene이 Camera가 요구하는 형태의 데이터를 제공해줘야 함.
 //1. Scene에서 모두 동일한 렌더 패쓰를 따른다고 해버린다.
-//	각 패쓰에 따른 자료구조를 각각 정의하여 사용
 
 RenderPath::RenderPath(){
 }

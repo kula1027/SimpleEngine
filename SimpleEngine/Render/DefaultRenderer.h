@@ -19,9 +19,5 @@ public:
 
 	virtual void RenderShadowMap(BaseLight* light_) override;
 
-	virtual void SetShader(BaseShader* shader_) override;
-	virtual void SetShader() override;
-
-
 };
 

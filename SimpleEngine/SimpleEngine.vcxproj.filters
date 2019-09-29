@@ -180,13 +180,16 @@
     <ClInclude Include="Shaders\ShaderBundle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shaders\Forward\ShaderForward.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Shaders\Deferred\ShaderDeferredGeo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shaders\Deferred\ShaderDeferredLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\RenderMaterial\RenderMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\Forward\ShaderForward.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -302,13 +305,16 @@
     <ClCompile Include="Shaders\InstancedShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shaders\Forward\ShaderForward.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Shaders\Deferred\ShaderDeferredGeo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shaders\Deferred\ShaderDeferredLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\RenderMaterial\RenderMaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders\Forward\ShaderForward.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

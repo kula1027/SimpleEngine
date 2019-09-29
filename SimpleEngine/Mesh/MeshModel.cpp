@@ -5,6 +5,7 @@
 
 #include "../Render/Texture.h"
 #include "../FilePooler.h"
+#include <Render/RenderMaterial/RenderMaterial.h>
 
 MeshModel::MeshModel(){}
 
@@ -121,65 +122,30 @@ Mesh* MeshModel::ProcessMesh(aiMesh * mesh, const aiScene * scene){
 		}
 	}	
 	
+	
 	// Process materials
+	RenderMaterial* renderMaterial = new RenderMaterial();
 	if (mesh->mMaterialIndex >= 0)
 	{
-		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		// We assume a convention for sampler names in the shaders. Each diffuse texture should be named
-		// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-		// Same applies to other texture as the following list summarizes:
-		// Diffuse: texture_diffuseN
-		// Specular: texture_specularN
-		// normal: texture_normalN		
-		
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];		
 
-		// 1. Diffuse maps
-		vector<Texture*> diffuseMaps = this->LoadMaterialTextures(material, aiTextureType_DIFFUSE);
-		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		// 2. Specular maps
-		vector<Texture*> specularMaps = this->LoadMaterialTextures(material, aiTextureType_SPECULAR);
-		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-		// 3. normal maps
-		vector<Texture*> normalMaps = this->LoadMaterialTextures(material, aiTextureType_NORMALS);		
-		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+		renderMaterial->texDiffuse = this->LoadMaterialTextures(material, aiTextureType_DIFFUSE);
+		renderMaterial->texSpec = this->LoadMaterialTextures(material, aiTextureType_SPECULAR);
+		renderMaterial->texNormal = this->LoadMaterialTextures(material, aiTextureType_NORMALS);
 	}
 
-	// Return a mesh object created from the extracted mesh data
-	return new Mesh(vertices, triangles, textures);
+	return new Mesh(vertices, triangles, renderMaterial);
 }
 
-vector<Texture*> MeshModel::LoadMaterialTextures(aiMaterial * mat, aiTextureType type) {
-	vector<Texture*> textures;
-	
-	for (GLuint i = 0; i < mat->GetTextureCount(type); i++)
-	{	
-		TextureType tType;
-		switch (type) {
-		case aiTextureType_DIFFUSE:
-			tType = TextureType_Diffuse;
-			break;
+Texture * MeshModel::LoadMaterialTextures(aiMaterial * aiMat_, aiTextureType aiType_) {
+	if (aiMat_->GetTextureCount(aiType_) > 0) {
+		aiString strPath;
+		aiMat_->GetTexture(aiType_, 0, &strPath);
 
-		case aiTextureType_SPECULAR:
-			tType = TextureType_Specular;
-			break;
+		string fileNameTexture = string(strPath.C_Str());
 
-		case aiTextureType_NORMALS:
-			tType = TextureType_Normals;
-			break;
-
-		default:
-			tType = TextureType_Diffuse;
-			break;
-		}
-
-		aiString str;
-		mat->GetTexture(type, i, &str);
-		
-		string fileName = string(str.C_Str());		
-
-		Texture* texture = FilePooler::LoadTexture(DirPathMaterial + dirPath + fileName, tType);
-		textures.push_back(texture);
-	}
-
-	return textures;
+		return FilePooler::LoadTexture(DirPathMaterial + dirPath + fileNameTexture);
+	} else {
+		return NULL;
+	}		
 }

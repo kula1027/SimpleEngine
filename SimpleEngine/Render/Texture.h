@@ -5,13 +5,6 @@
 
 using namespace std;
 
-typedef enum TextureType {
-	TextureType_Diffuse,
-	TextureType_DiffuseTransparent,
-	TextureType_Specular,
-	TextureType_Normals
-};
-
 class Texture
 {
 private:
@@ -27,10 +20,11 @@ private:
 public:
 	GLuint textureId;
 	string typeName;
-	TextureType type;
+
+	bool hasAlphaTransparency;
 
 	Texture();
-	Texture(string path_, TextureType type_);
+	Texture(string path_, bool hasAlphaTransparency_ = false);
 	~Texture();
 
 	void SetParams(GLenum paramName_, GLuint param_);

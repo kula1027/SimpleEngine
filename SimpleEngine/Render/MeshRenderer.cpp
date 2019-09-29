@@ -4,6 +4,9 @@
 #include "../Lights/LightsBundle.h"
 #include "../FilePooler.h"
 #include <Shaders/ShaderBundle.h>
+#include <Shaders/Forward/ShaderForward.h>
+#include <Render/RenderMaterial/RenderMaterial.h>
+
 
 MeshRenderer::MeshRenderer() {
 	Initialize(NULL);
@@ -20,17 +23,19 @@ MeshRenderer::~MeshRenderer() {
 void MeshRenderer::Initialize(MeshModel * meshModel_) {	
 	castShadow = true;
 
+	shaderForward = new ShaderForward();
+	shaderForward->Initialize();
+
 	if (meshModel_ != NULL) {
 		SetMeshModel(meshModel_);
 	}	
-
-	shader = new ShaderForward();
-	shader->Initialize();
 }
 
-void MeshRenderer::RenderMesh(Camera * camera_, std::vector<BaseLight*>* lights_) {
-	shader->SetUniforms(camera_, this, lights_);
-
+//for forward Rendering
+void MeshRenderer::RenderMesh_Forward(Camera * camera_, std::vector<BaseLight*>* lights_) {	
+	shaderForward->Use();
+	shaderForward->SetUniforms(camera_, this, lights_);
+		
 	RenderMesh();
 }
 
@@ -38,7 +43,7 @@ void MeshRenderer::RenderMesh() {
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);
 
-		shader->ApplyTexture(processingMesh->textures);
+		processingMesh->renderMaterial->ApplyTexture();
 
 		glBindVertexArray(processingMesh->VAO);
 
@@ -49,9 +54,6 @@ void MeshRenderer::RenderMesh() {
 			NULL
 		);
 	}
-
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void MeshRenderer::SetMeshModel(MeshModel * meshModel_) {
@@ -71,7 +73,7 @@ MeshModel * MeshRenderer::GetMeshModel() {
 }
 
 BaseShader * MeshRenderer::GetShader() {
-	return shader;
+	return NULL;
 }
 
 

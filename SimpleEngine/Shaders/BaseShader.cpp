@@ -139,7 +139,7 @@ BaseShader::BaseShader(std::string filePathVertex_, std::string filePathGeometry
 
 //return matching shader instance
 BaseShader * BaseShader::GetShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment) {
-	if (filePathVertex.compare("default.vert") == 0 &&
+	/*if (filePathVertex.compare("default.vert") == 0 &&
 		filePathGeometry.compare("") == 0 &&
 		filePathFragment.compare("default.frag") == 0) {
 		return new ShaderForward();
@@ -168,7 +168,7 @@ BaseShader * BaseShader::GetShader(std::string filePathVertex, std::string fileP
 		filePathGeometry.compare("") == 0 &&
 		filePathFragment.compare("vertexColorDiffuse.frag") == 0) {
 		return new ShaderForward("vertexColorDiffuse.vert", "vertexColorDiffuse.frag");
-	}
+	}*/
 	
 	printf("No Matching Shaders Found.\n");
 

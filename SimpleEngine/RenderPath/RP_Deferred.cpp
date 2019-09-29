@@ -82,15 +82,17 @@ void RP_Deferred::Render(Camera* mainCamera_, SceneRenderData* sceneRenderData_)
 	}
 
 	//Geometry Pass
-	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);	
+	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
 	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	shaderDeferredGeo->Use();
 	shaderDeferredGeo->SetMat4("VP", mainCamera_->VPmatrix());
 	for (int loop = 0; loop < rdrCount; loop++) {
 		shaderDeferredGeo->SetMat4("M", sceneRenderData_->renderers[loop]->Mmatrix());
+		//sceneRenderData_->renderers[loop]->SetUniforms();
 		sceneRenderData_->renderers[loop]->RenderMesh();
 	}
+	//mainCamera_->RenderSkyBox();
 
 	//Lighting Pass
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -108,15 +110,14 @@ void RP_Deferred::Render(Camera* mainCamera_, SceneRenderData* sceneRenderData_)
 		shaderDeferredLight->SetLightUniforms(sceneRenderData_->lights.at(loop), loop);
 	}
 	shaderDeferredLight->SetVec3("viewPos", mainCamera_->transform->position);
-	
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);//gBuffer에서 읽어서
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);	//default buffer에 그린다
 	glBlitFramebuffer(//무엇을? 깊이 버퍼 값을
 		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(), 
 		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(), 
 		GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindVertexArray(offScreenData.quadVAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 

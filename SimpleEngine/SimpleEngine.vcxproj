@@ -187,6 +187,7 @@
     <ClInclude Include="Mesh\Mesh.h" />
     <ClInclude Include="Mesh\MeshBundle.h" />
     <ClInclude Include="Mesh\MeshModel.h" />
+    <ClInclude Include="Render\RenderMaterial\RenderMaterial.h" />
     <ClInclude Include="RenderPath\RenderPath.h" />
     <ClInclude Include="RenderPath\RenderPathBundle.h" />
     <ClInclude Include="RenderPath\RP_Deferred.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="Lights\PointLight.cpp" />
     <ClCompile Include="Mesh\Mesh.cpp" />
     <ClCompile Include="Mesh\MeshModel.cpp" />
+    <ClCompile Include="Render\RenderMaterial\RenderMaterial.cpp" />
     <ClCompile Include="RenderPath\RenderPath.cpp" />
     <ClCompile Include="RenderPath\RP_Deferred.cpp" />
     <ClCompile Include="RenderPath\RP_Forward.cpp" />

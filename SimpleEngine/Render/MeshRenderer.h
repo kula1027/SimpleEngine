@@ -15,12 +15,16 @@ class MeshModel;
 class BaseLight;
 class Mesh;
 class MeshModel;
+class ShaderForward;
 
 class MeshRenderer : public BaseComponent{
 protected:
-	std::string defaultVS;
+	/*std::string defaultVS;
 	std::string defaultFS;
-	BaseShader* shader = NULL;
+	BaseShader* shader = NULL;*/	
+	//std::vector<BaseRenderMaterial*> renderMaterials;
+	//for Forward Rendering
+	ShaderForward* shaderForward;
 
 	Transform* transform = NULL;//ref to engineObject transform
 	MeshModel* meshModel = NULL;
@@ -41,10 +45,9 @@ public:
 	bool castShadow;
 	bool receiveShadow;//TODO not implemented
 
-	virtual void RenderMesh(Camera* camera_, std::vector<BaseLight*>* lights_);
+	virtual void RenderMesh_Forward(Camera* camera_, std::vector<BaseLight*>* lights_);
 	virtual void RenderMesh();
-	virtual void SetShader(BaseShader* shader_) {}
-	virtual void SetShader() {}
+
 	void SetMeshModel(MeshModel* meshModel_);
 
 	MeshModel* GetMeshModel();
@@ -54,6 +57,6 @@ public:
 	glm::mat4 Mmatrix();
 	glm::mat4 MVPmatrix();
 	virtual void RenderShadowMap(BaseLight* light_) {}
-	virtual void OnAttachedToObject(EngineObject*) override;
+	virtual void OnAttachedToObject(EngineObject*) override;	
 };
 

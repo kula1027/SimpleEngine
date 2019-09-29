@@ -5,6 +5,7 @@
 class SkyBox;
 class MeshRenderer;
 class BaseLight;
+class BaseRenderMaterial;
 
 // Scene -> RenderPath Param Obj
 class SceneRenderData {

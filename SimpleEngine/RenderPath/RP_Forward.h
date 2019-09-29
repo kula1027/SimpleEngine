@@ -10,7 +10,8 @@ public:
 	RP_Forward();
 	~RP_Forward();
 
-	virtual void Render(Camera* mainCamera_, SceneRenderData* renderData_);	
+	virtual void Render(Camera* mainCamera_, SceneRenderData* renderData_);		
+
 	virtual void Initialize();
 };
 

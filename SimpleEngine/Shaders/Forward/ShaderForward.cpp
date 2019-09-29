@@ -64,46 +64,6 @@ void ShaderForward::SetUniforms(Camera * camera_, MeshRenderer * renderer_, std:
 
 }
 
-void ShaderForward::ApplyTexture(std::vector<Texture*> textures_) {		
-	if (textures_.size() <= 0) {
-		glUniform1i(id_diffuse.count, 0);
-	} else {
-		GLuint diffuseNr = 0;
-		GLuint specularNr = 1;
-
-		glUniform1i(id_diffuse.count, 1);
-		for (GLuint i = 0; i < textures_.size(); i++) {
-			GLuint textureId;
-			switch (textures_[i]->type) {
-			case TextureType_Diffuse:
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, textures_[i]->textureId);
-				diffuseNr++;
-				break;
-
-			case TextureType_Specular:
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, textures_[i]->textureId);
-				specularNr++;
-				break;
-
-			case TextureType_Normals:
-
-				break;
-
-			case TextureType_DiffuseTransparent:
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, textures_[i]->textureId);
-				break;
-				
-			default:				
-				break;
-			}
-
-		}
-	}
-}
-
 void ShaderForward::SetUniformDlight(Camera* cam_, BaseLight* dLight_) {	
 	glm::vec4 CameraSpace_dLightPos = cam_->Vmatrix() * glm::vec4(dLight_->GetPosition(), 0);
 	glUniform3f(id_dLight.direction, CameraSpace_dLightPos.x, CameraSpace_dLightPos.y, CameraSpace_dLightPos.z);

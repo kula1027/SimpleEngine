@@ -20,10 +20,9 @@ public:
 	virtual void Initialize();	
 
 	virtual void SetUniforms(
-		Camera* camera_, MeshRenderer* renderer_, std::vector<BaseLight*>* lights_) override;
-	virtual void ApplyTexture(std::vector<Texture*> textures_);
+		Camera* camera_, MeshRenderer* renderer_, std::vector<BaseLight*>* lights_) override;	
 
 	void SetUniformDlight(Camera* cam_, BaseLight* dLight_);
-	void SetUniformMVP(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_);	
+//	void SetUniformMVP(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_);	
 };
 

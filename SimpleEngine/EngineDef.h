@@ -7,10 +7,8 @@
 #define RenderMode_SimpleSingle 2
 
 
-
-
 #define VsyncMode 1 // 1-> vsync on, 0 -> off
 
 #define DEBUGMODE //comment this to disable log
 
-#define DefaultRenderMode RenderMode_Deferred
+#define DefaultRenderMode RenderMode_Forward

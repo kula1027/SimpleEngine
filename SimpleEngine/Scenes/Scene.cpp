@@ -78,6 +78,7 @@ void Scene::AddRenderer(MeshRenderer * rdr_){
 	renderData->AddRenderer(rdr_);
 }
 
+
 void Scene::AddLight(BaseLight * light_){
 	renderData->AddLight(light_);
 }

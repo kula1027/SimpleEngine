@@ -48,7 +48,7 @@ void DirectionalLight::InitShadowMap(){
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	shadowMapShader = FilePooler::LoadShader("shadowMap.vert", "shadowMap.frag");
+	shadowMapShader = new BaseShader("shadowMap.vert", "shadowMap.frag");
 	lightSpaceMatrixId = shadowMapShader->GetUniformLocation("lightSpaceMatrix");
 	modelMatrixId = shadowMapShader->GetUniformLocation("modelMatrix");
 }

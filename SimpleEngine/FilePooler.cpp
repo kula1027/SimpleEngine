@@ -57,7 +57,7 @@ BaseShader * FilePooler::LoadShader(std::string filePathVertex, std::string file
 }
 
 
-Texture * FilePooler::LoadTexture(std::string filePath, TextureType type_){
+Texture * FilePooler::LoadTexture(std::string filePath){
 	std::cout << "\tLoad Texture... " << filePath << std::endl;	
 
 	Texture* retTexture = NULL;
@@ -69,7 +69,7 @@ Texture * FilePooler::LoadTexture(std::string filePath, TextureType type_){
 	}
 
 	if (retTexture == NULL) {
-		retTexture = new Texture(filePath, type_);
+		retTexture = new Texture(filePath);
 		loadedTextures.push_back(retTexture);
 	} 
 

@@ -33,10 +33,7 @@ struct MaterialColor{
 	vec3 specularColor;
 };
 
-uniform int texCountDiff;
 uniform sampler2D texture_diffuse;
-
-uniform int texCountSpec;
 uniform sampler2D texture_specular;
 
 #define NUM_POINTLIGHT 4
@@ -101,15 +98,11 @@ float CalcShadow(vec4 fragPos_lightSpace_){
 void main(){
 	MaterialColor matColor;
 	
-	if(texCountDiff <= 0){
-		matColor.diffuseColor = vec3(1.0);
-		matColor.ambientColor = vec3(0.2);
-		matColor.specularColor = vec3(1.0);
-	}else{
-		matColor.diffuseColor = texture( texture_diffuse, frag_in.uv ).rgb;
-		matColor.ambientColor = vec3(0.1,0.1,0.1) * matColor.diffuseColor;
-		matColor.specularColor = texture( texture_specular, frag_in.uv ).rgb;				
-	}
+
+	matColor.diffuseColor = texture( texture_diffuse, frag_in.uv ).rgb;
+	matColor.ambientColor = vec3(0.1,0.1,0.1) * matColor.diffuseColor;
+	matColor.specularColor = texture( texture_specular, frag_in.uv ).rgb;				
+	
 
 	vec3 viewDir = normalize(frag_in.viewDirection_cameraSpace);
 	vec3 normal = normalize(frag_in.normal_cameraSpace);

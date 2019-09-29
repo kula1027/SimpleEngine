@@ -14,6 +14,6 @@ ShaderDeferredGeo::~ShaderDeferredGeo() {
 }
 
 void ShaderDeferredGeo::Initialize() {
-	id_matrice.mvp = GetUniformLocation("VP");
+	id_matrice.vp = GetUniformLocation("VP");
 	id_matrice.model = GetUniformLocation("M");
 }

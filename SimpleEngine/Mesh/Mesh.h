@@ -16,6 +16,7 @@ using namespace std;
 #define AttrLoc_Color 3
 
 class Texture;
+class RenderMaterial;
 
 struct Vertex {
 	glm::vec3 position;
@@ -37,6 +38,7 @@ class Mesh {
 public:
 	vector<Vertex> vertices;
 	vector<Triangle> triangles;	
+	RenderMaterial* renderMaterial;
 	vector<Texture*> textures;
 
 	vector<FaceData> faceData;
@@ -55,6 +57,7 @@ public:
 	int GetIdxCount();
 
 	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture*> textures);
+	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, RenderMaterial* renderMaterials);
 };
 
 

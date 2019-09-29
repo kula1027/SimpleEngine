@@ -87,3 +87,11 @@ Mesh::Mesh(vector<Vertex> vertices_, vector<Triangle> triangles_, vector<Texture
 	isStaticDraw = true;
 	isSetup = false;
 }
+
+Mesh::Mesh(vector<Vertex> vertices_, vector<Triangle> triangles_, RenderMaterial * renderMaterials_) {
+	this->vertices = vertices_;
+	this->triangles = triangles_;
+	this->renderMaterial = renderMaterials_;
+	isStaticDraw = true;
+	isSetup = false;
+}

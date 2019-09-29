@@ -5,11 +5,12 @@
 #include <glm\gtx\quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include <Bases/BaseComponent.h>
 
 class EngineObject;
 
 using namespace glm;
-class Transform
+class Transform : public BaseComponent
 {
 private:
 	vec3 forward;

@@ -50,6 +50,6 @@ private:
 	void ProcessNode(aiNode* node, const aiScene* scene);
 	Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
 	void LoadModel(string path);
-	vector<Texture*> LoadMaterialTextures(aiMaterial* mat, aiTextureType type);
+	Texture* LoadMaterialTextures(aiMaterial* aiMat_, aiTextureType aiType_);
 };
 

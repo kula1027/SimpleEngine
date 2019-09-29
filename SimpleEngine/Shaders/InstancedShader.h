@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Shaders/Forward/ShaderForward.h>
 
 
-class InstancedShader :	public ShaderForward {
+
+class InstancedShader {
 public:
 	InstancedShader();
 	~InstancedShader();

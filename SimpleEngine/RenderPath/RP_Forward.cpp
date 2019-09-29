@@ -46,7 +46,7 @@ void RP_Forward::Render(Camera* mainCamera_, SceneRenderData * sceneRenderData_)
 
 	//Render Off Screen	
 	for (int loop = 0; loop < rdrCount; loop++) {		
-		sceneRenderData_->renderers[loop]->RenderMesh(mainCamera_, &sceneRenderData_->lights);
+		sceneRenderData_->renderers[loop]->RenderMesh_Forward(mainCamera_, &sceneRenderData_->lights);
 	}
 	mainCamera_->RenderSkyBox();	
 

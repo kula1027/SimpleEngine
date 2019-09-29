@@ -5,10 +5,10 @@
 
 
 InstancedShader::InstancedShader() {
-	filePathVertex = "trans_inst_nocull.vert";
+	/*filePathVertex = "trans_inst_nocull.vert";
 	filePathFragment = "trans_inst_nocull.frag";
 
-	LoadProgram(filePathVertex, "", filePathFragment);
+	LoadProgram(filePathVertex, "", filePathFragment);*/
 }
 
 
@@ -16,7 +16,7 @@ InstancedShader::~InstancedShader() {
 }
 
 void InstancedShader::Initialize() {	
-	id_matrice.vp = GetUniformLocation("VP");
+	/*id_matrice.vp = GetUniformLocation("VP");
 	id_matrice.view = GetUniformLocation("V");
 
 	id_diffuse.count = GetUniformLocation("texCountDiff");
@@ -37,7 +37,7 @@ void InstancedShader::Initialize() {
 	Use();
 	glUniform1i(id_dLight.shadowMap, TEXTURE_IDX_SHADOWMAP);
 	glUniform1i(id_diffuse.id, 0);
-	glUniform1i(id_specular.id, 1);
+	glUniform1i(id_specular.id, 1);*/
 }
 
 //void InstancedShader::SetUniforms(RenderData * renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_) {

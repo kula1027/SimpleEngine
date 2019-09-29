@@ -3,6 +3,7 @@
 #include <Scenes/SceneIncludes.h>
 
 #include <string>
+#include <Render/RenderMaterial/RenderMaterial.h>
 
 TestScene::TestScene() : Scene()
 {
@@ -27,9 +28,9 @@ void TestScene::Load()
 	EngineObject* eo;
 
 	//floor
-	Texture* t = FilePooler::LoadTexture("../Materials/burnt_sand_brown.png", TextureType_Diffuse);
+	Texture* t = FilePooler::LoadTexture("../Materials/burnt_sand_brown.png");
 	MeshModel* mPlane = FilePooler::LoadMeshModel("plane.obj");
-	mPlane->meshes->at(0)->textures.push_back(t);
+	mPlane->meshes->at(0)->renderMaterial->texDiffuse = t;
 	Mesh* thatMesh = mPlane->meshes->at(0);
 	for (int loop = 0; loop < thatMesh->vertices.size(); loop++) {
 		thatMesh->vertices[loop].texCoords =
@@ -43,6 +44,15 @@ void TestScene::Load()
 	eo->AttachComponent(dRdr);	
 	dRdr->SetMeshModel(mPlane);
 	eo->transform->scale = glm::vec3(40, 1, 40);
+
+
+	//nanosuit
+	eo = new EngineObject("nano");
+	dRdr = new MeshRenderer();
+	eo->AttachComponent(dRdr);
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));	
+	eo->transform->position = glm::vec3(0, 0, -30);
+
 
 	
 	//Grass
@@ -100,14 +110,6 @@ void TestScene::Load()
 	//go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("venusm_wNormal.obj"));
 	//go->GetRenderer()->SetShader();	
 	//go->transform->position = glm::vec3(-100, 0, -100);
-
-	//nanosuit
-	eo = new EngineObject("nano");
-	dRdr = new MeshRenderer();
-	eo->AttachComponent(dRdr);
-	dRdr->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
-	dRdr->SetShader();
-	eo->transform->position = glm::vec3(0, 0, -30);
 
 	////window
 	//Texture* tWindow = FilePooler::LoadTexture("window.png", TextureType_DiffuseTransparent);
