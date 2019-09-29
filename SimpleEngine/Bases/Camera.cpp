@@ -19,7 +19,7 @@ Camera::Camera(){
 	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	fov = 1.0f;
-	near = 0.1f;
+	near = 10.3f;
 	far = 1000.0f;
 
 	normalizedViewPort.x = 1;

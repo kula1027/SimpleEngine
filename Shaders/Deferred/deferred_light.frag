@@ -36,5 +36,5 @@ void main()
     }
     
     FragColor = vec4(lighting, 1.0);	
-	//FragColor = vec4(FragPos, 1);
+	//FragColor = vec4(normal, 1);
 }  

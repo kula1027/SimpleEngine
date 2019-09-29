@@ -11,4 +11,4 @@
 
 #define DEBUGMODE //comment this to disable log
 
-#define DefaultRenderMode RenderMode_Forward
+#define DefaultRenderMode RenderMode_Deferred

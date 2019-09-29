@@ -23,7 +23,7 @@ void RP_Forward::Render(Camera* mainCamera_, SceneRenderData * sceneRenderData_)
 		sceneRenderData_->renderers[loop]->ComputeMatrix(mainCamera_);
 	}
 
-	////Render ShadowMap
+	//Render ShadowMap
 	for (int loop = 0; loop < lightCount; loop++) {
 		if (sceneRenderData_->lights[loop]->isShadowCaster == false)continue;
 
@@ -46,6 +46,7 @@ void RP_Forward::Render(Camera* mainCamera_, SceneRenderData * sceneRenderData_)
 
 	//Render Off Screen	
 	for (int loop = 0; loop < rdrCount; loop++) {		
+
 		sceneRenderData_->renderers[loop]->RenderMesh_Forward(mainCamera_, &sceneRenderData_->lights);
 	}
 	mainCamera_->RenderSkyBox();	
