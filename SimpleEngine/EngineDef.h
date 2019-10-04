@@ -12,3 +12,16 @@
 #define DEBUGMODE //comment this to disable log
 
 #define DefaultRenderMode RenderMode_Deferred
+
+
+#pragma region Shader
+
+#define VertexShaderFormat ".vert"
+#define FragmentShaderFormat ".frag"
+#define GeometryShaderFormat ".geo"
+#define DirPathShader "../Shaders/"
+#define BindingPointLightData 1
+
+#pragma endregion
+
+#define DirPathMaterial "../Materials/"

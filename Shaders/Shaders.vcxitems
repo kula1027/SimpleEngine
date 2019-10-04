@@ -32,13 +32,16 @@
     <None Include="$(MSBuildThisFileDirectory)PostProcess\defaultScreen.vert" />
     <None Include="$(MSBuildThisFileDirectory)shadowMap.frag" />
     <None Include="$(MSBuildThisFileDirectory)shadowMap.vert" />
-    <None Include="$(MSBuildThisFileDirectory)Skybox\skyboxFragment.frag" />
-    <None Include="$(MSBuildThisFileDirectory)Skybox\skyboxVertex.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Skybox\skybox.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Skybox\skybox.vert" />
     <None Include="$(MSBuildThisFileDirectory)transparent.frag" />
     <None Include="$(MSBuildThisFileDirectory)transparent.vert" />
     <None Include="$(MSBuildThisFileDirectory)trans_inst_nocull.frag" />
     <None Include="$(MSBuildThisFileDirectory)trans_inst_nocull.vert" />
     <None Include="$(MSBuildThisFileDirectory)vertexColorDiffuse.frag" />
     <None Include="$(MSBuildThisFileDirectory)vertexColorDiffuse.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)LightData.txt" />
   </ItemGroup>
 </Project>

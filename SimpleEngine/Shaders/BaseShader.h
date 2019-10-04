@@ -10,7 +10,6 @@
 
 #define LogLength 512
 
-#define dirPathShader "../Shaders/"
 #define TEXTURE_IDX_SHADOWMAP 10
 
 using namespace std;
@@ -55,37 +54,35 @@ class Texture;
 
 
 //shader파일들과 매칭되는 클라스
-//상속 받은 뒤 생성자에 매칭되는 shader의 filePath를 기입해야 함
 class BaseShader : public EngineResource {
 private:
 	
 
 protected:
 	GLuint shaderID;
+	string filePath = "NotInitialized";
+
 	std::string ReadCodeFromFile(std::string path_);
 	void CompileCode(int shaderId_, const GLchar* code_);
 	GLuint CreateShader(GLchar* path_, int shaderType_);
 	void CreateProgram(GLuint shader0, GLuint shader1, GLuint shader2);
 	void CreateProgram(GLuint shader0, GLuint shader1);
+	void LoadProgram(string filePath_);	
 
-	void LoadProgram(string vertexPath_, string geometryPath_, string fragmentPath_);	
+	void BindLightUBO();
 
-	string filePathVertex = "";
-	string filePathGeometry = "";
-	string filePathFragment = "";
 
 public:
 	BaseShader();
-	BaseShader(std::string filePathVertex_, std::string filePathFragment_);
-	BaseShader(std::string filePathVertex_, std::string filePathGeometry_, std::string filePathFragment_);
+	BaseShader(std::string filePath_);
 	virtual ~BaseShader();
-	string GetDirectoryVertex();
-	string GetDirectoryGeometry();
-	string GetDirectoryFragment();		
+		
+	string GetFilePath();
 
 	void Use();
 		
 	GLuint GetUniformLocation(const GLchar* var_name);
+	GLuint GetUniformBlockIndex(const GLchar* var_name);
 	void SetMat4(string var_name, glm::mat4 mat4_);
 	void SetVec3(string var_name, glm::vec3 vec3_);
 	void SetInt(string var_name, int val_);
@@ -95,7 +92,7 @@ public:
 
 	virtual void Initialize() {}
 	//virtual void SetUniforms(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_) {}
-	virtual void SetUniforms(Camera* camera_, MeshRenderer* renderer_, std::vector<BaseLight*>* lights_) {}
+	virtual void SetUniforms(Camera* camera_, MeshRenderer* renderer_) {}
 	virtual void ApplyTexture(std::vector<Texture*> textures_) {}
 	virtual void OnEndUse();
 };

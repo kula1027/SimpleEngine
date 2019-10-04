@@ -24,8 +24,6 @@
 
 #include "Mesh.h"
 
-#define DirPathMaterial "../Materials/"
-
 using namespace std;
 
 class Texture;

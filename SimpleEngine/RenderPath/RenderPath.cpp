@@ -22,7 +22,7 @@ RenderPath::~RenderPath(){
 }
 
 void RenderPath::InitOffScreenDraw() {
-	offScreenData.screenShader = new BaseShader("PostProcess/defaultScreen.vert", "PostProcess/defaultScreen.frag");
+	offScreenData.screenShader = new BaseShader("PostProcess/defaultScreen");
 	offScreenData.screenShader->Use();
 	glUniform1i(offScreenData.screenShader->GetUniformLocation("screenTexture"), 0);
 

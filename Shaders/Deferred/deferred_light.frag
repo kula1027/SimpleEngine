@@ -8,12 +8,14 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
 
-struct Light {
-    vec3 Position;
-    vec3 Color;
+
+struct LightData {
+	int lightType;
+    vec3 position;
+    vec3 color;
 };
 const int NR_LIGHTS = 1;
-uniform Light lights[NR_LIGHTS];
+uniform LightData lights[NR_LIGHTS];
 uniform vec3 viewPos;
 
 void main()
@@ -23,15 +25,31 @@ void main()
     vec3 normal = texture(gNormal, TexCoords).rgb;
     vec3 Albedo = texture(gAlbedoSpec, TexCoords).rgb;
     float Specular = texture(gAlbedoSpec, TexCoords).a;
-    
-    // then calculate lighting as usual
-    vec3 lighting = Albedo;// * 0.1; // hard-coded ambient component
+        
+    vec3 lighting = Albedo * 0.1; // hard-coded ambient component
     vec3 viewDir = normalize(viewPos - fragPos);
-    for(int i = 0; i < NR_LIGHTS; ++i)
-    {
-        // diffuse
-        vec3 lightDir = normalize(lights[i].Position - fragPos);
-        vec3 diffuse = max(dot(normal, lightDir), 0.0) * Albedo;// * lights[i].Color;
+    for(int loop = 0; loop < NR_LIGHTS; loop++) {
+		vec3 lightDir;
+		vec3 diffuse;
+
+		switch(lights[loop].lightType){
+		case 0://directional
+		lightDir = normalize(lights[loop].position - fragPos);
+        diffuse = max(dot(normal, lightDir), 0.0) * Albedo * lights[loop].color;
+		break;
+
+		case 1://point
+		 // diffuse
+        lightDir = normalize(lights[loop].position - fragPos);
+        diffuse = max(dot(normal, lightDir), 0.0) * Albedo * lights[loop].color;
+		break;
+
+		case 2:
+
+		break;
+		}
+
+       
         lighting += diffuse;
     }
     

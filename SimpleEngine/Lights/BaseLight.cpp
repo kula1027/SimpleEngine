@@ -1,5 +1,5 @@
 #include "BaseLight.h"
-#include <Scenes/Scene.h>
+#include <Lights/LightManager.h>
 
 BaseLight::BaseLight(){
 }
@@ -27,17 +27,8 @@ glm::vec3 BaseLight::GetColor() {
 	return color;
 }
 
-void BaseLight::SetPosition(glm::vec3 position_) {
-	position = position_;
-	uniformValueHasChanged = true;
-}
-
-glm::vec3 BaseLight::GetPosition() {
-	return position;
-}
-
 void BaseLight::OnAttachedToObject(EngineObject * obj_) {
 	BaseComponent::OnAttachedToObject(obj_);
 
-	Scene::RegisterLight(this);
+	LightManager::Inst()->AddLight(this);	
 }

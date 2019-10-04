@@ -3,19 +3,14 @@
 #include <vector>
 
 #include <Lights/LightsBundle.h>
+#include <Bases/Transform.h>
 
 ShaderDeferredLight::ShaderDeferredLight() {
-	filePathVertex = "Deferred/deferred_light.vert";
-	filePathFragment = "Deferred/deferred_light.frag";
+	filePath = "Deferred/deferred_light";
 
-	LoadProgram(filePathVertex, "", filePathFragment);
+	LoadProgram(filePath);
 }
 
 
 ShaderDeferredLight::~ShaderDeferredLight() {
-}
-
-void ShaderDeferredLight::SetLightUniforms(BaseLight* light_, int lightIdx_) {
-	SetVec3("lights[" + std::to_string(lightIdx_) + "].Position", light_->GetPosition());
-	SetVec3("lights[" + std::to_string(lightIdx_) + "].Color", light_->GetColor());
 }

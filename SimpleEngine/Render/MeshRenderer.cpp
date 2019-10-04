@@ -3,41 +3,60 @@
 #include "../Mesh/MeshModel.h"
 #include "../Lights/LightsBundle.h"
 #include "../FilePooler.h"
+
+#include <Shaders/ShaderManager.h>
 #include <Shaders/ShaderBundle.h>
-#include <Shaders/Forward/ShaderForward.h>
 #include <Render/RenderMaterial/RenderMaterial.h>
 
 
 MeshRenderer::MeshRenderer() {
-	Initialize(NULL);
+	
 }
 
 
 MeshRenderer::MeshRenderer(MeshModel * meshModel_) {	
-	Initialize(meshModel_);
+	if (meshModel_ != NULL) {
+		
+		SetMeshModel(meshModel_);
+	} else {
+		DebugLog("MeshRenderer Init parameter NULL");
+	}
 }
 
 MeshRenderer::~MeshRenderer() {
 }
 
-void MeshRenderer::Initialize(MeshModel * meshModel_) {	
-	castShadow = true;
 
-	shaderForward = new ShaderForward();
+#pragma region Forward Rendering
+void MeshRenderer::SetRenderModeForward(bool isForward_) {
+	isRenderModeForward = isForward_;
+
+	if (isRenderModeForward) {
+		SetRenderModeForward(ShaderManager::Inst()->GetShader("Forward/forward"));
+	}
+}
+
+void MeshRenderer::SetRenderModeForward(BaseShader * sf_) {
+	isRenderModeForward = true;
+	shaderForward = sf_;
+
 	shaderForward->Initialize();
+}
 
-	if (meshModel_ != NULL) {
-		SetMeshModel(meshModel_);
-	}	
+bool MeshRenderer::GetRenderModeForward() {
+	return isRenderModeForward;
 }
 
 //for forward Rendering
-void MeshRenderer::RenderMesh_Forward(Camera * camera_, std::vector<BaseLight*>* lights_) {	
+void MeshRenderer::RenderMesh_Forward(Camera * camera_, std::vector<BaseLight*>* lights_) {
 	shaderForward->Use();
-	shaderForward->SetUniforms(camera_, this, lights_);
-		
+	shaderForward->SetUniforms(camera_, this);
+
 	RenderMesh();
 }
+#pragma endregion
+
+
 
 void MeshRenderer::RenderMesh() {
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {

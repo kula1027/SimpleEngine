@@ -5,6 +5,7 @@
 
 #include <Shaders/Deferred/ShaderDeferredGeo.h>
 #include <Shaders/Deferred/ShaderDeferredLight.h>
+#include <Lights/LightManager.h>
 
 RP_Deferred::RP_Deferred() {
 }
@@ -73,12 +74,15 @@ void RP_Deferred::Initialize() {
 }
 
 void RP_Deferred::Render(Camera* mainCamera_, SceneRenderData* sceneRenderData_) {
-	int rdrCount = sceneRenderData_->renderers.size();
-	int lightCount = sceneRenderData_->lights.size();
+	int rdrCount_Deferred = sceneRenderData_->renderQueue_Deferred.size();
+	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();	
 	
 	mainCamera_->ComputeMatrix();
-	for (int loop = 0; loop < rdrCount; loop++) {
-		sceneRenderData_->renderers[loop]->ComputeMatrix(mainCamera_);
+	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
+		sceneRenderData_->renderQueue_Deferred[loop]->ComputeMatrix(mainCamera_);
+	}
+	for (int loop = 0; loop < rdrCount_Forward; loop++) {
+		sceneRenderData_->renderQueue_Forward[loop]->ComputeMatrix(mainCamera_);
 	}
 
 	//Geometry Pass	
@@ -87,9 +91,9 @@ void RP_Deferred::Render(Camera* mainCamera_, SceneRenderData* sceneRenderData_)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	shaderDeferredGeo->Use();
 	shaderDeferredGeo->SetMat4("VP", mainCamera_->VPmatrix());
-	for (int loop = 0; loop < rdrCount; loop++) {
-		shaderDeferredGeo->SetMat4("M", sceneRenderData_->renderers[loop]->Mmatrix());		
-		sceneRenderData_->renderers[loop]->RenderMesh();
+	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
+		shaderDeferredGeo->SetMat4("M", sceneRenderData_->renderQueue_Deferred[loop]->Mmatrix());		
+		sceneRenderData_->renderQueue_Deferred[loop]->RenderMesh();
 	}
 	mainCamera_->RenderSkyBox();
 
@@ -105,22 +109,25 @@ void RP_Deferred::Render(Camera* mainCamera_, SceneRenderData* sceneRenderData_)
 	glBindTexture(GL_TEXTURE_2D, gNormal);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-	for (int loop = 0; loop < lightCount; loop++) {
-		shaderDeferredLight->SetLightUniforms(sceneRenderData_->lights.at(loop), loop);
+	for (int loop = 0; loop < 0; loop++) {
+		//shaderDeferredLight->SetLightUniforms(sceneRenderData_->lights.at(loop), loop);
 	}
 	shaderDeferredLight->SetVec3("viewPos", mainCamera_->transform->position);
-	//glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);//gBuffer에서 읽어서
-	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);	//default buffer에 그린다
-	//glBlitFramebuffer(//무엇을? 깊이 버퍼 값을
-	//	0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(), 
-	//	0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(), 
-	//	GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);//gBuffer에서 읽어서
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);	//default buffer에 그린다
+	glBlitFramebuffer(//무엇을? 깊이 버퍼 값을
+		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(), 
+		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(), 
+		GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
-	//glDisable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindVertexArray(offScreenData.quadVAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 
 	//Additional Forward
+	for (int loop = 0; loop < rdrCount_Forward; loop++) {
+		sceneRenderData_->renderQueue_Forward[loop]->RenderMesh_Forward(mainCamera_, &LightManager::Inst()->lights);
+	}
 }

@@ -23,7 +23,7 @@ void TestScene::Load()
 	eoLight->AttachComponent(directionalLight);
 
 	mainCamera->SetSkybox(new SkyBox());	
-	mainCamera->transform->position = glm::vec3(0, 10, 0);
+	mainCamera->transform->position = glm::vec3(0, 10, 20);	
 
 	EngineObject* eo;
 
@@ -49,10 +49,17 @@ void TestScene::Load()
 	//nanosuit
 	eo = new EngineObject("nano");
 	dRdr = new MeshRenderer();
-	eo->AttachComponent(dRdr);
-	dRdr->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));	
-	eo->transform->position = glm::vec3(0, 0, -30);
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
+	eo->AttachComponent(dRdr);	
+	eo->transform->position = glm::vec3(0, 0, 0);
 
+	//sphere	
+	eo = new EngineObject("sphere");
+	dRdr = new MeshRenderer();
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
+	dRdr->SetRenderModeForward(true);
+	eo->AttachComponent(dRdr);
+	eo->transform->position = glm::vec3(-5, 2, 0);
 
 	
 	//Grass
@@ -95,14 +102,7 @@ void TestScene::Load()
 	//go->SetRenderer(new MeshRenderer());
 	//go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
 	//go->GetRenderer()->SetShader(FilePooler::LoadShader("default.vert", "deform.geo", "default_geo.frag"));
-	//go->transform->position = glm::vec3(0, 5, 2);
-
-	////sphere	
-	//go = new GameObject("sphere");
-	//go->SetRenderer(new MeshRenderer());
-	//go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
-	//go->GetRenderer()->SetShader();
-	//go->transform->position = glm::vec3(-5, 5, 2);
+	//go->transform->position = glm::vec3(0, 5, 2);	
 
 	////venus
 	//go = new GameObject("venus");

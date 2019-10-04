@@ -180,6 +180,7 @@
     <ClInclude Include="ImaginaryFigures\ImaginaryFigures.h" />
     <ClInclude Include="ImaginaryFigures\ImaginaryPlane.h" />
     <ClInclude Include="ImaginaryFigures\ImaginarySphere.h" />
+    <ClInclude Include="Lights\LightManager.h" />
     <ClInclude Include="Lights\BaseLight.h" />
     <ClInclude Include="Lights\DirectionalLight.h" />
     <ClInclude Include="Lights\LightsBundle.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Scripts\MoveCamera.h" />
     <ClInclude Include="Scripts\ScriptBundle.h" />
     <ClInclude Include="Render\Shaders\Deferred\ShaderDeferredLight.h" />
+    <ClInclude Include="Shaders\ShaderManager.h" />
     <ClInclude Include="Shaders\BaseShader.h" />
     <ClInclude Include="Shaders\Deferred\ShaderDeferredGeo.h" />
     <ClInclude Include="Shaders\Deferred\ShaderDeferredLight.h" />
@@ -236,6 +238,7 @@
     <ClCompile Include="ImaginaryFigures\ImaginaryDisk.cpp" />
     <ClCompile Include="ImaginaryFigures\ImaginaryPlane.cpp" />
     <ClCompile Include="ImaginaryFigures\ImaginarySphere.cpp" />
+    <ClCompile Include="Lights\LightManager.cpp" />
     <ClCompile Include="Lights\BaseLight.cpp" />
     <ClCompile Include="Lights\DirectionalLight.cpp" />
     <ClCompile Include="Lights\PointLight.cpp" />
@@ -253,6 +256,7 @@
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Scenes\SceneRenderData.cpp" />
     <ClCompile Include="Scripts\MoveCamera.cpp" />
+    <ClCompile Include="Shaders\ShaderManager.cpp" />
     <ClCompile Include="Shaders\BaseShader.cpp" />
     <ClCompile Include="Shaders\Deferred\ShaderDeferredGeo.cpp" />
     <ClCompile Include="Shaders\Deferred\ShaderDeferredLight.cpp" />

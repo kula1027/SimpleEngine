@@ -52,7 +52,7 @@ void SkyBox::InitCubeMap() {
 }
 
 void SkyBox::InitShader(){
-	skyboxShader = new BaseShader("Skybox/skyboxVertex.vert", "Skybox/skyboxFragment.frag");
+	skyboxShader = new BaseShader("Skybox/skybox");
 
 	projMatrixID = skyboxShader->GetUniformLocation("P");
 	viewMatrixID = skyboxShader->GetUniformLocation("V");

@@ -14,9 +14,9 @@ struct ShadowData {
 	unsigned int depthMapFBO;
 };
 enum LightType {
-	LightType_Directional,
-	LightType_Point,
-	LightType_Cone
+	LightType_Directional = 0,
+	LightType_Point = 1,
+	LightType_Spot = 2
 };
 
 class BaseLight : public BaseComponent{
@@ -27,9 +27,7 @@ public:
 	void SetIntensity(float intensity_);
 	float GetIntensity();
 	void SetColor(glm::vec3 color_);
-	glm::vec3 GetColor();
-	void SetPosition(glm::vec3 position_);
-	glm::vec3 GetPosition();		
+	glm::vec3 GetColor();			
 
 	unsigned int modelMatrixId;
 	glm::mat4 lightSpaceMatrix;
@@ -42,13 +40,13 @@ public:
 	virtual void EnableShadowMapBuffer() {}
 
 	virtual void OnAttachedToObject(EngineObject* obj_) override;
+	virtual void SetUniforms_ubo(int startAddr_) = 0;
 
 protected:
 	LightType lightType;
 	bool uniformValueHasChanged = true;
 
-	glm::vec3 color;
-	glm::vec3 position;
+	glm::vec3 color;	
 	float intensity;
 
 	bool isStatic = false;

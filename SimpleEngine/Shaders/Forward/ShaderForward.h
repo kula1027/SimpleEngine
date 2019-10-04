@@ -19,8 +19,7 @@ public:
 
 	virtual void Initialize();	
 
-	virtual void SetUniforms(
-		Camera* camera_, MeshRenderer* renderer_, std::vector<BaseLight*>* lights_) override;	
+	virtual void SetUniforms(Camera* camera_, MeshRenderer* renderer_) override;	
 
 	void SetUniformDlight(Camera* cam_, BaseLight* dLight_);
 //	void SetUniformMVP(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_);	

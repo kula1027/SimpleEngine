@@ -17,6 +17,8 @@ class Mesh;
 class MeshModel;
 class ShaderForward;
 
+
+//default RenderMode = deferred
 class MeshRenderer : public BaseComponent{
 protected:
 	/*std::string defaultVS;
@@ -24,26 +26,28 @@ protected:
 	BaseShader* shader = NULL;*/	
 	//std::vector<BaseRenderMaterial*> renderMaterials;
 	//for Forward Rendering
-	ShaderForward* shaderForward;
+	BaseShader* shaderForward;
 
 	Transform* transform = NULL;//ref to engineObject transform
 	MeshModel* meshModel = NULL;
 
 	glm::mat4 modelMatrix;
 	glm::mat4 mvpMatrix;
-
-	virtual void SetAdditionalShaderData(BaseShader* shader_) {}
+	
 	virtual void SetUniformAdditional() {}
+
+	bool isRenderModeForward;
+	bool castShadow;
+	bool receiveShadow;
 
 public:
 	MeshRenderer();
 	MeshRenderer(MeshModel* meshModel_);
 	virtual ~MeshRenderer();
 
-	void Initialize(MeshModel* meshModel_);
-
-	bool castShadow;
-	bool receiveShadow;//TODO not implemented
+	void SetRenderModeForward(bool isForward_);
+	void SetRenderModeForward(BaseShader* sf_);
+	bool GetRenderModeForward();
 
 	virtual void RenderMesh_Forward(Camera* camera_, std::vector<BaseLight*>* lights_);
 	virtual void RenderMesh();
@@ -57,6 +61,6 @@ public:
 	glm::mat4 Mmatrix();
 	glm::mat4 MVPmatrix();
 	virtual void RenderShadowMap(BaseLight* light_) {}
-	virtual void OnAttachedToObject(EngineObject*) override;	
+	virtual void OnAttachedToObject(EngineObject*) override;		
 };
 

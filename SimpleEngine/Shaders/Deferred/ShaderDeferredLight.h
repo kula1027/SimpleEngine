@@ -6,6 +6,5 @@ public:
 	ShaderDeferredLight();
 	~ShaderDeferredLight();
 
-	void SetLightUniforms(BaseLight* light_, int lightIdx_);
 };
 

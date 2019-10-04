@@ -3,10 +3,9 @@
 
 
 ShaderDeferredGeo::ShaderDeferredGeo() {
-	filePathVertex = "Deferred/deferred_geo.vert";
-	filePathFragment = "Deferred/deferred_geo.frag";
-
-	LoadProgram(filePathVertex, "", filePathFragment);
+	filePath = "Deferred/deferred_geo";
+	
+	LoadProgram(filePath);
 }
 
 

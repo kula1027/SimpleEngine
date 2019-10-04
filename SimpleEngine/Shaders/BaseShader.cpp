@@ -7,10 +7,21 @@
 
 #include "ShaderBundle.h"
 
+#include <EngineDef.h>
+
 #include <glm/gtc/type_ptr.hpp>
 
 
 #pragma region Init
+BaseShader::BaseShader() {
+}
+
+BaseShader::BaseShader(std::string filePath_) {
+	filePath = filePath_;
+	LoadProgram(filePath_);
+}
+
+
 std::string BaseShader::ReadCodeFromFile(std::string path_) {
 	std::string strCode;
 	std::ifstream fileStream;
@@ -45,6 +56,9 @@ void BaseShader::CompileCode(int shaderId_, const GLchar* code_) {
 
 GLuint BaseShader::CreateShader(GLchar* path_, int shaderType_) {
 	std::string code = ReadCodeFromFile(path_);
+	if (code.size() == 0) {
+		return -1;
+	}
 	const GLchar* chCode = code.c_str();
 
 	GLuint shader;
@@ -89,108 +103,45 @@ void BaseShader::CreateProgram(GLuint shader0, GLuint shader1) {
 	}
 }
 
-void BaseShader::LoadProgram(string vertexPath_, string geometryPath_, string fragmentPath_) {
+void BaseShader::LoadProgram(string filePath_) {
 	GLuint vShader = CreateShader(
-		(GLchar*)(dirPathShader + vertexPath_).c_str(),
+		(GLchar*)(DirPathShader + filePath_ + VertexShaderFormat).c_str(),
 		GL_VERTEX_SHADER
-	);	
+	);
 
 	GLuint fShader = CreateShader(
-		(GLchar*)(dirPathShader + fragmentPath_).c_str(),
+		(GLchar*)(DirPathShader + filePath_ + FragmentShaderFormat).c_str(),
 		GL_FRAGMENT_SHADER
 	);
 
-	
-	if (geometryPath_.length() > 0) {
-		GLuint gShader = CreateShader(
-			(GLchar*)(dirPathShader + geometryPath_).c_str(),
-			GL_GEOMETRY_SHADER
-		);
-		
-		CreateProgram(vShader, gShader, fShader);
+	GLuint gShader = CreateShader(
+		(GLchar*)(DirPathShader + filePath_ + GeometryShaderFormat).c_str(),
+		GL_GEOMETRY_SHADER
+	);
 
-		glDeleteShader(gShader);
-	} else {
+	if (gShader == -1) {
 		CreateProgram(vShader, fShader);
+	} else {
+		CreateProgram(vShader, gShader, fShader);
 	}
 
 	glDeleteShader(vShader);
 	glDeleteShader(fShader);
 }
 
-BaseShader::BaseShader() {
+void BaseShader::BindLightUBO() {	
+	unsigned int lights_index = glGetUniformBlockIndex(shaderID, "LightData");
+	glUniformBlockBinding(shaderID, lights_index, BindingPointLightData);
 }
 
-BaseShader::BaseShader(std::string filePathVertex_, std::string filePathFragment_) {
-	filePathVertex = filePathVertex_;
-	filePathGeometry = "";
-	filePathFragment = filePathFragment_;
-
-	LoadProgram(filePathVertex, filePathGeometry, filePathFragment);
-}
-
-BaseShader::BaseShader(std::string filePathVertex_, std::string filePathGeometry_, std::string filePathFragment_) {
-	filePathVertex = filePathVertex_;
-	filePathGeometry = filePathGeometry_;
-	filePathFragment = filePathFragment_;	
-	
-	LoadProgram(filePathVertex, filePathGeometry, filePathFragment);
-}
-
-//return matching shader instance
-BaseShader * BaseShader::GetShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment) {
-	/*if (filePathVertex.compare("default.vert") == 0 &&
-		filePathGeometry.compare("") == 0 &&
-		filePathFragment.compare("default.frag") == 0) {
-		return new ShaderForward();
-	}
-	if (filePathVertex.compare("shadowMap.vert") == 0 &&
-		filePathGeometry.compare("") == 0 &&
-		filePathFragment.compare("shadowMap.frag") == 0) {
-		return new BaseShader("shadowMap.vert", "shadowMap.frag");
-	}
-	if (filePathVertex.compare("trans_inst_nocull.vert") == 0 &&
-		filePathGeometry.compare("") == 0 &&
-		filePathFragment.compare("trans_inst_nocull.frag") == 0) {
-		return new InstancedShader();
-	}
-	if (filePathVertex.compare("3layer.vert") == 0 &&
-		filePathGeometry.compare("") == 0 &&
-		filePathFragment.compare("3layer.frag") == 0) {
-		return new ShaderForward("3layer.vert", "3layer.frag");
-	}
-	if (filePathVertex.compare("3layer.vert") == 0 &&
-		filePathGeometry.compare("") == 0 &&
-		filePathFragment.compare("3layer.frag") == 0) {
-		return new ShaderForward("3layer.vert", "3layer.frag");
-	}
-	if (filePathVertex.compare("vertexColorDiffuse.vert") == 0 &&
-		filePathGeometry.compare("") == 0 &&
-		filePathFragment.compare("vertexColorDiffuse.frag") == 0) {
-		return new ShaderForward("vertexColorDiffuse.vert", "vertexColorDiffuse.frag");
-	}*/
-	
-	printf("No Matching Shaders Found.\n");
-
-	return NULL;
-}
 #pragma endregion
 
 BaseShader::~BaseShader(){
 	glDeleteProgram(this->shaderID);
 }
 
-string BaseShader::GetDirectoryVertex() {
-	return filePathVertex;
-}
-
-string BaseShader::GetDirectoryGeometry() {
-	return filePathGeometry;
-	glCreateProgram();
-}
-
-string BaseShader::GetDirectoryFragment() {
-	return filePathFragment;
+string BaseShader::GetFilePath() {
+	return filePath;
 }
 
 void BaseShader::Use(){
@@ -199,6 +150,10 @@ void BaseShader::Use(){
 
 GLuint BaseShader::GetUniformLocation(const GLchar* var_name){
 	return glGetUniformLocation(shaderID, var_name);
+}
+
+GLuint BaseShader::GetUniformBlockIndex(const GLchar * var_name) {
+	return  glGetUniformBlockIndex(shaderID, var_name);
 }
 
 void BaseShader::SetMat4(string var_name, glm::mat4 mat4_){

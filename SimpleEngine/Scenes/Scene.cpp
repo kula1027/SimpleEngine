@@ -24,9 +24,6 @@ void Scene::RegisterRenderer(MeshRenderer *rdr_) {
 	SimpleEngine::GetCurrentScene()->AddRenderer(rdr_);
 }
 
-void Scene::RegisterLight(BaseLight* light_) {
-	SimpleEngine::GetCurrentScene()->AddLight(light_);
-}
 
 void Scene::RegisterScript(BaseScript *script_) {
 	SimpleEngine::GetCurrentScene()->AddScript(script_);
@@ -65,11 +62,6 @@ void Scene::AddScript(BaseScript * script_){
 
 void Scene::AddRenderer(MeshRenderer * rdr_){
 	renderData->AddRenderer(rdr_);
-}
-
-
-void Scene::AddLight(BaseLight * light_){
-	renderData->AddLight(light_);
 }
 
 Camera * Scene::GetMainCamera(){

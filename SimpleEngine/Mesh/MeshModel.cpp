@@ -146,6 +146,6 @@ Texture * MeshModel::LoadMaterialTextures(aiMaterial * aiMat_, aiTextureType aiT
 
 		return FilePooler::LoadTexture(DirPathMaterial + dirPath + fileNameTexture);
 	} else {
-		return NULL;
+		return FilePooler::LoadTexture(DirPathMaterial + string("whiteone.png"));
 	}		
 }

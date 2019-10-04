@@ -22,8 +22,7 @@ class Scene
 private:
 	void AddEngineObject(EngineObject* obj_);
 	void AddScript(BaseScript* upd_);
-	void AddRenderer(MeshRenderer* rdr_);	
-	void AddLight(BaseLight* light_);
+	void AddRenderer(MeshRenderer* rdr_);		
 
 protected:
 	Camera* mainCamera;
@@ -40,8 +39,7 @@ public:
 
 	static Scene* GetCurrent();
 	static void RegisterObject(EngineObject*);
-	static void RegisterRenderer(MeshRenderer*);	
-	static void RegisterLight(BaseLight*);
+	static void RegisterRenderer(MeshRenderer*);		
 	static void RegisterScript(BaseScript*);
 
 	virtual void Unload();

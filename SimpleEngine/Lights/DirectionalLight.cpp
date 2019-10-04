@@ -4,19 +4,19 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../FilePooler.h"
 #include <Shaders/BaseShader.h>
+#include <Bases/Transform.h>
 
 
 DirectionalLight::DirectionalLight(){
 	intensity = 0.8f;
-	color = glm::vec3(1, 1, 1);
-	position = glm::vec3(2, -2, -2);
+	color = glm::vec3(1, 0, 1);	
 	isShadowCaster = true;
 
 	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 100.0f);
-	glm::mat4 lightView = glm::lookAt(
-		position,
+	/*glm::mat4 lightView = glm::lookAt(
+		GetTransform()->position,
 		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::vec3(0.0f, 1.0f, 0.0f));*/
 	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
 	InitShadowMap();
@@ -48,7 +48,7 @@ void DirectionalLight::InitShadowMap(){
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	shadowMapShader = new BaseShader("shadowMap.vert", "shadowMap.frag");
+	shadowMapShader = new BaseShader("shadowMap");
 	lightSpaceMatrixId = shadowMapShader->GetUniformLocation("lightSpaceMatrix");
 	modelMatrixId = shadowMapShader->GetUniformLocation("modelMatrix");
 }
@@ -56,7 +56,7 @@ void DirectionalLight::InitShadowMap(){
 void DirectionalLight::EnableShadowMapBuffer(){
 	lightProjection = glm::ortho(-30.0f, 30.0f, -30.0f, 30.0f, near_plane, far_plane);
 
-	lightView = glm::lookAt(-position,
+	lightView = glm::lookAt(-GetTransform()->position,
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -69,4 +69,10 @@ void DirectionalLight::EnableShadowMapBuffer(){
 
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
+}
+
+void DirectionalLight::SetUniforms_ubo(int startAddr_) {
+	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4), sizeof(glm::vec4), &GetTransform()->GetForward());//direction
+	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4) * 2, sizeof(glm::vec4), &color);//color
+	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4) * 3, sizeof(int), &lightType);//lightType
 }
