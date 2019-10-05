@@ -4,7 +4,12 @@ layout(location = 0) in vec3 attr_position;
 layout(location = 1) in vec3 attr_normal;
 layout(location = 2) in vec2 attr_texCoords;
 
-uniform mat4 VP;
+layout (std140) uniform CameraData{	
+	mat4 V;		//0, 64
+	mat4 P;		//64, 128
+	mat4 VP;		//128, 192	
+};
+
 uniform mat4 M;
 
 out vec3 fragPos;

@@ -15,10 +15,8 @@
 using namespace std;
 
 struct ID_matrice {
-	GLuint mvp = -1;
-	GLuint view = -1;
-	GLuint model = -1;
-	GLuint vp = -1;
+	GLuint mvp = -1;	
+	GLuint model = -1;	
 };
 
 struct ID_dLight {
@@ -70,6 +68,7 @@ protected:
 	void LoadProgram(string filePath_);	
 
 	void BindLightUBO();
+	void BindCameraUBO();
 
 
 public:

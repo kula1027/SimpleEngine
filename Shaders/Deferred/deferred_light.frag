@@ -8,14 +8,27 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
 
-
-struct LightData {
-	int lightType;
-    vec3 position;
-    vec3 color;
+//lightType
+//0 directional
+//1 point
+//2 spot
+/////////////////////////
+struct LightObject {	
+    vec4 position;					// 0, 16
+	vec4 direction;					// 16, 32
+    vec4 color;						// 32, 48
+	int lightType;				// 48, 52    44??????
 };
-const int NR_LIGHTS = 1;
-uniform LightData lights[NR_LIGHTS];
+
+layout (std140) uniform LightData{
+	vec4 ambient;					// 0, 16
+	LightObject lightObject[512];	// 16, 26640		512 * 52 = 26624
+	int lightCount;					// 26640, 26644
+};
+
+
+
+
 uniform vec3 viewPos;
 
 void main()
@@ -26,33 +39,34 @@ void main()
     vec3 Albedo = texture(gAlbedoSpec, TexCoords).rgb;
     float Specular = texture(gAlbedoSpec, TexCoords).a;
         
-    vec3 lighting = Albedo * 0.1; // hard-coded ambient component
+    vec3 lighting = Albedo * ambient.xyz;
     vec3 viewDir = normalize(viewPos - fragPos);
-    for(int loop = 0; loop < NR_LIGHTS; loop++) {
+    for(int loop = 0; loop < lightCount; loop++) {
 		vec3 lightDir;
-		vec3 diffuse;
+		vec3 diffuse;		
 
-		switch(lights[loop].lightType){
+		switch(lightObject[loop].lightType){
 		case 0://directional
-		lightDir = normalize(lights[loop].position - fragPos);
-        diffuse = max(dot(normal, lightDir), 0.0) * Albedo * lights[loop].color;
+		lightDir = lightObject[loop].direction.xyz;
+        diffuse = max(dot(normal, lightDir), 0.0) * Albedo * lightObject[loop].color.xyz;		
+		diffuse = lightObject[loop].direction.xyz;
 		break;
 
 		case 1://point
-		 // diffuse
-        lightDir = normalize(lights[loop].position - fragPos);
-        diffuse = max(dot(normal, lightDir), 0.0) * Albedo * lights[loop].color;
+        lightDir = normalize(lightObject[loop].position.xyz - fragPos);
+        diffuse = max(dot(normal, lightDir), 0.0) * Albedo * lightObject[loop].color.xyz;
+		
 		break;
 
 		case 2:
-
+		diffuse = vec3(1, 0, 1);
 		break;
 		}
 
        
-        lighting += diffuse;
-    }
-    
-    FragColor = vec4(lighting, 1.0);	
+        lighting = vec3(1, 0, 1);
+    }        
+
+	FragColor = vec4(lighting, 1.0);	
 	//FragColor = vec4(normal, 1);
 }  

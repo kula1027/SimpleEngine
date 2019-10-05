@@ -21,14 +21,12 @@ ShaderForward::~ShaderForward() {
 
 void ShaderForward::Initialize() {
 	BindLightUBO();
+	BindCameraUBO();
 
-	id_matrice.mvp = GetUniformLocation("MVP");
-	id_matrice.view = GetUniformLocation("V");
+	id_matrice.mvp = GetUniformLocation("MVP");	
 	id_matrice.model = GetUniformLocation("M");
 
-	id_diffuse.count = GetUniformLocation("texCountDiff");
-	id_diffuse.id = GetUniformLocation("texture_diffuse");
-	id_specular.count = GetUniformLocation("texCountSpec");
+	id_diffuse.id = GetUniformLocation("texture_diffuse");	
 	id_specular.id = GetUniformLocation("texture_specular");
 
 	Use();
@@ -40,7 +38,6 @@ void ShaderForward::Initialize() {
 void ShaderForward::SetUniforms(Camera * camera_, MeshRenderer * renderer_) {
 	Use();
 	
-	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(renderer_->MVPmatrix()));
-	glUniformMatrix4fv(id_matrice.view, 1, GL_FALSE, glm::value_ptr(camera_->Vmatrix()));
+	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(renderer_->MVPmatrix()));	
 	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(renderer_->Mmatrix()));
 }

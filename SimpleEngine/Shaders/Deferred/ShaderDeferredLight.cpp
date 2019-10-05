@@ -9,6 +9,8 @@ ShaderDeferredLight::ShaderDeferredLight() {
 	filePath = "Deferred/deferred_light";
 
 	LoadProgram(filePath);
+
+	BindLightUBO();
 }
 
 

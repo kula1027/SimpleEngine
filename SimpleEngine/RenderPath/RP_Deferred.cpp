@@ -5,6 +5,7 @@
 
 #include <Shaders/Deferred/ShaderDeferredGeo.h>
 #include <Shaders/Deferred/ShaderDeferredLight.h>
+#include <Shaders/ShaderManager.h>
 #include <Lights/LightManager.h>
 
 RP_Deferred::RP_Deferred() {
@@ -62,7 +63,6 @@ void RP_Deferred::Initialize() {
 		std::cout << "Framebuffer not complete!" << std::endl;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-
 	shaderDeferredGeo = new ShaderDeferredGeo();
 	shaderDeferredLight = new ShaderDeferredLight();
 
@@ -77,7 +77,7 @@ void RP_Deferred::Render(Camera* mainCamera_, SceneRenderData* sceneRenderData_)
 	int rdrCount_Deferred = sceneRenderData_->renderQueue_Deferred.size();
 	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();	
 	
-	mainCamera_->ComputeMatrix();
+	mainCamera_->SetUpMatrices();
 	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
 		sceneRenderData_->renderQueue_Deferred[loop]->ComputeMatrix(mainCamera_);
 	}
@@ -86,13 +86,11 @@ void RP_Deferred::Render(Camera* mainCamera_, SceneRenderData* sceneRenderData_)
 	}
 
 	//Geometry Pass	
-	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
-	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	shaderDeferredGeo->Use();
-	shaderDeferredGeo->SetMat4("VP", mainCamera_->VPmatrix());
+	shaderDeferredGeo->Use();	
 	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
-		shaderDeferredGeo->SetMat4("M", sceneRenderData_->renderQueue_Deferred[loop]->Mmatrix());		
+		shaderDeferredGeo->SetModelMat(sceneRenderData_->renderQueue_Deferred[loop]->Mmatrix());
 		sceneRenderData_->renderQueue_Deferred[loop]->RenderMesh();
 	}
 	mainCamera_->RenderSkyBox();
@@ -109,9 +107,7 @@ void RP_Deferred::Render(Camera* mainCamera_, SceneRenderData* sceneRenderData_)
 	glBindTexture(GL_TEXTURE_2D, gNormal);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-	for (int loop = 0; loop < 0; loop++) {
-		//shaderDeferredLight->SetLightUniforms(sceneRenderData_->lights.at(loop), loop);
-	}
+
 	shaderDeferredLight->SetVec3("viewPos", mainCamera_->transform->position);
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);//gBuffer에서 읽어서
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);	//default buffer에 그린다
@@ -128,6 +124,6 @@ void RP_Deferred::Render(Camera* mainCamera_, SceneRenderData* sceneRenderData_)
 
 	//Additional Forward
 	for (int loop = 0; loop < rdrCount_Forward; loop++) {
-		sceneRenderData_->renderQueue_Forward[loop]->RenderMesh_Forward(mainCamera_, &LightManager::Inst()->lights);
+		sceneRenderData_->renderQueue_Forward[loop]->RenderMesh_Forward(mainCamera_);
 	}
 }

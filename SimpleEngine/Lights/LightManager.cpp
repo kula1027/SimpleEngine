@@ -14,12 +14,7 @@ LightManager::LightManager() {
 	glBindBufferBase(GL_UNIFORM_BUFFER, BindingPointLightData, uboLightData);
 	// or glBindBufferRange(GL_UNIFORM_BUFFER, 2, uboBlock, 0, 152);	
 
-	glm::vec3 red = glm::vec3(0.5, 0.5, 0.5);
-	glm::vec3 blue = glm::vec3(0, 0, 1);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec4), &red);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec4), &blue);
-
-	SetAmbient(glm::vec3(0.1, 0.1, 0.1));
+	SetAmbient(glm::vec3(0.3, 0.3, 0.3));
 }
 	
 
@@ -34,16 +29,18 @@ LightManager * LightManager::Inst() {
 void LightManager::SetAmbient(glm::vec3 ambient_) {
 	ambient = ambient_;
 
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec4), &ambient);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec3), &ambient);
 }
 
 void LightManager::AddLight(BaseLight* light_) {
 	lights.push_back(light_);
 	
-	int lightCount = lights.size();
-	glBufferSubData(GL_UNIFORM_BUFFER, 26640, sizeof(int), &lightCount);
 
-	for (int loop = 0; loop < lightCount; loop++) {
-		lights[loop]->SetUniforms_ubo(16 + loop * 52);
-	}
+	glBindBuffer(GL_UNIFORM_BUFFER, uboLightData);
+
+	int lightCount = lights.size();
+	glBufferSubData(GL_UNIFORM_BUFFER, 26640, 4, &lightCount);
+
+	int addIdx = lightCount - 1;
+	lights[addIdx]->SetUniforms_ubo(16 + addIdx * 52);
 }

@@ -10,8 +10,18 @@
 #include "../RenderPath/RenderPathBundle.h"
 
 
+void Camera::InitUbo() {
+	glGenBuffers(1, &uboCamera);
+	glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
+	glBufferData(GL_UNIFORM_BUFFER, 192, NULL, GL_STATIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, BindingPointCameraData, uboCamera);
+
+}
+
 Camera::Camera(){
 	DebugLog("Initialize Camera...");
+
+	InitUbo();
 
 	name = "Camera";	
 
@@ -45,25 +55,7 @@ Camera::Camera(){
 		break;
 	}
 
-	renderMode = DefaultRenderMode;
-	switch (renderMode) {
-	case RenderMode_Forward:
-		renderPath = new RP_Forward();
-		break;
-
-	case RenderMode_Deferred:
-		renderPath = new RP_Deferred();
-		break;
-
-	case RenderMode_SimpleSingle:
-		renderPath = new RP_SimpleSingle();
-		break;
-
-	default:
-		DebugError("RenderPath not defined.");
-		renderPath = new RP_Forward();
-		break;
-	}
+	renderPath = new RP_Deferred();
 
 	renderPath->Initialize();
 	skybox->Initialize();
@@ -90,16 +82,21 @@ void Camera::Render(SceneRenderData* sceneRenderData_) {
 	renderPath->Render(this, sceneRenderData_);
 }
 
-void Camera::ComputeMatrix(){
+void Camera::SetUpMatrices(){
 	upVector = glm::cross(transform->GetRight(), transform->GetForward());
 
 	viewMatrix = glm::lookAt(
 		transform->position,           // Camera is here
 		transform->position + transform->GetForward(), // and looks here : at the same position, plus "direction"
 		upVector                  // Head is up (set to 0,-1,0 to look upside-down)
-		);
+		);	
 
 	vpMatrix = projectionMatrix * viewMatrix * glm::mat4(1.0);	
+
+	glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &viewMatrix);//View
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), &projectionMatrix);//Projection
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 2, sizeof(glm::mat4), &vpMatrix);//P x V	
 }
 
 glm::mat4 Camera::VPmatrix() {

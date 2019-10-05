@@ -48,7 +48,7 @@ bool MeshRenderer::GetRenderModeForward() {
 }
 
 //for forward Rendering
-void MeshRenderer::RenderMesh_Forward(Camera * camera_, std::vector<BaseLight*>* lights_) {
+void MeshRenderer::RenderMesh_Forward(Camera * camera_) {
 	shaderForward->Use();
 	shaderForward->SetUniforms(camera_, this);
 

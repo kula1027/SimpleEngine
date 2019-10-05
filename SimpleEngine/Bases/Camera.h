@@ -21,6 +21,9 @@ private:
 
 	RenderPath* renderPath;
 
+	unsigned int uboCamera;
+	void InitUbo();
+
 	glm::vec3 upVector;
 	
 	glm::mat4 viewMatrix;
@@ -47,7 +50,7 @@ public:
 
 	void Render(SceneRenderData* renderData_);
 
-	void ComputeMatrix();
+	void SetUpMatrices();
 	void RenderSkyBox();
 };
 

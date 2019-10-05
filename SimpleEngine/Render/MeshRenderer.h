@@ -49,7 +49,7 @@ public:
 	void SetRenderModeForward(BaseShader* sf_);
 	bool GetRenderModeForward();
 
-	virtual void RenderMesh_Forward(Camera* camera_, std::vector<BaseLight*>* lights_);
+	virtual void RenderMesh_Forward(Camera* camera_);
 	virtual void RenderMesh();
 
 	void SetMeshModel(MeshModel* meshModel_);

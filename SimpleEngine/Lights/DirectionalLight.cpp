@@ -9,8 +9,9 @@
 
 DirectionalLight::DirectionalLight(){
 	intensity = 0.8f;
-	color = glm::vec3(1, 0, 1);	
+	color = glm::vec3(1, 1, 0);	
 	isShadowCaster = true;
+	lightType = LightType_Directional;
 
 	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 100.0f);
 	/*glm::mat4 lightView = glm::lookAt(
@@ -72,7 +73,12 @@ void DirectionalLight::EnableShadowMapBuffer(){
 }
 
 void DirectionalLight::SetUniforms_ubo(int startAddr_) {
-	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4), sizeof(glm::vec4), &GetTransform()->GetForward());//direction
-	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4) * 2, sizeof(glm::vec4), &color);//color
+	GetTransform()->SetForward(glm::vec3(0, 1, 0));		
+	//direction 16-32	
+ 	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4), sizeof(glm::vec4), glm::value_ptr(GetTransform()->GetForward()));
+	//color 32-48
+	float a = 0.6f;
+	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4) * 2, sizeof(glm::vec4), &color);
+	//glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4) * 3, sizeof(float), &a);//lightType	
 	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4) * 3, sizeof(int), &lightType);//lightType
 }

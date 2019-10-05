@@ -15,3 +15,11 @@ layout (std140) uniform LightData{
 	LightObject lightObject[256];	// 16, 26640		512 * 52 = 26624
 	int lightCount;					// 26640, 26644
 };
+
+
+layout (std140) uniform CameraData{	
+	mat4 V;
+	mat4 P;
+	mat4 VP;
+};
+

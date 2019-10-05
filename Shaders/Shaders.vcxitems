@@ -42,6 +42,6 @@
     <None Include="$(MSBuildThisFileDirectory)vertexColorDiffuse.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="$(MSBuildThisFileDirectory)LightData.txt" />
+    <Text Include="$(MSBuildThisFileDirectory)ubos.txt" />
   </ItemGroup>
 </Project>

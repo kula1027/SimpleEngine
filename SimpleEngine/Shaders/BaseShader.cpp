@@ -134,6 +134,13 @@ void BaseShader::BindLightUBO() {
 	glUniformBlockBinding(shaderID, lights_index, BindingPointLightData);
 }
 
+void BaseShader::BindCameraUBO() {
+	unsigned int camera_idx = glGetUniformBlockIndex(shaderID, "CameraData");
+	glUniformBlockBinding(shaderID, camera_idx, BindingPointCameraData);
+}
+
+
+
 #pragma endregion
 
 BaseShader::~BaseShader(){
