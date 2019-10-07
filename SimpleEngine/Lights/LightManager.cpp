@@ -41,6 +41,8 @@ void LightManager::AddLight(BaseLight* light_) {
 	int lightCount = lights.size();
 	glBufferSubData(GL_UNIFORM_BUFFER, 26640, 4, &lightCount);
 
-	int addIdx = lightCount - 1;
+	int addIdx = lightCount - 1;	
 	lights[addIdx]->SetUniforms_ubo(16 + addIdx * 52);
+
+	//lights[addIdx]->SetUniforms_ubo(16 + 52);
 }
