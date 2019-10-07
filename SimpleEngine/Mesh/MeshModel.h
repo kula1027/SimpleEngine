@@ -28,7 +28,7 @@ using namespace std;
 
 class Texture;
 
-class MeshModel
+class MeshModel : public BaseComponent
 {
 public:
 	MeshModel();

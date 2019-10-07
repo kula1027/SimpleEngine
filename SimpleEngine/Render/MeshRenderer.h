@@ -62,5 +62,7 @@ public:
 	glm::mat4 MVPmatrix();
 	virtual void RenderShadowMap(BaseLight* light_) {}
 	virtual void OnAttachedToObject(EngineObject*) override;		
+
+	int renderOrder;
 };
 

@@ -17,10 +17,15 @@ class BaseComponent;
 
 class EngineObject {
 private:
+	static unsigned int freeObjectId;
+	unsigned int GetFreeObjectId();
+
 	unsigned int objectId;
 	std::vector<BaseComponent*> components;
 
 	void Initialize();
+
+	bool isActive;
 
 public:
 	std::string name = strNoname;
@@ -30,10 +35,13 @@ public:
 	~EngineObject();
 	EngineObject(std::string name_);
 
-	void SetId(unsigned int id_);
-	unsigned int GetId();
+	unsigned int GetObjectId();
 
 	BaseComponent* AttachComponent(BaseComponent*);
+
+	bool GetActiveState();
+	void SetActiveState(bool state_);
+
 
 	template <class T>
 	T* GetComponent();

@@ -6,10 +6,19 @@
 #include "../Scenes/Scene.h"
 #include <typeinfo>
 
+unsigned int EngineObject::freeObjectId = 0;
+
+unsigned int EngineObject::GetFreeObjectId() {
+	return ++freeObjectId;
+}
+
 void EngineObject::Initialize() {
 	transform = new Transform();
 	transform->engineObject = this;
 	Scene::RegisterObject(this);
+
+	isActive = true;
+	objectId = GetFreeObjectId();
 }
 
 EngineObject::EngineObject(){
@@ -21,11 +30,7 @@ EngineObject::EngineObject(std::string name_){
 	Initialize();
 }
 
-void EngineObject::SetId(unsigned int id_){
-	objectId = id_;
-}
-
-unsigned int EngineObject::GetId(){
+unsigned int EngineObject::GetObjectId(){
 	return objectId;
 }
 
@@ -43,6 +48,14 @@ BaseComponent * EngineObject::AttachComponent(BaseComponent* baseComponent_) {
 	}
 
 	return nullptr;
+}
+
+bool EngineObject::GetActiveState() {
+	return isActive;
+}
+
+void EngineObject::SetActiveState(bool state_) {
+	isActive = state_;
 }
 
 EngineObject::~EngineObject(){	

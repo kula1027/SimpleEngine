@@ -50,8 +50,7 @@ EngineObject* Scene::FindEngineObjectByName(string name_) {
 	return NULL;
 }
 
-void Scene::AddEngineObject(EngineObject * obj){
-	obj->SetId(freeObjectId++);
+void Scene::AddEngineObject(EngineObject * obj){	
 	engineObjects.push_back(obj);
 }
 
