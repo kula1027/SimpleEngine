@@ -21,29 +21,23 @@ void InstancedRenderer::SetShader(BaseShader * shader_){
 	shader = shader_;	
 }
 
-//void InstancedRenderer::Render(RenderData* renderData_){
-//	if (cullingEnabled) {
-//		glEnable(GL_CULL_FACE);
-//	}
-//	else {
-//		glDisable(GL_CULL_FACE);
-//	}	
-//
-////	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
-//
-//	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
-//		Mesh* processingMesh = meshModel->meshes->at(loop);
-//
-//		shader->ApplyTexture(processingMesh->textures);
-//
-//		glBindVertexArray(processingMesh->VAO);
-//
-//		glDrawElementsInstanced(GL_TRIANGLES, processingMesh->triangles.size() * 3, GL_UNSIGNED_INT, 0, childTransformCount);
-//	}
-//
-//	glBindVertexArray(0);
-//	glBindTexture(GL_TEXTURE_2D, 0);
-//}
+void InstancedRenderer::Render(RenderData* renderData_){
+
+//	shader->SetUniforms(renderData_, modelMatrix, mvpMatrix);
+
+	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
+		Mesh* processingMesh = meshModel->meshes->at(loop);
+
+		shader->ApplyTexture(processingMesh->textures);
+
+		glBindVertexArray(processingMesh->VAO);
+
+		glDrawElementsInstanced(GL_TRIANGLES, processingMesh->triangles.size() * 3, GL_UNSIGNED_INT, 0, childTransformCount);
+	}
+
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
 
 void InstancedRenderer::SetMeshModel(MeshModel * meshModel_){
 	meshModel = meshModel_;
@@ -92,10 +86,10 @@ void InstancedRenderer::InitInstanced() {
 		glVertexAttribDivisor(AttrLoc_IstMatrix2, 1);
 
 		glEnableVertexAttribArray(AttrLoc_IstMatrix3);
-		glVertexAttribPointer(AttrLoc_IstMatrix3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+		glVertexAttribPointer(AttrLoc_IstMatrix3,
+			4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
 		glVertexAttribDivisor(AttrLoc_IstMatrix3, 1);
 
-		glBindVertexArray(0);		
 	}
 
 	

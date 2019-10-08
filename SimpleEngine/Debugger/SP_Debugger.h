@@ -4,7 +4,7 @@
 #include <string>
 #include <EngineDef.h>
 
-#ifdef DEBUGMODE
+#ifdef DEBUG
 #define DebugLog(string) SP_Debugger::Log(string)
 #define DebugError(string) SP_Debugger::Error(string)
 #define DebugWarning(string) SP_Debugger::Warning(string)

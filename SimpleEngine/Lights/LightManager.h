@@ -1,8 +1,11 @@
 #pragma once
 #include <vector>
+#include <map>
 #include <glm/vec3.hpp>
 
 class BaseLight;
+class DirectionalLight;
+class PointLight;
 class BaseShader;
 
 class LightManager {
@@ -22,6 +25,8 @@ public:
 	void SetAmbient(glm::vec3 ambient_);
 
 	void AddLight(BaseLight* light_);
-	std::vector<BaseLight*> lights;		
+	std::vector<BaseLight*> lights;
+	std::map<unsigned int, PointLight*> pointLights;
+
 };
 

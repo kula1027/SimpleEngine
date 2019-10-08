@@ -1,15 +1,18 @@
 #include "LightManager.h"
 #include "BaseLight.h"
+#include "PointLight.h"
+
 #include <Shaders/BaseShader.h>
 #include <gl/glew.h>
 #include <EngineDef.h>
+
 
 LightManager* LightManager::instance;
 
 LightManager::LightManager() {
 	glGenBuffers(1, &uboLightData);
 	glBindBuffer(GL_UNIFORM_BUFFER, uboLightData);
-	glBufferData(GL_UNIFORM_BUFFER, 26644, NULL, GL_STATIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, 32800, NULL, GL_STATIC_DRAW);
 
 	glBindBufferBase(GL_UNIFORM_BUFFER, BindingPointLightData, uboLightData);
 	// or glBindBufferRange(GL_UNIFORM_BUFFER, 2, uboBlock, 0, 152);	
@@ -29,20 +32,19 @@ LightManager * LightManager::Inst() {
 void LightManager::SetAmbient(glm::vec3 ambient_) {
 	ambient = ambient_;
 
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec3), &ambient);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), &ambient);
 }
 
 void LightManager::AddLight(BaseLight* light_) {
-	lights.push_back(light_);
+	lights.push_back(light_);		
 	
+	pointLights.insert(make_pair(light_->GetComponentId(), dynamic_cast<PointLight*>(light_)));
 
 	glBindBuffer(GL_UNIFORM_BUFFER, uboLightData);
 
 	int lightCount = lights.size();
-	glBufferSubData(GL_UNIFORM_BUFFER, 26640, 4, &lightCount);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(int), &lightCount);
 
-	int addIdx = lightCount - 1;	
-	lights[addIdx]->SetUniforms_ubo(16 + addIdx * 52);
-
-	//lights[addIdx]->SetUniforms_ubo(16 + 52);
+	int addIdx = lightCount - 1;
+	lights[addIdx]->SetUniforms_ubo(32 + addIdx * 64);
 }

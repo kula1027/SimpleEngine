@@ -54,9 +54,7 @@ void RenderPath::InitOffScreenDraw() {
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, offScreenData.rbo);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;	
 }
 
 void RenderPath::EnableOffSreenBuffer(Camera* cam_) {

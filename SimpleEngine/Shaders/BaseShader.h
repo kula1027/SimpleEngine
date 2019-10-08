@@ -54,7 +54,7 @@ class Texture;
 //shader파일들과 매칭되는 클라스
 class BaseShader : public EngineResource {
 private:
-	
+	static BaseShader* currentShader;
 
 protected:
 	GLuint shaderID;
@@ -94,5 +94,7 @@ public:
 	virtual void SetUniforms(Camera* camera_, MeshRenderer* renderer_) {}
 	virtual void ApplyTexture(std::vector<Texture*> textures_) {}
 	virtual void OnEndUse();
+
+
 };
 

@@ -57,7 +57,7 @@ public:
 	MeshModel* GetMeshModel();
 	BaseShader* GetShader();
 
-	void ComputeMatrix(Camera* camera_);
+	void ComputeMatrices(Camera* camera_);
 	glm::mat4 Mmatrix();
 	glm::mat4 MVPmatrix();
 	virtual void RenderShadowMap(BaseLight* light_) {}

@@ -153,6 +153,7 @@ string BaseShader::GetFilePath() {
 
 void BaseShader::Use(){
 	glUseProgram(shaderID);
+	currentShader = this;
 }
 
 GLuint BaseShader::GetUniformLocation(const GLchar* var_name){
@@ -181,3 +182,7 @@ void BaseShader::SetInt(string var_name, int val_) {
 
 void BaseShader::OnEndUse(){
 }
+
+#ifdef DEBUG
+	BaseShader* BaseShader::currentShader;
+#endif // DEBUG
