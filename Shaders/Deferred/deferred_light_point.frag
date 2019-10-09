@@ -8,26 +8,24 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
 
+/////////////////////////
 //lightType
 //0 directional
 //1 point
 //2 spot
 /////////////////////////
 struct LightObject {	
-    vec4 position;					// 0, 16
-	vec4 direction;					// 16, 32
-    vec4 color;						// 32, 48
-	int lightType;				// 48, 52    44??????
+	int lightType;					// 0, 4
+    vec4 position;					// 16, 32
+	vec4 direction;					// 32, 48
+    vec4 color;						// 48, 64
 };
 
 layout (std140) uniform LightData{
-	vec4 ambient;					// 0, 16
-	LightObject lightObject[512];	// 16, 26640		512 * 52 = 26624
-	int lightCount;					// 26640, 26644
+	int lightCount;					// 0, 4
+	vec4 ambient;					// 16, 32
+	LightObject lightObject[512];	// 32, 32800		512 * 64 = 32768	
 };
-
-
-
 
 uniform vec3 viewPos;
 
@@ -47,9 +45,8 @@ void main()
 
 		switch(lightObject[loop].lightType){
 		case 0://directional
-		lightDir = lightObject[loop].direction.xyz;
-        diffuse = max(dot(normal, lightDir), 0.0) * Albedo * lightObject[loop].color.xyz;		
-		diffuse = lightObject[loop].direction.xyz;
+		lightDir = -lightObject[loop].direction.xyz;
+        diffuse = max(dot(normal, lightDir), 0.0) * Albedo * lightObject[loop].color.xyz;				
 		break;
 
 		case 1://point
@@ -64,7 +61,7 @@ void main()
 		}
 
        
-        lighting = vec3(1, 0, 1);
+        lighting += diffuse;
     }        
 
 	FragColor = vec4(lighting, 1.0);	

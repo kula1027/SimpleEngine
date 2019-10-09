@@ -20,6 +20,8 @@ private:
 	quat rotation;
 	vec3 eulerAngles;
 
+	void NotifyChange();
+
 public:
 	Transform();
 	vec3 position;	

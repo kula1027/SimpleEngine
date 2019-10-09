@@ -72,14 +72,22 @@ void DirectionalLight::EnableShadowMapBuffer(){
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void DirectionalLight::SetUniforms_ubo(int startAddr_) {
-	GetTransform()->SetForward(glm::vec3(0, -1, 0));		
+void DirectionalLight::SetUniformsUbo() {
+	//GetTransform()->SetForward(glm::vec3(0.7, -0.7, 0));		
 
-	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_, sizeof(int), &lightType);//lightType
-	//direction 32-48
- 	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4) * 2, sizeof(glm::vec4), glm::value_ptr(GetTransform()->GetForward()));
-	//color 48-64
-	float a = 0.6f;
-	glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4) * 3, sizeof(glm::vec4), &color);
-	//glBufferSubData(GL_UNIFORM_BUFFER, startAddr_ + sizeof(glm::vec4) * 3, sizeof(float), &a);//lightType		
+	//direction 0 - 16
+	glBufferSubData(GL_UNIFORM_BUFFER, 
+		startAddrUbo,
+		sizeof(glm::vec4), 
+		glm::value_ptr(GetTransform()->GetForward()));
+	//color 16-32
+	glBufferSubData(GL_UNIFORM_BUFFER, 
+		startAddrUbo + sizeof(glm::vec4),
+		sizeof(glm::vec4),
+		&color);
+	
+}
+
+void DirectionalLight::OnTransformChanged() {
+	SetUniformsUbo();
 }

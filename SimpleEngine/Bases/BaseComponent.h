@@ -21,6 +21,7 @@ public:
 	BaseComponent();
 
 	virtual void OnAttachedToObject(EngineObject* obj_);
+	virtual void OnTransformChanged() {}
 
 	EngineObject* GetEngineObject();
 	Transform* GetTransform();

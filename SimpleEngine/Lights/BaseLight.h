@@ -27,7 +27,10 @@ public:
 	void SetIntensity(float intensity_);
 	float GetIntensity();
 	void SetColor(glm::vec3 color_);
-	glm::vec3 GetColor();			
+	glm::vec3 GetColor();		
+	LightType GetLightType();
+	void SetStartAddrUbo(int startAddr_);
+
 
 	unsigned int modelMatrixId;
 	glm::mat4 lightSpaceMatrix;
@@ -40,11 +43,11 @@ public:
 	virtual void EnableShadowMapBuffer() {}
 
 	virtual void OnAttachedToObject(EngineObject* obj_) override;
-	virtual void SetUniforms_ubo(int startAddr_) = 0;
+	virtual void SetUniformsUbo() {}
 
 protected:
 	LightType lightType;
-	bool uniformValueHasChanged = true;
+	int startAddrUbo;	
 
 	glm::vec3 color;	
 	float intensity;

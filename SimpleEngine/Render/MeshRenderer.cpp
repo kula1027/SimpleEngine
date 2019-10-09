@@ -38,9 +38,7 @@ void MeshRenderer::SetRenderModeForward(bool isForward_) {
 
 void MeshRenderer::SetRenderModeForward(BaseShader * sf_) {
 	isRenderModeForward = true;
-	shaderForward = sf_;
-
-	shaderForward->Initialize();
+	shaderForward = sf_;	
 }
 
 bool MeshRenderer::GetRenderModeForward() {

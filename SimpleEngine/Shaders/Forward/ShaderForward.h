@@ -17,8 +17,6 @@ public:
 	ID_diffuseTexture id_diffuse;
 	ID_specularTexture id_specular;
 
-	virtual void Initialize();	
-
 	virtual void SetUniforms(Camera* camera_, MeshRenderer* renderer_) override;	
 
 	void SetUniformDlight(Camera* cam_, BaseLight* dLight_);

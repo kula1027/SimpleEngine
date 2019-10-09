@@ -16,6 +16,6 @@ ShaderDeferredGeo::ShaderDeferredGeo() {
 ShaderDeferredGeo::~ShaderDeferredGeo() {
 }
 
-void ShaderDeferredGeo::SetModelMat(glm::mat4 modelMa_) {	
-	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(modelMa_));
+void ShaderDeferredGeo::SetModelMat(glm::mat4 modelMat_) {	
+	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(modelMat_));
 }

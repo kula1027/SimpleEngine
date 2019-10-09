@@ -10,6 +10,7 @@
 #include <EngineDef.h>
 
 #include <glm/gtc/type_ptr.hpp>
+#include <Debugger/SP_Debugger.h>
 
 
 #pragma region Init
@@ -19,6 +20,8 @@ BaseShader::BaseShader() {
 BaseShader::BaseShader(std::string filePath_) {
 	filePath = filePath_;
 	LoadProgram(filePath_);
+
+	DebugLog("Shader Created: " + filePath);
 }
 
 
@@ -152,8 +155,7 @@ string BaseShader::GetFilePath() {
 }
 
 void BaseShader::Use(){
-	glUseProgram(shaderID);
-	currentShader = this;
+	glUseProgram(shaderID);	
 }
 
 GLuint BaseShader::GetUniformLocation(const GLchar* var_name){
@@ -182,7 +184,3 @@ void BaseShader::SetInt(string var_name, int val_) {
 
 void BaseShader::OnEndUse(){
 }
-
-#ifdef DEBUG
-	BaseShader* BaseShader::currentShader;
-#endif // DEBUG

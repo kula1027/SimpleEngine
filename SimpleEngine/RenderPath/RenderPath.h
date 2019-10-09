@@ -20,17 +20,19 @@ protected:
 	static float quadVertices[];
 	static int quadSize;
 
+	Camera* targetCamera;
 	OffScreenData offScreenData;
 	void InitOffScreenDraw();
 	void EnableOffSreenBuffer(Camera* cam_);
 
 	void PostDraw();
+	void DrawOffScreenQuad();
 
 public:
 	RenderPath();
 	~RenderPath();	
+	
+	virtual void Render(SceneRenderData* renderData) = 0;
 
-	virtual void Initialize() {}
-
-	virtual void Render(Camera* mainCamera, SceneRenderData* renderData) = 0;
+	void SetTargetCamera(Camera* camera_);
 };

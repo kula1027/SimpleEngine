@@ -21,6 +21,7 @@ void TestScene::Load()
 	EngineObject* eoLight = new EngineObject("light");
 	DirectionalLight* directionalLight = new DirectionalLight();
 	eoLight->AttachComponent(directionalLight);
+	eoLight->transform->SetForward(glm::vec3(0.7, -0.7, 0));
 
 	mainCamera->SetSkybox(new SkyBox());	
 	mainCamera->transform->position = glm::vec3(0, 10, 20);	

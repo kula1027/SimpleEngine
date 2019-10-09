@@ -19,9 +19,13 @@
     <None Include="$(MSBuildThisFileDirectory)default_geo.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo.vert" />
-    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light.frag" />
-    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light.vert" />
-    <None Include="$(MSBuildThisFileDirectory)deform.geo" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_ambient.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_ambient.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_directional.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_directional.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_point.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_point.vert" />
+    <None Include="$(MSBuildThisFileDirectory)deform.geom" />
     <None Include="$(MSBuildThisFileDirectory)Forward\forward.frag" />
     <None Include="$(MSBuildThisFileDirectory)Forward\forward.vert" />
     <None Include="$(MSBuildThisFileDirectory)instanced.vert" />

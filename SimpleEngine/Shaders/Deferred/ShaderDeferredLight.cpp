@@ -6,7 +6,7 @@
 #include <Bases/Transform.h>
 
 ShaderDeferredLight::ShaderDeferredLight() {
-	filePath = "Deferred/deferred_light";
+	filePath = "Deferred/deferred_light_ambient";
 
 	LoadProgram(filePath);
 

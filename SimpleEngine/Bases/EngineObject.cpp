@@ -47,7 +47,7 @@ BaseComponent * EngineObject::AttachComponent(BaseComponent* baseComponent_) {
 		script->OnStart();
 	}
 
-	return nullptr;
+	return baseComponent_;
 }
 
 bool EngineObject::GetActiveState() {
@@ -56,6 +56,12 @@ bool EngineObject::GetActiveState() {
 
 void EngineObject::SetActiveState(bool state_) {
 	isActive = state_;
+}
+
+void EngineObject::NotifyTransformChange() {
+	for (int loop = 0; loop < components.size(); loop++) {
+		components[loop]->OnTransformChanged();
+	}
 }
 
 EngineObject::~EngineObject(){	

@@ -53,8 +53,7 @@ class Texture;
 
 //shader파일들과 매칭되는 클라스
 class BaseShader : public EngineResource {
-private:
-	static BaseShader* currentShader;
+private:	
 
 protected:
 	GLuint shaderID;
@@ -66,11 +65,7 @@ protected:
 	void CreateProgram(GLuint shader0, GLuint shader1, GLuint shader2);
 	void CreateProgram(GLuint shader0, GLuint shader1);
 	void LoadProgram(string filePath_);	
-
-	void BindLightUBO();
-	void BindCameraUBO();
-
-
+	
 public:
 	BaseShader();
 	BaseShader(std::string filePath_);
@@ -88,13 +83,12 @@ public:
 
 	static BaseShader* GetShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment);
 
-
-	virtual void Initialize() {}
 	//virtual void SetUniforms(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_) {}
 	virtual void SetUniforms(Camera* camera_, MeshRenderer* renderer_) {}
 	virtual void ApplyTexture(std::vector<Texture*> textures_) {}
 	virtual void OnEndUse();
 
-
+	void BindLightUBO();
+	void BindCameraUBO();
 };
 

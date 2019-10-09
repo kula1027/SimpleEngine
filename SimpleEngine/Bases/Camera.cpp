@@ -55,9 +55,8 @@ Camera::Camera(){
 		break;
 	}
 
-	renderPath = new RP_Deferred();
-
-	renderPath->Initialize();
+	renderPath = new RP_Deferred();	
+	renderPath->SetTargetCamera(this);
 	skybox->Initialize();
 }
 
@@ -79,7 +78,7 @@ SkyBox * Camera::GetSkybox() {
 }
 
 void Camera::Render(SceneRenderData* sceneRenderData_) {
-	renderPath->Render(this, sceneRenderData_);
+	renderPath->Render(sceneRenderData_);
 }
 
 void Camera::SetUpMatrices(){

@@ -10,8 +10,7 @@ BaseLight::~BaseLight()
 }
 
 void BaseLight::SetIntensity(float intensity_) {
-	intensity = intensity_;
-	uniformValueHasChanged = true;
+	intensity = intensity_;	
 }
 
 float BaseLight::GetIntensity() {
@@ -19,12 +18,19 @@ float BaseLight::GetIntensity() {
 }
 
 void BaseLight::SetColor(glm::vec3 color_) {
-	color = color_;
-	uniformValueHasChanged = true;
+	color = color_;	
 }
 
 glm::vec3 BaseLight::GetColor() {
 	return color;
+}
+
+LightType BaseLight::GetLightType() {
+	return lightType;
+}
+
+void BaseLight::SetStartAddrUbo(int startAddr_) {
+	startAddrUbo = startAddr_;
 }
 
 void BaseLight::OnAttachedToObject(EngineObject * obj_) {

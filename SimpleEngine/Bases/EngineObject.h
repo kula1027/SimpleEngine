@@ -42,6 +42,7 @@ public:
 	bool GetActiveState();
 	void SetActiveState(bool state_);
 
+	void NotifyTransformChange();
 
 	template <class T>
 	T* GetComponent();

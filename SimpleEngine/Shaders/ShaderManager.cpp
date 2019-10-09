@@ -26,8 +26,7 @@ BaseShader* ShaderManager::GetShader(std::string filePath_) {
 		retShader = shaderMap[filePath_];	
 	} else {
 		if (filePath_.compare("Forward/forward") == 0) {
-			retShader = new ShaderForward();
-			retShader->Initialize();
+			retShader = new ShaderForward();			
 		}
 
 		shaderMap.insert(make_pair(filePath_, retShader));

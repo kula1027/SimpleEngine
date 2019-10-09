@@ -1,7 +1,12 @@
 #include "Transform.h"
 
 #include <iostream>
+#include <Bases/EngineObject.h>
 #include "SimpleMath.h"
+
+void Transform::NotifyChange() {
+	engineObject->NotifyTransformChange();
+}
 
 Transform::Transform()
 {
@@ -28,6 +33,7 @@ vec3 Transform::GetForward() {
 
 void Transform::SetForward(vec3 rot) {
 	forward = rot;
+	NotifyChange();
 }
 
 vec3 Transform::GetRight() {

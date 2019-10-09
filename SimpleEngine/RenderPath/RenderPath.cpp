@@ -21,6 +21,10 @@ RenderPath::RenderPath(){
 RenderPath::~RenderPath(){
 }
 
+void RenderPath::SetTargetCamera(Camera * camera_) {
+	targetCamera = camera_;
+}
+
 void RenderPath::InitOffScreenDraw() {
 	offScreenData.screenShader = new BaseShader("PostProcess/defaultScreen");
 	offScreenData.screenShader->Use();
@@ -75,4 +79,9 @@ void RenderPath::EnableOffSreenBuffer(Camera* cam_) {
 	);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+void RenderPath::DrawOffScreenQuad() {
+	glBindVertexArray(offScreenData.quadVAO);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

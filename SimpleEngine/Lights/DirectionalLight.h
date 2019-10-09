@@ -10,15 +10,17 @@ private:
 	glm::mat4 lightView;
 	
 	glm::mat4 lightProjection;
-	void InitShadowMap();
+	void InitShadowMap();	
 
 public:
 	DirectionalLight();
-	~DirectionalLight();
+	virtual ~DirectionalLight();
 
 	void EnableShadowMapBuffer();
 
 	float near_plane = 1.0f, far_plane = 100.0f;
-	virtual void SetUniforms_ubo(int startAddr_) override;
-	
+
+
+	virtual void SetUniformsUbo() override;
+	virtual void OnTransformChanged() override;
 };
