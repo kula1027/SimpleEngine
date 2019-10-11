@@ -14,6 +14,8 @@
 
 
 #pragma region Init
+int BaseShader::currentUsingShader = -1;
+
 BaseShader::BaseShader() {
 }
 
@@ -21,7 +23,11 @@ BaseShader::BaseShader(std::string filePath_) {
 	filePath = filePath_;
 	LoadProgram(filePath_);
 
-	DebugLog("Shader Created: " + filePath);
+
+	id_matrice.model = GetUniformLocation("M");
+	id_matrice.mvp = GetUniformLocation("MVP");
+
+	DebugLog("Shader Created: " + filePath);	
 }
 
 
@@ -132,7 +138,9 @@ void BaseShader::LoadProgram(string filePath_) {
 	glDeleteShader(fShader);
 }
 
-void BaseShader::BindLightUBO() {	
+
+
+void BaseShader::BindLightUBO() {
 	unsigned int lights_index = glGetUniformBlockIndex(shaderID, "LightData");
 	glUniformBlockBinding(shaderID, lights_index, BindingPointLightData);
 }
@@ -141,8 +149,6 @@ void BaseShader::BindCameraUBO() {
 	unsigned int camera_idx = glGetUniformBlockIndex(shaderID, "CameraData");
 	glUniformBlockBinding(shaderID, camera_idx, BindingPointCameraData);
 }
-
-
 
 #pragma endregion
 
@@ -155,7 +161,8 @@ string BaseShader::GetFilePath() {
 }
 
 void BaseShader::Use(){
-	glUseProgram(shaderID);	
+	if(currentUsingShader != shaderID)
+		glUseProgram(shaderID);	
 }
 
 GLuint BaseShader::GetUniformLocation(const GLchar* var_name){
@@ -181,6 +188,10 @@ void BaseShader::SetInt(string var_name, int val_) {
 	glUniform1i(loc, val_);
 }
 
+void BaseShader::SetMat_M(glm::mat4 matM_) {
+	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(matM_));
+}
 
-void BaseShader::OnEndUse(){
+void BaseShader::SetMat_MVP(glm::mat4 matMVP_) {
+	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(matMVP_));
 }

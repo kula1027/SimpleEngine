@@ -3,8 +3,7 @@
 #include "../Scenes/SceneIncludes.h"
 #include <GameWindow.h>
 
-#include <Shaders/Deferred/ShaderDeferredGeo.h>
-#include <Shaders/Deferred/ShaderDeferredLight.h>
+
 #include <Shaders/ShaderManager.h>
 #include <Lights/LightManager.h>
 
@@ -55,41 +54,46 @@ void RP_Deferred::SetupFrameBuffers() {
 
 void RP_Deferred::SetupShaders() {
 	//Shader Setup
-	shaderDeferredGeo = new ShaderDeferredGeo();
-	//shaderDeferredAmbient = new ShaderDeferredLight();
-	shaderDeferredAmbient = new BaseShader("Deferred/deferred_light_ambient");
-	shaderDeferredDirectional = new BaseShader("Deferred/deferred_light_directional");
-	shaderDeferredPoint = new BaseShader("Deferred/deferred_light_point");
+	shaderGeo = new BaseShader("Deferred/deferred_geo");
+	shaderDirectional = new BaseShader("Deferred/deferred_light_directional");	
+	shaderPointStencil = new BaseShader("Deferred/deferred_light_pointStencil");
 
-	shaderDeferredAmbient->Use();
-	shaderDeferredAmbient->BindLightUBO();
-	shaderDeferredAmbient->SetInt("gPosition", 0);
-	shaderDeferredAmbient->SetInt("gNormal", 1);
-	shaderDeferredAmbient->SetInt("gAlbedoSpec", 2);
-
-	shaderDeferredDirectional->Use();
-	shaderDeferredDirectional->BindLightUBO();
-	shaderDeferredDirectional->SetInt("gPosition", 0);
-	shaderDeferredDirectional->SetInt("gNormal", 1);
-	shaderDeferredDirectional->SetInt("gAlbedoSpec", 2);
+	shaderDirectional->Use();
+	shaderDirectional->BindLightUBO();
+	shaderDirectional->SetInt("gPosition", 0);
+	shaderDirectional->SetInt("gNormal", 1);
+	shaderDirectional->SetInt("gAlbedoSpec", 2);
 }
 
-void RP_Deferred::ProcessLightPass() {
-	glBindFramebuffer(GL_FRAMEBUFFER, offScreenData.frameBuffer);
-	glClearColor(0, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void RP_Deferred::GeometryPass(SceneRenderData* sceneRenderData_) {
+#ifdef DEBUG
+	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+#endif
 
+	int rdrCount_Deferred = sceneRenderData_->renderQueue_Deferred.size();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);	
 	
-	shaderDeferredDirectional->Use();
-	glActiveTexture(GL_TEXTURE0);//다음 bind tex는 GL_TEXTURE0에 대해서.
-	glBindTexture(GL_TEXTURE_2D, gPosition);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gNormal);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-	shaderDeferredDirectional->SetVec3("viewPos", targetCamera->transform->position);
-	DrawOffScreenQuad();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	shaderGeo->Use();
+	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
+		shaderGeo->SetMat_M(sceneRenderData_->renderQueue_Deferred[loop]->Mmatrix());
+		sceneRenderData_->renderQueue_Deferred[loop]->RenderMesh();
+	}
+}
 
+void RP_Deferred::LightPass() {
+#ifdef DEBUG
+	glClearColor(0, 0.3f, 0.3f, 1.0f);
+#endif
+	glBindFramebuffer(GL_FRAMEBUFFER, offScreenData.frameBuffer);	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	LightPass_AmbientDirectional();
+
+	CopyFboDepth(gBuffer, offScreenData.frameBuffer);
+
+	LightPass_Point();
 	//LightPass Directional
 	//glDisable(GL_DEPTH_TEST);
 	//glEnable(GL_BLEND);
@@ -99,10 +103,73 @@ void RP_Deferred::ProcessLightPass() {
 	//glDisable(GL_BLEND);
 	//glEnable(GL_DEPTH_TEST);
 
-	//LightPass Point
-	for (int loop = 0; loop < LightManager::Inst()->pointLights.size(); loop++) {
-		//TODO
+
+}
+
+void RP_Deferred::LightPass_AmbientDirectional() {
+	shaderDirectional->Use();
+	glActiveTexture(GL_TEXTURE0);//다음 bind tex는 GL_TEXTURE0에 대해서.
+	glBindTexture(GL_TEXTURE_2D, gPosition);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, gNormal);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+	shaderDirectional->SetVec3("viewPos", targetCamera->transform->position);
+	DrawOffScreenQuad();
+}
+
+void RP_Deferred::LightPass_Point() {
+	//stencil pass
+
+	
+	
+	std::map<unsigned int, PointLight*>* mapPointLights = &(LightManager::Inst()->pointLights);
+	std::map<unsigned int, PointLight*>::iterator it;
+	for (it = mapPointLights->begin(); it != mapPointLights->end(); it++) {		
+		shaderPointStencil->Use();
+
+		glEnable(GL_DEPTH_TEST);	
+
+		glDisable(GL_CULL_FACE);
+
+		glClear(GL_STENCIL_BUFFER_BIT);		
+		glStencilFunc(GL_ALWAYS, 0, 0);//always pass stencil
+
+		////stencil fail / stencil pass, depth fail / both fail
+		////stencil은 항상 pass 하기에 sdfail만이 의미있다.
+		glStencilOpSeparate(GL_BACK, GL_KEEP, GL_INCR_WRAP, GL_KEEP);
+		glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_DECR_WRAP, GL_KEEP);
+
+		mat4 mvpSphere = targetCamera->VPmatrix() * it->second->GetModelMatrix();		
+		shaderPointStencil->SetMat_MVP(mvpSphere);
+		glBindVertexArray(m->VAO);
+		glDrawElements(
+			GL_TRIANGLES,
+			m->GetIdxCount(),
+			GL_UNSIGNED_INT,
+			NULL
+		);
+	}	
+	
+	//p.WorldPos(m_pointLight[PointLightIndex].Position);
+
+	//float BBoxScale = CalcPointLightBSphere(m_pointLight[PointLightIndex].Color,
+	//	m_pointLight[PointLightIndex].DiffuseIntensity);
+	//p.Scale(BBoxScale, BBoxScale, BBoxScale);
+	//p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+	//p.SetPerspectiveProj(m_persProjInfo);
+
+	//m_nullTech.SetWVP(p.GetWVPTrans());
+	//m_bsphere.Render();
+}
+
+void RP_Deferred::AdditionalForwardPass(SceneRenderData* sceneRenderData_) {
+	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();
+	
+	for (int loop = 0; loop < rdrCount_Forward; loop++) {
+		sceneRenderData_->renderQueue_Forward[loop]->RenderMesh_Forward(targetCamera);
 	}
+
 }
 
 RP_Deferred::RP_Deferred() {
@@ -111,6 +178,8 @@ RP_Deferred::RP_Deferred() {
 	SetupFrameBuffers();
 
 	SetupShaders();
+
+	m = FilePooler::LoadMeshModel("sphere.obj")->meshes->at(0);
 }
 
 
@@ -130,30 +199,14 @@ void RP_Deferred::Render(SceneRenderData* sceneRenderData_) {
 	}
 
 	//Geometry Pass		
-	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);	
-	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	shaderDeferredGeo->Use();	
-	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
-		shaderDeferredGeo->SetModelMat(sceneRenderData_->renderQueue_Deferred[loop]->Mmatrix());
-		sceneRenderData_->renderQueue_Deferred[loop]->RenderMesh();
-	}	
+	GeometryPass(sceneRenderData_);
 	//mainCamera_->RenderSkyBox();
 
 	//Lighting Pass
-	ProcessLightPass();
+	LightPass();
 
 	//Additional Forward
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);//gBuffer에서 읽어서
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, offScreenData.frameBuffer);	//default buffer에 그린다
-	glBlitFramebuffer(//무엇을? 깊이 버퍼 값을
-		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(),
-		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(),
-		GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-	for (int loop = 0; loop < rdrCount_Forward; loop++) {
-		sceneRenderData_->renderQueue_Forward[loop]->RenderMesh_Forward(targetCamera);
-	}	
-
+	AdditionalForwardPass(sceneRenderData_);
 
 	//Render off rendered frame to default fb
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

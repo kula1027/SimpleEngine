@@ -17,9 +17,6 @@ public:
 	ID_diffuseTexture id_diffuse;
 	ID_specularTexture id_specular;
 
-	virtual void SetUniforms(Camera* camera_, MeshRenderer* renderer_) override;	
-
-	void SetUniformDlight(Camera* cam_, BaseLight* dLight_);
-//	void SetUniformMVP(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_);	
+	virtual void SetUniforms(Camera* camera_, MeshRenderer* renderer_) override;		
 };
 

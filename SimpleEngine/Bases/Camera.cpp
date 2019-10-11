@@ -90,7 +90,7 @@ void Camera::SetUpMatrices(){
 		upVector                  // Head is up (set to 0,-1,0 to look upside-down)
 		);	
 
-	vpMatrix = projectionMatrix * viewMatrix * glm::mat4(1.0);	
+	vpMatrix = projectionMatrix * viewMatrix;	
 
 	glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &viewMatrix);//View

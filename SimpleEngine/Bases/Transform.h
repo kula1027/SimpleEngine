@@ -27,6 +27,8 @@ public:
 	vec3 position;	
 	vec3 scale;	
 
+	vec3 GetPosition();
+	void SetPosition(vec3 pos);
 
 #pragma region Rotation	
 	vec3 GetEulerAngles();
@@ -50,7 +52,7 @@ public:
 	Transform* parent = NULL;
 
 	void SetParent(Transform* parent_);
-	mat4 GetMatrix4();
+	mat4 GetModelMatrix();
 	~Transform();
 };
 

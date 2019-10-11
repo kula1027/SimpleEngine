@@ -31,9 +31,8 @@ void main() {
 
 	vec3 vertexPosition_cameraspace = (V * M * vec4(attr_position, 1)).xyz;
 	vertex_out.viewDirection_cameraSpace = -vertexPosition_cameraspace;
-		
-	// Normal of the the vertex, in camera space	
-	vertex_out.normal_cameraSpace = (V * M * vec4(attr_normal, 0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
+			
+	vertex_out.normal_cameraSpace = (V * M * vec4(attr_normal, 0)).xyz; 
 													
 																	
 	vertex_out.uv = attr_texCoords;

@@ -7,15 +7,9 @@ ShaderDeferredGeo::ShaderDeferredGeo() {
 	
 	LoadProgram(filePath);
 
-	BindCameraUBO();
-
-	id_matrice.model = GetUniformLocation("M");
+	BindCameraUBO();	
 }
 
 
 ShaderDeferredGeo::~ShaderDeferredGeo() {
-}
-
-void ShaderDeferredGeo::SetModelMat(glm::mat4 modelMat_) {	
-	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(modelMat_));
 }

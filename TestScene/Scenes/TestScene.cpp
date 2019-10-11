@@ -26,6 +26,11 @@ void TestScene::Load()
 	mainCamera->SetSkybox(new SkyBox());	
 	mainCamera->transform->position = glm::vec3(0, 10, 20);	
 
+	PointLight* pointLight = new PointLight();
+	eoLight = new EngineObject("pLight");
+	eoLight->AttachComponent(pointLight);
+	eoLight->transform->SetPosition(vec3(-1, 3, 0));
+
 	EngineObject* eo;
 
 	//floor
@@ -61,6 +66,15 @@ void TestScene::Load()
 	dRdr->SetRenderModeForward(true);
 	eo->AttachComponent(dRdr);
 	eo->transform->position = glm::vec3(-5, 2, 0);
+
+	//sphere	
+	eo = new EngineObject("sphere");
+	dRdr = new MeshRenderer();
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
+	//dRdr->SetRenderModeForward(true);
+	eo->AttachComponent(dRdr);
+	eo->transform->position = glm::vec3(-7, 2, 0);
+
 
 	
 	//Grass

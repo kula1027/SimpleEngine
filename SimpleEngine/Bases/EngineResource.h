@@ -10,8 +10,6 @@ public:
 	void Release();
 	void MarkUse();
 
-	virtual void OnEndUse() = 0;
-
-	bool destroyOnEndUse;
+	virtual void OnEndUse() {};	
 };
 

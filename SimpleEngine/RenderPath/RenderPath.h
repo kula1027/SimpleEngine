@@ -27,6 +27,7 @@ protected:
 
 	void PostDraw();
 	void DrawOffScreenQuad();
+	void CopyFboDepth(int srcFbo, int destFbo);
 
 public:
 	RenderPath();

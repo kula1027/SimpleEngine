@@ -4,12 +4,13 @@
 #include <Bases/EngineObject.h>
 #include "SimpleMath.h"
 
+
+//현재 붙어있는 engineObject의 다른 컴포넌트들에게 변경되었음을 알림
 void Transform::NotifyChange() {
 	engineObject->NotifyTransformChange();
 }
 
-Transform::Transform()
-{
+Transform::Transform() {
 	position = glm::vec3(0, 0, 0);
 	eulerAngles = glm::vec3(0, 0, 0);
 	rotation = quat(eulerAngles);
@@ -17,6 +18,15 @@ Transform::Transform()
 	forward = glm::vec3(0, 0, 1);
 	right = glm::vec3(1, 0, 0);
 	up = glm::vec3(0, 1, 0);	
+}
+
+vec3 Transform::GetPosition() {
+	return position;
+}
+
+void Transform::SetPosition(vec3 pos_) {
+	position = pos_;
+	NotifyChange();
 }
 
 vec3 Transform::GetEulerAngles() {
@@ -62,8 +72,8 @@ void Transform::SetParent(Transform * parent_){
 	parent_->children.push_back(this);
 }
 
-mat4 Transform::GetMatrix4() {	
-	mat4 matTranslation = translate(glm::mat4(1.0), position);;	
+mat4 Transform::GetModelMatrix() {	
+	mat4 matTranslation = translate(glm::mat4(1.0), position);
 	mat4 matRotation = toMat4(rotation);
 	mat4 matScale = glm::scale(glm::mat4(1.0), scale);
 

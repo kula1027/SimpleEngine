@@ -69,8 +69,7 @@ void RenderPath::EnableOffSreenBuffer(Camera* cam_) {
 	);
 	glBindFramebuffer(GL_FRAMEBUFFER, offScreenData.frameBuffer);
 
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_STENCIL_TEST);
+	glEnable(GL_DEPTH_TEST);	
 	glClearColor(
 		cam_->clearColor.x,
 		cam_->clearColor.y,
@@ -84,4 +83,14 @@ void RenderPath::EnableOffSreenBuffer(Camera* cam_) {
 void RenderPath::DrawOffScreenQuad() {
 	glBindVertexArray(offScreenData.quadVAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+void RenderPath::CopyFboDepth(int srcFbo, int destFbo) {
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, srcFbo);//gBuffer에서 읽어서
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, destFbo);	//default buffer에 그린다
+	glBlitFramebuffer(//무엇을? 깊이 버퍼 값을
+		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(),
+		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(),
+		GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
 }

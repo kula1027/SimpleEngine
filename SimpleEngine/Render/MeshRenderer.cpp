@@ -95,7 +95,7 @@ BaseShader * MeshRenderer::GetShader() {
 
 
 void MeshRenderer::ComputeMatrices(Camera* camera_) {
-	modelMatrix = transform->GetMatrix4();
+	modelMatrix = transform->GetModelMatrix();
 	mvpMatrix = camera_->VPmatrix() * modelMatrix;
 }
 

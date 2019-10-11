@@ -2,14 +2,10 @@
 #include "../BaseShader.h"
 
 class ShaderDeferredGeo : public BaseShader {
-private:
-	ID_matrice id_matrice;
+private:	
 
 public:
 	ShaderDeferredGeo();
-	~ShaderDeferredGeo();
-
-	
-	void SetModelMat(glm::mat4 modelMa_);
+	~ShaderDeferredGeo();		
 };
 

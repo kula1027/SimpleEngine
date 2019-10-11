@@ -19,8 +19,8 @@ layout (std140) uniform LightData{
 
 
 layout (std140) uniform CameraData{	
-	mat4 V;
-	mat4 P;
-	mat4 VP;
+	mat4 V;			// 0, 64
+	mat4 P;			// 64, 128
+	mat4 VP;		// 128, 192
 };
 

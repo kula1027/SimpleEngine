@@ -5,13 +5,15 @@
 class PointLight : public BaseLight
 {
 private:		
+	glm::mat4 modelMatrix;//deferred에서 stencil test때 사용할 m matrix
 
 public:
 	PointLight();
 	~PointLight();
 
-	float range;
+	float range;	
 
-	void Update();
+	glm::mat4 GetModelMatrix();
+	virtual void OnTransformChanged() override;
 };
 
