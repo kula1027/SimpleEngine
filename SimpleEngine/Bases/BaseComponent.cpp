@@ -14,8 +14,6 @@ BaseComponent::BaseComponent(){
 void BaseComponent::OnAttachedToObject(EngineObject * obj_) {
 	engineObject = obj_;
 	transform = engineObject->transform;
-
-	engineObject->NotifyTransformChange();
 }
 
 EngineObject * BaseComponent::GetEngineObject() {

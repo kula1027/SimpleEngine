@@ -209,6 +209,7 @@
     <ClInclude Include="Scripts\MoveCamera.h" />
     <ClInclude Include="Scripts\ScriptBundle.h" />
     <ClInclude Include="Render\Shaders\Deferred\ShaderDeferredLight.h" />
+    <ClInclude Include="Shaders\ShaderDef.h" />
     <ClInclude Include="Shaders\ShaderManager.h" />
     <ClInclude Include="Shaders\BaseShader.h" />
     <ClInclude Include="Shaders\Deferred\ShaderDeferredGeo.h" />

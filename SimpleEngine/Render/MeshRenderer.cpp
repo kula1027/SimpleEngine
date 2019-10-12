@@ -80,7 +80,7 @@ void MeshRenderer::SetMeshModel(MeshModel * meshModel_) {
 	for (int loop = 0; loop < meshCount; loop++) {
 		Mesh* currentMesh = meshModel->meshes->at(loop);
 		if (!currentMesh->isSetup) {
-			currentMesh->Setup();
+			currentMesh->Setup();//FIXME
 		}
 	}
 }

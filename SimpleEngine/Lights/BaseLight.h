@@ -20,6 +20,16 @@ enum LightType {
 };
 
 class BaseLight : public BaseComponent{
+private:
+	float intensity = 1;
+
+protected:
+	LightType lightType;
+	int startAddrUbo;
+
+	glm::vec3 color;
+	virtual void SetUboIntensity() {}
+
 public:
 	BaseLight();
 	~BaseLight();
@@ -44,14 +54,5 @@ public:
 
 	virtual void OnAttachedToObject(EngineObject* obj_) override;
 	virtual void SetUniformsUbo() {}
-
-protected:
-	LightType lightType;
-	int startAddrUbo;	
-
-	glm::vec3 color;	
-	float intensity;
-
-	bool isStatic = false;
 };
 

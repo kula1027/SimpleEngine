@@ -8,6 +8,7 @@
 #include "ShaderBundle.h"
 
 #include <EngineDef.h>
+#include <Shaders/ShaderDef.h>
 
 #include <glm/gtc/type_ptr.hpp>
 #include <Debugger/SP_Debugger.h>

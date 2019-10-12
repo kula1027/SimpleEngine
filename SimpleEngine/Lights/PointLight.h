@@ -6,14 +6,26 @@ class PointLight : public BaseLight
 {
 private:		
 	glm::mat4 modelMatrix;//deferred에서 stencil test때 사용할 m matrix
+	glm::mat4 matTranslation;
+	glm::mat4 matScale;
+
+	float range = 1;
+
+protected:
+	virtual void SetUboIntensity() override;
+	void SetUboRange();
 
 public:
 	PointLight();
 	~PointLight();
 
-	float range;	
+	void SetRange(float range_);
+	float GetRange();
 
 	glm::mat4 GetModelMatrix();
+
+	virtual void SetUniformsUbo() override;
 	virtual void OnTransformChanged() override;
+	virtual void OnAttachedToObject(EngineObject* obj_) override;
 };
 

@@ -5,12 +5,11 @@ class Mesh;
 
 class RP_Deferred : public RenderPath{
 private:
-	BaseShader* shaderGeo;
+	BaseShader* shaderGeometry;
 	BaseShader* shaderDirectional;
-	BaseShader* shaderPoint;
-	BaseShader* shaderPointStencil;
-
-	Mesh* m;
+	BaseShader* shaderPointStencilPass;
+	BaseShader* shaderPointLightPass;
+	Mesh* meshSphere;
 
 	void SetupFrameBuffers();
 	void SetupShaders();

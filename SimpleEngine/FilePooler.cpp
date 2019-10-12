@@ -41,7 +41,7 @@ MeshModel* FilePooler::LoadMeshModel(string filePath) {
 		return foundMesh;
 	}
 	else {
-		MeshModel* meshModel = new MeshModel(filePath);
+		MeshModel* meshModel = new MeshModel(filePath);	
 		loadedMeshModels.push_back(meshModel);
 
 		return meshModel;

@@ -21,8 +21,8 @@
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo.vert" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_directional.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_directional.vert" />
-    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_point.frag" />
-    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_point.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_pointLight.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_pointLight.vert" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_pointStencil.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_pointStencil.vert" />
     <None Include="$(MSBuildThisFileDirectory)deform.geom" />
@@ -46,6 +46,6 @@
     <None Include="$(MSBuildThisFileDirectory)vertexColorDiffuse.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="$(MSBuildThisFileDirectory)ubos.txt" />
+    <Text Include="$(MSBuildThisFileDirectory)ShaderTemplate.txt" />
   </ItemGroup>
 </Project>

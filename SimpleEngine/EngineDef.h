@@ -12,8 +12,6 @@
 #define FragmentShaderFormat ".frag"
 #define GeometryShaderFormat ".geom"
 #define DirPathShader "../Shaders/"
-#define BindingPointCameraData 0
-#define BindingPointLightData 1
 
 #pragma endregion
 

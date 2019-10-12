@@ -52,17 +52,25 @@ void RP_Deferred::SetupFrameBuffers() {
 		std::cout << "Framebuffer not complete!" << std::endl;
 }
 
-void RP_Deferred::SetupShaders() {
-	//Shader Setup
-	shaderGeo = new BaseShader("Deferred/deferred_geo");
+void RP_Deferred::SetupShaders() {	
+	shaderGeometry = new BaseShader("Deferred/deferred_geo");
 	shaderDirectional = new BaseShader("Deferred/deferred_light_directional");	
-	shaderPointStencil = new BaseShader("Deferred/deferred_light_pointStencil");
+	shaderPointStencilPass = new BaseShader("Deferred/deferred_light_pointStencil");
+	shaderPointLightPass = new BaseShader("Deferred/deferred_light_pointLight");
 
 	shaderDirectional->Use();
 	shaderDirectional->BindLightUBO();
 	shaderDirectional->SetInt("gPosition", 0);
 	shaderDirectional->SetInt("gNormal", 1);
 	shaderDirectional->SetInt("gAlbedoSpec", 2);
+
+	shaderPointLightPass->Use();
+	shaderPointLightPass->BindLightUBO();
+	shaderPointLightPass->BindCameraUBO();
+	shaderPointLightPass->SetInt("gPosition", 0);
+	shaderPointLightPass->SetInt("gNormal", 1);
+	shaderPointLightPass->SetInt("gAlbedoSpec", 2);
+
 }
 
 void RP_Deferred::GeometryPass(SceneRenderData* sceneRenderData_) {
@@ -75,9 +83,9 @@ void RP_Deferred::GeometryPass(SceneRenderData* sceneRenderData_) {
 	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);	
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	shaderGeo->Use();
+	shaderGeometry->Use();
 	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
-		shaderGeo->SetMat_M(sceneRenderData_->renderQueue_Deferred[loop]->Mmatrix());
+		shaderGeometry->SetMat_M(sceneRenderData_->renderQueue_Deferred[loop]->Mmatrix());
 		sceneRenderData_->renderQueue_Deferred[loop]->RenderMesh();
 	}
 }
@@ -94,16 +102,6 @@ void RP_Deferred::LightPass() {
 	CopyFboDepth(gBuffer, offScreenData.frameBuffer);
 
 	LightPass_Point();
-	//LightPass Directional
-	//glDisable(GL_DEPTH_TEST);
-	//glEnable(GL_BLEND);
-	//glBlendEquation(GL_FUNC_ADD);
-	//glBlendFunc(GL_ONE, GL_ONE);	
-	//
-	//glDisable(GL_BLEND);
-	//glEnable(GL_DEPTH_TEST);
-
-
 }
 
 void RP_Deferred::LightPass_AmbientDirectional() {
@@ -119,51 +117,72 @@ void RP_Deferred::LightPass_AmbientDirectional() {
 }
 
 void RP_Deferred::LightPass_Point() {
-	//stencil pass
+	glEnable(GL_STENCIL_TEST);
+	int lightCount = LightManager::Inst()->pointLights.size();
+	for (int loop = 0; loop < lightCount; loop++){
+		PointLight* currentLight = LightManager::Inst()->pointLights.at(loop);
+		mat4 mvpSphere = targetCamera->VPmatrix() * currentLight->GetModelMatrix();
 
-	
-	
-	std::map<unsigned int, PointLight*>* mapPointLights = &(LightManager::Inst()->pointLights);
-	std::map<unsigned int, PointLight*>::iterator it;
-	for (it = mapPointLights->begin(); it != mapPointLights->end(); it++) {		
-		shaderPointStencil->Use();
+		//stencil pass
+		shaderPointStencilPass->Use();
+		//glDrawBuffer(GL_NONE);
 
-		glEnable(GL_DEPTH_TEST);	
+		glEnable(GL_DEPTH_TEST);			
 
 		glDisable(GL_CULL_FACE);
-
+		
 		glClear(GL_STENCIL_BUFFER_BIT);		
 		glStencilFunc(GL_ALWAYS, 0, 0);//always pass stencil
 
 		////stencil fail / stencil pass, depth fail / both fail
 		////stencil은 항상 pass 하기에 sdfail만이 의미있다.
-		glStencilOpSeparate(GL_BACK, GL_KEEP, GL_INCR_WRAP, GL_KEEP);
-		glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_DECR_WRAP, GL_KEEP);
-
-		mat4 mvpSphere = targetCamera->VPmatrix() * it->second->GetModelMatrix();		
-		shaderPointStencil->SetMat_MVP(mvpSphere);
-		glBindVertexArray(m->VAO);
+		glStencilOpSeparate(GL_BACK, GL_KEEP, GL_DECR_WRAP, GL_KEEP);
+		glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_INCR_WRAP, GL_KEEP);
+		
+		shaderPointStencilPass->SetMat_MVP(mvpSphere);
+		glBindVertexArray(meshSphere->VAO);
 		glDrawElements(
 			GL_TRIANGLES,
-			m->GetIdxCount(),
+			meshSphere->GetIdxCount(),
 			GL_UNSIGNED_INT,
 			NULL
 		);
+
+		//light pass
+		shaderPointLightPass->Use();
+		glDrawBuffer(GL_COLOR_ATTACHMENT0);
+		glStencilFunc(GL_NOTEQUAL, 0, 0xFF);
+
+		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		glBlendEquation(GL_FUNC_ADD);
+		glBlendFunc(GL_ONE, GL_ONE);
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT);
+
+		shaderPointLightPass->SetMat_MVP(mvpSphere);
+		shaderPointLightPass->SetInt("lightIdx", loop);
+		glBindVertexArray(meshSphere->VAO);
+		glDrawElements(
+			GL_TRIANGLES,
+			meshSphere->GetIdxCount(),
+			GL_UNSIGNED_INT,
+			NULL
+		);
+
+		glCullFace(GL_BACK);
+
+		glDisable(GL_BLEND);
 	}	
-	
-	//p.WorldPos(m_pointLight[PointLightIndex].Position);
 
-	//float BBoxScale = CalcPointLightBSphere(m_pointLight[PointLightIndex].Color,
-	//	m_pointLight[PointLightIndex].DiffuseIntensity);
-	//p.Scale(BBoxScale, BBoxScale, BBoxScale);
-	//p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-	//p.SetPerspectiveProj(m_persProjInfo);
-
-	//m_nullTech.SetWVP(p.GetWVPTrans());
-	//m_bsphere.Render();
+	glDisable(GL_STENCIL_TEST);	
 }
 
 void RP_Deferred::AdditionalForwardPass(SceneRenderData* sceneRenderData_) {
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
+
 	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();
 	
 	for (int loop = 0; loop < rdrCount_Forward; loop++) {
@@ -179,7 +198,8 @@ RP_Deferred::RP_Deferred() {
 
 	SetupShaders();
 
-	m = FilePooler::LoadMeshModel("sphere.obj")->meshes->at(0);
+	meshSphere = FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj")->meshes->at(0);
+	meshSphere->Setup();
 }
 
 
@@ -189,6 +209,10 @@ RP_Deferred::~RP_Deferred() {
 void RP_Deferred::Render(SceneRenderData* sceneRenderData_) {
 	int rdrCount_Deferred = sceneRenderData_->renderQueue_Deferred.size();
 	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();	
+
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), NULL);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), NULL);
+
 	
 	targetCamera->SetUpMatrices();
 	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
@@ -198,14 +222,14 @@ void RP_Deferred::Render(SceneRenderData* sceneRenderData_) {
 		sceneRenderData_->renderQueue_Forward[loop]->ComputeMatrices(targetCamera);
 	}
 
-	//Geometry Pass		
+	glDepthMask(GL_TRUE);
 	GeometryPass(sceneRenderData_);
+	glDepthMask(GL_FALSE);
 	//mainCamera_->RenderSkyBox();
-
-	//Lighting Pass
+	
 	LightPass();
-
-	//Additional Forward
+	
+	glDepthMask(GL_TRUE);
 	AdditionalForwardPass(sceneRenderData_);
 
 	//Render off rendered frame to default fb

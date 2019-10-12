@@ -7,10 +7,12 @@ private:
 	BaseShader* shadowMapShader;
 
 	unsigned int lightSpaceMatrixId;
-	glm::mat4 lightView;
-	
+	glm::mat4 lightView;	
 	glm::mat4 lightProjection;
 	void InitShadowMap();	
+
+protected:
+	virtual void SetUboIntensity() override;
 
 public:
 	DirectionalLight();
@@ -22,5 +24,5 @@ public:
 
 
 	virtual void SetUniformsUbo() override;
-	virtual void OnTransformChanged() override;
+	virtual void OnTransformChanged() override;	
 };

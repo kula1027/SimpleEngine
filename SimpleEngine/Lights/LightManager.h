@@ -24,10 +24,12 @@ public:
 
 	void SetAmbient(glm::vec3 ambient_);
 
+	void BindUboLightData();
+
 	void AddLight(BaseLight* light_);
 	std::vector<BaseLight*> lights;
-	std::map<unsigned int, PointLight*> pointLights;
-	std::map<unsigned int, DirectionalLight*> directionalLights;
+	std::vector<PointLight*> pointLights;
+	std::vector<DirectionalLight*> directionalLights;
 
 };
 

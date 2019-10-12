@@ -5,11 +5,15 @@ layout(location = 1) in vec3 attr_normal;
 layout(location = 2) in vec2 attr_texCoords;
 
 
+
 layout (std140) uniform CameraData{	
-	mat4 V;			//0, 16
-	mat4 P;			//16, 32
-	mat4 VP;		//32, 48
+	mat4 V;					// 0, 64
+	mat4 P;					// 64, 128
+	mat4 VP;				// 128, 192
+	vec4 cameraPosition;	// 192, 208
 };
+
+
 
 
 out Vertex_Out{

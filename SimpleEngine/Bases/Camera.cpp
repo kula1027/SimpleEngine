@@ -8,12 +8,15 @@
 #include "../FilePooler.h"
 
 #include "../RenderPath/RenderPathBundle.h"
+#include <Shaders/ShaderDef.h>
 
 
 void Camera::InitUbo() {
 	glGenBuffers(1, &uboCamera);
 	glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
-	glBufferData(GL_UNIFORM_BUFFER, 192, NULL, GL_STATIC_DRAW);
+
+	int sizeUbo = sizeof(glm::mat4) * 3 + sizeof(glm::vec4);
+	glBufferData(GL_UNIFORM_BUFFER, sizeUbo, NULL, GL_STATIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, BindingPointCameraData, uboCamera);
 
 }
@@ -96,6 +99,7 @@ void Camera::SetUpMatrices(){
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &viewMatrix);//View
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), &projectionMatrix);//Projection
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 2, sizeof(glm::mat4), &vpMatrix);//P x V	
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3, sizeof(glm::vec3), &transform->position);//P x V	
 }
 
 glm::mat4 Camera::VPmatrix() {
@@ -113,3 +117,4 @@ glm::mat4 Camera::Pmatrix() {
 void Camera::RenderSkyBox(){
 	skybox->Render(this);
 }
+

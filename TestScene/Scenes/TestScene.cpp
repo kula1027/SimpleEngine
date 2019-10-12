@@ -18,23 +18,41 @@ void TestScene::Load()
 {
 	Scene::Load();
 
-	EngineObject* eoLight = new EngineObject("light");
-	DirectionalLight* directionalLight = new DirectionalLight();
-	eoLight->AttachComponent(directionalLight);
-	eoLight->transform->SetForward(glm::vec3(0.7, -0.7, 0));
 
 	mainCamera->SetSkybox(new SkyBox());	
 	mainCamera->transform->position = glm::vec3(0, 10, 20);	
 
-	PointLight* pointLight = new PointLight();
-	eoLight = new EngineObject("pLight");
-	eoLight->AttachComponent(pointLight);
-	eoLight->transform->SetPosition(vec3(-1, 3, 0));
+	EngineObject* eoLight;
+
+	PointLight* pointLight;
+	for (int loop = 0; loop < 300; loop++) {
+
+		int rand_range = rand() % 40 + 20;
+		float rand_r = (rand() % 128 + 128) * 0.004f;
+		float rand_g = (rand() % 128 + 128) * 0.004f;
+		float rand_b = (rand() % 128 + 128) * 0.004f;
+		float rand_x = (rand() % 401 - 200);
+		float rand_z = (rand() % 401 - 200);
+
+		pointLight = new PointLight();
+		pointLight->SetRange(rand_range);
+		pointLight->SetColor(vec3(rand_r, rand_g, rand_b));
+
+		eoLight = new EngineObject("pLight");
+		eoLight->AttachComponent(pointLight);
+		eoLight->transform->SetPosition(vec3(rand_x, 1, rand_z));
+	}
+	
+
+	eoLight = new EngineObject("light");
+	DirectionalLight* directionalLight = new DirectionalLight();
+	eoLight->AttachComponent(directionalLight);
+	eoLight->transform->SetForward(glm::vec3(0.7, -0.7, 0));
 
 	EngineObject* eo;
 
 	//floor
-	Texture* t = FilePooler::LoadTexture("../Materials/burnt_sand_brown.png");
+	Texture* t = FilePooler::LoadTexture("../Materials/blackone.png");
 	MeshModel* mPlane = FilePooler::LoadMeshModel("plane.obj");
 	mPlane->meshes->at(0)->renderMaterial->texDiffuse = t;
 	Mesh* thatMesh = mPlane->meshes->at(0);
@@ -75,6 +93,12 @@ void TestScene::Load()
 	eo->AttachComponent(dRdr);
 	eo->transform->position = glm::vec3(-7, 2, 0);
 
+	eo = new EngineObject("sphere");
+	dRdr = new MeshRenderer();
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj"));
+	//dRdr->SetRenderModeForward(true);
+	eo->AttachComponent(dRdr);
+	eo->transform->position = glm::vec3(14, 5, 0);
 
 	
 	//Grass

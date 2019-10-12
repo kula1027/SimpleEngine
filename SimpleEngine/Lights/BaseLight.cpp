@@ -5,12 +5,13 @@ BaseLight::BaseLight(){
 }
 
 
-BaseLight::~BaseLight()
-{
+BaseLight::~BaseLight(){
 }
 
 void BaseLight::SetIntensity(float intensity_) {
 	intensity = intensity_;	
+
+	SetUboIntensity();
 }
 
 float BaseLight::GetIntensity() {

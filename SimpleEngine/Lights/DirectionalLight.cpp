@@ -5,11 +5,10 @@
 #include "../FilePooler.h"
 #include <Shaders/BaseShader.h>
 #include <Bases/Transform.h>
+#include <Lights/LightManager.h>
 
-
-DirectionalLight::DirectionalLight(){
-	intensity = 0.8f;
-	color = glm::vec3(1, 1, 1);	
+DirectionalLight::DirectionalLight(){	
+	color = glm::vec3(0.1, 0.1, 0.1);	
 	isShadowCaster = true;
 	lightType = LightType_Directional;
 
@@ -41,7 +40,6 @@ void DirectionalLight::InitShadowMap(){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);	
 	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-//	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowData.depthMapFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowData.depthMapTextureId, 0);
@@ -52,6 +50,10 @@ void DirectionalLight::InitShadowMap(){
 	shadowMapShader = new BaseShader("shadowMap");
 	lightSpaceMatrixId = shadowMapShader->GetUniformLocation("lightSpaceMatrix");
 	modelMatrixId = shadowMapShader->GetUniformLocation("modelMatrix");
+}
+
+void DirectionalLight::SetUboIntensity() {
+
 }
 
 void DirectionalLight::EnableShadowMapBuffer(){
@@ -72,14 +74,15 @@ void DirectionalLight::EnableShadowMapBuffer(){
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void DirectionalLight::SetUniformsUbo() {
-	//GetTransform()->SetForward(glm::vec3(0.7, -0.7, 0));		
+void DirectionalLight::SetUniformsUbo() {	
+	LightManager::Inst()->BindUboLightData(); 
 
 	//direction 0 - 16
+	vec4 lightDir = vec4(GetTransform()->GetForward(), 0);
 	glBufferSubData(GL_UNIFORM_BUFFER, 
 		startAddrUbo,
 		sizeof(glm::vec4), 
-		glm::value_ptr(GetTransform()->GetForward()));
+		glm::value_ptr(lightDir));
 	//color 16-32
 	glBufferSubData(GL_UNIFORM_BUFFER, 
 		startAddrUbo + sizeof(glm::vec4),

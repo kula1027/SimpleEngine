@@ -198,6 +198,9 @@
     <ClInclude Include="Lights\LightManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shaders\ShaderDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bases\Camera.cpp">
