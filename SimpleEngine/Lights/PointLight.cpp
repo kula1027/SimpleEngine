@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <Lights/LightManager.h>
 
-void PointLight::SetUboIntensity() {
+void PointLight::SetUbo_Intensity() {
 	float inten = GetIntensity();
 	glBufferSubData(GL_UNIFORM_BUFFER,
 		startAddrUbo,
@@ -14,7 +14,7 @@ void PointLight::SetUboIntensity() {
 }
 //Dist	Constant	Linear	Quadratic
 //100	1.0			0.045	0.0075
-void PointLight::SetUboRange() {
+void PointLight::SetUbo_Range() {
 	vec4 attenK_c_l_q_range = vec4(
 		1.0 ,	//constant
 		0.045f,		//linear
@@ -45,7 +45,8 @@ void PointLight::SetRange(float range_) {
 
 	modelMatrix = matTranslation * matScale;
 
-	SetUboRange();
+	if(GetTransform() != NULL)
+		SetUbo_Range();
 }
 
 float PointLight::GetRange() {
@@ -56,11 +57,11 @@ glm::mat4 PointLight::GetModelMatrix() {
 	return modelMatrix;
 }
 
-void PointLight::SetUniformsUbo() {
+void PointLight::SetUbo() {
 	LightManager::Inst()->BindUboLightData();
 
 	// 0 - 4
-	SetUboIntensity();		
+	SetUbo_Intensity();		
 
 	//position 16 - 32
 	glBufferSubData(GL_UNIFORM_BUFFER,
@@ -73,14 +74,14 @@ void PointLight::SetUniformsUbo() {
 		sizeof(glm::vec4),
 		&color);	
 
-	SetUboRange();
+	SetUbo_Range();
 }
 
 void PointLight::OnTransformChanged() {
 	matTranslation = translate(mat4(1.0), GetTransform()->position);	
 	modelMatrix = matTranslation * matScale;
 
-	SetUniformsUbo();
+	SetUbo();
 }
 
 void PointLight::OnAttachedToObject(EngineObject * obj_) {
@@ -91,4 +92,3 @@ void PointLight::OnAttachedToObject(EngineObject * obj_) {
 
 	modelMatrix = matTranslation * matScale;	
 }
-

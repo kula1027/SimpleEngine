@@ -8,7 +8,7 @@
 #include <Lights/LightManager.h>
 
 DirectionalLight::DirectionalLight(){	
-	color = glm::vec3(0.1, 0.1, 0.1);	
+	color = glm::vec3(0.5, 0.5, 0.5);	
 	isShadowCaster = true;
 	lightType = LightType_Directional;
 
@@ -45,21 +45,21 @@ void DirectionalLight::InitShadowMap(){
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowData.depthMapTextureId, 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	shadowMapShader = new BaseShader("shadowMap");
 	lightSpaceMatrixId = shadowMapShader->GetUniformLocation("lightSpaceMatrix");
 	modelMatrixId = shadowMapShader->GetUniformLocation("modelMatrix");
 }
 
-void DirectionalLight::SetUboIntensity() {
+void DirectionalLight::SetUbo_Intensity() {
 
 }
 
 void DirectionalLight::EnableShadowMapBuffer(){
 	lightProjection = glm::ortho(-30.0f, 30.0f, -30.0f, 30.0f, near_plane, far_plane);
 
-	lightView = glm::lookAt(-GetTransform()->position,
+	lightView = glm::lookAt(
+		-GetTransform()->GetForward(),
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -74,7 +74,7 @@ void DirectionalLight::EnableShadowMapBuffer(){
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void DirectionalLight::SetUniformsUbo() {	
+void DirectionalLight::SetUbo() {	
 	LightManager::Inst()->BindUboLightData(); 
 
 	//direction 0 - 16
@@ -92,5 +92,5 @@ void DirectionalLight::SetUniformsUbo() {
 }
 
 void DirectionalLight::OnTransformChanged() {
-	SetUniformsUbo();
+	SetUbo();
 }

@@ -11,7 +11,7 @@ BaseLight::~BaseLight(){
 void BaseLight::SetIntensity(float intensity_) {
 	intensity = intensity_;	
 
-	SetUboIntensity();
+	SetUbo_Intensity();
 }
 
 float BaseLight::GetIntensity() {

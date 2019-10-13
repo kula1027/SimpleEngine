@@ -12,8 +12,8 @@ private:
 	float range = 1;
 
 protected:
-	virtual void SetUboIntensity() override;
-	void SetUboRange();
+	virtual void SetUbo_Intensity() override;
+	void SetUbo_Range();
 
 public:
 	PointLight();
@@ -24,8 +24,8 @@ public:
 
 	glm::mat4 GetModelMatrix();
 
-	virtual void SetUniformsUbo() override;
+	virtual void SetUbo() override;
 	virtual void OnTransformChanged() override;
-	virtual void OnAttachedToObject(EngineObject* obj_) override;
+	virtual void OnAttachedToObject(EngineObject* obj_) override;	
 };
 

@@ -32,7 +32,7 @@ void MeshRenderer::SetRenderModeForward(bool isForward_) {
 	isRenderModeForward = isForward_;
 
 	if (isRenderModeForward) {
-		SetRenderModeForward(ShaderManager::Inst()->GetShader("Forward/forward"));
+		SetRenderModeForward(ShaderManager::GetShader("Forward/forward"));
 	}
 }
 
@@ -75,14 +75,6 @@ void MeshRenderer::RenderMesh() {
 
 void MeshRenderer::SetMeshModel(MeshModel * meshModel_) {
 	meshModel = meshModel_;
-
-	int meshCount = meshModel->meshes->size();
-	for (int loop = 0; loop < meshCount; loop++) {
-		Mesh* currentMesh = meshModel->meshes->at(loop);
-		if (!currentMesh->isSetup) {
-			currentMesh->Setup();//FIXME
-		}
-	}
 }
 
 MeshModel * MeshRenderer::GetMeshModel() {

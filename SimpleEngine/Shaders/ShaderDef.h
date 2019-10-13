@@ -10,7 +10,7 @@
 #define StartAddrDirectional 32
 #define StartAddrPoint (StartAddrDirectional + SizeStructDirectionalLight * MaxCountDirectionalLight)
 
-#define SizeStructCameraData 208
+#define SizeStructCameraData 224
 
 #define BindingPointCameraData 0
 #define BindingPointLightData 1

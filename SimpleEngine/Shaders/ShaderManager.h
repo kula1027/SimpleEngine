@@ -6,16 +6,13 @@
 class BaseShader;
 class ShaderManager {
 private:
-	ShaderManager();
-	static ShaderManager* instance;
+	ShaderManager();	
 
-	std::map<std::string, BaseShader*> shaderMap;
+	static std::map<std::string, BaseShader*> loadedShaders;
 
 public:
-	~ShaderManager();
-
-	static ShaderManager* Inst();
+	~ShaderManager();	
 	
-	BaseShader* GetShader(std::string shaderName_);
+	static BaseShader* GetShader(std::string shaderName_);
 };
 

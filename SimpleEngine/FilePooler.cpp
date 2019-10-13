@@ -4,46 +4,36 @@
 #include "Mesh/MeshModel.h"
 #include <Debugger/SP_Debugger.h>
 
-std::vector<MeshModel*> FilePooler::loadedMeshModels;
-std::vector<Texture*> FilePooler::loadedTextures;
+std::map<std::string, MeshModel*>  FilePooler::loadedMeshModels;
+std::map<std::string, Texture*> FilePooler::loadedTextures;
 
 
-
-Texture * FilePooler::LoadTexture(std::string filePath){
-	std::cout << "\tLoad Texture... " << filePath << std::endl;	
-
+Texture * FilePooler::LoadTexture(std::string filePath){	
 	Texture* retTexture = NULL;
-	for (int loop = 0; loop < loadedTextures.size(); loop++) {
-		if (loadedTextures[loop]->GetDirectory().compare(filePath.c_str()) == 0) {
-			retTexture = loadedTextures[loop];
-			break;
-		}
-	}
 
-	if (retTexture == NULL) {
-		retTexture = new Texture(filePath);
-		loadedTextures.push_back(retTexture);
-	} 
+	if (loadedTextures.find(filePath) == loadedTextures.end()) {//not found
+		Texture* texture = new Texture(filePath);
+		loadedTextures.insert(make_pair(filePath, texture));
+
+		retTexture = texture;
+	} else {
+		retTexture = loadedTextures[filePath];
+	}
 
 	return retTexture;
 }
 
 MeshModel* FilePooler::LoadMeshModel(string filePath) {
-	MeshModel* foundMesh = NULL;
-	for (int loop = 0; loop < loadedMeshModels.size(); loop++) {
-		if (loadedMeshModels[loop]->GetFilePath().compare(filePath) == 0) {
-			foundMesh = loadedMeshModels[loop];
-			break;
-		}
+	MeshModel* retMeshModel = NULL;
+
+	if (loadedMeshModels.find(filePath) == loadedMeshModels.end()) {//not found
+		MeshModel* meshModel = new MeshModel(filePath);
+		loadedMeshModels.insert(make_pair(filePath, meshModel));		
+
+		retMeshModel = meshModel;
+	} else {
+		retMeshModel = loadedMeshModels[filePath];
 	}
 
-	if (foundMesh != NULL) {
-		return foundMesh;
-	}
-	else {
-		MeshModel* meshModel = new MeshModel(filePath);	
-		loadedMeshModels.push_back(meshModel);
-
-		return meshModel;
-	}
+	return retMeshModel;
 }

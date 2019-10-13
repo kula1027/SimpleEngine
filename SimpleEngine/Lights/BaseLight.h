@@ -28,7 +28,7 @@ protected:
 	int startAddrUbo;
 
 	glm::vec3 color;
-	virtual void SetUboIntensity() {}
+	virtual void SetUbo_Intensity() {}
 
 public:
 	BaseLight();
@@ -52,7 +52,7 @@ public:
 	virtual void InitShadowMap() {}
 	virtual void EnableShadowMapBuffer() {}
 
-	virtual void OnAttachedToObject(EngineObject* obj_) override;
-	virtual void SetUniformsUbo() {}
+	virtual void OnAttachedToObject(EngineObject* obj_) override;	
+	virtual void SetUbo() {}
 };
 

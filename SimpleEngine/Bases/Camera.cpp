@@ -14,9 +14,8 @@
 void Camera::InitUbo() {
 	glGenBuffers(1, &uboCamera);
 	glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
-
-	int sizeUbo = sizeof(glm::mat4) * 3 + sizeof(glm::vec4);
-	glBufferData(GL_UNIFORM_BUFFER, sizeUbo, NULL, GL_STATIC_DRAW);
+	
+	glBufferData(GL_UNIFORM_BUFFER, SizeStructCameraData, NULL, GL_STATIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, BindingPointCameraData, uboCamera);
 
 }
@@ -95,11 +94,13 @@ void Camera::SetUpMatrices(){
 
 	vpMatrix = projectionMatrix * viewMatrix;	
 
-	glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
+	
+	glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);	
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &viewMatrix);//View
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), &projectionMatrix);//Projection
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 2, sizeof(glm::mat4), &vpMatrix);//P x V	
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3, sizeof(glm::vec3), &transform->position);//P x V	
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3, sizeof(glm::vec3), &transform->position);//position
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3 + sizeof(glm::vec3), sizeof(glm::vec3), &transform->GetForward());//direction
 }
 
 glm::mat4 Camera::VPmatrix() {

@@ -12,7 +12,7 @@ private:
 	void InitShadowMap();	
 
 protected:
-	virtual void SetUboIntensity() override;
+	virtual void SetUbo_Intensity() override;
 
 public:
 	DirectionalLight();
@@ -23,6 +23,6 @@ public:
 	float near_plane = 1.0f, far_plane = 100.0f;
 
 
-	virtual void SetUniformsUbo() override;
+	virtual void SetUbo() override;
 	virtual void OnTransformChanged() override;	
 };

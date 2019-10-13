@@ -2,7 +2,7 @@
 #include "ShaderBundle.h"
 
 
-ShaderManager* ShaderManager::instance;
+std::map<std::string, BaseShader*> ShaderManager::loadedShaders;
 
 ShaderManager::ShaderManager() {
 }
@@ -11,25 +11,17 @@ ShaderManager::ShaderManager() {
 ShaderManager::~ShaderManager() {
 }
 
-ShaderManager * ShaderManager::Inst() {
-	if (instance == NULL) {
-		instance = new ShaderManager();
-	}
-
-	return instance;
-}
-
 BaseShader* ShaderManager::GetShader(std::string filePath_) {
 	BaseShader* retShader;
 
-	if (shaderMap.count(filePath_) > 0) {
-		retShader = shaderMap[filePath_];	
+	if (loadedShaders.count(filePath_) > 0) {
+		retShader = loadedShaders[filePath_];	
 	} else {
-		if (filePath_.compare("Forward/forward") == 0) {
-			retShader = new ShaderForward();			
+		if (filePath_.compare("Forward/forward") == 0) {			
+			retShader = new ShaderForward();				
 		}
 
-		shaderMap.insert(make_pair(filePath_, retShader));
+		loadedShaders.insert(make_pair(filePath_, retShader));
 	}	
 
 	return retShader;

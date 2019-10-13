@@ -49,6 +49,7 @@ void SkyBox::InitCubeMap() {
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	
 }
 
 void SkyBox::InitShader(){
@@ -68,6 +69,10 @@ void SkyBox::InitShader(){
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (GLvoid*)0);	
+
+	skyboxShader->Use();
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapId);
 }
 
 
@@ -76,9 +81,7 @@ void SkyBox::Initialize() {
 	InitShader();
 }
 
-void SkyBox::Render(Camera* cam_){
-	glDepthFunc(GL_LEQUAL);
-
+void SkyBox::Render(Camera* cam_){		
 	skyboxShader->Use();
 	glm::mat4 viewMat = glm::mat4(glm::mat3(cam_->Vmatrix()));//remove translation, remain rotation
 	
@@ -86,9 +89,6 @@ void SkyBox::Render(Camera* cam_){
 	glUniformMatrix4fv(projMatrixID, 1, GL_FALSE, glm::value_ptr(cam_->Pmatrix()));
 
 	glBindVertexArray(VAO);	
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapId);
-	glDrawArrays(GL_TRIANGLES, 0, 36);//18(vts per face) * 6(directions) / 3(vts per triangle) -> 36(triangles)
-
-	glDepthFunc(GL_LESS);
+	
+	glDrawArrays(GL_TRIANGLES, 0, 36);//18(vts per face) * 6(directions) / 3(vts per triangle) -> 36(triangles)	
 }

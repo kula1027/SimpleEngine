@@ -10,6 +10,8 @@
 MeshModel::MeshModel(){}
 
 MeshModel::MeshModel(string path){
+	DebugLog("Load MeshModel: " + path);
+
 	this->meshes = new vector<Mesh*>();
 	this->LoadModel(path);
 }
@@ -34,8 +36,7 @@ void MeshModel::LoadModel(string path){
 	string fullFilePath = DirPathMaterial + dirPath + fileName;	
 
 	// Read file via ASSIMP
-	Assimp::Importer importer;
-	std::cout << "Load Model... " + fullFilePath << endl;
+	Assimp::Importer importer;	
 	const aiScene* scene = importer.ReadFile(fullFilePath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
 
 	// Check for errors

@@ -45,8 +45,6 @@ void LightManager::BindUboLightData() {
 }
 
 void LightManager::AddLight(BaseLight* light_) {
-	lights.push_back(light_);		
-
 	BindUboLightData();
 
 	int startAddr;
@@ -75,5 +73,5 @@ void LightManager::AddLight(BaseLight* light_) {
 	}	
 
 	light_->SetStartAddrUbo(startAddr);
-	light_->SetUniformsUbo();
+	light_->SetUbo();
 }

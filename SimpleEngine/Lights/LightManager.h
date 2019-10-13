@@ -24,10 +24,9 @@ public:
 
 	void SetAmbient(glm::vec3 ambient_);
 
-	void BindUboLightData();
+	void BindUboLightData();	
 
-	void AddLight(BaseLight* light_);
-	std::vector<BaseLight*> lights;
+	void AddLight(BaseLight* light_);	
 	std::vector<PointLight*> pointLights;
 	std::vector<DirectionalLight*> directionalLights;
 

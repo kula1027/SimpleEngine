@@ -60,6 +60,7 @@ void RP_Deferred::SetupShaders() {
 
 	shaderDirectional->Use();
 	shaderDirectional->BindLightUBO();
+	shaderDirectional->BindCameraUBO();
 	shaderDirectional->SetInt("gPosition", 0);
 	shaderDirectional->SetInt("gNormal", 1);
 	shaderDirectional->SetInt("gAlbedoSpec", 2);
@@ -125,7 +126,7 @@ void RP_Deferred::LightPass_Point() {
 
 		//stencil pass
 		shaderPointStencilPass->Use();
-		//glDrawBuffer(GL_NONE);
+		glDrawBuffer(GL_NONE);
 
 		glEnable(GL_DEPTH_TEST);			
 
@@ -180,9 +181,6 @@ void RP_Deferred::LightPass_Point() {
 }
 
 void RP_Deferred::AdditionalForwardPass(SceneRenderData* sceneRenderData_) {
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_STENCIL_TEST);
-
 	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();
 	
 	for (int loop = 0; loop < rdrCount_Forward; loop++) {
@@ -198,8 +196,7 @@ RP_Deferred::RP_Deferred() {
 
 	SetupShaders();
 
-	meshSphere = FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj")->meshes->at(0);
-	meshSphere->Setup();
+	meshSphere = FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj")->meshes->at(0);	
 }
 
 
@@ -208,12 +205,9 @@ RP_Deferred::~RP_Deferred() {
 
 void RP_Deferred::Render(SceneRenderData* sceneRenderData_) {
 	int rdrCount_Deferred = sceneRenderData_->renderQueue_Deferred.size();
-	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();	
-
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), NULL);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), NULL);
-
+	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();		
 	
+
 	targetCamera->SetUpMatrices();
 	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
 		sceneRenderData_->renderQueue_Deferred[loop]->ComputeMatrices(targetCamera);
@@ -224,13 +218,18 @@ void RP_Deferred::Render(SceneRenderData* sceneRenderData_) {
 
 	glDepthMask(GL_TRUE);
 	GeometryPass(sceneRenderData_);
-	glDepthMask(GL_FALSE);
-	//mainCamera_->RenderSkyBox();
+	glDepthMask(GL_FALSE);	
 	
-	LightPass();
+	LightPass();	
 	
-	glDepthMask(GL_TRUE);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);		
+	glDisable(GL_STENCIL_TEST);
 	AdditionalForwardPass(sceneRenderData_);
+
+	glDepthFunc(GL_LEQUAL);
+	targetCamera->RenderSkyBox();
+	glDepthFunc(GL_LESS);
 
 	//Render off rendered frame to default fb
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

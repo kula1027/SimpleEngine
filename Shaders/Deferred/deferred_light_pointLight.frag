@@ -19,7 +19,7 @@ layout (std140) uniform LightData{
 	int lightCountPoint;					// 4, 8
 	vec4 ambient;							// 16, 32
 	DirectionalLight directionalLight[16];	// 32, 544		// 16 * 32 = 512
-	PointLight pointLight[512];				// 544,	25120	// 512 * 48 = 24576
+	PointLight pointLight[512];				// 544,	33312	// 512 * 64 = 32768
 };
 
 
@@ -28,6 +28,7 @@ layout (std140) uniform CameraData{
 	mat4 P;					// 64, 128
 	mat4 VP;				// 128, 192
 	vec4 cameraPosition;	// 192, 208
+	vec4 cameraDirection;	// 208, 224
 };
 
 
@@ -51,9 +52,9 @@ void main() {
     vec3 diffuse = max(dot(gNormal, lightDir), 0) * pointLight[lightIdx].color.xyz;
 
     // specular
-//    vec3 halfwayDir = normalize(lightDir + viewDir);  
-//    float spec = pow(max(dot(gNormal, halfwayDir), 0.0), 16.0);
-//    vec3 specular = pointLight[lightIdx].color.xyz * spec * gSpecular;
+    vec3 halfwayDir = normalize(lightDir + cameraDirection.xyz);  
+    float spec = pow(max(dot(gNormal, halfwayDir), 0.0),32.0);
+    vec3 specular = pointLight[lightIdx].color.xyz * spec;//* gSpecular
 
 	float dist = length(pointLight[lightIdx].position.xyz - gFragPos) * (100 / pointLight[lightIdx].attenK_c_l_q_range.w);
     // attenuation	
@@ -62,6 +63,6 @@ void main() {
 		pointLight[lightIdx].attenK_c_l_q_range.y * dist * + 
 		pointLight[lightIdx].attenK_c_l_q_range.z * dist * dist);
 
-	FragColor = vec4( (diffuse /*+ specular*/) * attenuation, 1.0);
+	FragColor = vec4( (diffuse + specular) * attenuation, 1.0);
 	//FragColor = vec4(pointLight[lightIdx].color.xyz, 1);
 }  

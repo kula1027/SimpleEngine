@@ -35,6 +35,11 @@ struct FaceData {
 };
 
 class Mesh {
+private:
+	void Setup();
+
+
+
 public:
 	vector<Vertex> vertices;
 	vector<Triangle> triangles;	
@@ -45,19 +50,13 @@ public:
 
 	GLuint VAO, VBO, EBO;
 	GLuint instanceVBO;
-	bool isStaticDraw;
-	bool isSetup;
 
 	Mesh();
-	~Mesh();
-
-	void Setup();
-	void ResetupEbo();
-	void Resetup();
-	int GetIdxCount();
-
-	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, vector<Texture*> textures);
+	~Mesh();	
 	Mesh(vector<Vertex> vertices, vector<Triangle> triangles, RenderMaterial* renderMaterials);
+
+	void UpdateBuffer();
+	int GetIdxCount();
 };
 
 

@@ -19,7 +19,7 @@ layout (std140) uniform LightData{
 	int lightCountPoint;					// 4, 8
 	vec4 ambient;							// 16, 32
 	DirectionalLight directionalLight[16];	// 32, 544		// 16 * 32 = 512
-	PointLight pointLight[512];				// 544,	25120	// 512 * 48 = 24576
+	PointLight pointLight[512];				// 544,	33312	// 512 * 48 = 32768
 };
 
 
@@ -28,6 +28,7 @@ layout (std140) uniform CameraData{
 	mat4 P;					// 64, 128
 	mat4 VP;				// 128, 192
 	vec4 cameraPosition;	// 192, 208
+	vec4 cameraDirection;	// 208, 224
 };
 
 

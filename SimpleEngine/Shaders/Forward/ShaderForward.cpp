@@ -16,7 +16,7 @@ ShaderForward::ShaderForward() {
 	LoadProgram(filePath);
 
 	BindLightUBO();
-	BindCameraUBO();
+	BindCameraUBO();	
 
 	id_matrice.mvp = GetUniformLocation("MVP");
 	id_matrice.model = GetUniformLocation("M");
@@ -24,10 +24,9 @@ ShaderForward::ShaderForward() {
 	id_diffuse.id = GetUniformLocation("texture_diffuse");
 	id_specular.id = GetUniformLocation("texture_specular");
 
-	Use();
-	glUniform1i(id_dLight.shadowMap, TEXTURE_IDX_SHADOWMAP);
-	glUniform1i(id_diffuse.id, 0);
-	glUniform1i(id_specular.id, 1);
+	Use();	
+	glUniform1i(id_diffuse.id, 0);	
+	glUniform1i(id_specular.id, 1);	
 }
 
 ShaderForward::~ShaderForward() {
