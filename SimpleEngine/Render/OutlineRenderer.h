@@ -1,5 +1,5 @@
 #pragma once
-#include "DefaultRenderer.h"
+#include "MeshRenderer.h"
 #include <vector>
 
 #define DefaultVS_Outline "outline.vert"

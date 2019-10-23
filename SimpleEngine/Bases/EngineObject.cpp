@@ -1,10 +1,8 @@
 #include "EngineObject.h"
 
 #include "BaseScript.h"
-#include "../Render/DefaultRenderer.h"
-#include "../FilePooler.h"
-#include "../Scenes/Scene.h"
-#include <typeinfo>
+#include <FilePooler.h>
+#include <Scene/Scene.h>
 
 unsigned int EngineObject::freeObjectId = 0;
 

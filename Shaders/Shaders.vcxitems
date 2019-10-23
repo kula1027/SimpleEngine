@@ -34,8 +34,8 @@
     <None Include="$(MSBuildThisFileDirectory)PostProcess\blur.frag" />
     <None Include="$(MSBuildThisFileDirectory)PostProcess\defaultScreen.frag" />
     <None Include="$(MSBuildThisFileDirectory)PostProcess\defaultScreen.vert" />
-    <None Include="$(MSBuildThisFileDirectory)shadowMap.frag" />
-    <None Include="$(MSBuildThisFileDirectory)shadowMap.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Shadow\shadowDepth.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Shadow\shadowDepth.vert" />
     <None Include="$(MSBuildThisFileDirectory)Skybox\skybox.frag" />
     <None Include="$(MSBuildThisFileDirectory)Skybox\skybox.vert" />
     <None Include="$(MSBuildThisFileDirectory)transparent.frag" />

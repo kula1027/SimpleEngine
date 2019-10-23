@@ -83,7 +83,7 @@ void Camera::Render(SceneRenderData* sceneRenderData_) {
 	renderPath->Render(sceneRenderData_);
 }
 
-void Camera::SetUpMatrices(){
+void Camera::ComputeMatrices(){
 	upVector = glm::cross(transform->GetRight(), transform->GetForward());
 
 	viewMatrix = glm::lookAt(

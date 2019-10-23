@@ -1,6 +1,6 @@
 #include "TestScene.h"
 
-#include <Scenes/SceneIncludes.h>
+#include <Scene/SceneIncludes.h>
 
 #include <string>
 #include <Render/RenderMaterial/RenderMaterial.h>
@@ -75,36 +75,34 @@ void TestScene::Load()
 	}
 	mPlane->meshes->at(0)->UpdateBuffer();
 	eo = new EngineObject("floor");
-	MeshRenderer* dRdr = new MeshRenderer();	
+	MeshRenderer* dRdr = new Renderer_Deferred();
 	dRdr->SetMeshModel(mPlane);
 	eo->transform->scale = glm::vec3(40, 1, 40);
 	eo->AttachComponent(dRdr);
 
 	//nanosuit
 	eo = new EngineObject("nano");
-	dRdr = new MeshRenderer();
+	dRdr = new Renderer_Deferred();
 	dRdr->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
 	eo->AttachComponent(dRdr);	
 	eo->transform->position = glm::vec3(0, 0, 0);	
 
 	//sphere	
 	eo = new EngineObject("sphere");
-	dRdr = new MeshRenderer();	
-	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
-	dRdr->SetRenderModeForward(true);	
+	dRdr = new Renderer_Forward();	
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));	
 	eo->AttachComponent(dRdr);
 	eo->transform->position = glm::vec3(-5, 2, 0);
 
 	//sphere	
 	eo = new EngineObject("sphere");
-	dRdr = new MeshRenderer();
-	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
-	//dRdr->SetRenderModeForward(true);
+	dRdr = new Renderer_Deferred();
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));	
 	eo->AttachComponent(dRdr);
 	eo->transform->position = glm::vec3(-8, 2, 0);
 
 	eo = new EngineObject("sphere");
-	dRdr = new MeshRenderer();
+	dRdr = new Renderer_Deferred();
 	dRdr->SetMeshModel(FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj"));
 	//dRdr->SetRenderModeForward(true);
 	eo->AttachComponent(dRdr);

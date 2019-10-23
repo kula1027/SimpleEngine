@@ -190,7 +190,6 @@
     <ClInclude Include="Mesh\MeshModel.h" />
     <ClInclude Include="Render\Renderer_Deferred.h" />
     <ClInclude Include="Render\Renderer_Forward.h" />
-    <ClInclude Include="Render\Renderer.h" />
     <ClInclude Include="Render\RenderMaterial\RenderMaterial.h" />
     <ClInclude Include="RenderPath\RenderPath.h" />
     <ClInclude Include="RenderPath\RenderPathBundle.h" />
@@ -205,18 +204,16 @@
     <ClInclude Include="Render\Shaders\ShaderBundle.h" />
     <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="Render\TextureLoader.h" />
-    <ClInclude Include="Scenes\ObjectPool.h" />
-    <ClInclude Include="Scenes\Scene.h" />
-    <ClInclude Include="Scenes\SceneIncludes.h" />
-    <ClInclude Include="Scenes\SceneRenderData.h" />
+    <ClInclude Include="Scene\ObjectPool.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\SceneIncludes.h" />
+    <ClInclude Include="Scene\SceneRenderData.h" />
     <ClInclude Include="Scripts\MoveCamera.h" />
     <ClInclude Include="Scripts\ScriptBundle.h" />
     <ClInclude Include="Render\Shaders\Deferred\ShaderDeferredLight.h" />
     <ClInclude Include="Shaders\ShaderDef.h" />
     <ClInclude Include="Shaders\ShaderManager.h" />
     <ClInclude Include="Shaders\BaseShader.h" />
-    <ClInclude Include="Shaders\Deferred\ShaderDeferredGeo.h" />
-    <ClInclude Include="Shaders\Deferred\ShaderDeferredLight.h" />
     <ClInclude Include="Shaders\Forward\ShaderForward.h" />
     <ClInclude Include="Shaders\InstancedShader.h" />
     <ClInclude Include="Shaders\ShaderBundle.h" />
@@ -250,7 +247,6 @@
     <ClCompile Include="Mesh\MeshModel.cpp" />
     <ClCompile Include="Render\Renderer_Deferred.cpp" />
     <ClCompile Include="Render\Renderer_Forward.cpp" />
-    <ClCompile Include="Render\Renderer.cpp" />
     <ClCompile Include="Render\RenderMaterial\RenderMaterial.cpp" />
     <ClCompile Include="RenderPath\RenderPath.cpp" />
     <ClCompile Include="RenderPath\RP_Deferred.cpp" />
@@ -259,23 +255,17 @@
     <ClCompile Include="Render\MeshRenderer.cpp" />
     <ClCompile Include="Render\Texture.cpp" />
     <ClCompile Include="Render\TextureLoader.cpp" />
-    <ClCompile Include="Scenes\ObjectPool.cpp" />
-    <ClCompile Include="Scenes\Scene.cpp" />
-    <ClCompile Include="Scenes\SceneRenderData.cpp" />
+    <ClCompile Include="Scene\ObjectPool.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\SceneRenderData.cpp" />
     <ClCompile Include="Scripts\MoveCamera.cpp" />
     <ClCompile Include="Shaders\ShaderManager.cpp" />
     <ClCompile Include="Shaders\BaseShader.cpp" />
-    <ClCompile Include="Shaders\Deferred\ShaderDeferredGeo.cpp" />
-    <ClCompile Include="Shaders\Deferred\ShaderDeferredLight.cpp" />
     <ClCompile Include="Shaders\Forward\ShaderForward.cpp" />
     <ClCompile Include="Shaders\InstancedShader.cpp" />
     <ClCompile Include="SimpleEngine.cpp" />
     <ClCompile Include="Skybox\EmptySkyBox.cpp" />
     <ClCompile Include="Skybox\Skybox.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="readme.txt" />
-    <Text Include="TODOS.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

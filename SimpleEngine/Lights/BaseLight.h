@@ -6,13 +6,6 @@
 
 class BaseShader;
 
-struct ShadowData {
-	unsigned int resWidth = 2048;
-	unsigned int resHeight = 2048;
-		
-	unsigned int depthMapTextureId;
-	unsigned int depthMapFBO;
-};
 enum LightType {
 	LightType_Directional = 0,
 	LightType_Point = 1,
@@ -43,11 +36,9 @@ public:
 
 
 	unsigned int modelMatrixId;
-	glm::mat4 lightSpaceMatrix;
+	glm::mat4 lightSpaceMatrix;	
 
-	ShadowData shadowData;	
-
-	bool isShadowCaster;
+	bool castShadow;
 	
 	virtual void InitShadowMap() {}
 	virtual void EnableShadowMapBuffer() {}

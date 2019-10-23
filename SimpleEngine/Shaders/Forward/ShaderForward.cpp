@@ -32,7 +32,7 @@ ShaderForward::ShaderForward() {
 ShaderForward::~ShaderForward() {
 }
 
-void ShaderForward::SetUniforms(Camera * camera_, MeshRenderer * renderer_) {
+void ShaderForward::SetUniforms(MeshRenderer * renderer_) {
 	Use();
 	
 	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(renderer_->MVPmatrix()));	

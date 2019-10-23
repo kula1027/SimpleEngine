@@ -50,7 +50,7 @@ public:
 
 	void Render(SceneRenderData* renderData_);
 
-	void SetUpMatrices();
+	void ComputeMatrices();
 	void RenderSkyBox();
 };
 

@@ -2,14 +2,14 @@
 #include <gl\glew.h>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../FilePooler.h"
+#include <FilePooler.h>
 #include <Shaders/BaseShader.h>
 #include <Bases/Transform.h>
 #include <Lights/LightManager.h>
 
 DirectionalLight::DirectionalLight(){	
 	color = glm::vec3(0.5, 0.5, 0.5);	
-	isShadowCaster = true;
+	castShadow = true;
 	lightType = LightType_Directional;
 
 	glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 100.0f);
@@ -28,12 +28,12 @@ DirectionalLight::~DirectionalLight(){
 }
 
 void DirectionalLight::InitShadowMap(){
-	glGenTextures(1, &shadowData.depthMapTextureId);
-	glGenFramebuffers(1, &shadowData.depthMapFBO);
+	glGenTextures(1, &shadowMapData.depthMapTextureId);
+	glGenFramebuffers(1, &shadowMapData.depthMapFBO);
 
-	glBindTexture(GL_TEXTURE_2D, shadowData.depthMapTextureId);
+	glBindTexture(GL_TEXTURE_2D, shadowMapData.depthMapTextureId);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		shadowData.resWidth, shadowData.resHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+		shadowMapData.resWidth, shadowMapData.resHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -41,8 +41,8 @@ void DirectionalLight::InitShadowMap(){
 	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, shadowData.depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowData.depthMapTextureId, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, shadowMapData.depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowMapData.depthMapTextureId, 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 
@@ -67,14 +67,18 @@ void DirectionalLight::EnableShadowMapBuffer(){
 	lightSpaceMatrix = lightProjection * lightView;
 	glUniformMatrix4fv(lightSpaceMatrixId, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
-	glViewport(0, 0, shadowData.resWidth, shadowData.resHeight);
-	glBindFramebuffer(GL_FRAMEBUFFER, shadowData.depthMapFBO);
+	glViewport(0, 0, shadowMapData.resWidth, shadowMapData.resHeight);
+	glBindFramebuffer(GL_FRAMEBUFFER, shadowMapData.depthMapFBO);
 
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void DirectionalLight::SetUbo() {	
+ShadowMapData DirectionalLight::GetShadowMapData() {
+	return shadowMapData;
+}
+
+void DirectionalLight::SetUbo() {
 	LightManager::Inst()->BindUboLightData(); 
 
 	//direction 0 - 16

@@ -1,5 +1,5 @@
 #include "RenderPath.h"
-#include <Scenes/SceneIncludes.h>
+#include <Scene/SceneIncludes.h>
 #include <GameWindow.h>
 
 float RenderPath::quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.

@@ -1,10 +1,16 @@
 #pragma once
 
-#include "Renderer.h"
+#include "MeshRenderer.h"
 
-class Renderer_Forward : public Renderer {
+class Renderer_Forward : public MeshRenderer {
+private:
+	BaseShader* shader;
+
+
 public:
 	Renderer_Forward();
 	virtual ~Renderer_Forward();
+
+	virtual void RenderMesh() override;
 };
 

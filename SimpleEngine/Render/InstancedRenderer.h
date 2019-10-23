@@ -1,14 +1,14 @@
 #pragma once
 
-#include "DefaultRenderer.h"
 #include <vector>
+#include <Render/MeshRenderer.h>
 
 #define DefaultVS_Ist "instanced.vert"
 
 class Transform;
 class EngineObject;
 
-class InstancedRenderer : public DefaultRenderer
+class InstancedRenderer : public MeshRenderer
 {
 private:
 	glm::mat4* matriceModel;	

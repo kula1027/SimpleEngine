@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Renderer.h"
+#include "MeshRenderer.h"
 
-class Renderer_Deferred : public Renderer {
+class Renderer_Deferred : public MeshRenderer {
 public:
 	Renderer_Deferred();
-	virtual ~Renderer_Deferred();
+	virtual ~Renderer_Deferred();	
 };
 

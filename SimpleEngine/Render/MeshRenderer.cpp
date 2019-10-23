@@ -27,35 +27,6 @@ MeshRenderer::~MeshRenderer() {
 }
 
 
-#pragma region Forward Rendering
-void MeshRenderer::SetRenderModeForward(bool isForward_) {
-	isRenderModeForward = isForward_;
-
-	if (isRenderModeForward) {
-		SetRenderModeForward(ShaderManager::GetShader("Forward/forward"));
-	}
-}
-
-void MeshRenderer::SetRenderModeForward(BaseShader * sf_) {
-	isRenderModeForward = true;
-	shaderForward = sf_;	
-}
-
-bool MeshRenderer::GetRenderModeForward() {
-	return isRenderModeForward;
-}
-
-//for forward Rendering
-void MeshRenderer::RenderMesh_Forward(Camera * camera_) {
-	shaderForward->Use();
-	shaderForward->SetUniforms(camera_, this);
-
-	RenderMesh();
-}
-#pragma endregion
-
-
-
 void MeshRenderer::RenderMesh() {
 	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
 		Mesh* processingMesh = meshModel->meshes->at(loop);

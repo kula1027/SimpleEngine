@@ -1,5 +1,5 @@
 #include "RP_SimpleSingle.h"
-#include "../Scenes/SceneIncludes.h"
+#include <Scene/SceneIncludes.h>
 #include "../GameWindow.h"
 
 //Simplest RenderPath

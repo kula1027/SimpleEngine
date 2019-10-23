@@ -1,6 +1,6 @@
 #include "TestScene2.h"
 
-#include <Scenes/SceneIncludes.h>
+#include <Scene/SceneIncludes.h>
 
 
 TestScene2::TestScene2() {

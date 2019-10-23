@@ -24,8 +24,7 @@ protected:
 	OffScreenData offScreenData;
 	void InitOffScreenDraw();
 	void EnableOffSreenBuffer(Camera* cam_);
-
-	void PostDraw();
+	
 	void DrawOffScreenQuad();
 	void CopyFboDepth(int srcFbo, int destFbo);
 
