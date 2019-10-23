@@ -1,8 +1,8 @@
 #include "MeshRenderer.h"
 
-#include "../Mesh/MeshModel.h"
-#include "../Lights/LightsBundle.h"
-#include "../FilePooler.h"
+#include <Mesh/MeshModel.h>
+#include <Lights/LightsBundle.h>
+#include <FilePooler.h>
 
 #include <Shaders/ShaderManager.h>
 #include <Shaders/ShaderBundle.h>
