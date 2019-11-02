@@ -19,6 +19,7 @@ class RenderPath{
 protected:	
 	static float quadVertices[];
 	static int quadSize;
+	SceneRenderData* currentSrd;
 
 	Camera* targetCamera;
 	OffScreenData offScreenData;

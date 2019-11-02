@@ -33,6 +33,7 @@ public:
 	virtual ~MeshRenderer();
 
 	virtual void RenderMesh();
+	virtual void RenderMesh_NoTexture();
 
 	void SetMeshModel(MeshModel* meshModel_);
 

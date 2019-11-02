@@ -12,21 +12,23 @@ private:
 	BaseShader* shaderShadowDepth;
 	Mesh* meshSphere;
 
-	void SetupFrameBuffers();
-	void SetupShaders();
-
-	void ComputeMatrices(SceneRenderData* sceneRenderData_);
-	void GeometryPass(SceneRenderData* sceneRenderData_);
-	void RenderShadowMap();
-	void LightPass();
-	void LightPass_AmbientDirectional();
-	void LightPass_Point();
-	void AdditionalForwardPass(SceneRenderData* sceneRenderData_);
-
-public:
 	unsigned int gBuffer;
 	unsigned int gPosition, gNormal, gAlbedoSpec;
 	unsigned int attachments[3];
+
+	void SetupFrameBuffers();
+	void SetupShaders();
+
+	void ComputeMatrices();
+	void GeometryPass();
+	void RenderShadowMap();
+	void LightPass();
+	void LightPass_AmbientDirectional();
+	void LightPass_Point();	void AdditionalForwardPass();
+
+
+public:
+
 
 	RP_Deferred();
 	virtual ~RP_Deferred();

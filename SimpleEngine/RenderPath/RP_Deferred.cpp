@@ -65,6 +65,7 @@ void RP_Deferred::SetupShaders() {
 	shaderDirectional->SetInt("gPosition", 0);
 	shaderDirectional->SetInt("gNormal", 1);
 	shaderDirectional->SetInt("gAlbedoSpec", 2);
+	shaderDirectional->SetInt("shadowMap", 3);
 
 	shaderPointLightPass->Use();
 	shaderPointLightPass->BindLightUBO();
@@ -72,59 +73,50 @@ void RP_Deferred::SetupShaders() {
 	shaderPointLightPass->SetInt("gPosition", 0);
 	shaderPointLightPass->SetInt("gNormal", 1);
 	shaderPointLightPass->SetInt("gAlbedoSpec", 2);
-
+	shaderPointLightPass->SetInt("shadowMap", 3);
 }
 
-void RP_Deferred::ComputeMatrices(SceneRenderData* sceneRenderData_) {
+void RP_Deferred::ComputeMatrices() {
 	targetCamera->ComputeMatrices();
-	int rdrCount_Deferred = sceneRenderData_->renderQueue_Deferred.size();
+
+	int rdrCount_Deferred = currentSrd->renderQueue_Deferred.size();
 	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
-		sceneRenderData_->renderQueue_Deferred[loop]->ComputeMatrices(targetCamera);
+		currentSrd->renderQueue_Deferred[loop]->ComputeMatrices(targetCamera);
 	}
-	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();
+	int rdrCount_Forward = currentSrd->renderQueue_Forward.size();
 	for (int loop = 0; loop < rdrCount_Forward; loop++) {
-		sceneRenderData_->renderQueue_Forward[loop]->ComputeMatrices(targetCamera);
+		currentSrd->renderQueue_Forward[loop]->ComputeMatrices(targetCamera);
 	}
 }
 
-void RP_Deferred::GeometryPass(SceneRenderData* sceneRenderData_) {
+void RP_Deferred::GeometryPass() {
 #ifdef DEBUG
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 #endif
 
-	int rdrCount_Deferred = sceneRenderData_->renderQueue_Deferred.size();
+	int rdrCount_Deferred = currentSrd->renderQueue_Deferred.size();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);	
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	shaderGeometry->Use();
 	for (int loop = 0; loop < rdrCount_Deferred; loop++) {
-		shaderGeometry->SetMat_M(sceneRenderData_->renderQueue_Deferred[loop]->Mmatrix());
-		sceneRenderData_->renderQueue_Deferred[loop]->RenderMesh();
+		shaderGeometry->SetMat_M(currentSrd->renderQueue_Deferred[loop]->Mmatrix());
+		currentSrd->renderQueue_Deferred[loop]->RenderMesh();
 	}
 }
 
 void RP_Deferred::RenderShadowMap() {
-	int dLightCount = LightManager::Inst()->directionalLights.size();
+	glEnable(GL_DEPTH_TEST);
 
+	int dLightCount = LightManager::Inst()->directionalLights.size();	
 	for (int loop = 0; loop < dLightCount; loop++) {
 		DirectionalLight* currentLight = LightManager::Inst()->directionalLights.at(loop);
 		if (currentLight->castShadow == false) {
 			continue;
-		}
+		}		
 
-		ShadowMapData smData = currentLight->GetShadowMapData();
-
-		glViewport(0, 0, smData.resWidth, smData.resHeight);
-		glBindFramebuffer(GL_FRAMEBUFFER, smData.depthMapFBO);
-
-		glClear(GL_DEPTH_BUFFER_BIT);
-
-		//Shader Setting
-		shaderShadowDepth->Use();
-		//shaderShadowDepth->SetMat4();
-
-		//Render Mesh
+		currentLight->RenderShadowMap(currentSrd);	
 	}
 }
 
@@ -152,7 +144,14 @@ void RP_Deferred::LightPass_AmbientDirectional() {
 	glBindTexture(GL_TEXTURE_2D, gNormal);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-	shaderDirectional->SetVec3("viewPos", targetCamera->transform->position);
+
+	int dLightCount = LightManager::Inst()->directionalLights.size();
+	for (int loop = 0; loop < dLightCount; loop++) {
+		if (LightManager::Inst()->directionalLights[loop]->castShadow) {
+			LightManager::Inst()->directionalLights[loop]->BindShadowMap();
+		}		
+	}	
+
 	DrawOffScreenQuad();
 }
 
@@ -222,11 +221,11 @@ void RP_Deferred::LightPass_Point() {
 #pragma endregion
 
 
-void RP_Deferred::AdditionalForwardPass(SceneRenderData* sceneRenderData_) {
-	int rdrCount_Forward = sceneRenderData_->renderQueue_Forward.size();
+void RP_Deferred::AdditionalForwardPass() {
+	int rdrCount_Forward = currentSrd->renderQueue_Forward.size();
 	
 	for (int loop = 0; loop < rdrCount_Forward; loop++) {
-		sceneRenderData_->renderQueue_Forward[loop]->RenderMesh();
+		currentSrd->renderQueue_Forward[loop]->RenderMesh();
 	}
 }
 
@@ -242,23 +241,24 @@ RP_Deferred::RP_Deferred() {
 RP_Deferred::~RP_Deferred() {
 }
 
-void RP_Deferred::Render(SceneRenderData* sceneRenderData_) {			
-	ComputeMatrices(sceneRenderData_);
+void RP_Deferred::Render(SceneRenderData* sceneRenderData_) {
+	currentSrd = sceneRenderData_;
+	ComputeMatrices();
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
-	GeometryPass(sceneRenderData_);
-	glDepthMask(GL_FALSE);	
+	GeometryPass();	
 	
 	RenderShadowMap();
 	glViewport(0, 0, GameWindow::GetWidth(), GameWindow::GetHeight());
+	glDepthMask(GL_FALSE);
 
 	LightPass();	
 	
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);		
 	glDisable(GL_STENCIL_TEST);
-	AdditionalForwardPass(sceneRenderData_);
+	AdditionalForwardPass();
 
 	glDepthFunc(GL_LEQUAL);
 	targetCamera->RenderSkyBox();

@@ -18,6 +18,7 @@ void Camera::InitUbo() {
 	glBufferData(GL_UNIFORM_BUFFER, SizeStructCameraData, NULL, GL_STATIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, BindingPointCameraData, uboCamera);
 
+	SetScreenWidthHeight(GameWindow::GetWidth(), GameWindow::GetHeight());
 }
 
 Camera::Camera(){
@@ -35,10 +36,8 @@ Camera::Camera(){
 	far = 1000.0f;
 
 	normalizedViewPort.x = 1;
-	normalizedViewPort.y = 1;
-	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-	skybox = new EmptySkyBox();
+	normalizedViewPort.y = 1;	
+	
 
 	projMode = PROJECTION_PERSPECTIVE;
 	switch (projMode) {
@@ -59,6 +58,8 @@ Camera::Camera(){
 
 	renderPath = new RP_Deferred();	
 	renderPath->SetTargetCamera(this);
+
+	skybox = new EmptySkyBox();
 	skybox->Initialize();
 }
 
@@ -79,6 +80,13 @@ SkyBox * Camera::GetSkybox() {
 	return skybox;
 }
 
+void Camera::SetScreenWidthHeight(float w, float h) {
+	screenWidthHeight = glm::vec4(w, h, w, h);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
+	glBufferSubData(GL_UNIFORM_BUFFER, 224, sizeof(glm::vec4), &screenWidthHeight);
+}
+
 void Camera::Render(SceneRenderData* sceneRenderData_) {
 	renderPath->Render(sceneRenderData_);
 }
@@ -87,20 +95,20 @@ void Camera::ComputeMatrices(){
 	upVector = glm::cross(transform->GetRight(), transform->GetForward());
 
 	viewMatrix = glm::lookAt(
-		transform->position,           // Camera is here
-		transform->position + transform->GetForward(), // and looks here : at the same position, plus "direction"
-		upVector                  // Head is up (set to 0,-1,0 to look upside-down)
+		transform->position,          
+		transform->position + transform->GetForward(),
+		upVector                 
 		);	
 
 	vpMatrix = projectionMatrix * viewMatrix;	
-
 	
 	glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);	
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &viewMatrix);//View
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), &projectionMatrix);//Projection
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 2, sizeof(glm::mat4), &vpMatrix);//P x V	
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3, sizeof(glm::vec3), &transform->position);//position
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3 + sizeof(glm::vec3), sizeof(glm::vec3), &transform->GetForward());//direction
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3 + sizeof(glm::vec4), sizeof(glm::vec3), &transform->GetForward());//direction
+	//glBufferSubData(GL_UNIFORM_BUFFER, 224, sizeof(glm::vec4), &screenWidthHeight);
 }
 
 glm::mat4 Camera::VPmatrix() {

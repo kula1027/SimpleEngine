@@ -19,6 +19,8 @@ private:
 	float near;
 	float far;
 
+	glm::vec4 screenWidthHeight;
+
 	RenderPath* renderPath;
 
 	unsigned int uboCamera;
@@ -47,6 +49,7 @@ public:
 
 	void SetSkybox(SkyBox* skybox_);
 	SkyBox* GetSkybox();
+	void SetScreenWidthHeight(float w, float h);
 
 	void Render(SceneRenderData* renderData_);
 

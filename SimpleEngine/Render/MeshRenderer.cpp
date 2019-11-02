@@ -44,6 +44,21 @@ void MeshRenderer::RenderMesh() {
 	}
 }
 
+void MeshRenderer::RenderMesh_NoTexture() {
+	for (GLuint loop = 0; loop < meshModel->meshes->size(); loop++) {
+		Mesh* processingMesh = meshModel->meshes->at(loop);
+
+		glBindVertexArray(processingMesh->VAO);
+
+		glDrawElements(
+			GL_TRIANGLES,
+			processingMesh->GetIdxCount(),
+			GL_UNSIGNED_INT,
+			NULL
+		);
+	}
+}
+
 void MeshRenderer::SetMeshModel(MeshModel * meshModel_) {
 	meshModel = meshModel_;
 }

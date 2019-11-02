@@ -32,16 +32,13 @@ public:
 	void SetColor(glm::vec3 color_);
 	glm::vec3 GetColor();		
 	LightType GetLightType();
-	void SetStartAddrUbo(int startAddr_);
-
-
-	unsigned int modelMatrixId;
-	glm::mat4 lightSpaceMatrix;	
+	void SetStartAddrUbo(int startAddr_);	
+	
 
 	bool castShadow;
 	
 	virtual void InitShadowMap() {}
-	virtual void EnableShadowMapBuffer() {}
+	virtual void RenderShadowMap() {}
 
 	virtual void OnAttachedToObject(EngineObject* obj_) override;	
 	virtual void SetUbo() {}

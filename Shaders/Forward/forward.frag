@@ -5,6 +5,7 @@ out vec4 out_color;
 struct DirectionalLight{
 	vec4 direction;					// 0, 16
 	vec4 color;						// 16, 32
+	mat4 lightVP;					// 32, 96
 };
 
 struct PointLight{
@@ -18,10 +19,9 @@ layout (std140) uniform LightData{
 	int lightCountDirectional;				// 0, 4
 	int lightCountPoint;					// 4, 8
 	vec4 ambient;							// 16, 32
-	DirectionalLight directionalLight[16];	// 32, 544		// 16 * 32 = 512
-	PointLight pointLight[512];				// 544,	33312	// 512 * 48 = 32768
+	DirectionalLight directionalLight[16];	// 32, 1568		// 16 * 96 = 1536
+	PointLight pointLight[512];				// 1568, 34336	// 512 * 64 = 32768
 };
-
 
 layout (std140) uniform CameraData{	
 	mat4 V;					// 0, 64
@@ -29,6 +29,7 @@ layout (std140) uniform CameraData{
 	mat4 VP;				// 128, 192
 	vec4 cameraPosition;	// 192, 208
 	vec4 cameraDirection;	// 208, 224
+	vec4 screenWidthHeight; // 224, 240
 };
 
 
@@ -42,6 +43,7 @@ in Vertex_Out{
 }frag_in;
 
 uniform sampler2D texture_diffuse;
+uniform sampler2D texture_normal;
 uniform sampler2D texture_specular;
 
 void main(){			

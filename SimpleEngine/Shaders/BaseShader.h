@@ -23,7 +23,7 @@ struct ID_dLight {
 	GLuint direction;
 	GLuint color;
 	GLuint power;
-	GLuint lightSpaceMatrix;
+	GLuint lightVP;
 	GLuint shadowMap;
 };
 

@@ -45,21 +45,20 @@ void TestScene::Load()
 	Scene::Load();
 	
 	mainCamera->SetSkybox(new SkyBox());	
-	mainCamera->transform->position = glm::vec3(0, 10, 20);	
+	mainCamera->transform->position = glm::vec3(0, 10, 20);		
 
 	EngineObject* eoLight;
 	
-
 	eoLight = new EngineObject("light");
 	DirectionalLight* directionalLight = new DirectionalLight();
 	eoLight->AttachComponent(directionalLight);
 	eoLight->transform->SetForward(glm::vec3(0.7, -0.7, 0));
 
-	PointLight* pointLight = new PointLight();;
+	PointLight* pointLight = new PointLight();
 	pointLight->SetRange(5);
-	eoLight = new EngineObject("pLight");;
-	eoLight->AttachComponent(pointLight);
-
+	eoLight = new EngineObject("pLight");
+	eoLight->AttachComponent(pointLight);	
+	eoLight->transform->SetPosition(vec3(0, 0.1f, 0));
 
 	EngineObject* eo;
 
@@ -106,7 +105,7 @@ void TestScene::Load()
 	dRdr->SetMeshModel(FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj"));
 	//dRdr->SetRenderModeForward(true);
 	eo->AttachComponent(dRdr);
-	eo->transform->position = glm::vec3(-11, 5, 0);
+	eo->transform->position = glm::vec3(-11, 2, 0);
 	
 
 	
