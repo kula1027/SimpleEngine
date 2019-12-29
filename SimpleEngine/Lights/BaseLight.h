@@ -21,7 +21,8 @@ protected:
 	int startAddrUbo;
 
 	glm::vec3 color;
-	virtual void SetUbo_Intensity() {}
+	virtual void UpdateUboIntensity() {}	
+	virtual void UpdateUboColor() {}
 
 public:
 	BaseLight();
@@ -41,6 +42,6 @@ public:
 	virtual void RenderShadowMap() {}
 
 	virtual void OnAttachedToObject(EngineObject* obj_) override;	
-	virtual void SetUbo() {}
+	virtual void UpdateUbo() {}
 };
 

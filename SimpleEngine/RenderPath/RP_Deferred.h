@@ -1,12 +1,14 @@
 #pragma once
 #include "RenderPath.h"
 
+#define PATH_SPHERE "Sphere/sphere_64_32.obj"
+
 class Mesh;
 
 class RP_Deferred : public RenderPath{
 private:
 	BaseShader* shaderGeometry;
-	BaseShader* shaderDirectional;
+	BaseShader* shaderLightGeneral;
 	BaseShader* shaderPointStencilPass;
 	BaseShader* shaderPointLightPass;
 	BaseShader* shaderShadowDepth;

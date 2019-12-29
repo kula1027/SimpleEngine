@@ -13,7 +13,7 @@ BaseComponent::BaseComponent(){
 
 void BaseComponent::OnAttachedToObject(EngineObject * obj_) {
 	engineObject = obj_;
-	transform = engineObject->transform;
+	transform = engineObject->GetTransform();
 }
 
 EngineObject * BaseComponent::GetEngineObject() {

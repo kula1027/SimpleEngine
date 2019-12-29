@@ -7,11 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleEngine", "SimpleEngin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestScene", "TestScene\TestScene.vcxproj", "{03CA1921-96CF-48B3-B105-5703FC71D0D4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Research_BFC", "Research_BFC\Research_BFC.vcxproj", "{E670AD15-D474-47EE-814F-D378016D6C68}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C} = {5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shaders", "Shaders\Shaders.vcxitems", "{77447C03-2DD6-4110-A7F5-5B9634C41571}"
 EndProject
 Global
@@ -38,14 +33,6 @@ Global
 		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x64.Build.0 = Release|x64
 		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x86.ActiveCfg = Release|Win32
 		{03CA1921-96CF-48B3-B105-5703FC71D0D4}.Release|x86.Build.0 = Release|Win32
-		{E670AD15-D474-47EE-814F-D378016D6C68}.Debug|x64.ActiveCfg = Debug|x64
-		{E670AD15-D474-47EE-814F-D378016D6C68}.Debug|x64.Build.0 = Debug|x64
-		{E670AD15-D474-47EE-814F-D378016D6C68}.Debug|x86.ActiveCfg = Debug|Win32
-		{E670AD15-D474-47EE-814F-D378016D6C68}.Debug|x86.Build.0 = Debug|Win32
-		{E670AD15-D474-47EE-814F-D378016D6C68}.Release|x64.ActiveCfg = Release|x64
-		{E670AD15-D474-47EE-814F-D378016D6C68}.Release|x64.Build.0 = Release|x64
-		{E670AD15-D474-47EE-814F-D378016D6C68}.Release|x86.ActiveCfg = Release|Win32
-		{E670AD15-D474-47EE-814F-D378016D6C68}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

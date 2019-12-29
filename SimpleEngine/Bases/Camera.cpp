@@ -28,7 +28,7 @@ Camera::Camera(){
 
 	name = "Camera";	
 
-	transform->position = glm::vec3(0, 0, 0);
+	GetTransform()->SetPosition(glm::vec3(0, 0, 0));
 	clearColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	fov = 1.0f;
@@ -92,11 +92,11 @@ void Camera::Render(SceneRenderData* sceneRenderData_) {
 }
 
 void Camera::ComputeMatrices(){
-	upVector = glm::cross(transform->GetRight(), transform->GetForward());
+	upVector = glm::cross(GetTransform()->GetRight(), GetTransform()->GetForward());
 
 	viewMatrix = glm::lookAt(
-		transform->position,          
-		transform->position + transform->GetForward(),
+		GetTransform()->GetPosition(),
+		GetTransform()->GetPosition() + GetTransform()->GetForward(),
 		upVector                 
 		);	
 
@@ -106,9 +106,8 @@ void Camera::ComputeMatrices(){
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), &viewMatrix);//View
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), &projectionMatrix);//Projection
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 2, sizeof(glm::mat4), &vpMatrix);//P x V	
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3, sizeof(glm::vec3), &transform->position);//position
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3 + sizeof(glm::vec4), sizeof(glm::vec3), &transform->GetForward());//direction
-	//glBufferSubData(GL_UNIFORM_BUFFER, 224, sizeof(glm::vec4), &screenWidthHeight);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3, sizeof(glm::vec3), &GetTransform()->GetPosition());//position
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 3 + sizeof(glm::vec4), sizeof(glm::vec3), &GetTransform()->GetForward());//direction	
 }
 
 glm::mat4 Camera::VPmatrix() {

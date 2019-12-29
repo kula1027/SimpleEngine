@@ -26,7 +26,7 @@ void TestScene::ManyManyLights() {
 
 		eoLight = new EngineObject("pLight");
 		eoLight->AttachComponent(pointLight);
-		eoLight->transform->SetPosition(vec3(rand_x, 1, rand_z));
+		eoLight->GetTransform()->SetPosition(vec3(rand_x, 1, rand_z));
 	}
 
 }
@@ -45,20 +45,20 @@ void TestScene::Load()
 	Scene::Load();
 	
 	mainCamera->SetSkybox(new SkyBox());	
-	mainCamera->transform->position = glm::vec3(0, 10, 20);		
+	mainCamera->GetTransform()->SetPosition(glm::vec3(0, 10, 20));
 
 	EngineObject* eoLight;
 	
 	eoLight = new EngineObject("light");
 	DirectionalLight* directionalLight = new DirectionalLight();
 	eoLight->AttachComponent(directionalLight);
-	eoLight->transform->SetForward(glm::vec3(0.7, -0.7, 0));
+	eoLight->GetTransform()->SetForward(glm::vec3(0.7, -0.7, 0));
 
 	PointLight* pointLight = new PointLight();
-	pointLight->SetRange(5);
+	pointLight->SetRange(10);
 	eoLight = new EngineObject("pLight");
-	eoLight->AttachComponent(pointLight);	
-	eoLight->transform->SetPosition(vec3(0, 0.1f, 0));
+	eoLight->AttachComponent(pointLight);
+	eoLight->GetTransform()->SetPosition(vec3(-2.5f, 0.5f, 0));
 
 	EngineObject* eo;
 
@@ -74,9 +74,10 @@ void TestScene::Load()
 	}
 	mPlane->meshes->at(0)->UpdateBuffer();
 	eo = new EngineObject("floor");
-	MeshRenderer* dRdr = new Renderer_Deferred();
+	//MeshRenderer* dRdr = new Renderer_Deferred();
+	MeshRenderer* dRdr = new Renderer_Forward();
 	dRdr->SetMeshModel(mPlane);
-	eo->transform->scale = glm::vec3(40, 1, 40);
+	eo->GetTransform()->SetScale(glm::vec3(40, 1, 40));
 	eo->AttachComponent(dRdr);
 
 	//nanosuit
@@ -84,28 +85,27 @@ void TestScene::Load()
 	dRdr = new Renderer_Deferred();
 	dRdr->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
 	eo->AttachComponent(dRdr);	
-	eo->transform->position = glm::vec3(0, 0, 0);	
+	eo->GetTransform()->SetPosition(glm::vec3(0, 0, 0));
 
 	//sphere	
 	eo = new EngineObject("sphere");
 	dRdr = new Renderer_Forward();	
 	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));	
 	eo->AttachComponent(dRdr);
-	eo->transform->position = glm::vec3(-5, 2, 0);
+	eo->GetTransform()->SetPosition(glm::vec3(-5, 2, 0));
 
 	//sphere	
 	eo = new EngineObject("sphere");
 	dRdr = new Renderer_Deferred();
 	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));	
 	eo->AttachComponent(dRdr);
-	eo->transform->position = glm::vec3(-8, 2, 0);
+	eo->GetTransform()->SetPosition(glm::vec3(-8, 2, 0));
 
 	eo = new EngineObject("sphere");
 	dRdr = new Renderer_Deferred();
-	dRdr->SetMeshModel(FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj"));
-	//dRdr->SetRenderModeForward(true);
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj"));		
 	eo->AttachComponent(dRdr);
-	eo->transform->position = glm::vec3(-11, 2, 0);
+	eo->GetTransform()->SetPosition(glm::vec3(-11, 2, 0));
 	
 
 	
@@ -138,7 +138,7 @@ void TestScene::Load()
 	//		eo = new EngineObject("grass");
 	//		eo->transform->SetParent(goGrass->transform);
 	//		eo->transform->scale = glm::vec3(rand() % 3 + 1, 1, rand() % 3 + 1);
-	//		eo->transform->position = glm::vec3(-rand() % 400, eo->transform->scale.z, -rand() % 400);
+	//		eo->transform->GetPosition() = glm::vec3(-rand() % 400, eo->transform->scale.z, -rand() % 400);
 	//		eo->transform->SetEulerAngles(glm::vec3(90, rand() % 180, 0));
 	//	}
 	//}
@@ -149,14 +149,14 @@ void TestScene::Load()
 	//go->SetRenderer(new MeshRenderer());
 	//go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
 	//go->GetRenderer()->SetShader(FilePooler::LoadShader("default.vert", "deform.geo", "default_geo.frag"));
-	//go->transform->position = glm::vec3(0, 5, 2);	
+	//go->transform->GetPosition() = glm::vec3(0, 5, 2);	
 
 	////venus
 	//go = new GameObject("venus");
 	//go->SetRenderer(new OutlineRenderer());
 	//go->GetRenderer()->SetMeshModel(FilePooler::LoadMeshModel("venusm_wNormal.obj"));
 	//go->GetRenderer()->SetShader();	
-	//go->transform->position = glm::vec3(-100, 0, -100);
+	//go->transform->GetPosition() = glm::vec3(-100, 0, -100);
 
 	////window
 	//Texture* tWindow = FilePooler::LoadTexture("window.png", TextureType_DiffuseTransparent);
@@ -178,7 +178,7 @@ void TestScene::Load()
 	//go->GetRenderer()->SetMeshModel(mQuad2);
 	//go->GetRenderer()->SetShader(FilePooler::LoadShader("transparent.vert", "transparent.frag"));
 	//go->transform->SetEulerAngles(glm::vec3(90, 0, 0));
-	//go->transform->position = glm::vec3(10, 10, -5);
+	//go->transform->GetPosition() = glm::vec3(10, 10, -5);
 	//go->transform->scale = glm::vec3(2, 1, 2);
 
 	

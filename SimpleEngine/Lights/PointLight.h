@@ -12,7 +12,7 @@ private:
 	float range = 1;
 
 protected:
-	virtual void SetUbo_Intensity() override;
+	virtual void UpdateUboIntensity() override;
 	void SetUbo_Range();
 
 public:
@@ -24,7 +24,7 @@ public:
 
 	glm::mat4 GetModelMatrix();
 
-	virtual void SetUbo() override;
+	virtual void UpdateUbo() override;
 	virtual void OnTransformChanged() override;
 	virtual void OnAttachedToObject(EngineObject* obj_) override;	
 };

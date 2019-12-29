@@ -86,8 +86,8 @@ void RenderPath::DrawOffScreenQuad() {
 }
 
 void RenderPath::CopyFboDepth(int srcFbo, int destFbo) {
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, srcFbo);//gBuffer에서 읽어서
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, destFbo);	//default buffer에 그린다
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, srcFbo);//어디서 읽어올 것인가
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, destFbo);//어디가 쓸 것인가
 	glBlitFramebuffer(//무엇을? 깊이 버퍼 값을
 		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(),
 		0, 0, GameWindow::GetWidth(), GameWindow::GetHeight(),

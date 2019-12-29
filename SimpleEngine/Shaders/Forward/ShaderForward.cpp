@@ -1,6 +1,7 @@
 #include "ShaderForward.h"
 #include <Bases/Camera.h>
 #include <Lights/LightsBundle.h>
+#include <Shaders/ShaderDef.h>
 #include <Render/MeshRenderer.h>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -26,7 +27,8 @@ ShaderForward::ShaderForward() {
 
 	Use();	
 	glUniform1i(id_diffuse.id, 0);	
-	glUniform1i(id_specular.id, 1);	
+	glUniform1i(id_specular.id, 1);		
+	glUniform1i(GetUniformLocation("shadowMap"), ShadowMapID);
 }
 
 ShaderForward::~ShaderForward() {
@@ -36,5 +38,5 @@ void ShaderForward::SetUniforms(MeshRenderer * renderer_) {
 	Use();
 	
 	glUniformMatrix4fv(id_matrice.mvp, 1, GL_FALSE, glm::value_ptr(renderer_->MVPmatrix()));	
-	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(renderer_->Mmatrix()));
+	glUniformMatrix4fv(id_matrice.model, 1, GL_FALSE, glm::value_ptr(renderer_->Mmatrix()));	
 }

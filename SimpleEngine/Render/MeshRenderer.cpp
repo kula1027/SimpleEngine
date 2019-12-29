@@ -88,6 +88,6 @@ glm::mat4 MeshRenderer::MVPmatrix() {
 void MeshRenderer::OnAttachedToObject(EngineObject* obj_) {
 	BaseComponent::OnAttachedToObject(obj_);
 
-	transform = obj_->transform;
+	transform = obj_->GetTransform();
 	Scene::RegisterRenderer(this);
 }

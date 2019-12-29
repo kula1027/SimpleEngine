@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <Lights/LightManager.h>
 
-void PointLight::SetUbo_Intensity() {
+void PointLight::UpdateUboIntensity() {
 	float inten = GetIntensity();
 	glBufferSubData(GL_UNIFORM_BUFFER,
 		startAddrUbo,
@@ -57,11 +57,11 @@ glm::mat4 PointLight::GetModelMatrix() {
 	return modelMatrix;
 }
 
-void PointLight::SetUbo() {
+void PointLight::UpdateUbo() {
 	LightManager::Inst()->BindUboLightData();
 
 	// 0 - 4
-	SetUbo_Intensity();		
+	UpdateUboIntensity();		
 
 	//position 16 - 32
 	glBufferSubData(GL_UNIFORM_BUFFER,
@@ -78,16 +78,16 @@ void PointLight::SetUbo() {
 }
 
 void PointLight::OnTransformChanged() {
-	matTranslation = translate(mat4(1.0), GetTransform()->position);	
+	matTranslation = translate(mat4(1.0), GetTransform()->GetPosition());	
 	modelMatrix = matTranslation * matScale;
 
-	SetUbo();
+	UpdateUbo();
 }
 
 void PointLight::OnAttachedToObject(EngineObject * obj_) {
 	BaseLight::OnAttachedToObject(obj_);
 
-	matTranslation = translate(mat4(1.0), GetTransform()->position);
+	matTranslation = translate(mat4(1.0), GetTransform()->GetPosition());
 	matScale = scale(mat4(1.0), vec3(range));
 
 	modelMatrix = matTranslation * matScale;	

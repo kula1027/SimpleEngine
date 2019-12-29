@@ -13,9 +13,9 @@
 Scene* SimpleEngine::currentScene;
 
 void SimpleEngine::Initialize(int width, int height, const char* name){
-	if (!glfwInit()){
+	if (!glfwInit()){		
 		fprintf(stderr, "Failed to initialize GLFW\n");
-		getchar();	
+		getchar();			
 
 		return;
 	}
@@ -30,7 +30,7 @@ void SimpleEngine::Initialize(int width, int height, const char* name){
 		return;
 	}
 
-	glfwSwapInterval(VsyncMode);
+	glfwSwapInterval(VSYNC_ON);
 	InputModule::Init();		
 }
 

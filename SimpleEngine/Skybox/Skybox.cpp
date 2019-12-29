@@ -88,7 +88,7 @@ void SkyBox::Render(Camera* cam_){
 	glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, glm::value_ptr(viewMat));
 	glUniformMatrix4fv(projMatrixID, 1, GL_FALSE, glm::value_ptr(cam_->Pmatrix()));
 
-	glBindVertexArray(VAO);	
+	glBindVertexArray(VAO);
 	
 	glDrawArrays(GL_TRIANGLES, 0, 36);//18(vts per face) * 6(directions) / 3(vts per triangle) -> 36(triangles)	
 }

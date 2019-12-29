@@ -3,7 +3,7 @@
 #include <Scene/SceneIncludes.h>
 #include <GameWindow.h>
 
-
+#include <Shaders/ShaderDef.h>
 #include <Shaders/ShaderManager.h>
 #include <Lights/LightManager.h>
 
@@ -54,18 +54,18 @@ void RP_Deferred::SetupFrameBuffers() {
 
 void RP_Deferred::SetupShaders() {	
 	shaderGeometry = new BaseShader("Deferred/deferred_geo");
-	shaderDirectional = new BaseShader("Deferred/deferred_light_directional");	
+	shaderLightGeneral = new BaseShader("Deferred/deferred_light_general");	
 	shaderPointStencilPass = new BaseShader("Deferred/deferred_light_pointStencil");
 	shaderPointLightPass = new BaseShader("Deferred/deferred_light_pointLight");
 	shaderShadowDepth = new BaseShader("Shadow/shadowDepth");
 
-	shaderDirectional->Use();
-	shaderDirectional->BindLightUBO();
-	shaderDirectional->BindCameraUBO();
-	shaderDirectional->SetInt("gPosition", 0);
-	shaderDirectional->SetInt("gNormal", 1);
-	shaderDirectional->SetInt("gAlbedoSpec", 2);
-	shaderDirectional->SetInt("shadowMap", 3);
+	shaderLightGeneral->Use();
+	shaderLightGeneral->BindLightUBO();
+	shaderLightGeneral->BindCameraUBO();
+	shaderLightGeneral->SetInt("gPosition", 0);
+	shaderLightGeneral->SetInt("gNormal", 1);
+	shaderLightGeneral->SetInt("gAlbedoSpec", 2);
+	shaderLightGeneral->SetInt("shadowMap", ShadowMapID);
 
 	shaderPointLightPass->Use();
 	shaderPointLightPass->BindLightUBO();
@@ -73,7 +73,7 @@ void RP_Deferred::SetupShaders() {
 	shaderPointLightPass->SetInt("gPosition", 0);
 	shaderPointLightPass->SetInt("gNormal", 1);
 	shaderPointLightPass->SetInt("gAlbedoSpec", 2);
-	shaderPointLightPass->SetInt("shadowMap", 3);
+	shaderPointLightPass->SetInt("shadowMap", ShadowMapID);
 }
 
 void RP_Deferred::ComputeMatrices() {
@@ -116,7 +116,7 @@ void RP_Deferred::RenderShadowMap() {
 			continue;
 		}		
 
-		currentLight->RenderShadowMap(currentSrd);	
+		currentLight->RenderShadowMap(currentSrd, targetCamera);	
 	}
 }
 
@@ -137,7 +137,7 @@ void RP_Deferred::LightPass() {
 }
 
 void RP_Deferred::LightPass_AmbientDirectional() {
-	shaderDirectional->Use();
+	shaderLightGeneral->Use();
 	glActiveTexture(GL_TEXTURE0);//다음 bind tex는 GL_TEXTURE0에 대해서.
 	glBindTexture(GL_TEXTURE_2D, gPosition);
 	glActiveTexture(GL_TEXTURE1);
@@ -221,7 +221,7 @@ void RP_Deferred::LightPass_Point() {
 #pragma endregion
 
 
-void RP_Deferred::AdditionalForwardPass() {
+void RP_Deferred::AdditionalForwardPass() {	
 	int rdrCount_Forward = currentSrd->renderQueue_Forward.size();
 	
 	for (int loop = 0; loop < rdrCount_Forward; loop++) {
@@ -236,7 +236,7 @@ RP_Deferred::RP_Deferred() {
 
 	SetupShaders();
 
-	meshSphere = FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj")->meshes->at(0);	
+	meshSphere = FilePooler::LoadMeshModel(PATH_SPHERE)->meshes->at(0);
 }
 RP_Deferred::~RP_Deferred() {
 }
@@ -247,10 +247,10 @@ void RP_Deferred::Render(SceneRenderData* sceneRenderData_) {
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
-	GeometryPass();	
-	
 	RenderShadowMap();
 	glViewport(0, 0, GameWindow::GetWidth(), GameWindow::GetHeight());
+
+	GeometryPass();				
 	glDepthMask(GL_FALSE);
 
 	LightPass();	

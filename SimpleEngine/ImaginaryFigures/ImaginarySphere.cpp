@@ -1,7 +1,6 @@
 #include "ImaginarySphere.h"
 
 #include "../Mesh/Mesh.h"
-#include "../Render/DefaultRenderer.h"
 #include "../Bases/Camera.h"
 #include "../FilePooler.h"
 

@@ -22,14 +22,16 @@ private:
 
 	unsigned int objectId;
 	std::vector<BaseComponent*> components;
+	Transform* transform = NULL;
 
 	void Initialize();
 
 	bool isActive;
 
 public:
-	std::string name = strNoname;
-	Transform* transform = NULL;
+	std::string name = strNoname;	
+
+	static void Destroy(EngineObject* engineObject_);
 
 	EngineObject();
 	~EngineObject();
@@ -37,15 +39,17 @@ public:
 
 	unsigned int GetObjectId();
 
-	BaseComponent* AttachComponent(BaseComponent*);
-
-	bool GetActiveState();
-	void SetActiveState(bool state_);
-
-	void NotifyTransformChange();
-
 	template <class T>
 	T* GetComponent();
+	BaseComponent* AttachComponent(BaseComponent*);
+
+	Transform* GetTransform();
+
+	bool GetActiveState();
+	void SetActiveState(bool state_);	
+
+	void OnTransformChange();
+
 };
 
 template<class T>

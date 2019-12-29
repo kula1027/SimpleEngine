@@ -13,8 +13,8 @@ LightManager::LightManager() {
 	glGenBuffers(1, &uboLightData);
 	glBindBuffer(GL_UNIFORM_BUFFER, uboLightData);
 	int sizeUboLight = 32 + 
-		MaxCountDirectionalLight * SizeStructDirectionalLight + 
-		MaxCountPointLight * SizeStructPointLight;
+		MaxCountDirectionalLight * UBO_SIZE_LIGHT_DIRECTIONAL + 
+		MaxCountPointLight * UBO_SIZE_LIGHT_POINT;
 	glBufferData(GL_UNIFORM_BUFFER, sizeUboLight, NULL, GL_STATIC_DRAW);
 
 	glBindBufferBase(GL_UNIFORM_BUFFER, BindingPointLightData, uboLightData);
@@ -52,14 +52,14 @@ void LightManager::AddLight(BaseLight* light_) {
 	switch (light_->GetLightType()) {
 	case LightType_Directional:	
 		lightCount = directionalLights.size();
-		startAddr = StartAddrDirectional + SizeStructDirectionalLight * lightCount;
+		startAddr = UBO_ADDR_DIRECTIONAL + UBO_SIZE_LIGHT_DIRECTIONAL * lightCount;
 		directionalLights.push_back(dynamic_cast<DirectionalLight*>(light_));		
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(int), &(++lightCount));
 		break;
 
-	case LightType_Point:
+	case LightType_Point:		
 		lightCount = pointLights.size();
-		startAddr = StartAddrPoint + SizeStructPointLight * lightCount;
+		startAddr = UBO_ADDR_POINT + UBO_SIZE_LIGHT_POINT * lightCount;
 		pointLights.push_back(dynamic_cast<PointLight*>(light_));
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(int), sizeof(int), &(++lightCount));
 		break;
@@ -73,5 +73,5 @@ void LightManager::AddLight(BaseLight* light_) {
 	}	
 
 	light_->SetStartAddrUbo(startAddr);
-	light_->SetUbo();
+	light_->UpdateUbo();
 }

@@ -1,8 +1,6 @@
 #pragma once
 
 
-#define VsyncMode 1 // 1-> vsync on, 0 -> off
-
 #define DEBUG //comment this to disable log
 
 
@@ -16,3 +14,8 @@
 #pragma endregion
 
 #define DirPathMaterial "../Materials/"
+
+enum VsyncMode {
+	VSYNC_OFF,
+	VSYNC_ON
+};

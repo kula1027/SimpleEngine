@@ -20,25 +20,25 @@ void MoveCamera::OnUpdate(){
 		verticalAngle += sensitivity * float(GameWindow::GetHeight() / 2 - InputModule::GetMousePos()[1]);
 
 		if (InputModule::IsPressed(GLFW_KEY_W)) {			
-			transform->position += cam->transform->GetForward() * SP_Time::deltaTime * moveSpeed;
+			transform->AddPosition(cam->GetTransform()->GetForward() * SP_Time::deltaTime * moveSpeed);
 		}
 		if (InputModule::IsPressed(GLFW_KEY_S)) {
-			transform->position -= cam->transform->GetForward() * SP_Time::deltaTime * moveSpeed;
+			transform->AddPosition(-cam->GetTransform()->GetForward() * SP_Time::deltaTime * moveSpeed);
 		}
 		if (InputModule::IsPressed(GLFW_KEY_D)) {
-			transform->position += cam->transform->GetRight() * SP_Time::deltaTime * moveSpeed;
+			transform->AddPosition(cam->GetTransform()->GetRight() * SP_Time::deltaTime * moveSpeed);			
 		}
 		if (InputModule::IsPressed(GLFW_KEY_A)) {
-			transform->position -= cam->transform->GetRight() * SP_Time::deltaTime * moveSpeed;
+			transform->AddPosition(-cam->GetTransform()->GetRight() * SP_Time::deltaTime * moveSpeed);			
 		}
 		if (InputModule::IsPressed(GLFW_KEY_Q)) {
-			transform->position += SP_Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
+			transform->AddPosition(glm::vec3(0, 1, 0) * SP_Time::deltaTime * moveSpeed);			
 		}
 		if (InputModule::IsPressed(GLFW_KEY_E)) {
-			transform->position -= SP_Time::deltaTime * glm::vec3(0, 1, 0) * moveSpeed;
+			transform->AddPosition(glm::vec3(0, -1, 0) * SP_Time::deltaTime * moveSpeed);
 		}
 
-		cam->transform->SetForward(
+		cam->GetTransform()->SetForward(
 			glm::vec3(
 				cos(verticalAngle) * sin(horizontalAngle),
 				sin(verticalAngle),
@@ -46,7 +46,7 @@ void MoveCamera::OnUpdate(){
 				)
 			);
 
-		cam->transform->SetRight(
+		cam->GetTransform()->SetRight(
 			glm::vec3(
 				sin(horizontalAngle - 3.14f / 2.0f),
 				0,
@@ -57,9 +57,9 @@ void MoveCamera::OnUpdate(){
 
 	if (InputModule::IsPressed(GLFW_KEY_KP_ENTER)) {
 		std::cout << "Cam Tr: " <<
-			transform->position.x << ", " <<
-			transform->position.y << ", " <<
-			transform->position.z << " / " <<
+			transform->GetPosition().x << ", " <<
+			transform->GetPosition().y << ", " <<
+			transform->GetPosition().z << " / " <<
 			horizontalAngle << ", " << verticalAngle <<
 			endl;
 

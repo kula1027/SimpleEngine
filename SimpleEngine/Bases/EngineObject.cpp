@@ -4,6 +4,7 @@
 #include <FilePooler.h>
 #include <Scene/Scene.h>
 
+
 unsigned int EngineObject::freeObjectId = 0;
 
 unsigned int EngineObject::GetFreeObjectId() {
@@ -11,12 +12,15 @@ unsigned int EngineObject::GetFreeObjectId() {
 }
 
 void EngineObject::Initialize() {
-	transform = new Transform();
-	transform->engineObject = this;
+	transform = new Transform(this);	
 	Scene::RegisterObject(this);
 
 	isActive = true;
 	objectId = GetFreeObjectId();
+}
+
+void EngineObject::Destroy(EngineObject * engineObject_) {
+
 }
 
 EngineObject::EngineObject(){
@@ -48,6 +52,10 @@ BaseComponent * EngineObject::AttachComponent(BaseComponent* baseComponent_) {
 	return baseComponent_;
 }
 
+Transform * EngineObject::GetTransform() {
+	return transform;
+}
+
 bool EngineObject::GetActiveState() {
 	return isActive;
 }
@@ -56,7 +64,7 @@ void EngineObject::SetActiveState(bool state_) {
 	isActive = state_;
 }
 
-void EngineObject::NotifyTransformChange() {
+void EngineObject::OnTransformChange() {
 	for (int loop = 0; loop < components.size(); loop++) {
 		components[loop]->OnTransformChanged();
 	}

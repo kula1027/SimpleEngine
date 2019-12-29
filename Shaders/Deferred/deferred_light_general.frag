@@ -40,18 +40,14 @@ uniform sampler2D gAlbedoSpec;
 uniform sampler2D shadowMap;
 
 
-float readShadowMap(vec3 viewDir_) {
-    mat4 cameraViewToWorldMatrix = inverse(VP);
-    mat4 cameraViewToProjectedLightSpace = directionalLight[0].lightVP * cameraViewToWorldMatrix;
-	vec4 projectedEyeDir =  directionalLight[0].lightVP * inverse(VP) * vec4(-viewDir_,1);//cameraViewToProjectedLightSpace * vec4(-viewDir_,1);
+float calcShadowMap(vec3 gFragPos_) {
+	vec4 projectedEyeDir = directionalLight[0].lightVP * vec4(gFragPos_,1);
     projectedEyeDir = projectedEyeDir/projectedEyeDir.w;
-
     vec2 textureCoordinates = projectedEyeDir.xy * vec2(0.5) + vec2(0.5);
 
-    const float bias = 0.0001;
-    float depthValue = texture( shadowMap, textureCoordinates ).r - bias;
-
-    return projectedEyeDir.z * 0.5 + 0.5 < depthValue ? 1 : 0;
+    const float bias = 0.005;
+    float depthValue = texture( shadowMap, textureCoordinates ).r + bias;  
+	return min(projectedEyeDir.z * 0.5 + 0.5, 1) <= depthValue ? 1 : 0;
 }
 
 void main() {
@@ -60,6 +56,8 @@ void main() {
     vec3 gAlbedo = texture(gAlbedoSpec, texCoords).rgb;
     float gSpecular = texture(gAlbedoSpec, texCoords).a;        
 	
+	float shadow = calcShadowMap(gFragPos);
+
     vec3 lighting = texture(gAlbedoSpec, texCoords).rgb * ambient.xyz;
 	vec3 viewDir = normalize(cameraPosition.xyz - gFragPos);
 	for(int loop = 0; loop < lightCountDirectional; loop++){
@@ -68,14 +66,14 @@ void main() {
 		vec3 diffuse =  max(dot(gNormal, lightDir), 0.0) * gAlbedo * directionalLight[loop].color.xyz;		   
 
 		// specular		
-		vec3 halfwayDir = normalize(lightDir + viewDir);          		
-		float spec = pow(max(dot(gNormal, halfwayDir), 0.0), 32.0);
-		vec3 specular = directionalLight[loop].color.xyz * spec;//* gSpecular
-
-		lighting += (diffuse + specular) * readShadowMap(viewDir);
+		vec3 halfwayDir = normalize(lightDir + viewDir);
+		float spec = pow(max(dot(gNormal, halfwayDir), 0.0), 8.0);
+		vec3 specular = directionalLight[loop].color.xyz * spec;
+		
+		lighting += (diffuse + specular) * shadow;
 	}
 	
 
 	FragColor = vec4(lighting, 1.0);	
-	//FragColor = vec4(normal, 1);
+	//FragColor = vec4(vec3(depthValue), 1.0);
 }  

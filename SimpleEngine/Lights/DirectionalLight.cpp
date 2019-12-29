@@ -9,11 +9,15 @@
 #include <Lights/LightManager.h>
 #include <Scene/SceneRenderData.h>
 #include <Render/MeshRenderer.h>
+#include <Bases/Camera.h>
+#include <Shaders/ShaderDef.h>
 
-DirectionalLight::DirectionalLight(){	
-	color = glm::vec3(0.1, 0.1, 0.1);	
-	castShadow = true;
+DirectionalLight::DirectionalLight(){		
+	SetColor(glm::vec3(0.8, 0.8, 0.8));
+	castShadow = true;	
 	lightType = LightType_Directional;	
+
+	InitShadowMap();
 }
 
 
@@ -43,20 +47,47 @@ void DirectionalLight::InitShadowMap(){
 	shadowMapShader = new BaseShader("Shadow/shadowDepth");
 
 	lightVPId = shadowMapShader->GetUniformLocation("lightSpaceMatrix");		
+
+	lightProjection = glm::ortho(-shadow_size, shadow_size, -shadow_size, shadow_size, shadow_near, shadow_far);
 }
 
-void DirectionalLight::SetUbo_Intensity() {
+void DirectionalLight::UpdateUboDirection() {
+	LightManager::Inst()->BindUboLightData();
 
+	//direction 0 - 16
+	vec4 lightDir = vec4(GetTransform()->GetForward(), 0);
+	glBufferSubData(GL_UNIFORM_BUFFER,
+		startAddrUbo,
+		sizeof(glm::vec4),
+		glm::value_ptr(lightDir));
 }
 
-void DirectionalLight::RenderShadowMap(SceneRenderData* srd_){
-	lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
+void DirectionalLight::UpdateUboVP() {
+	LightManager::Inst()->BindUboLightData();
+
+	//lightVP 32 - 96
+	glBufferSubData(GL_UNIFORM_BUFFER,
+		startAddrUbo + sizeof(glm::vec4) * 2,
+		sizeof(glm::mat4),
+		&lightVP);
+}
+
+void DirectionalLight::UpdateUboIntensity() {
+	//TODO
+}
+
+void DirectionalLight::RenderShadowMap(SceneRenderData* srd_, Camera* camera){	
+	float halfDistNear2Far = (shadow_far - shadow_near) * 0.5f;
+
+	glm::vec3 shadowCastingPos = camera->GetTransform()->GetPosition() - GetTransform()->GetForward() * halfDistNear2Far;
 
 	lightView = glm::lookAt(
-		glm::vec3(-5.0f, 15.0f, 0.0f),
-		glm::vec3(-5.0f, 15.0f, 0.0f) + GetTransform()->GetForward(),
+		shadowCastingPos,
+		shadowCastingPos + GetTransform()->GetForward(),
 		glm::vec3(0.0f, 1.0f, 0.0f));
+
 	lightVP = lightProjection * lightView;
+	UpdateUboVP();
 
 	shadowMapShader->Use();
 	
@@ -66,12 +97,13 @@ void DirectionalLight::RenderShadowMap(SceneRenderData* srd_){
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowMapData.depthMapFBO);	
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	int rdrCount_Deferred = srd_->renderQueue_Deferred.size();
+	//TODO FRUSTUM CULLING
+	size_t rdrCount_Deferred = srd_->renderQueue_Deferred.size();
 	for (int loop = 0; loop < rdrCount_Deferred; loop++) {		
 		shadowMapShader->SetMat_M(srd_->renderQueue_Deferred[loop]->Mmatrix());
 		srd_->renderQueue_Deferred[loop]->RenderMesh_NoTexture();
 	}
-	int rdrCount_Forward = srd_->renderQueue_Forward.size();
+	size_t rdrCount_Forward = srd_->renderQueue_Forward.size();
 	for (int loop = 0; loop < rdrCount_Forward; loop++) {
 		shadowMapShader->SetMat_M(srd_->renderQueue_Forward[loop]->Mmatrix());
 		srd_->renderQueue_Forward[loop]->RenderMesh_NoTexture();
@@ -83,11 +115,11 @@ ShadowMapData DirectionalLight::GetShadowMapData() {
 }
 
 void DirectionalLight::BindShadowMap() {
-	glActiveTexture(GL_TEXTURE3);
+	glActiveTexture(GL_TEXTURE0 + ShadowMapID);
 	glBindTexture(GL_TEXTURE_2D, shadowMapData.depthMapTextureId);
 }
 
-void DirectionalLight::SetUbo() {
+void DirectionalLight::UpdateUbo() {
 	LightManager::Inst()->BindUboLightData(); 
 
 	//direction 0 - 16
@@ -109,25 +141,20 @@ void DirectionalLight::SetUbo() {
 		&lightVP);
 }
 
-void DirectionalLight::OnTransformChanged() {	
-	lightView = glm::lookAt(
-		glm::vec3(-5.0f, 15.0f, 0.0f),
-		glm::vec3(-5.0f, 15.0f, 0.0f) + GetTransform()->GetForward(),
-		glm::vec3(0.0f, 1.0f, 0.0f));
-	lightVP = lightProjection * lightView;
+void DirectionalLight::UpdateUboColor() {
+	LightManager::Inst()->BindUboLightData();
 
-	SetUbo();
+	//color 16 - 32
+	glBufferSubData(GL_UNIFORM_BUFFER,
+		startAddrUbo + sizeof(glm::vec4),
+		sizeof(glm::vec4),
+		&color);
+}
+
+void DirectionalLight::OnTransformChanged() {	
+	UpdateUboDirection();
 }
 
 void DirectionalLight::OnAttachedToObject(EngineObject * obj_) {
-	BaseLight::OnAttachedToObject(obj_);
-
-	lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
-	lightView = glm::lookAt(
-		glm::vec3(-5.0f, 15.0f, 0.0f),
-		glm::vec3(-5.0f, 15.0f, 0.0f) + GetTransform()->GetForward(),
-		glm::vec3(0.0f, 1.0f, 0.0f));
-	lightVP = lightProjection * lightView;
-
-	InitShadowMap();
+	BaseLight::OnAttachedToObject(obj_);		
 }

@@ -19,8 +19,8 @@
     <None Include="$(MSBuildThisFileDirectory)default_geo.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo.vert" />
-    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_directional.frag" />
-    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_directional.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_general.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_general.vert" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_pointLight.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_pointLight.vert" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_pointStencil.frag" />
