@@ -23,7 +23,7 @@
     <ProjectGuid>{5AAE3C24-6C2A-41B1-A6E0-F1B6A3E2D83C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>SimpleEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -190,6 +190,7 @@
     <ClInclude Include="Mesh\MeshModel.h" />
     <ClInclude Include="Render\Renderer_Deferred.h" />
     <ClInclude Include="Render\Renderer_Forward.h" />
+    <ClInclude Include="Render\Renderer_Instanced.h" />
     <ClInclude Include="Render\RenderMaterial\RenderMaterial.h" />
     <ClInclude Include="RenderPath\RenderPath.h" />
     <ClInclude Include="RenderPath\RenderPathBundle.h" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Skybox\EmptySkyBox.h" />
     <ClInclude Include="Skybox\Skybox.h" />
     <ClInclude Include="Skybox\SkyboxBundle.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bases\BaseComponent.cpp" />
@@ -247,6 +249,7 @@
     <ClCompile Include="Mesh\MeshModel.cpp" />
     <ClCompile Include="Render\Renderer_Deferred.cpp" />
     <ClCompile Include="Render\Renderer_Forward.cpp" />
+    <ClCompile Include="Render\Renderer_Instanced.cpp" />
     <ClCompile Include="Render\RenderMaterial\RenderMaterial.cpp" />
     <ClCompile Include="RenderPath\RenderPath.cpp" />
     <ClCompile Include="RenderPath\RP_Deferred.cpp" />
@@ -266,6 +269,7 @@
     <ClCompile Include="SimpleEngine.cpp" />
     <ClCompile Include="Skybox\EmptySkyBox.cpp" />
     <ClCompile Include="Skybox\Skybox.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

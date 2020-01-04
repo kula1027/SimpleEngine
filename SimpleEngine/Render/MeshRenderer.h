@@ -20,8 +20,7 @@ class MeshRenderer : public BaseComponent{
 protected:	
 	Transform* transform = NULL;//ref to engineObject transform
 	MeshModel* meshModel = NULL;
-
-	glm::mat4 modelMatrix;
+	
 	glm::mat4 mvpMatrix;	
 	
 	bool castShadow;

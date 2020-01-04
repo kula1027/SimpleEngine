@@ -1,9 +1,10 @@
 #version 420 core
-
 //! #include "../UniformBlock/ub_camera.glsl"
 //! #include "../UniformBlock/ub_light.glsl"
 
 out vec4 out_color;
+
+
 
 in V2F{
 	vec2 uv;

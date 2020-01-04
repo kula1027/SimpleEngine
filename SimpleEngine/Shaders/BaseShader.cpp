@@ -1,17 +1,15 @@
 #include "BaseShader.h"
-
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-
 #include "ShaderBundle.h"
-
-#include <EngineDef.h>
-#include <Shaders/ShaderDef.h>
-
-#include <glm/gtc/type_ptr.hpp>
+#include "ShaderDef.h"
+#include <algorithm>
 #include <Debugger/SP_Debugger.h>
+#include <EngineDef.h>
+#include <fstream>
+#include <glm/gtc/type_ptr.hpp>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <Utils.h>
 
 
 #pragma region Init
@@ -32,6 +30,39 @@ BaseShader::BaseShader(std::string filePath_) {
 }
 
 
+/// <summary>
+/// #include 키워드를 해당 코드로 치환한다.
+/// </summary>
+std::string BaseShader::ParseIncludes(std::string strCode_, std::string path_) {
+	std::string retCode = "";
+
+	std::istringstream stream(strCode_);
+	std::string line;
+	while (std::getline(stream, line)){
+		if (line.substr(0, 4).compare("//! ") == 0) {// "//! "로 시작하는 줄?
+			stringstream lineStream(line);
+			string strTokenized;
+
+			int tokenCount = 0;
+			while (std::getline(lineStream, strTokenized, ' ')) {											
+				if (tokenCount == 2) {					
+					strTokenized.erase(std::remove(strTokenized.begin(), strTokenized.end(), '"'), strTokenized.end());
+					std::string pathCode = Utils::TravelPath(path_, strTokenized);
+					std::string includeCode = ReadCodeFromFile(pathCode);															
+
+					retCode += includeCode + "\n";					
+					break;
+				}
+				tokenCount++;
+			}
+		} else {			
+			retCode += line + "\n";
+		}
+	}		
+
+	return retCode;
+}
+
 std::string BaseShader::ReadCodeFromFile(std::string path_) {
 	std::string strCode;
 	std::ifstream fileStream;
@@ -47,6 +78,8 @@ std::string BaseShader::ReadCodeFromFile(std::string path_) {
 		std::cout << "Error _ ReadCodeFromFile _ " << path_ << std::endl;
 	}
 
+	strCode = ParseIncludes(strCode, path_);
+
 	return strCode;
 }
 
@@ -59,21 +92,27 @@ void BaseShader::CompileCode(int shaderId_, const GLchar* code_) {
 
 	glGetShaderiv(shaderId_, GL_COMPILE_STATUS, &success);
 	if (!success) {
-		glGetShaderInfoLog(shaderId_, LogLength, NULL, infoLog);
+		glGetShaderInfoLog(shaderId_, LogLength, NULL, infoLog);		
 		std::cout << "Error _ CompileCode\n" << infoLog << std::endl;
 	}
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="path_"></param>
+/// <param name="shaderType_">eg. VS, GEO, FRAG shader</param>
+/// <returns></returns>
 GLuint BaseShader::CreateShader(GLchar* path_, int shaderType_) {
-	std::string code = ReadCodeFromFile(path_);
-	if (code.size() == 0) {
+	std::string strCode = ReadCodeFromFile(path_);
+	if (strCode.size() == 0) {
+		std::cout << "Shader is Empty\n";
 		return -1;
-	}
-	const GLchar* chCode = code.c_str();
+	}			
 
 	GLuint shader;
 	shader = glCreateShader(shaderType_);
-	CompileCode(shader, chCode);
+	CompileCode(shader, strCode.c_str());
 
 	return shader;
 }

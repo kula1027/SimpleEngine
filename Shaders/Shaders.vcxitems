@@ -28,6 +28,8 @@
     <None Include="$(MSBuildThisFileDirectory)deform.geom" />
     <None Include="$(MSBuildThisFileDirectory)Forward\forward.frag" />
     <None Include="$(MSBuildThisFileDirectory)Forward\forward.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Forward\forward_inst.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Forward\forward_inst.vert" />
     <None Include="$(MSBuildThisFileDirectory)instanced.vert" />
     <None Include="$(MSBuildThisFileDirectory)outline.frag" />
     <None Include="$(MSBuildThisFileDirectory)outline.vert" />
@@ -42,6 +44,9 @@
     <None Include="$(MSBuildThisFileDirectory)transparent.vert" />
     <None Include="$(MSBuildThisFileDirectory)trans_inst_nocull.frag" />
     <None Include="$(MSBuildThisFileDirectory)trans_inst_nocull.vert" />
+    <None Include="$(MSBuildThisFileDirectory)UniformBlock\ub_camera.glsl" />
+    <None Include="$(MSBuildThisFileDirectory)UniformBlock\ub_light.glsl" />
+    <None Include="$(MSBuildThisFileDirectory)utils.glsl" />
     <None Include="$(MSBuildThisFileDirectory)vertexColorDiffuse.frag" />
     <None Include="$(MSBuildThisFileDirectory)vertexColorDiffuse.vert" />
   </ItemGroup>

@@ -1,20 +1,9 @@
 #version 420 core
+//! #include "../UniformBlock/ub_camera.glsl"
 
 layout(location = 0) in vec3 attr_position;
 layout(location = 1) in vec3 attr_normal;
 layout(location = 2) in vec2 attr_texCoords;
-
-
-layout (std140) uniform CameraData{	
-	mat4 V;					// 0, 64
-	mat4 P;					// 64, 128
-	mat4 VP;				// 128, 192
-	vec4 cameraPosition;	// 192, 208
-	vec4 cameraDirection;	// 208, 224
-	vec4 screenWidthHeight; // 224, 240
-};
-
-
 
 uniform mat4 M;
 

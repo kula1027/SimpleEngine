@@ -72,13 +72,12 @@ BaseShader * MeshRenderer::GetShader() {
 }
 
 
-void MeshRenderer::ComputeMatrices(Camera* camera_) {
-	modelMatrix = transform->GetModelMatrix();
-	mvpMatrix = camera_->VPmatrix() * modelMatrix;
+void MeshRenderer::ComputeMatrices(Camera* camera_) {	
+	mvpMatrix = camera_->VPmatrix() * transform->GetModelMatrix();
 }
 
 glm::mat4 MeshRenderer::Mmatrix() {
-	return modelMatrix;
+	return transform->GetModelMatrix();
 }
 
 glm::mat4 MeshRenderer::MVPmatrix() {

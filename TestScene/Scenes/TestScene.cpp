@@ -5,50 +5,21 @@
 #include <string>
 #include <Render/RenderMaterial/RenderMaterial.h>
 
-void TestScene::ManyManyLights() {
-	PointLight* pointLight;
-	EngineObject* eoLight;
-
-	int lightCount = 20;
-
-	for (int loop = 0; loop < lightCount; loop++) {
-
-		int rand_range = rand() % 40 + 20;
-		float rand_r = (rand() % 128 + 128) * 0.004f;
-		float rand_g = (rand() % 128 + 128) * 0.004f;
-		float rand_b = (rand() % 128 + 128) * 0.004f;
-		float rand_x = (rand() % 100 - lightCount/2);
-		float rand_z = (rand() % 100 - lightCount/2);
-
-		pointLight = new PointLight();
-		pointLight->SetRange(rand_range);
-		pointLight->SetColor(vec3(rand_r, rand_g, rand_b));
-
-		eoLight = new EngineObject("pLight");
-		eoLight->AttachComponent(pointLight);
-		eoLight->GetTransform()->SetPosition(vec3(rand_x, 1, rand_z));
-	}
-
-}
-
-TestScene::TestScene() : Scene()
-{
+TestScene::TestScene() : Scene() {
 }
 
 
-TestScene::~TestScene()
-{
+TestScene::~TestScene() {
 }
 
-void TestScene::Load()
-{
+void TestScene::Load() {
 	Scene::Load();
-	
-	mainCamera->SetSkybox(new SkyBox());	
+
+	mainCamera->SetSkybox(new SkyBox());
 	mainCamera->GetTransform()->SetPosition(glm::vec3(0, 10, 20));
 
 	EngineObject* eoLight;
-	
+
 	eoLight = new EngineObject("light");
 	DirectionalLight* directionalLight = new DirectionalLight();
 	eoLight->AttachComponent(directionalLight);
@@ -84,31 +55,31 @@ void TestScene::Load()
 	eo = new EngineObject("nano");
 	dRdr = new Renderer_Deferred();
 	dRdr->SetMeshModel(FilePooler::LoadMeshModel("nanosuit/nanosuit.obj"));
-	eo->AttachComponent(dRdr);	
+	eo->AttachComponent(dRdr);
 	eo->GetTransform()->SetPosition(glm::vec3(0, 0, 0));
 
 	//sphere	
 	eo = new EngineObject("sphere");
-	dRdr = new Renderer_Forward();	
-	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));	
+	dRdr = new Renderer_Forward();
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
 	eo->AttachComponent(dRdr);
 	eo->GetTransform()->SetPosition(glm::vec3(-5, 2, 0));
 
 	//sphere	
 	eo = new EngineObject("sphere");
 	dRdr = new Renderer_Deferred();
-	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));	
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("sphere.obj"));
 	eo->AttachComponent(dRdr);
 	eo->GetTransform()->SetPosition(glm::vec3(-8, 2, 0));
 
 	eo = new EngineObject("sphere");
 	dRdr = new Renderer_Deferred();
-	dRdr->SetMeshModel(FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj"));		
+	dRdr->SetMeshModel(FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj"));
 	eo->AttachComponent(dRdr);
 	eo->GetTransform()->SetPosition(glm::vec3(-11, 2, 0));
-	
 
-	
+
+
 	//Grass
 	//Texture* tGrass = FilePooler::LoadTexture("../Materials/grass.png", TextureType_DiffuseTransparent);
 	//MeshModel* mQuad = FilePooler::LoadMeshModel("quad.obj");
@@ -181,5 +152,5 @@ void TestScene::Load()
 	//go->transform->GetPosition() = glm::vec3(10, 10, -5);
 	//go->transform->scale = glm::vec3(2, 1, 2);
 
-	
+
 }

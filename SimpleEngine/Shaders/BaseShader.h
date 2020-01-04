@@ -1,12 +1,13 @@
 #pragma once
 
 
-#include <string>
 #include <gl\glew.h>
-#include <glm\glm.hpp>
 #include <vector>
 
 #include <Bases/EngineResource.h>
+#include "xstring"                            // for string
+#include "glm/detail/type_mat.hpp"  // for mat4
+#include "glm/detail/type_vec.hpp"     // for vec3
 
 #define LogLength 512
 
@@ -43,11 +44,7 @@ struct ID_specularTexture {
 	GLuint id;
 };
 
-class Camera;
-class BaseLight;
 class MeshRenderer;
-class RenderData;
-class Mesh;
 class Texture;
 
 
@@ -55,6 +52,7 @@ class Texture;
 class BaseShader : public EngineResource {
 private:	
 	static int currentUsingShader;
+	std::string ParseIncludes(std::string strCode_, std::string path_);
 
 protected:
 	GLuint shaderID;
@@ -62,7 +60,7 @@ protected:
 
 	std::string ReadCodeFromFile(std::string path_);
 	void CompileCode(int shaderId_, const GLchar* code_);
-	GLuint CreateShader(GLchar* path_, int shaderType_);
+	GLuint CreateShader(GLchar* path_, int shaderType_);	
 	void CreateProgram(GLuint shader0, GLuint shader1, GLuint shader2);
 	void CreateProgram(GLuint shader0, GLuint shader1);
 	void LoadProgram(string filePath_);	
