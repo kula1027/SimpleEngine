@@ -1,6 +1,6 @@
 #include "InstancedShader.h"
 #include <Bases/Camera.h>
-#include <Lights/DirectionalLight.h>
+#include <Light/DirectionalLight.h>
 #include <glm/gtc/type_ptr.hpp>
 
 

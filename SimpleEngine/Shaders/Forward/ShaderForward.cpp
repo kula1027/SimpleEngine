@@ -1,18 +1,18 @@
 #include "ShaderForward.h"
 #include <Bases/Camera.h>
-#include <Lights/LightsBundle.h>
+#include <Light/LightsBundle.h>
 #include <Shaders/ShaderDef.h>
-#include <Render/MeshRenderer.h>
+#include <Render/Renderer/MeshRenderer.h>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../../Mesh/Mesh.h"
+#include <Mesh/Mesh.h>
 
 #include <Debugger/SP_Debugger.h>
 
 #include <Render/Texture.h>
 
 ShaderForward::ShaderForward() {
-	filePath = "Forward/forward";
+	filePath = "Forward/forward";	
 
 	LoadProgram(filePath);
 

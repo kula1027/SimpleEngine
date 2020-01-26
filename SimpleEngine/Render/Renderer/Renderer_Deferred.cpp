@@ -8,6 +8,7 @@
 #include <Render/RenderMaterial/RenderMaterial.h>
 
 Renderer_Deferred::Renderer_Deferred() {
+	renderType = RenderType_Deferred;
 }
 
 

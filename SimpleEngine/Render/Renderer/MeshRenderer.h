@@ -16,8 +16,16 @@ class BaseLight;
 class Mesh;
 class MeshModel;
 
+
+enum RenderType {
+	RenderType_Forward,
+	RenderType_Forward_Transparent,
+	RenderType_Deferred
+};
+
 class MeshRenderer : public BaseComponent{
 protected:	
+	RenderType renderType;
 	Transform* transform = NULL;//ref to engineObject transform
 	MeshModel* meshModel = NULL;
 	
@@ -42,6 +50,7 @@ public:
 	void ComputeMatrices(Camera* camera_);
 	glm::mat4 Mmatrix();
 	glm::mat4 MVPmatrix();
+	RenderType GetRenderPathType();
 	virtual void RenderShadowMap(BaseLight* light_) {}
 	virtual void OnAttachedToObject(EngineObject*) override;		
 

@@ -1,8 +1,9 @@
 #include "SimpleEngine.h"
 
 #include <gl\glew.h>
-#include "Bases/BasesBundle.h"
-#include "GameWindow.h"
+#include <Bases/BasesBundle.h>
+#include <Util/SP_Time.h>
+#include <GameWindow.h>
 
 #include <assimp\postprocess.h>
 #include <assimp\cimport.h>

@@ -1,7 +1,7 @@
 #include "MeshRenderer.h"
 
 #include <Mesh/MeshModel.h>
-#include <Lights/LightsBundle.h>
+#include <Light/LightsBundle.h>
 #include <FilePooler.h>
 
 #include <Shaders/ShaderManager.h>
@@ -82,6 +82,10 @@ glm::mat4 MeshRenderer::Mmatrix() {
 
 glm::mat4 MeshRenderer::MVPmatrix() {
 	return mvpMatrix;
+}
+
+RenderType MeshRenderer::GetRenderPathType() {
+	return renderType;
 }
 
 void MeshRenderer::OnAttachedToObject(EngineObject* obj_) {

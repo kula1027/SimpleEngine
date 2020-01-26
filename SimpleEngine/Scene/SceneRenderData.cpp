@@ -1,22 +1,28 @@
 #include "SceneRenderData.h"
 
-#include <Render/RenderBundle.h>
+#include <Render/Renderer/RendererBundle.h>
 #include <Debugger/SP_Debugger.h>
 
-SceneRenderData::SceneRenderData(){
-	
+SceneRenderData::SceneRenderData() {
+
 }
 
 
-SceneRenderData::~SceneRenderData(){
+SceneRenderData::~SceneRenderData() {
 }
 
-void SceneRenderData::AddRenderer(MeshRenderer * rdr_) {	
-	if (dynamic_cast<Renderer_Forward*>(rdr_)) {
-		renderQueue_Forward.push_back(rdr_);
-	} else if (dynamic_cast<Renderer_Deferred*>(rdr_)) {
+void SceneRenderData::AddRenderer(MeshRenderer * rdr_) {
+	switch (rdr_->GetRenderPathType()) {
+	case RenderType_Deferred:
 		renderQueue_Deferred.push_back(rdr_);
-	} else {
-		DebugError("Invalid Renderer Type");
+		break;
+
+	case RenderType_Forward:
+		renderQueue_Forward.push_back(rdr_);
+		break;
+
+	default:
+		DebugError("Invalid Renderer Type: " + rdr_->GetRenderPathType());
+		break;
 	}
 }

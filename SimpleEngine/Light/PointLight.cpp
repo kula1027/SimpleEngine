@@ -3,7 +3,7 @@
 #include <gl\glew.h>
 #include <glm\glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <Lights/LightManager.h>
+#include <Light/LightManager.h>
 
 void PointLight::UpdateUboIntensity() {
 	float inten = GetIntensity();

@@ -6,9 +6,9 @@
 #include <FilePooler.h>
 #include <Shaders/BaseShader.h>
 #include <Bases/Transform.h>
-#include <Lights/LightManager.h>
+#include <Light/LightManager.h>
 #include <Scene/SceneRenderData.h>
-#include <Render/MeshRenderer.h>
+#include <Render/Renderer/MeshRenderer.h>
 #include <Bases/Camera.h>
 #include <Shaders/ShaderDef.h>
 

@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <Bases/EngineObject.h>
-#include "SimpleMath.h"
+#include <Util/SimpleMath.h>
 
 
 //현재 붙어있는 engineObject의 다른 컴포넌트들에게 변경되었음을 알림

@@ -7,7 +7,7 @@
 #include <Shaders/BaseShader.h>
 #include "../FilePooler.h"
 
-#include "../RenderPath/RenderPathBundle.h"
+#include <Render/RenderPath/RenderPathBundle.h>
 #include <Shaders/ShaderDef.h>
 
 

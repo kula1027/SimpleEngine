@@ -78,7 +78,22 @@ void TestScene::Load() {
 	eo->AttachComponent(dRdr);
 	eo->GetTransform()->SetPosition(glm::vec3(-11, 2, 0));
 
-
+	EngineObject* eoInst = new EngineObject("sphere Inst");
+	Renderer_Instanced* rdrInst = new Renderer_Instanced();
+	rdrInst->SetMeshModel(FilePooler::LoadMeshModel("Sphere/sphere_64_32.obj"));
+	eoInst->AttachComponent(rdrInst);
+	eoInst->GetTransform()->SetPosition(glm::vec3());
+	int grassCount = 10;
+	for (int loop = 0; loop < grassCount; loop++) {
+		for (int loop2 = 0; loop2 < grassCount; loop2++) {
+			EngineObject* eoChild = new EngineObject("grass");
+			eoChild->GetTransform()->SetParent(eoInst->GetTransform());
+			//eoChild->GetTransform()->SetScale(glm::vec3(rand() % 3 + 1, 1, rand() % 3 + 1));
+			eoChild->GetTransform()->SetPosition(glm::vec3(-rand() % 40 + 20, 1, -rand() % 40 + 20));
+			eoChild->GetTransform()->SetEulerAngles(glm::vec3(90, rand() % 180, 0));
+		}
+	}
+	rdrInst->InitInstanced();
 
 	//Grass
 	//Texture* tGrass = FilePooler::LoadTexture("../Materials/grass.png", TextureType_DiffuseTransparent);
@@ -101,19 +116,7 @@ void TestScene::Load() {
 	//rdrGrass->castShadow = false;
 	////rdrGrass->cullingEnabled = false;
 	//rdrGrass->SetMeshModel(mQuad);
-	//rdrGrass->SetShader(FilePooler::LoadShader("trans_inst_nocull.vert", "trans_inst_nocull.frag"));
-
-	//int grassCount = 100;
-	//for (int loop = 0; loop < grassCount; loop++) {
-	//	for (int loop2 = 0; loop2 < grassCount; loop2++) {
-	//		eo = new EngineObject("grass");
-	//		eo->transform->SetParent(goGrass->transform);
-	//		eo->transform->scale = glm::vec3(rand() % 3 + 1, 1, rand() % 3 + 1);
-	//		eo->transform->GetPosition() = glm::vec3(-rand() % 400, eo->transform->scale.z, -rand() % 400);
-	//		eo->transform->SetEulerAngles(glm::vec3(90, rand() % 180, 0));
-	//	}
-	//}
-	//rdrGrass->InitInstanced();
+	//rdrGrass->SetShader(FilePooler::LoadShader("trans_inst_nocull.vert", "trans_inst_nocull.frag"));	
 
 	////sphere w geo	
 	//go = new GameObject("sphere geo");

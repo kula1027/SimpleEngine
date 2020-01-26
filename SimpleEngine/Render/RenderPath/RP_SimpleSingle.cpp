@@ -1,6 +1,5 @@
 #include "RP_SimpleSingle.h"
 #include <Scene/SceneIncludes.h>
-#include "../GameWindow.h"
 
 //Simplest RenderPath
 //No Shadows, Single Pass

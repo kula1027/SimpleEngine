@@ -3,36 +3,36 @@
 #include <gl\glew.h>
 #include "../GameWindow.h"
 
-#include "../Bases/BasesBundle.h"
+#include <Bases/BasesBundle.h>
+#include <Util/SP_Time.h>
 
-MoveCamera::MoveCamera(){
+MoveCamera::MoveCamera() {
 
 }
 
 
-MoveCamera::~MoveCamera()
-{
+MoveCamera::~MoveCamera() {
 }
 
-void MoveCamera::OnUpdate(){			
+void MoveCamera::OnUpdate() {
 	if (GameWindow::IsFocused()) {
 		horizontalAngle += sensitivity * float(GameWindow::GetWidth() / 2 - InputModule::GetMousePos()[0]);
 		verticalAngle += sensitivity * float(GameWindow::GetHeight() / 2 - InputModule::GetMousePos()[1]);
 
-		if (InputModule::IsPressed(GLFW_KEY_W)) {			
+		if (InputModule::IsPressed(GLFW_KEY_W)) {
 			transform->AddPosition(cam->GetTransform()->GetForward() * SP_Time::deltaTime * moveSpeed);
 		}
 		if (InputModule::IsPressed(GLFW_KEY_S)) {
 			transform->AddPosition(-cam->GetTransform()->GetForward() * SP_Time::deltaTime * moveSpeed);
 		}
 		if (InputModule::IsPressed(GLFW_KEY_D)) {
-			transform->AddPosition(cam->GetTransform()->GetRight() * SP_Time::deltaTime * moveSpeed);			
+			transform->AddPosition(cam->GetTransform()->GetRight() * SP_Time::deltaTime * moveSpeed);
 		}
 		if (InputModule::IsPressed(GLFW_KEY_A)) {
-			transform->AddPosition(-cam->GetTransform()->GetRight() * SP_Time::deltaTime * moveSpeed);			
+			transform->AddPosition(-cam->GetTransform()->GetRight() * SP_Time::deltaTime * moveSpeed);
 		}
 		if (InputModule::IsPressed(GLFW_KEY_Q)) {
-			transform->AddPosition(glm::vec3(0, 1, 0) * SP_Time::deltaTime * moveSpeed);			
+			transform->AddPosition(glm::vec3(0, 1, 0) * SP_Time::deltaTime * moveSpeed);
 		}
 		if (InputModule::IsPressed(GLFW_KEY_E)) {
 			transform->AddPosition(glm::vec3(0, -1, 0) * SP_Time::deltaTime * moveSpeed);
@@ -43,8 +43,8 @@ void MoveCamera::OnUpdate(){
 				cos(verticalAngle) * sin(horizontalAngle),
 				sin(verticalAngle),
 				cos(verticalAngle) * cos(horizontalAngle)
-				)
-			);
+			)
+		);
 
 		cam->GetTransform()->SetRight(
 			glm::vec3(
@@ -64,10 +64,10 @@ void MoveCamera::OnUpdate(){
 			endl;
 
 	}
-	
+
 }
 
-void MoveCamera::OnStart(){
+void MoveCamera::OnStart() {
 	cam = static_cast<Camera*>(engineObject);
 
 	horizontalAngle = 3.14f;

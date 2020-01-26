@@ -19,6 +19,8 @@
     <None Include="$(MSBuildThisFileDirectory)default_geo.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo_inst.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_geo_inst.vert" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_general.frag" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_general.vert" />
     <None Include="$(MSBuildThisFileDirectory)Deferred\deferred_light_pointLight.frag" />
@@ -30,7 +32,6 @@
     <None Include="$(MSBuildThisFileDirectory)Forward\forward.vert" />
     <None Include="$(MSBuildThisFileDirectory)Forward\forward_inst.frag" />
     <None Include="$(MSBuildThisFileDirectory)Forward\forward_inst.vert" />
-    <None Include="$(MSBuildThisFileDirectory)instanced.vert" />
     <None Include="$(MSBuildThisFileDirectory)outline.frag" />
     <None Include="$(MSBuildThisFileDirectory)outline.vert" />
     <None Include="$(MSBuildThisFileDirectory)PostProcess\blur.frag" />
@@ -38,6 +39,8 @@
     <None Include="$(MSBuildThisFileDirectory)PostProcess\defaultScreen.vert" />
     <None Include="$(MSBuildThisFileDirectory)Shadow\shadowDepth.frag" />
     <None Include="$(MSBuildThisFileDirectory)Shadow\shadowDepth.vert" />
+    <None Include="$(MSBuildThisFileDirectory)Shadow\shadowDepth_inst.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Shadow\shadowDepth_inst.vert" />
     <None Include="$(MSBuildThisFileDirectory)Skybox\skybox.frag" />
     <None Include="$(MSBuildThisFileDirectory)Skybox\skybox.vert" />
     <None Include="$(MSBuildThisFileDirectory)transparent.frag" />

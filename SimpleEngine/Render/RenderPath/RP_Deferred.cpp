@@ -5,7 +5,7 @@
 
 #include <Shaders/ShaderDef.h>
 #include <Shaders/ShaderManager.h>
-#include <Lights/LightManager.h>
+#include <Light/LightManager.h>
 
 void RP_Deferred::SetupFrameBuffers() {
 

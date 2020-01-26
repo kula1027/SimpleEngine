@@ -20,6 +20,8 @@ BaseShader* ShaderManager::GetShader(std::string filePath_) {
 	} else {
 		if (filePath_.compare("Forward/forward") == 0) {			
 			retShader = new ShaderForward();				
+		} if (filePath_.compare("Forward/forward_inst") == 0) {
+			retShader = new ShaderForward_Instanced();
 		} else {
 			DebugError("Unkown Shader File Path");
 		}

@@ -5,11 +5,12 @@
 #include <Shaders/ShaderManager.h>
 #include <Shaders/ShaderBundle.h>
 #include <Render/RenderMaterial/RenderMaterial.h>
-#include <Lights/LightManager.h>
-#include <Lights/LightsBundle.h>
+#include <Light/LightManager.h>
+#include <Light/LightsBundle.h>
 
 Renderer_Forward::Renderer_Forward() {
-	shader = ShaderManager::GetShader("Forward/forward");
+	renderType = RenderType_Forward;
+	shader = ShaderManager::GetShader("Forward/forward"); 	
 }
 
 

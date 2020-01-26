@@ -1,0 +1,24 @@
+﻿
+Renamed 'RenderPathType' to 'RenderType':
+-----------------------------------------
+E:\SimpleEngine\SimpleEngine\Render\Renderer\MeshRenderer.cpp(87, 1)
+E:\SimpleEngine\SimpleEngine\Render\Renderer\MeshRenderer.h(20, 6)
+E:\SimpleEngine\SimpleEngine\Render\Renderer\MeshRenderer.h(28, 2)
+E:\SimpleEngine\SimpleEngine\Render\Renderer\MeshRenderer.h(53, 2)
+
+Renamed 'RenderPathType_Forward' to 'RenderType_Forward':
+---------------------------------------------------------
+E:\SimpleEngine\SimpleEngine\Render\Renderer\MeshRenderer.h(21, 2)
+E:\SimpleEngine\SimpleEngine\Render\Renderer\Renderer_Forward.cpp(12, 19)
+E:\SimpleEngine\SimpleEngine\Render\Renderer\Renderer_Instanced.cpp(14, 19)
+E:\SimpleEngine\SimpleEngine\Scene\SceneRenderData.cpp(20, 7)
+
+Renamed 'RenderPathType_Forward_Transparent' to 'RenderType_Forward_Transparent':
+---------------------------------------------------------------------------------
+E:\SimpleEngine\SimpleEngine\Render\Renderer\MeshRenderer.h(22, 2)
+
+Renamed 'RenderPathType_Deferred' to 'RenderType_Deferred':
+-----------------------------------------------------------
+E:\SimpleEngine\SimpleEngine\Render\Renderer\MeshRenderer.h(23, 2)
+E:\SimpleEngine\SimpleEngine\Render\Renderer\Renderer_Deferred.cpp(11, 19)
+E:\SimpleEngine\SimpleEngine\Scene\SceneRenderData.cpp(16, 7)

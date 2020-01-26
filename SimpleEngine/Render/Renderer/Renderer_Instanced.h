@@ -1,9 +1,10 @@
 #pragma once
 
 #include <vector>
-#include <Render/MeshRenderer.h>
+#include <Render/Renderer/MeshRenderer.h>
 
 class Transform;
+class RenderData;
 class EngineObject;
 
 class Renderer_Instanced : public MeshRenderer
@@ -16,6 +17,7 @@ public:
 	~Renderer_Instanced();	
 
 	void InitInstanced();
-	virtual void RenderMesh() override;
+	virtual void RenderMesh_NoTexture() override;
+	virtual void RenderMesh() override;	
 };
 

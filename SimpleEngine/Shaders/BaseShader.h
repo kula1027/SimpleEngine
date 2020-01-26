@@ -86,8 +86,7 @@ public:
 	static BaseShader* GetShader(std::string filePathVertex, std::string filePathGeometry, std::string filePathFragment);
 
 	//virtual void SetUniforms(RenderData* renderData_, glm::mat4 modelMat_, glm::mat4 mvpMat_) {}
-	virtual void SetUniforms(MeshRenderer* renderer_) {}
-	virtual void ApplyTexture(std::vector<Texture*> textures_) {}
+	virtual void SetUniforms(MeshRenderer* renderer_) {}	
 
 
 	void BindLightUBO();
